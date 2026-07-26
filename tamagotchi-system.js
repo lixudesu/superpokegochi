@@ -853,7 +853,6 @@
       <div class="appearance-panel">
         <div class="palette-block">
           <div class="palette-heading">
-            <b>Cor</b>
             <small>${shinyUnlocked ? 'Shiny liberado' : `${Math.min(days, SHINY_UNLOCK_DAYS)}/${SHINY_UNLOCK_DAYS} dias de vínculo`}</small>
           </div>
           <div class="palette-segment" role="group" aria-label="Cor da aparência">

@@ -355,3 +355,21 @@ html,body{overflow-x:hidden}
   .stage-sprite-wrap{--stage-scale:var(--sprite-stage-scale-small,4.85)}
   .shiny-badge{padding-inline:5px;font-size:8px}
 }
+
+/* Keep the expanded care panel usable when its history grows. */
+.care-sheet.expanded .more-panel:not([inert]){
+  overflow-x:hidden;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
+  -webkit-overflow-scrolling:touch;
+  padding-right:4px;
+  scrollbar-width:thin;
+  scrollbar-color:#a9cdb7 transparent;
+}
+.care-sheet.expanded .more-panel:not([inert])::-webkit-scrollbar{width:5px}
+.care-sheet.expanded .more-panel:not([inert])::-webkit-scrollbar-thumb{
+  border-radius:999px;
+  background:#a9cdb7;
+}
+.palette-heading{justify-content:flex-end}
