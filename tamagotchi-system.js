@@ -3,6 +3,7 @@
   let statusOpen = false;
   let moreOpen = false;
   let companionsOpen = false;
+  let companionQuery = '';
   let selectedAction = null;
   let historyVisibleCount = 2;
   let statusTab = 'status';
@@ -13,6 +14,7 @@
 
   const BRASILIA_TIME_ZONE = 'America/Sao_Paulo';
   const SHINY_UNLOCK_DAYS = 30;
+  const COMPANION_RESULT_LIMIT = 36;
 
   function readStoredState() {
     try {
@@ -69,18 +71,22 @@
   }
 
   function isFormAssetReady(mon, form, palette = 'normal') {
+    if (form.assetReady && (palette === 'normal' || form.shiny)) return true;
     return formAssetStatus.get(formAssetKey(mon, form, palette)) === true;
   }
 
   function initializeFormAssetStatus() {
     DEX.forEach(mon => {
-      const firstForm = getForms(mon)[0];
-      formAssetStatus.set(formAssetKey(mon, firstForm, 'normal'), true);
+      getForms(mon).forEach(form => {
+        if (!form.assetReady) return;
+        formAssetStatus.set(formAssetKey(mon, form, 'normal'), true);
+        if (form.shiny) formAssetStatus.set(formAssetKey(mon, form, 'shiny'), true);
+      });
     });
   }
 
   function checkFormAssets() {
-    const checks = DEX.flatMap(mon => getForms(mon).flatMap(form => {
+    const checks = DEX.flatMap(mon => getForms(mon).filter(form => !form.assetReady).flatMap(form => {
       const palettes = form.shiny ? ['normal', 'shiny'] : ['normal'];
       return palettes.map(palette => new Promise(resolve => {
         const visual = formVisual(form, palette);
@@ -212,7 +218,7 @@
       session: 21,
       bag: systemDefaultBag(),
       daily: { lastFoodGrant: null },
-      pets: Object.fromEntries(DEX.slice(0, 6).map((mon, index) => [mon.id, systemDefaultPet(mon, index)])),
+      pets: Object.fromEntries(DEX.slice(0, 1).map((mon, index) => [mon.id, systemDefaultPet(mon, index)])),
     };
   }
 
@@ -994,23 +1000,99 @@
       ${hasMore ? `<button class="history-more" type="button" data-history-more>Ver mais ${Math.min(3, history.length - items.length)}</button>` : `<p class="history-end">Fim do histórico recente</p>`}`;
   }
 
+  function escapeHtml(value) {
+    return String(value)
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function normalizeCompanionSearch(value) {
+    return String(value)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, '');
+  }
+
+  function companionSearchData() {
+    const rawQuery = companionQuery.trim();
+    const numericMatch = rawQuery.match(/^#?0*(\d+)$/);
+    const query = normalizeCompanionSearch(rawQuery);
+    let matches;
+    if (numericMatch) {
+      const dexNumber = Number(numericMatch[1]);
+      matches = DEX.filter(mon => mon.dexNumber === dexNumber);
+    } else if (query) {
+      matches = DEX.filter(mon => {
+        const paddedNumber = String(mon.dexNumber || '').padStart(3, '0');
+        const haystack = [
+          mon.name,
+          mon.id,
+          mon.dexNumber,
+          paddedNumber,
+        ].map(normalizeCompanionSearch);
+        return haystack.some(value => value.includes(query));
+      });
+    } else {
+      const selected = getDex();
+      matches = [selected, ...DEX.filter(mon => mon.id !== selected.id)];
+    }
+    return {
+      total: matches.length,
+      visible: matches.slice(0, COMPANION_RESULT_LIMIT),
+    };
+  }
+
   function systemMiniCompanion(mon) {
     const pet = state.pets[mon.id] || systemDefaultPet(mon);
     systemApplyOfflineDecay(pet);
     const mood = systemMoodFor(pet);
     const low = pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30;
     const appearance = getAppearance(mon, pet);
+    const dexLabel = mon.dexNumber ? `#${String(mon.dexNumber).padStart(3, '0')}` : mon.id;
     return `
       <button class="companion-row ${state.selected === mon.id ? 'active' : ''}" type="button" data-select="${mon.id}" aria-label="Selecionar ${mon.name}">
         <span class="mini-orb ${low ? 'needs-care' : ''}">${renderPokemonVisual(appearance, 'mini-sprite', appearance.name)}</span>
-        <span class="companion-copy"><b>${mon.name}</b><small>${mood.icon} ${mood.label} · Nv. ${pet.level}</small></span>
+        <span class="companion-copy"><b>${mon.name}</b><small>${dexLabel} · ${mood.icon} ${mood.label} · Nv. ${pet.level}</small></span>
         <span class="companion-chevron">›</span>
       </button>`;
+  }
+
+  function companionResultsMarkup() {
+    const results = companionSearchData();
+    return {
+      summary: companionQuery.trim()
+        ? `${results.total} ${results.total === 1 ? 'resultado' : 'resultados'}`
+        : `${DEX.length} espécies cadastradas`,
+      html: results.visible.length
+        ? results.visible.map(systemMiniCompanion).join('')
+        : '<div class="companion-empty"><b>Nenhum Pokémon encontrado</b><small>Tente outro nome ou número.</small></div>',
+    };
+  }
+
+  function bindCompanionRows(scope = document) {
+    scope.querySelectorAll('[data-select]').forEach(btn => {
+      btn.addEventListener('click', () => systemSelectPet(btn.dataset.select));
+    });
+  }
+
+  function updateCompanionResults() {
+    const list = document.querySelector('[data-companion-results]');
+    const summary = document.querySelector('[data-companion-summary]');
+    if (!list || !summary) return;
+    const results = companionResultsMarkup();
+    list.innerHTML = results.html;
+    summary.textContent = results.summary;
+    bindCompanionRows(list);
   }
 
   function systemSelectPet(id) {
     if (!state.pets[id]) state.pets[id] = systemDefaultPet(getDex(id), Object.keys(state.pets).length);
     state.selected = id;
+    companionQuery = '';
     companionsOpen = false;
     moreOpen = false;
     foodOpen = false;
@@ -1037,6 +1119,7 @@
     const selectedImgStyle = selectedAction ? ` action-${selectedAction}` : '';
     const sheetExpanded = moreOpen || foodOpen;
     const hasCompanions = DEX.length > 1;
+    const companionResults = hasCompanions && companionsOpen ? companionResultsMarkup() : null;
     const clock = brasiliaClock();
     const evolutionOffer = getEvolutionOffer(species, pet);
 
@@ -1150,13 +1233,18 @@
         ${renderTrainingGame(pet)}
         ${renderEvolutionOffer(species, pet, evolutionOffer)}
 
-        ${hasCompanions ? `<aside class="companions-drawer ${companionsOpen ? 'open' : ''}" aria-label="Lista de companheiros">
+        ${hasCompanions && companionsOpen ? `<aside class="companions-drawer open" aria-label="Lista de companheiros">
           <div class="drawer-card">
             <div class="drawer-head">
               <div><small>Equipe do perfil</small><h2>Companheiros</h2></div>
-              <button type="button" class="close-panel" data-companions-toggle>×</button>
+              <button type="button" class="close-panel" data-companions-toggle aria-label="Fechar companheiros">×</button>
             </div>
-            <div class="companions-list">${DEX.map(systemMiniCompanion).join('')}</div>
+            <label class="companion-search">
+              <span aria-hidden="true">⌕</span>
+              <input type="search" data-companion-search value="${escapeHtml(companionQuery)}" placeholder="Nome ou ID" autocomplete="off" spellcheck="false">
+            </label>
+            <div class="companion-results-meta" data-companion-summary>${companionResults.summary}</div>
+            <div class="companions-list" data-companion-results>${companionResults.html}</div>
           </div>
         </aside>` : ''}
       </section>
@@ -1180,11 +1268,23 @@
       render();
       if (foodOpen && bagCount() <= 0) showToast('A mochila está vazia.');
     }));
-    document.querySelectorAll('[data-select]').forEach(btn => btn.addEventListener('click', () => systemSelectPet(btn.dataset.select)));
+    bindCompanionRows();
+    const companionSearchInput = document.querySelector('[data-companion-search]');
+    if (companionSearchInput) {
+      companionSearchInput.addEventListener('input', () => {
+        companionQuery = companionSearchInput.value;
+        updateCompanionResults();
+      });
+    }
     document.querySelectorAll('[data-history-more]').forEach(btn => btn.addEventListener('click', () => { historyVisibleCount += 3; render(); }));
     document.querySelectorAll('[data-status-toggle]').forEach(btn => btn.addEventListener('click', () => { statusOpen = !statusOpen; companionsOpen = false; render(); }));
     document.querySelectorAll('[data-more-toggle]').forEach(btn => btn.addEventListener('click', () => { moreOpen = !moreOpen; foodOpen = false; statusOpen = false; render(); }));
-    document.querySelectorAll('[data-companions-toggle]').forEach(btn => btn.addEventListener('click', () => { companionsOpen = !companionsOpen; statusOpen = false; render(); }));
+    document.querySelectorAll('[data-companions-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      companionsOpen = !companionsOpen;
+      statusOpen = false;
+      render();
+      if (companionsOpen) requestAnimationFrame(() => document.querySelector('[data-companion-search]')?.focus());
+    }));
     document.querySelectorAll('[data-go-back]').forEach(btn => btn.addEventListener('click', goBack));
   }
 

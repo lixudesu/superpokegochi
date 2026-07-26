@@ -7,7 +7,8 @@ salvo no navegador e o projeto nao precisa de backend ou compilacao.
 
 ## O que ja funciona
 
-- Bulbasaur animado em um gramado responsivo.
+- Catalogo com as 1.025 especies e busca por nome ou ID.
+- Sprites normais e Shiny animados em um gramado responsivo.
 - Fome, felicidade, energia, nivel e XP.
 - Comida, brincadeira, treino e descanso manual na Pokebola.
 - Evolucao opcional nos niveis 16 e 32.
@@ -58,20 +59,21 @@ Para trocar de forma ou de cor, abra a **Pokebola no topo** e entre na aba
 
 ## Como trocar de Pokemon
 
-Atualmente apenas a familia do Bulbasaur esta cadastrada. Por isso, a Pokebola
-troca a **aparencia da evolucao**, mas ainda nao troca para outra especie.
+Abra **Companheiros** pelo botao lateral ou por **Mais > Companheiros**. Busque
+pelo nome, identificador textual ou numero da Pokedex, como `Pikachu`,
+`pikachu`, `25` ou `#025`, e selecione o resultado.
 
-Para adicionar outro Pokemon:
+As 1.025 especies possuem progresso separado. Apenas os resultados da busca
+sao carregados na tela, evitando carregar todas as sprite sheets de uma vez.
 
-1. Coloque os sprites normais em `assets/pokemons/Front/`.
-2. Coloque os sprites Shiny em `assets/pokemons/Front shiny/`.
-3. Adicione uma nova entrada ao array `DEX` em `pokemon-data.js`.
-4. Configure as formas, niveis e dimensoes da sprite sheet usando
-   `assets/pokemons/front-index.json`.
+Para atualizar o catalogo depois de adicionar novos assets:
 
-Quando o `DEX` tiver mais de uma entrada, a opcao **Companheiros** aparecera
-automaticamente em **Mais**. Nessa tela sera possivel escolher qual Pokemon
-fica ativo, e cada um mantera seu proprio progresso.
+```bash
+node scripts/generate-pokemon-catalog.mjs
+```
+
+O gerador usa `front-index.json`, confere os sprites Normal e Shiny e associa
+cada especie ao numero oficial da Pokedex.
 
 ## Arquivos principais
 
@@ -85,13 +87,17 @@ fica ativo, e cada um mantera seu proprio progresso.
 |       |-- Front shiny/
 |       `-- front-index.json
 |-- index.html
+|-- pokemon-catalog.js
 |-- pokemon-data.js
 |-- tamagotchi-system.js
 |-- style.css
+|-- scripts/
+|   `-- generate-pokemon-catalog.mjs
 `-- README.md
 ```
 
-- `pokemon-data.js`: cadastro dos Pokemon, evolucoes e sprites.
+- `pokemon-catalog.js`: catalogo gerado das 1.025 especies.
+- `pokemon-data.js`: montagem do DEX e configuracao especial das evolucoes.
 - `tamagotchi-system.js`: regras, estado, acoes e interface.
 - `style.css`: layout responsivo e animacoes.
 
