@@ -36,9 +36,10 @@ Depois acesse `http://127.0.0.1:5182/`.
 | Treino | Minigame de tres rodadas que entrega XP e premios |
 | Descansar | Recupera 10 de energia a cada 30 minutos |
 
-Com energia abaixo de 10, comida, brincadeira e treino ficam bloqueados ate o
-Pokemon descansar. O descanso termina em 80 de energia, mas tambem pode ser
-encerrado manualmente.
+Com energia abaixo de 10, brincadeira e treino ficam bloqueados ate o Pokemon
+descansar, mas ele ainda pode comer enquanto estiver acordado. Durante o
+descanso, todas as acoes ficam bloqueadas. O descanso termina em 80 de energia,
+mas tambem pode ser encerrado manualmente.
 
 ## Evolucao e aparencia
 

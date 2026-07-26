@@ -642,10 +642,6 @@
       showToast(busy);
       return;
     }
-    if (needsRest(pet)) {
-      showToast(`${pet.customName} precisa descansar antes de comer.`);
-      return;
-    }
     if (!food || !state.bag || (state.bag[foodId] || 0) <= 0) {
       showToast('A mochila está sem essa comida.');
       return;
@@ -1037,6 +1033,7 @@
     const anyNeedsCare = Object.values(state.pets).some(p => p.hunger < 30 || p.energy < 18 || p.happiness < 30);
     const restRequired = needsRest(pet);
     const careLocked = pet.sleeping || restRequired;
+    const foodLocked = pet.sleeping;
     const selectedImgStyle = selectedAction ? ` action-${selectedAction}` : '';
     const sheetExpanded = moreOpen || foodOpen;
     const hasCompanions = DEX.length > 1;
@@ -1119,7 +1116,7 @@
             <b>${moreOpen ? 'Fechar' : 'Mais'}</b>
           </button>
 
-          ${foodOpen && !careLocked ? renderFoodTray(pet) : ''}
+          ${foodOpen && !foodLocked ? renderFoodTray(pet) : ''}
 
           <div class="more-panel" ${moreOpen ? '' : 'inert'}>
             ${renderActivityCard(pet)}
@@ -1134,7 +1131,7 @@
           </div>
 
           <div class="action-dock">
-            <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="Abrir mochila de comidas" ${careLocked ? 'disabled' : ''}>
+            <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="Abrir mochila de comidas" ${foodLocked ? 'disabled' : ''}>
               <span>🎒</span><b>Comida</b>
             </button>
             ${Object.entries(SYSTEM_ACTIONS).map(([key, action]) => {
