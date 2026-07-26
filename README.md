@@ -56,18 +56,18 @@ aparencia de Bulbasaur, Ivysaur ou Venusaur que estiver desbloqueada, sem perder
 nivel, XP ou atributos.
 
 Para trocar de forma ou usar a versao Shiny, abra a **Pokebola no topo** e
-entre na aba **Aparencia**. A versao Shiny aparece depois de 30 dias de vinculo.
+entre na aba **Pokemon**. A versao Shiny aparece depois de 30 dias de vinculo.
 
 ## Como trocar de Pokemon
 
-Abra **Companheiros** pelo botao lateral ou por **Mais > Companheiros**. Busque
-pelo nome, identificador textual ou numero da Pokedex, como `Pikachu`,
-`pikachu`, `25` ou `#025`, e selecione o resultado.
+Abra a **Pokebola no topo**, entre na aba **Pokemon** e escolha **Alterar Pokemon
+companheiro**. Busque pelo nome, identificador textual ou numero da Pokedex,
+como `Pikachu`, `pikachu`, `25` ou `#025`, e selecione o resultado.
 
 Somente especies-base podem ser escolhidas diretamente. Evolucoes continuam
 pesquisaveis, mas aparecem com cadeado e informam sua especie anterior. Na
 familia Bulbasaur, Ivysaur e Venusaur sao liberados nos niveis 16 e 32 pela
-aba **Aparencia**.
+aba **Pokemon**.
 
 As especies-base possuem progresso separado. Apenas os resultados da busca sao
 carregados na tela, evitando carregar todas as sprite sheets de uma vez.

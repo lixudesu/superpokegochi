@@ -858,11 +858,19 @@
     const currentShinyReady = isFormAssetReady(mon, currentForm, 'shiny');
     return `
       <div class="appearance-panel">
+        <button class="change-companion" type="button" data-companions-toggle aria-label="Alterar Pokémon companheiro">
+          <span class="change-companion-icon" aria-hidden="true"><i></i></span>
+          <span class="change-companion-copy">
+            <b>Alterar Pokémon companheiro</b>
+            <small>Escolha outra espécie-base</small>
+          </span>
+          <span class="change-companion-arrow" aria-hidden="true">›</span>
+        </button>
         <div class="palette-block">
           <div class="palette-heading">
             <small>${shinyUnlocked ? 'Shiny liberado' : `${Math.min(days, SHINY_UNLOCK_DAYS)}/${SHINY_UNLOCK_DAYS} dias de vínculo`}</small>
           </div>
-          <div class="palette-segment" role="group" aria-label="Cor da aparência">
+          <div class="palette-segment" role="group" aria-label="Versão do Pokémon">
             <button type="button" data-palette="normal" class="${palette === 'normal' ? 'active' : ''}"
               aria-pressed="${palette === 'normal'}">
               <span class="palette-dot normal"></span><b>Normal</b>
@@ -874,7 +882,7 @@
             </button>
           </div>
         </div>
-        <p class="appearance-note">O nível e os cuidados são compartilhados entre todas as formas.</p>
+        <p class="appearance-note">O nível e os cuidados são compartilhados entre todas as formas do Pokémon.</p>
         <div class="appearance-list">
           ${forms.map(form => {
             const unlocked = isFormUnlocked(pet, form);
@@ -1135,7 +1143,6 @@
     const xpPercent = Math.min(100, (pet.xp / systemXpNeeded(pet)) * 100);
     const needsCare = pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30;
     const hungry = pet.hunger < 30;
-    const anyNeedsCare = Object.values(state.pets).some(p => p.hunger < 30 || p.energy < 18 || p.happiness < 30);
     const restRequired = needsRest(pet);
     const careLocked = pet.sleeping || restRequired;
     const foodLocked = pet.sleeping;
@@ -1177,7 +1184,7 @@
             </div>
             <div class="status-tabs" role="tablist" aria-label="Seções do painel">
               <button type="button" role="tab" data-status-tab="status" class="${statusTab === 'status' ? 'active' : ''}" aria-selected="${statusTab === 'status'}">Status</button>
-              <button type="button" role="tab" data-status-tab="appearance" class="${statusTab === 'appearance' ? 'active' : ''}" aria-selected="${statusTab === 'appearance'}">Aparência</button>
+              <button type="button" role="tab" data-status-tab="appearance" class="${statusTab === 'appearance' ? 'active' : ''}" aria-selected="${statusTab === 'appearance'}">Pokémon</button>
             </div>
             ${statusTab === 'status' ? `
               ${needsCare ? `<div class="status-alert"><b>${hungry ? '🍎 Está com fome!' : '⚠ Precisa de atenção!'}</b><span>Bloqueios leves, sem vida e sem morte.</span></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
@@ -1209,13 +1216,6 @@
           <div class="speech"><b>${mood.icon} ${mood.note}</b><br>${pet.customName} ${mon.moodLine}</div>
         </main>
 
-        ${hasCompanions ? `<button class="companions-fab ${anyNeedsCare ? 'alert' : ''}" type="button" data-companions-toggle aria-label="Abrir companheiros">
-          <span class="stacked-faces">
-            ${DEX.filter(m => m.selectable !== false).slice(0,3).map(m => renderPokemonVisual(m, 'stack-sprite', m.name, true)).join('')}
-          </span>
-          <i>+</i>
-        </button>` : ''}
-
         <section class="care-sheet ${sheetExpanded ? 'expanded' : ''}" aria-label="Cuidar do Tamagotchi">
           <button class="more-toggle" type="button" data-more-toggle aria-expanded="${moreOpen}">
             <span>${moreOpen ? '⌄' : '⌃'}</span>
@@ -1231,7 +1231,6 @@
               ${systemRecentHistory(pet)}
             </div>
             <div class="more-actions">
-              ${hasCompanions ? '<button type="button" class="soft-option" data-companions-toggle><span>👥</span>Companheiros</button>' : ''}
               <button type="button" class="soft-option" data-go-back><span>↩</span>Voltar</button>
             </div>
           </div>
