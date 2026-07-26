@@ -2,6 +2,9 @@ const FEATURED_DEX = [
   {
     id: 'bulbasaur',
     dexNumber: 1,
+    evolvesFromDexNumber: null,
+    evolutionRootDexNumber: 1,
+    selectable: true,
     name: 'Bulbasaur',
     type: 'Grass',
     typeClass: 'grass-type',
@@ -93,7 +96,18 @@ const FEATURED_DEX = [
 ];
 
 function catalogPokemonFromRow(row) {
-  const [dexNumber, id, name, file, frames, frameWidth, frameHeight, sheetWidth] = row;
+  const [
+    dexNumber,
+    id,
+    name,
+    file,
+    frames,
+    frameWidth,
+    frameHeight,
+    sheetWidth,
+    evolvesFromDexNumber,
+    evolutionRootDexNumber,
+  ] = row;
   const normalSrc = `assets/pokemons/Front/${file}`;
   const shinySrc = `assets/pokemons/Front%20shiny/${file}`;
   const sprite = { src: normalSrc, frameWidth, frameHeight, frames, sheetWidth };
@@ -101,6 +115,9 @@ function catalogPokemonFromRow(row) {
   return {
     id,
     dexNumber,
+    evolvesFromDexNumber,
+    evolutionRootDexNumber,
+    selectable: !evolvesFromDexNumber,
     name,
     type: 'Pokémon',
     typeClass: 'catalog-type',

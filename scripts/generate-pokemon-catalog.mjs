@@ -9,6 +9,7 @@ const normalDir = join(assetsDir, 'Front');
 const shinyDir = join(assetsDir, 'Front shiny');
 const outputPath = join(rootDir, 'pokemon-catalog.js');
 const speciesUrl = 'https://pokeapi.co/api/v2/pokemon-species?limit=2000';
+const speciesCsvUrl = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_species.csv';
 
 const normalize = value => value.toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -32,10 +33,31 @@ const displayName = slug => {
     .join(' ');
 };
 
-const response = await fetch(speciesUrl);
+const [response, speciesCsvResponse] = await Promise.all([
+  fetch(speciesUrl),
+  fetch(speciesCsvUrl),
+]);
 if (!response.ok) throw new Error(`PokeAPI respondeu com ${response.status}.`);
+if (!speciesCsvResponse.ok) throw new Error(`CSV de especies respondeu com ${speciesCsvResponse.status}.`);
 const speciesPayload = await response.json();
+const speciesCsv = await speciesCsvResponse.text();
 const species = speciesPayload.results;
+const speciesMetadata = new Map(
+  speciesCsv.trim().split(/\r?\n/).slice(1).map(line => {
+    const [id, identifier, , evolvesFromSpeciesId, evolutionChainId] = line.split(',');
+    return [Number(id), {
+      id: Number(id),
+      identifier,
+      evolvesFromDexNumber: evolvesFromSpeciesId ? Number(evolvesFromSpeciesId) : null,
+      evolutionChainId: Number(evolutionChainId),
+    }];
+  }),
+);
+const rootByEvolutionChain = new Map(
+  [...speciesMetadata.values()]
+    .filter(item => !item.evolvesFromDexNumber)
+    .map(item => [item.evolutionChainId, item.id]),
+);
 
 const spriteIndex = JSON.parse(await readFile(join(assetsDir, 'front-index.json'), 'utf8'));
 const baseAssets = spriteIndex.assets.filter(asset => (
@@ -59,6 +81,8 @@ const rows = species.map(item => {
   }
 
   const dexNumber = Number(item.url.match(/\/(\d+)\/$/)?.[1]);
+  const metadata = speciesMetadata.get(dexNumber);
+  if (!metadata) throw new Error(`Metadados de evolucao nao encontrados para ${item.name}.`);
   const frameWidth = asset.width / asset.frames;
   if (!Number.isInteger(frameWidth)) {
     throw new Error(`Largura de frame invalida para ${asset.file}.`);
@@ -73,6 +97,8 @@ const rows = species.map(item => {
     frameWidth,
     asset.height,
     asset.width,
+    metadata.evolvesFromDexNumber,
+    rootByEvolutionChain.get(metadata.evolutionChainId),
   ];
 });
 

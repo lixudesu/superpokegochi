@@ -8,7 +8,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     38,
     38,
-    1862
+    1862,
+    null,
+    1
   ],
   [
     2,
@@ -18,7 +20,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     58,
     58,
-    3190
+    3190,
+    1,
+    1
   ],
   [
     3,
@@ -28,7 +32,9 @@ const POKEMON_CATALOG_DATA = [
     83,
     86,
     86,
-    7138
+    7138,
+    2,
+    1
   ],
   [
     4,
@@ -38,7 +44,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     42,
     42,
-    2226
+    2226,
+    null,
+    4
   ],
   [
     5,
@@ -48,7 +56,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     69,
     69,
-    3105
+    3105,
+    4,
+    4
   ],
   [
     6,
@@ -58,7 +68,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     91,
     91,
-    6552
+    6552,
+    5,
+    4
   ],
   [
     7,
@@ -68,7 +80,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     43,
     43,
-    1118
+    1118,
+    null,
+    7
   ],
   [
     8,
@@ -78,7 +92,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     61,
     61,
-    2684
+    2684,
+    7,
+    7
   ],
   [
     9,
@@ -88,7 +104,9 @@ const POKEMON_CATALOG_DATA = [
     122,
     69,
     69,
-    8418
+    8418,
+    8,
+    7
   ],
   [
     10,
@@ -98,7 +116,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     37,
     37,
-    1517
+    1517,
+    null,
+    10
   ],
   [
     11,
@@ -108,7 +128,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     38,
     38,
-    2090
+    2090,
+    10,
+    10
   ],
   [
     12,
@@ -118,7 +140,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     62,
     62,
-    2728
+    2728,
+    11,
+    10
   ],
   [
     13,
@@ -128,7 +152,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     46,
     46,
-    2806
+    2806,
+    null,
+    13
   ],
   [
     14,
@@ -138,7 +164,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     40,
     40,
-    1560
+    1560,
+    13,
+    13
   ],
   [
     15,
@@ -148,7 +176,9 @@ const POKEMON_CATALOG_DATA = [
     30,
     74,
     74,
-    2220
+    2220,
+    14,
+    13
   ],
   [
     16,
@@ -158,7 +188,9 @@ const POKEMON_CATALOG_DATA = [
     20,
     48,
     48,
-    960
+    960,
+    null,
+    16
   ],
   [
     17,
@@ -168,7 +200,9 @@ const POKEMON_CATALOG_DATA = [
     17,
     116,
     116,
-    1972
+    1972,
+    16,
+    16
   ],
   [
     18,
@@ -178,7 +212,9 @@ const POKEMON_CATALOG_DATA = [
     35,
     68,
     68,
-    2380
+    2380,
+    17,
+    16
   ],
   [
     19,
@@ -188,7 +224,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     43,
     43,
-    2193
+    2193,
+    null,
+    19
   ],
   [
     20,
@@ -198,7 +236,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     65,
     65,
-    3900
+    3900,
+    19,
+    19
   ],
   [
     21,
@@ -208,7 +248,9 @@ const POKEMON_CATALOG_DATA = [
     31,
     39,
     39,
-    1209
+    1209,
+    null,
+    21
   ],
   [
     22,
@@ -218,7 +260,9 @@ const POKEMON_CATALOG_DATA = [
     11,
     105,
     105,
-    1155
+    1155,
+    21,
+    21
   ],
   [
     23,
@@ -228,7 +272,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     59,
     59,
-    2124
+    2124,
+    null,
+    23
   ],
   [
     24,
@@ -238,7 +284,9 @@ const POKEMON_CATALOG_DATA = [
     37,
     81,
     81,
-    2997
+    2997,
+    23,
+    23
   ],
   [
     25,
@@ -248,7 +296,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     50,
     50,
-    2800
+    2800,
+    172,
+    172
   ],
   [
     26,
@@ -258,7 +308,9 @@ const POKEMON_CATALOG_DATA = [
     83,
     74,
     74,
-    6142
+    6142,
+    25,
+    172
   ],
   [
     27,
@@ -268,7 +320,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     39,
     39,
-    2418
+    2418,
+    null,
+    27
   ],
   [
     28,
@@ -278,7 +332,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     59,
     59,
-    3304
+    3304,
+    27,
+    27
   ],
   [
     29,
@@ -288,7 +344,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     36,
     36,
-    1584
+    1584,
+    null,
+    29
   ],
   [
     30,
@@ -298,7 +356,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     52,
     52,
-    1248
+    1248,
+    29,
+    29
   ],
   [
     31,
@@ -308,7 +368,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     76,
     76,
-    4636
+    4636,
+    30,
+    29
   ],
   [
     32,
@@ -318,7 +380,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     37,
     37,
-    2257
+    2257,
+    null,
+    32
   ],
   [
     33,
@@ -328,7 +392,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     56,
     56,
-    2744
+    2744,
+    32,
+    32
   ],
   [
     34,
@@ -338,7 +404,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     86,
     86,
-    4128
+    4128,
+    33,
+    32
   ],
   [
     35,
@@ -348,7 +416,9 @@ const POKEMON_CATALOG_DATA = [
     67,
     47,
     47,
-    3149
+    3149,
+    173,
+    173
   ],
   [
     36,
@@ -358,7 +428,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     55,
     55,
-    2805
+    2805,
+    35,
+    173
   ],
   [
     37,
@@ -368,7 +440,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     59,
     59,
-    2124
+    2124,
+    null,
+    37
   ],
   [
     38,
@@ -378,7 +452,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     76,
     76,
-    1976
+    1976,
+    37,
+    37
   ],
   [
     39,
@@ -388,7 +464,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     49,
     49,
-    2744
+    2744,
+    174,
+    174
   ],
   [
     40,
@@ -398,7 +476,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     82,
     82,
-    4428
+    4428,
+    39,
+    174
   ],
   [
     41,
@@ -408,7 +488,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     53,
     53,
-    1431
+    1431,
+    null,
+    41
   ],
   [
     42,
@@ -418,7 +500,9 @@ const POKEMON_CATALOG_DATA = [
     8,
     111,
     111,
-    888
+    888,
+    41,
+    41
   ],
   [
     43,
@@ -428,7 +512,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     50,
     50,
-    2700
+    2700,
+    null,
+    43
   ],
   [
     44,
@@ -438,7 +524,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     51,
     51,
-    2448
+    2448,
+    43,
+    43
   ],
   [
     45,
@@ -448,7 +536,9 @@ const POKEMON_CATALOG_DATA = [
     35,
     56,
     56,
-    1960
+    1960,
+    44,
+    43
   ],
   [
     46,
@@ -458,7 +548,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     48,
     48,
-    1728
+    1728,
+    null,
+    46
   ],
   [
     47,
@@ -468,7 +560,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     63,
     63,
-    2268
+    2268,
+    46,
+    46
   ],
   [
     48,
@@ -478,7 +572,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     53,
     53,
-    2544
+    2544,
+    null,
+    48
   ],
   [
     49,
@@ -488,7 +584,9 @@ const POKEMON_CATALOG_DATA = [
     11,
     75,
     75,
-    825
+    825,
+    48,
+    48
   ],
   [
     50,
@@ -498,7 +596,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     38,
     38,
-    2052
+    2052,
+    null,
+    50
   ],
   [
     51,
@@ -508,7 +608,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     52,
     52,
-    2132
+    2132,
+    50,
+    50
   ],
   [
     52,
@@ -518,7 +620,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     65,
     65,
-    4550
+    4550,
+    null,
+    52
   ],
   [
     53,
@@ -528,7 +632,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     73,
     73,
-    3942
+    3942,
+    52,
+    52
   ],
   [
     54,
@@ -538,7 +644,9 @@ const POKEMON_CATALOG_DATA = [
     22,
     46,
     46,
-    1012
+    1012,
+    null,
+    54
   ],
   [
     55,
@@ -548,7 +656,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     60,
     60,
-    2280
+    2280,
+    54,
+    54
   ],
   [
     56,
@@ -558,7 +668,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     66,
     66,
-    3960
+    3960,
+    null,
+    56
   ],
   [
     57,
@@ -568,7 +680,9 @@ const POKEMON_CATALOG_DATA = [
     28,
     66,
     66,
-    1848
+    1848,
+    56,
+    56
   ],
   [
     58,
@@ -578,7 +692,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     55,
     55,
-    3905
+    3905,
+    null,
+    58
   ],
   [
     59,
@@ -588,7 +704,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     77,
     77,
-    2772
+    2772,
+    58,
+    58
   ],
   [
     60,
@@ -598,7 +716,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     54,
     54,
-    2106
+    2106,
+    null,
+    60
   ],
   [
     61,
@@ -608,7 +728,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     74,
     74,
-    3922
+    3922,
+    60,
+    60
   ],
   [
     62,
@@ -618,7 +740,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     81,
     81,
-    3645
+    3645,
+    61,
+    60
   ],
   [
     63,
@@ -628,7 +752,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     63,
     63,
-    3591
+    3591,
+    null,
+    63
   ],
   [
     64,
@@ -638,7 +764,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     79,
     79,
-    4740
+    4740,
+    63,
+    63
   ],
   [
     65,
@@ -648,7 +776,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     93,
     93,
-    4929
+    4929,
+    64,
+    63
   ],
   [
     66,
@@ -658,7 +788,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     51,
     51,
-    3825
+    3825,
+    null,
+    66
   ],
   [
     67,
@@ -668,7 +800,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     71,
     71,
-    3479
+    3479,
+    66,
+    66
   ],
   [
     68,
@@ -678,7 +812,9 @@ const POKEMON_CATALOG_DATA = [
     29,
     76,
     76,
-    2204
+    2204,
+    67,
+    66
   ],
   [
     69,
@@ -688,7 +824,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     44,
     44,
-    2068
+    2068,
+    null,
+    69
   ],
   [
     70,
@@ -698,7 +836,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     69,
     69,
-    3381
+    3381,
+    69,
+    69
   ],
   [
     71,
@@ -708,7 +848,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     71,
     71,
-    2556
+    2556,
+    70,
+    69
   ],
   [
     72,
@@ -718,7 +860,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     71,
     71,
-    3408
+    3408,
+    null,
+    72
   ],
   [
     73,
@@ -728,7 +872,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     84,
     84,
-    3360
+    3360,
+    72,
+    72
   ],
   [
     74,
@@ -738,7 +884,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     61,
     61,
-    3172
+    3172,
+    null,
+    74
   ],
   [
     75,
@@ -748,7 +896,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     71,
     71,
-    1704
+    1704,
+    74,
+    74
   ],
   [
     76,
@@ -758,7 +908,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     72,
     72,
-    3240
+    3240,
+    75,
+    74
   ],
   [
     77,
@@ -768,7 +920,9 @@ const POKEMON_CATALOG_DATA = [
     46,
     57,
     57,
-    2622
+    2622,
+    null,
+    77
   ],
   [
     78,
@@ -778,7 +932,9 @@ const POKEMON_CATALOG_DATA = [
     23,
     74,
     74,
-    1702
+    1702,
+    77,
+    77
   ],
   [
     79,
@@ -788,7 +944,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     64,
     64,
-    2816
+    2816,
+    null,
+    79
   ],
   [
     80,
@@ -798,7 +956,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     63,
     63,
-    3591
+    3591,
+    79,
+    79
   ],
   [
     81,
@@ -808,7 +968,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     38,
     38,
-    1976
+    1976,
+    null,
+    81
   ],
   [
     82,
@@ -818,7 +980,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     68,
     68,
-    4828
+    4828,
+    81,
+    81
   ],
   [
     83,
@@ -828,7 +992,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     48,
     48,
-    1536
+    1536,
+    null,
+    83
   ],
   [
     84,
@@ -838,7 +1004,9 @@ const POKEMON_CATALOG_DATA = [
     94,
     60,
     60,
-    5640
+    5640,
+    null,
+    84
   ],
   [
     85,
@@ -848,7 +1016,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     76,
     76,
-    5852
+    5852,
+    84,
+    84
   ],
   [
     86,
@@ -858,7 +1028,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     62,
     62,
-    1488
+    1488,
+    null,
+    86
   ],
   [
     87,
@@ -868,7 +1040,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     75,
     75,
-    4575
+    4575,
+    86,
+    86
   ],
   [
     88,
@@ -878,7 +1052,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     73,
     73,
-    4234
+    4234,
+    null,
+    88
   ],
   [
     89,
@@ -888,7 +1064,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     94,
     94,
-    4794
+    4794,
+    88,
+    88
   ],
   [
     90,
@@ -898,7 +1076,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     42,
     42,
-    1806
+    1806,
+    null,
+    90
   ],
   [
     91,
@@ -908,7 +1088,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     74,
     74,
-    3700
+    3700,
+    90,
+    90
   ],
   [
     92,
@@ -918,7 +1100,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     75,
     75,
-    4125
+    4125,
+    null,
+    92
   ],
   [
     93,
@@ -928,7 +1112,9 @@ const POKEMON_CATALOG_DATA = [
     13,
     85,
     85,
-    1105
+    1105,
+    92,
+    92
   ],
   [
     94,
@@ -938,7 +1124,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     79,
     79,
-    3476
+    3476,
+    93,
+    92
   ],
   [
     95,
@@ -948,7 +1136,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     74,
     74,
-    3626
+    3626,
+    null,
+    95
   ],
   [
     96,
@@ -958,7 +1148,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     58,
     58,
-    4408
+    4408,
+    null,
+    96
   ],
   [
     97,
@@ -968,7 +1160,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     66,
     66,
-    4092
+    4092,
+    96,
+    96
   ],
   [
     98,
@@ -978,7 +1172,9 @@ const POKEMON_CATALOG_DATA = [
     37,
     55,
     55,
-    2035
+    2035,
+    null,
+    98
   ],
   [
     99,
@@ -988,7 +1184,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     82,
     82,
-    3936
+    3936,
+    98,
+    98
   ],
   [
     100,
@@ -998,7 +1196,9 @@ const POKEMON_CATALOG_DATA = [
     35,
     46,
     46,
-    1610
+    1610,
+    null,
+    100
   ],
   [
     101,
@@ -1008,7 +1208,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     52,
     52,
-    1248
+    1248,
+    100,
+    100
   ],
   [
     102,
@@ -1018,7 +1220,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     55,
     55,
-    1485
+    1485,
+    null,
+    102
   ],
   [
     103,
@@ -1028,7 +1232,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     79,
     79,
-    3555
+    3555,
+    102,
+    102
   ],
   [
     104,
@@ -1038,7 +1244,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     49,
     49,
-    3871
+    3871,
+    null,
+    104
   ],
   [
     105,
@@ -1048,7 +1256,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     68,
     68,
-    4624
+    4624,
+    104,
+    104
   ],
   [
     106,
@@ -1058,7 +1268,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     78,
     78,
-    4368
+    4368,
+    236,
+    236
   ],
   [
     107,
@@ -1068,7 +1280,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     59,
     59,
-    2419
+    2419,
+    236,
+    236
   ],
   [
     108,
@@ -1078,7 +1292,9 @@ const POKEMON_CATALOG_DATA = [
     35,
     69,
     69,
-    2415
+    2415,
+    null,
+    108
   ],
   [
     109,
@@ -1088,7 +1304,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     91,
     91,
-    4004
+    4004,
+    null,
+    109
   ],
   [
     110,
@@ -1098,7 +1316,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     86,
     86,
-    4214
+    4214,
+    109,
+    109
   ],
   [
     111,
@@ -1108,7 +1328,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     68,
     68,
-    5304
+    5304,
+    null,
+    111
   ],
   [
     112,
@@ -1118,7 +1340,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     78,
     78,
-    7488
+    7488,
+    111,
+    111
   ],
   [
     113,
@@ -1128,7 +1352,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     61,
     61,
-    3538
+    3538,
+    440,
+    440
   ],
   [
     114,
@@ -1138,7 +1364,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     49,
     49,
-    1568
+    1568,
+    null,
+    114
   ],
   [
     115,
@@ -1148,7 +1376,9 @@ const POKEMON_CATALOG_DATA = [
     127,
     79,
     79,
-    10033
+    10033,
+    null,
+    115
   ],
   [
     116,
@@ -1158,7 +1388,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     43,
     43,
-    1720
+    1720,
+    null,
+    116
   ],
   [
     117,
@@ -1168,7 +1400,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     58,
     58,
-    1856
+    1856,
+    116,
+    116
   ],
   [
     118,
@@ -1178,7 +1412,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     75,
     75,
-    4275
+    4275,
+    null,
+    118
   ],
   [
     119,
@@ -1188,7 +1424,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     74,
     74,
-    3552
+    3552,
+    118,
+    118
   ],
   [
     120,
@@ -1198,7 +1436,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     57,
     57,
-    2280
+    2280,
+    null,
+    120
   ],
   [
     121,
@@ -1208,7 +1448,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     65,
     65,
-    5200
+    5200,
+    120,
+    120
   ],
   [
     122,
@@ -1218,7 +1460,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     57,
     57,
-    3648
+    3648,
+    439,
+    439
   ],
   [
     123,
@@ -1228,7 +1472,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     61,
     61,
-    4209
+    4209,
+    null,
+    123
   ],
   [
     124,
@@ -1238,7 +1484,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     63,
     63,
-    3402
+    3402,
+    238,
+    238
   ],
   [
     125,
@@ -1248,7 +1496,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     71,
     71,
-    3408
+    3408,
+    239,
+    239
   ],
   [
     126,
@@ -1258,7 +1508,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     73,
     73,
-    2409
+    2409,
+    240,
+    240
   ],
   [
     127,
@@ -1268,7 +1520,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     72,
     72,
-    5112
+    5112,
+    null,
+    127
   ],
   [
     128,
@@ -1278,7 +1532,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     76,
     76,
-    2964
+    2964,
+    null,
+    128
   ],
   [
     129,
@@ -1288,7 +1544,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     63,
     63,
-    3780
+    3780,
+    null,
+    129
   ],
   [
     130,
@@ -1298,7 +1556,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     102,
     102,
-    4386
+    4386,
+    129,
+    129
   ],
   [
     131,
@@ -1308,7 +1568,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     71,
     71,
-    2343
+    2343,
+    null,
+    131
   ],
   [
     132,
@@ -1318,7 +1580,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     47,
     47,
-    1880
+    1880,
+    null,
+    132
   ],
   [
     133,
@@ -1328,7 +1592,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     49,
     49,
-    3087
+    3087,
+    null,
+    133
   ],
   [
     134,
@@ -1338,7 +1604,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     59,
     59,
-    3009
+    3009,
+    133,
+    133
   ],
   [
     135,
@@ -1348,7 +1616,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     49,
     49,
-    2450
+    2450,
+    133,
+    133
   ],
   [
     136,
@@ -1358,7 +1628,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     66,
     66,
-    3894
+    3894,
+    133,
+    133
   ],
   [
     137,
@@ -1368,7 +1640,9 @@ const POKEMON_CATALOG_DATA = [
     30,
     56,
     56,
-    1680
+    1680,
+    null,
+    137
   ],
   [
     138,
@@ -1378,7 +1652,9 @@ const POKEMON_CATALOG_DATA = [
     34,
     45,
     45,
-    1530
+    1530,
+    null,
+    138
   ],
   [
     139,
@@ -1388,7 +1664,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     63,
     63,
-    4914
+    4914,
+    138,
+    138
   ],
   [
     140,
@@ -1398,7 +1676,9 @@ const POKEMON_CATALOG_DATA = [
     34,
     41,
     41,
-    1394
+    1394,
+    null,
+    140
   ],
   [
     141,
@@ -1408,7 +1688,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     65,
     65,
-    1560
+    1560,
+    140,
+    140
   ],
   [
     142,
@@ -1418,7 +1700,9 @@ const POKEMON_CATALOG_DATA = [
     9,
     93,
     93,
-    837
+    837,
+    null,
+    142
   ],
   [
     143,
@@ -1428,7 +1712,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     75,
     75,
-    6525
+    6525,
+    446,
+    446
   ],
   [
     144,
@@ -1438,7 +1724,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     81,
     81,
-    2106
+    2106,
+    null,
+    144
   ],
   [
     145,
@@ -1448,7 +1736,9 @@ const POKEMON_CATALOG_DATA = [
     9,
     97,
     97,
-    873
+    873,
+    null,
+    145
   ],
   [
     146,
@@ -1458,7 +1748,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     129,
     129,
-    3483
+    3483,
+    null,
+    146
   ],
   [
     147,
@@ -1468,7 +1760,9 @@ const POKEMON_CATALOG_DATA = [
     25,
     51,
     51,
-    1275
+    1275,
+    null,
+    147
   ],
   [
     148,
@@ -1478,7 +1772,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     74,
     74,
-    4662
+    4662,
+    147,
+    147
   ],
   [
     149,
@@ -1488,7 +1784,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     82,
     82,
-    4182
+    4182,
+    148,
+    147
   ],
   [
     150,
@@ -1498,7 +1796,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     90,
     90,
-    5580
+    5580,
+    null,
+    150
   ],
   [
     151,
@@ -1508,7 +1808,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     78,
     78,
-    4602
+    4602,
+    null,
+    151
   ],
   [
     152,
@@ -1518,7 +1820,9 @@ const POKEMON_CATALOG_DATA = [
     25,
     56,
     56,
-    1400
+    1400,
+    null,
+    152
   ],
   [
     153,
@@ -1528,7 +1832,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     80,
     80,
-    4720
+    4720,
+    152,
+    152
   ],
   [
     154,
@@ -1538,7 +1844,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     82,
     82,
-    3690
+    3690,
+    153,
+    152
   ],
   [
     155,
@@ -1548,7 +1856,9 @@ const POKEMON_CATALOG_DATA = [
     128,
     44,
     44,
-    5632
+    5632,
+    null,
+    155
   ],
   [
     156,
@@ -1558,7 +1868,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     63,
     63,
-    5166
+    5166,
+    155,
+    155
   ],
   [
     157,
@@ -1568,7 +1880,9 @@ const POKEMON_CATALOG_DATA = [
     112,
     72,
     72,
-    8064
+    8064,
+    156,
+    155
   ],
   [
     158,
@@ -1578,7 +1892,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     59,
     59,
-    2596
+    2596,
+    null,
+    158
   ],
   [
     159,
@@ -1588,7 +1904,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     59,
     59,
-    5310
+    5310,
+    158,
+    158
   ],
   [
     160,
@@ -1598,7 +1916,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     82,
     82,
-    3362
+    3362,
+    159,
+    158
   ],
   [
     161,
@@ -1608,7 +1928,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     67,
     67,
-    2412
+    2412,
+    null,
+    161
   ],
   [
     162,
@@ -1618,7 +1940,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     58,
     58,
-    3190
+    3190,
+    161,
+    161
   ],
   [
     163,
@@ -1628,7 +1952,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     61,
     61,
-    4148
+    4148,
+    null,
+    163
   ],
   [
     164,
@@ -1638,7 +1964,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     66,
     66,
-    2376
+    2376,
+    163,
+    163
   ],
   [
     165,
@@ -1648,7 +1976,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     51,
     51,
-    2499
+    2499,
+    null,
+    165
   ],
   [
     166,
@@ -1658,7 +1988,9 @@ const POKEMON_CATALOG_DATA = [
     20,
     64,
     64,
-    1280
+    1280,
+    165,
+    165
   ],
   [
     167,
@@ -1668,7 +2000,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     43,
     43,
-    1419
+    1419,
+    null,
+    167
   ],
   [
     168,
@@ -1678,7 +2012,9 @@ const POKEMON_CATALOG_DATA = [
     18,
     64,
     64,
-    1152
+    1152,
+    167,
+    167
   ],
   [
     169,
@@ -1688,7 +2024,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     106,
     106,
-    4982
+    4982,
+    42,
+    41
   ],
   [
     170,
@@ -1698,7 +2036,9 @@ const POKEMON_CATALOG_DATA = [
     31,
     66,
     66,
-    2046
+    2046,
+    null,
+    170
   ],
   [
     171,
@@ -1708,7 +2048,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     73,
     73,
-    4599
+    4599,
+    170,
+    170
   ],
   [
     172,
@@ -1718,7 +2060,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     49,
     49,
-    2793
+    2793,
+    null,
+    172
   ],
   [
     173,
@@ -1728,7 +2072,9 @@ const POKEMON_CATALOG_DATA = [
     31,
     37,
     37,
-    1147
+    1147,
+    null,
+    173
   ],
   [
     174,
@@ -1738,7 +2084,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     55,
     55,
-    4455
+    4455,
+    null,
+    174
   ],
   [
     175,
@@ -1748,7 +2096,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     39,
     39,
-    1989
+    1989,
+    null,
+    175
   ],
   [
     176,
@@ -1758,7 +2108,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     70,
     70,
-    3640
+    3640,
+    175,
+    175
   ],
   [
     177,
@@ -1768,7 +2120,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     41,
     41,
-    2665
+    2665,
+    null,
+    177
   ],
   [
     178,
@@ -1778,7 +2132,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     60,
     60,
-    2880
+    2880,
+    177,
+    177
   ],
   [
     179,
@@ -1788,7 +2144,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     50,
     50,
-    2400
+    2400,
+    null,
+    179
   ],
   [
     180,
@@ -1798,7 +2156,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     52,
     52,
-    2860
+    2860,
+    179,
+    179
   ],
   [
     181,
@@ -1808,7 +2168,9 @@ const POKEMON_CATALOG_DATA = [
     37,
     67,
     67,
-    2479
+    2479,
+    180,
+    179
   ],
   [
     182,
@@ -1818,7 +2180,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     56,
     56,
-    2968
+    2968,
+    44,
+    43
   ],
   [
     183,
@@ -1828,7 +2192,9 @@ const POKEMON_CATALOG_DATA = [
     67,
     54,
     54,
-    3618
+    3618,
+    298,
+    298
   ],
   [
     184,
@@ -1838,7 +2204,9 @@ const POKEMON_CATALOG_DATA = [
     73,
     73,
     73,
-    5329
+    5329,
+    183,
+    298
   ],
   [
     185,
@@ -1848,7 +2216,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     66,
     66,
-    2178
+    2178,
+    438,
+    438
   ],
   [
     186,
@@ -1858,7 +2228,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     79,
     79,
-    3792
+    3792,
+    61,
+    60
   ],
   [
     187,
@@ -1868,7 +2240,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     67,
     67,
-    2680
+    2680,
+    null,
+    187
   ],
   [
     188,
@@ -1878,7 +2252,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     53,
     53,
-    2544
+    2544,
+    187,
+    187
   ],
   [
     189,
@@ -1888,7 +2264,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     65,
     65,
-    3120
+    3120,
+    188,
+    187
   ],
   [
     190,
@@ -1898,7 +2276,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     56,
     56,
-    2184
+    2184,
+    null,
+    190
   ],
   [
     191,
@@ -1908,7 +2288,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     40,
     40,
-    1280
+    1280,
+    null,
+    191
   ],
   [
     192,
@@ -1918,7 +2300,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     51,
     51,
-    2295
+    2295,
+    191,
+    191
   ],
   [
     193,
@@ -1928,7 +2312,9 @@ const POKEMON_CATALOG_DATA = [
     21,
     91,
     91,
-    1911
+    1911,
+    null,
+    193
   ],
   [
     194,
@@ -1938,7 +2324,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     44,
     44,
-    2112
+    2112,
+    null,
+    194
   ],
   [
     195,
@@ -1948,7 +2336,9 @@ const POKEMON_CATALOG_DATA = [
     37,
     69,
     69,
-    2553
+    2553,
+    194,
+    194
   ],
   [
     196,
@@ -1958,7 +2348,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     63,
     63,
-    4095
+    4095,
+    133,
+    133
   ],
   [
     197,
@@ -1968,7 +2360,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     51,
     51,
-    1683
+    1683,
+    133,
+    133
   ],
   [
     198,
@@ -1978,7 +2372,9 @@ const POKEMON_CATALOG_DATA = [
     30,
     44,
     44,
-    1320
+    1320,
+    null,
+    198
   ],
   [
     199,
@@ -1988,7 +2384,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     69,
     69,
-    3519
+    3519,
+    79,
+    79
   ],
   [
     200,
@@ -1998,7 +2396,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     57,
     57,
-    2736
+    2736,
+    null,
+    200
   ],
   [
     201,
@@ -2008,7 +2408,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     45,
     45,
-    2160
+    2160,
+    null,
+    201
   ],
   [
     202,
@@ -2018,7 +2420,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     57,
     57,
-    3477
+    3477,
+    360,
+    360
   ],
   [
     203,
@@ -2028,7 +2432,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     76,
     76,
-    3952
+    3952,
+    null,
+    203
   ],
   [
     204,
@@ -2038,7 +2444,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     53,
     53,
-    2544
+    2544,
+    null,
+    204
   ],
   [
     205,
@@ -2048,7 +2456,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     63,
     63,
-    1701
+    1701,
+    204,
+    204
   ],
   [
     206,
@@ -2058,7 +2468,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     45,
     45,
-    2160
+    2160,
+    null,
+    206
   ],
   [
     207,
@@ -2068,7 +2480,9 @@ const POKEMON_CATALOG_DATA = [
     34,
     93,
     93,
-    3162
+    3162,
+    null,
+    207
   ],
   [
     208,
@@ -2078,7 +2492,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     93,
     93,
-    4464
+    4464,
+    95,
+    95
   ],
   [
     209,
@@ -2088,7 +2504,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     42,
     42,
-    2184
+    2184,
+    null,
+    209
   ],
   [
     210,
@@ -2098,7 +2516,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     61,
     61,
-    3843
+    3843,
+    209,
+    209
   ],
   [
     211,
@@ -2108,7 +2528,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     56,
     56,
-    1792
+    1792,
+    null,
+    211
   ],
   [
     212,
@@ -2118,7 +2540,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     75,
     75,
-    3975
+    3975,
+    123,
+    123
   ],
   [
     213,
@@ -2128,7 +2552,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     54,
     54,
-    2754
+    2754,
+    null,
+    213
   ],
   [
     214,
@@ -2138,7 +2564,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     70,
     70,
-    2940
+    2940,
+    null,
+    214
   ],
   [
     215,
@@ -2148,7 +2576,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     59,
     59,
-    3363
+    3363,
+    null,
+    215
   ],
   [
     216,
@@ -2158,7 +2588,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     36,
     36,
-    1404
+    1404,
+    null,
+    216
   ],
   [
     217,
@@ -2168,7 +2600,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     80,
     80,
-    4960
+    4960,
+    216,
+    216
   ],
   [
     218,
@@ -2178,7 +2612,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     40,
     40,
-    1280
+    1280,
+    null,
+    218
   ],
   [
     219,
@@ -2188,7 +2624,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     59,
     59,
-    1888
+    1888,
+    218,
+    218
   ],
   [
     220,
@@ -2198,7 +2636,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     35,
     35,
-    1120
+    1120,
+    null,
+    220
   ],
   [
     221,
@@ -2208,7 +2648,9 @@ const POKEMON_CATALOG_DATA = [
     35,
     56,
     56,
-    1960
+    1960,
+    220,
+    220
   ],
   [
     222,
@@ -2218,7 +2660,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     52,
     52,
-    2964
+    2964,
+    null,
+    222
   ],
   [
     223,
@@ -2228,7 +2672,9 @@ const POKEMON_CATALOG_DATA = [
     46,
     47,
     47,
-    2162
+    2162,
+    null,
+    223
   ],
   [
     224,
@@ -2238,7 +2684,9 @@ const POKEMON_CATALOG_DATA = [
     17,
     67,
     67,
-    1139
+    1139,
+    223,
+    223
   ],
   [
     225,
@@ -2248,7 +2696,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     51,
     51,
-    3060
+    3060,
+    null,
+    225
   ],
   [
     226,
@@ -2258,7 +2708,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     83,
     83,
-    6972
+    6972,
+    458,
+    458
   ],
   [
     227,
@@ -2268,7 +2720,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     70,
     70,
-    3360
+    3360,
+    null,
+    227
   ],
   [
     228,
@@ -2278,7 +2732,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     45,
     45,
-    2700
+    2700,
+    null,
+    228
   ],
   [
     229,
@@ -2288,7 +2744,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     77,
     77,
-    4081
+    4081,
+    228,
+    228
   ],
   [
     230,
@@ -2298,7 +2756,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     91,
     91,
-    2457
+    2457,
+    117,
+    116
   ],
   [
     231,
@@ -2308,7 +2768,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     46,
     46,
-    2484
+    2484,
+    null,
+    231
   ],
   [
     232,
@@ -2318,7 +2780,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     82,
     82,
-    5166
+    5166,
+    231,
+    231
   ],
   [
     233,
@@ -2328,7 +2792,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     49,
     49,
-    2352
+    2352,
+    137,
+    137
   ],
   [
     234,
@@ -2338,7 +2804,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     77,
     77,
-    3311
+    3311,
+    null,
+    234
   ],
   [
     235,
@@ -2348,7 +2816,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     59,
     59,
-    2832
+    2832,
+    null,
+    235
   ],
   [
     236,
@@ -2358,7 +2828,9 @@ const POKEMON_CATALOG_DATA = [
     37,
     45,
     45,
-    1665
+    1665,
+    null,
+    236
   ],
   [
     237,
@@ -2368,7 +2840,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     83,
     83,
-    5395
+    5395,
+    236,
+    236
   ],
   [
     238,
@@ -2378,7 +2852,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     47,
     47,
-    2256
+    2256,
+    null,
+    238
   ],
   [
     239,
@@ -2388,7 +2864,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     52,
     52,
-    2444
+    2444,
+    null,
+    239
   ],
   [
     240,
@@ -2398,7 +2876,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     56,
     56,
-    1848
+    1848,
+    null,
+    240
   ],
   [
     241,
@@ -2408,7 +2888,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     60,
     60,
-    2820
+    2820,
+    null,
+    241
   ],
   [
     242,
@@ -2418,7 +2900,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     61,
     61,
-    2928
+    2928,
+    113,
+    440
   ],
   [
     243,
@@ -2428,7 +2912,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     84,
     84,
-    7308
+    7308,
+    null,
+    243
   ],
   [
     244,
@@ -2438,7 +2924,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     76,
     76,
-    4180
+    4180,
+    null,
+    244
   ],
   [
     245,
@@ -2448,7 +2936,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     82,
     82,
-    3854
+    3854,
+    null,
+    245
   ],
   [
     246,
@@ -2458,7 +2948,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     52,
     52,
-    2236
+    2236,
+    null,
+    246
   ],
   [
     247,
@@ -2468,7 +2960,9 @@ const POKEMON_CATALOG_DATA = [
     31,
     54,
     54,
-    1674
+    1674,
+    246,
+    246
   ],
   [
     248,
@@ -2478,7 +2972,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     88,
     88,
-    3696
+    3696,
+    247,
+    246
   ],
   [
     249,
@@ -2488,7 +2984,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     154,
     154,
-    9240
+    9240,
+    null,
+    249
   ],
   [
     250,
@@ -2498,7 +2996,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     107,
     107,
-    4494
+    4494,
+    null,
+    250
   ],
   [
     251,
@@ -2508,7 +3008,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     62,
     62,
-    1984
+    1984,
+    null,
+    251
   ],
   [
     252,
@@ -2518,7 +3020,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     63,
     63,
-    3402
+    3402,
+    null,
+    252
   ],
   [
     253,
@@ -2528,7 +3032,9 @@ const POKEMON_CATALOG_DATA = [
     114,
     70,
     70,
-    7980
+    7980,
+    252,
+    252
   ],
   [
     254,
@@ -2538,7 +3044,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     73,
     73,
-    4599
+    4599,
+    253,
+    252
   ],
   [
     255,
@@ -2548,7 +3056,9 @@ const POKEMON_CATALOG_DATA = [
     74,
     46,
     46,
-    3404
+    3404,
+    null,
+    255
   ],
   [
     256,
@@ -2558,7 +3068,9 @@ const POKEMON_CATALOG_DATA = [
     110,
     71,
     71,
-    7810
+    7810,
+    255,
+    255
   ],
   [
     257,
@@ -2568,7 +3080,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     75,
     75,
-    4275
+    4275,
+    256,
+    255
   ],
   [
     258,
@@ -2578,7 +3092,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     49,
     49,
-    3430
+    3430,
+    null,
+    258
   ],
   [
     259,
@@ -2588,7 +3104,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     58,
     58,
-    3538
+    3538,
+    258,
+    258
   ],
   [
     260,
@@ -2598,7 +3116,9 @@ const POKEMON_CATALOG_DATA = [
     46,
     76,
     76,
-    3496
+    3496,
+    259,
+    258
   ],
   [
     261,
@@ -2608,7 +3128,9 @@ const POKEMON_CATALOG_DATA = [
     46,
     52,
     52,
-    2392
+    2392,
+    null,
+    261
   ],
   [
     262,
@@ -2618,7 +3140,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     73,
     73,
-    3285
+    3285,
+    261,
+    261
   ],
   [
     263,
@@ -2628,7 +3152,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     58,
     58,
-    3248
+    3248,
+    null,
+    263
   ],
   [
     264,
@@ -2638,7 +3164,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     81,
     81,
-    4617
+    4617,
+    263,
+    263
   ],
   [
     265,
@@ -2648,7 +3176,9 @@ const POKEMON_CATALOG_DATA = [
     35,
     46,
     46,
-    1610
+    1610,
+    null,
+    265
   ],
   [
     266,
@@ -2658,7 +3188,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     51,
     51,
-    2295
+    2295,
+    265,
+    265
   ],
   [
     267,
@@ -2668,7 +3200,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     78,
     78,
-    6006
+    6006,
+    266,
+    265
   ],
   [
     268,
@@ -2678,7 +3212,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     55,
     55,
-    2585
+    2585,
+    265,
+    265
   ],
   [
     269,
@@ -2688,7 +3224,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     80,
     80,
-    6560
+    6560,
+    268,
+    265
   ],
   [
     270,
@@ -2698,7 +3236,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     45,
     45,
-    2520
+    2520,
+    null,
+    270
   ],
   [
     271,
@@ -2708,7 +3248,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     52,
     52,
-    2184
+    2184,
+    270,
+    270
   ],
   [
     272,
@@ -2718,7 +3260,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     85,
     85,
-    3230
+    3230,
+    271,
+    270
   ],
   [
     273,
@@ -2728,7 +3272,9 @@ const POKEMON_CATALOG_DATA = [
     129,
     38,
     38,
-    4902
+    4902,
+    null,
+    273
   ],
   [
     274,
@@ -2738,7 +3284,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     58,
     58,
-    2726
+    2726,
+    273,
+    273
   ],
   [
     275,
@@ -2748,7 +3296,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     101,
     101,
-    5454
+    5454,
+    274,
+    273
   ],
   [
     276,
@@ -2758,7 +3308,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     44,
     44,
-    1408
+    1408,
+    null,
+    276
   ],
   [
     277,
@@ -2768,7 +3320,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     73,
     73,
-    4964
+    4964,
+    276,
+    276
   ],
   [
     278,
@@ -2778,7 +3332,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     64,
     64,
-    4800
+    4800,
+    null,
+    278
   ],
   [
     279,
@@ -2788,7 +3344,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     96,
     96,
-    6816
+    6816,
+    278,
+    278
   ],
   [
     280,
@@ -2798,7 +3356,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     39,
     39,
-    2574
+    2574,
+    null,
+    280
   ],
   [
     281,
@@ -2808,7 +3368,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     63,
     63,
-    4788
+    4788,
+    280,
+    280
   ],
   [
     282,
@@ -2818,7 +3380,9 @@ const POKEMON_CATALOG_DATA = [
     122,
     77,
     77,
-    9394
+    9394,
+    281,
+    280
   ],
   [
     283,
@@ -2828,7 +3392,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     68,
     68,
-    4080
+    4080,
+    null,
+    283
   ],
   [
     284,
@@ -2838,7 +3404,9 @@ const POKEMON_CATALOG_DATA = [
     85,
     74,
     74,
-    6290
+    6290,
+    283,
+    283
   ],
   [
     285,
@@ -2848,7 +3416,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     47,
     47,
-    1269
+    1269,
+    null,
+    285
   ],
   [
     286,
@@ -2858,7 +3428,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     71,
     71,
-    1846
+    1846,
+    285,
+    285
   ],
   [
     287,
@@ -2868,7 +3440,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     52,
     52,
-    1248
+    1248,
+    null,
+    287
   ],
   [
     288,
@@ -2878,7 +3452,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     67,
     67,
-    2948
+    2948,
+    287,
+    287
   ],
   [
     289,
@@ -2888,7 +3464,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     75,
     75,
-    4125
+    4125,
+    288,
+    287
   ],
   [
     290,
@@ -2898,7 +3476,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     51,
     51,
-    2754
+    2754,
+    null,
+    290
   ],
   [
     291,
@@ -2908,7 +3488,9 @@ const POKEMON_CATALOG_DATA = [
     37,
     57,
     57,
-    2109
+    2109,
+    290,
+    290
   ],
   [
     292,
@@ -2918,7 +3500,9 @@ const POKEMON_CATALOG_DATA = [
     8,
     48,
     48,
-    384
+    384,
+    290,
+    290
   ],
   [
     293,
@@ -2928,7 +3512,9 @@ const POKEMON_CATALOG_DATA = [
     30,
     43,
     43,
-    1290
+    1290,
+    null,
+    293
   ],
   [
     294,
@@ -2938,7 +3524,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     63,
     63,
-    3591
+    3591,
+    293,
+    293
   ],
   [
     295,
@@ -2948,7 +3536,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     73,
     73,
-    4307
+    4307,
+    294,
+    293
   ],
   [
     296,
@@ -2958,7 +3548,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     63,
     63,
-    3654
+    3654,
+    null,
+    296
   ],
   [
     297,
@@ -2968,7 +3560,9 @@ const POKEMON_CATALOG_DATA = [
     67,
     88,
     88,
-    5896
+    5896,
+    296,
+    296
   ],
   [
     298,
@@ -2978,7 +3572,9 @@ const POKEMON_CATALOG_DATA = [
     46,
     63,
     63,
-    2898
+    2898,
+    null,
+    298
   ],
   [
     299,
@@ -2988,7 +3584,9 @@ const POKEMON_CATALOG_DATA = [
     7,
     46,
     46,
-    322
+    322,
+    null,
+    299
   ],
   [
     300,
@@ -2998,7 +3596,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     55,
     55,
-    4235
+    4235,
+    null,
+    300
   ],
   [
     301,
@@ -3008,7 +3608,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     61,
     61,
-    4575
+    4575,
+    300,
+    300
   ],
   [
     302,
@@ -3018,7 +3620,9 @@ const POKEMON_CATALOG_DATA = [
     46,
     49,
     49,
-    2254
+    2254,
+    null,
+    302
   ],
   [
     303,
@@ -3028,7 +3632,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     80,
     80,
-    6160
+    6160,
+    null,
+    303
   ],
   [
     304,
@@ -3038,7 +3644,9 @@ const POKEMON_CATALOG_DATA = [
     15,
     32,
     32,
-    480
+    480,
+    null,
+    304
   ],
   [
     305,
@@ -3048,7 +3656,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     63,
     63,
-    3654
+    3654,
+    304,
+    304
   ],
   [
     306,
@@ -3058,7 +3668,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     77,
     77,
-    4235
+    4235,
+    305,
+    304
   ],
   [
     307,
@@ -3068,7 +3680,9 @@ const POKEMON_CATALOG_DATA = [
     143,
     54,
     54,
-    7722
+    7722,
+    null,
+    307
   ],
   [
     308,
@@ -3078,7 +3692,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     74,
     74,
-    3256
+    3256,
+    307,
+    307
   ],
   [
     309,
@@ -3088,7 +3704,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     50,
     50,
-    2050
+    2050,
+    null,
+    309
   ],
   [
     310,
@@ -3098,7 +3716,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     70,
     70,
-    2660
+    2660,
+    309,
+    309
   ],
   [
     311,
@@ -3108,7 +3728,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     49,
     49,
-    3528
+    3528,
+    null,
+    311
   ],
   [
     312,
@@ -3118,7 +3740,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     49,
     49,
-    3528
+    3528,
+    null,
+    312
   ],
   [
     313,
@@ -3128,7 +3752,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     64,
     64,
-    1728
+    1728,
+    null,
+    313
   ],
   [
     314,
@@ -3138,7 +3764,9 @@ const POKEMON_CATALOG_DATA = [
     22,
     54,
     54,
-    1188
+    1188,
+    null,
+    314
   ],
   [
     315,
@@ -3148,7 +3776,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     62,
     62,
-    3782
+    3782,
+    406,
+    406
   ],
   [
     316,
@@ -3158,7 +3788,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     44,
     44,
-    2156
+    2156,
+    null,
+    316
   ],
   [
     317,
@@ -3168,7 +3800,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     64,
     64,
-    3136
+    3136,
+    316,
+    316
   ],
   [
     318,
@@ -3178,7 +3812,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     58,
     58,
-    3770
+    3770,
+    null,
+    318
   ],
   [
     319,
@@ -3188,7 +3824,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     72,
     72,
-    4536
+    4536,
+    318,
+    318
   ],
   [
     320,
@@ -3198,7 +3836,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     85,
     85,
-    4590
+    4590,
+    null,
+    320
   ],
   [
     321,
@@ -3208,7 +3848,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     103,
     103,
-    5768
+    5768,
+    320,
+    320
   ],
   [
     322,
@@ -3218,7 +3860,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     48,
     48,
-    1152
+    1152,
+    null,
+    322
   ],
   [
     323,
@@ -3228,7 +3872,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     79,
     79,
-    4187
+    4187,
+    322,
+    322
   ],
   [
     324,
@@ -3238,7 +3884,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     65,
     65,
-    4225
+    4225,
+    null,
+    324
   ],
   [
     325,
@@ -3248,7 +3896,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     66,
     66,
-    4092
+    4092,
+    null,
+    325
   ],
   [
     326,
@@ -3258,7 +3908,9 @@ const POKEMON_CATALOG_DATA = [
     14,
     68,
     68,
-    952
+    952,
+    325,
+    325
   ],
   [
     327,
@@ -3268,7 +3920,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     51,
     51,
-    2652
+    2652,
+    null,
+    327
   ],
   [
     328,
@@ -3278,7 +3932,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     42,
     42,
-    672
+    672,
+    null,
+    328
   ],
   [
     329,
@@ -3288,7 +3944,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     62,
     62,
-    2604
+    2604,
+    328,
+    328
   ],
   [
     330,
@@ -3298,7 +3956,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     81,
     81,
-    5103
+    5103,
+    329,
+    328
   ],
   [
     331,
@@ -3308,7 +3968,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     59,
     59,
-    2773
+    2773,
+    null,
+    331
   ],
   [
     332,
@@ -3318,7 +3980,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     70,
     70,
-    3990
+    3990,
+    331,
+    331
   ],
   [
     333,
@@ -3328,7 +3992,9 @@ const POKEMON_CATALOG_DATA = [
     11,
     74,
     74,
-    814
+    814,
+    null,
+    333
   ],
   [
     334,
@@ -3338,7 +4004,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     64,
     64,
-    5184
+    5184,
+    333,
+    333
   ],
   [
     335,
@@ -3348,7 +4016,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     72,
     72,
-    4032
+    4032,
+    null,
+    335
   ],
   [
     336,
@@ -3358,7 +4028,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     103,
     103,
-    4429
+    4429,
+    null,
+    336
   ],
   [
     337,
@@ -3368,7 +4040,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     59,
     59,
-    4956
+    4956,
+    null,
+    337
   ],
   [
     338,
@@ -3378,7 +4052,9 @@ const POKEMON_CATALOG_DATA = [
     111,
     88,
     88,
-    9768
+    9768,
+    null,
+    338
   ],
   [
     339,
@@ -3388,7 +4064,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     48,
     48,
-    3408
+    3408,
+    null,
+    339
   ],
   [
     340,
@@ -3398,7 +4076,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     75,
     75,
-    7200
+    7200,
+    339,
+    339
   ],
   [
     341,
@@ -3408,7 +4088,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     59,
     59,
-    4543
+    4543,
+    null,
+    341
   ],
   [
     342,
@@ -3418,7 +4100,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     70,
     70,
-    3430
+    3430,
+    341,
+    341
   ],
   [
     343,
@@ -3428,7 +4112,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     41,
     41,
-    1681
+    1681,
+    null,
+    343
   ],
   [
     344,
@@ -3438,7 +4124,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     72,
     72,
-    3600
+    3600,
+    343,
+    343
   ],
   [
     345,
@@ -3448,7 +4136,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     61,
     61,
-    4331
+    4331,
+    null,
+    345
   ],
   [
     346,
@@ -3458,7 +4148,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     79,
     79,
-    5214
+    5214,
+    345,
+    345
   ],
   [
     347,
@@ -3468,7 +4160,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     54,
     54,
-    2808
+    2808,
+    null,
+    347
   ],
   [
     348,
@@ -3478,7 +4172,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     83,
     83,
-    6391
+    6391,
+    347,
+    347
   ],
   [
     349,
@@ -3488,7 +4184,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     52,
     52,
-    2340
+    2340,
+    null,
+    349
   ],
   [
     350,
@@ -3498,7 +4196,9 @@ const POKEMON_CATALOG_DATA = [
     95,
     86,
     86,
-    8170
+    8170,
+    349,
+    349
   ],
   [
     351,
@@ -3508,7 +4208,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     47,
     47,
-    1833
+    1833,
+    null,
+    351
   ],
   [
     352,
@@ -3518,7 +4220,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     65,
     65,
-    2795
+    2795,
+    null,
+    352
   ],
   [
     353,
@@ -3528,7 +4232,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     58,
     58,
-    2436
+    2436,
+    null,
+    353
   ],
   [
     354,
@@ -3538,7 +4244,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     55,
     55,
-    3520
+    3520,
+    353,
+    353
   ],
   [
     355,
@@ -3548,7 +4256,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     51,
     51,
-    2142
+    2142,
+    null,
+    355
   ],
   [
     356,
@@ -3558,7 +4268,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     84,
     84,
-    4872
+    4872,
+    355,
+    355
   ],
   [
     357,
@@ -3568,7 +4280,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     94,
     94,
-    4136
+    4136,
+    null,
+    357
   ],
   [
     358,
@@ -3578,7 +4292,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     66,
     66,
-    3564
+    3564,
+    433,
+    433
   ],
   [
     359,
@@ -3588,7 +4304,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     65,
     65,
-    4485
+    4485,
+    null,
+    359
   ],
   [
     360,
@@ -3598,7 +4316,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     58,
     58,
-    3074
+    3074,
+    null,
+    360
   ],
   [
     361,
@@ -3608,7 +4328,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     39,
     39,
-    1053
+    1053,
+    null,
+    361
   ],
   [
     362,
@@ -3618,7 +4340,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     62,
     62,
-    3038
+    3038,
+    361,
+    361
   ],
   [
     363,
@@ -3628,7 +4352,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     43,
     43,
-    1849
+    1849,
+    null,
+    363
   ],
   [
     364,
@@ -3638,7 +4364,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     67,
     67,
-    3752
+    3752,
+    363,
+    363
   ],
   [
     365,
@@ -3648,7 +4376,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     78,
     78,
-    4212
+    4212,
+    364,
+    363
   ],
   [
     366,
@@ -3658,7 +4388,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     45,
     45,
-    1935
+    1935,
+    null,
+    366
   ],
   [
     367,
@@ -3668,7 +4400,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     81,
     81,
-    4617
+    4617,
+    366,
+    366
   ],
   [
     368,
@@ -3678,7 +4412,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     98,
     98,
-    5194
+    5194,
+    366,
+    366
   ],
   [
     369,
@@ -3688,7 +4424,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     59,
     59,
-    3363
+    3363,
+    null,
+    369
   ],
   [
     370,
@@ -3698,7 +4436,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     37,
     37,
-    1443
+    1443,
+    null,
+    370
   ],
   [
     371,
@@ -3708,7 +4448,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     51,
     51,
-    1377
+    1377,
+    null,
+    371
   ],
   [
     372,
@@ -3718,7 +4460,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     49,
     49,
-    2352
+    2352,
+    371,
+    371
   ],
   [
     373,
@@ -3728,7 +4472,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     86,
     86,
-    5332
+    5332,
+    372,
+    371
   ],
   [
     374,
@@ -3738,7 +4484,9 @@ const POKEMON_CATALOG_DATA = [
     34,
     48,
     48,
-    1632
+    1632,
+    null,
+    374
   ],
   [
     375,
@@ -3748,7 +4496,9 @@ const POKEMON_CATALOG_DATA = [
     86,
     82,
     82,
-    7052
+    7052,
+    374,
+    374
   ],
   [
     376,
@@ -3758,7 +4508,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     83,
     83,
-    4399
+    4399,
+    375,
+    374
   ],
   [
     377,
@@ -3768,7 +4520,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     78,
     78,
-    3900
+    3900,
+    null,
+    377
   ],
   [
     378,
@@ -3778,7 +4532,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     87,
     87,
-    3654
+    3654,
+    null,
+    378
   ],
   [
     379,
@@ -3788,7 +4544,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     72,
     72,
-    2880
+    2880,
+    null,
+    379
   ],
   [
     380,
@@ -3798,7 +4556,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     93,
     93,
-    5022
+    5022,
+    null,
+    380
   ],
   [
     381,
@@ -3808,7 +4568,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     95,
     95,
-    3610
+    3610,
+    null,
+    381
   ],
   [
     382,
@@ -3818,7 +4580,9 @@ const POKEMON_CATALOG_DATA = [
     125,
     109,
     109,
-    13625
+    13625,
+    null,
+    382
   ],
   [
     383,
@@ -3828,7 +4592,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     90,
     90,
-    4410
+    4410,
+    null,
+    383
   ],
   [
     384,
@@ -3838,7 +4604,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     110,
     110,
-    6270
+    6270,
+    null,
+    384
   ],
   [
     385,
@@ -3848,7 +4616,9 @@ const POKEMON_CATALOG_DATA = [
     73,
     54,
     54,
-    3942
+    3942,
+    null,
+    385
   ],
   [
     386,
@@ -3858,7 +4628,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     77,
     77,
-    3850
+    3850,
+    null,
+    386
   ],
   [
     387,
@@ -3868,7 +4640,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     68,
     68,
-    3400
+    3400,
+    null,
+    387
   ],
   [
     388,
@@ -3878,7 +4652,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     61,
     61,
-    3477
+    3477,
+    387,
+    387
   ],
   [
     389,
@@ -3888,7 +4664,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     80,
     80,
-    4560
+    4560,
+    388,
+    387
   ],
   [
     390,
@@ -3898,7 +4676,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     55,
     55,
-    3850
+    3850,
+    null,
+    390
   ],
   [
     391,
@@ -3908,7 +4688,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     71,
     71,
-    4544
+    4544,
+    390,
+    390
   ],
   [
     392,
@@ -3918,7 +4700,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     80,
     80,
-    5280
+    5280,
+    391,
+    390
   ],
   [
     393,
@@ -3928,7 +4712,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     41,
     41,
-    3075
+    3075,
+    null,
+    393
   ],
   [
     394,
@@ -3938,7 +4724,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     61,
     61,
-    3843
+    3843,
+    393,
+    393
   ],
   [
     395,
@@ -3948,7 +4736,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     88,
     88,
-    5720
+    5720,
+    394,
+    393
   ],
   [
     396,
@@ -3958,7 +4748,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     40,
     40,
-    1960
+    1960,
+    null,
+    396
   ],
   [
     397,
@@ -3968,7 +4760,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     53,
     53,
-    3021
+    3021,
+    396,
+    396
   ],
   [
     398,
@@ -3978,7 +4772,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     69,
     69,
-    3243
+    3243,
+    397,
+    396
   ],
   [
     399,
@@ -3988,7 +4784,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     49,
     49,
-    2548
+    2548,
+    null,
+    399
   ],
   [
     400,
@@ -3998,7 +4796,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     71,
     71,
-    5751
+    5751,
+    399,
+    399
   ],
   [
     401,
@@ -4008,7 +4808,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     45,
     45,
-    3375
+    3375,
+    null,
+    401
   ],
   [
     402,
@@ -4018,7 +4820,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     69,
     69,
-    3519
+    3519,
+    401,
+    401
   ],
   [
     403,
@@ -4028,7 +4832,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     51,
     51,
-    3264
+    3264,
+    null,
+    403
   ],
   [
     404,
@@ -4038,7 +4844,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     67,
     67,
-    6432
+    6432,
+    403,
+    403
   ],
   [
     405,
@@ -4048,7 +4856,9 @@ const POKEMON_CATALOG_DATA = [
     86,
     77,
     77,
-    6622
+    6622,
+    404,
+    403
   ],
   [
     406,
@@ -4058,7 +4868,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     55,
     55,
-    2970
+    2970,
+    null,
+    406
   ],
   [
     407,
@@ -4068,7 +4880,9 @@ const POKEMON_CATALOG_DATA = [
     102,
     71,
     71,
-    7242
+    7242,
+    315,
+    406
   ],
   [
     408,
@@ -4078,7 +4892,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     59,
     59,
-    3717
+    3717,
+    null,
+    408
   ],
   [
     409,
@@ -4088,7 +4904,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     80,
     80,
-    6960
+    6960,
+    408,
+    408
   ],
   [
     410,
@@ -4098,7 +4916,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     49,
     49,
-    2842
+    2842,
+    null,
+    410
   ],
   [
     411,
@@ -4108,7 +4928,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     70,
     70,
-    4270
+    4270,
+    410,
+    410
   ],
   [
     412,
@@ -4118,7 +4940,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     62,
     62,
-    5022
+    5022,
+    null,
+    412
   ],
   [
     413,
@@ -4128,7 +4952,9 @@ const POKEMON_CATALOG_DATA = [
     112,
     62,
     62,
-    6944
+    6944,
+    412,
+    412
   ],
   [
     414,
@@ -4138,7 +4964,9 @@ const POKEMON_CATALOG_DATA = [
     9,
     83,
     83,
-    747
+    747,
+    412,
+    412
   ],
   [
     415,
@@ -4148,7 +4976,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     67,
     67,
-    1072
+    1072,
+    null,
+    415
   ],
   [
     416,
@@ -4158,7 +4988,9 @@ const POKEMON_CATALOG_DATA = [
     112,
     79,
     79,
-    8848
+    8848,
+    415,
+    415
   ],
   [
     417,
@@ -4168,7 +5000,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     55,
     55,
-    3080
+    3080,
+    null,
+    417
   ],
   [
     418,
@@ -4178,7 +5012,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     49,
     49,
-    2940
+    2940,
+    null,
+    418
   ],
   [
     419,
@@ -4188,7 +5024,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     71,
     71,
-    5964
+    5964,
+    418,
+    418
   ],
   [
     420,
@@ -4198,7 +5036,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     41,
     41,
-    2419
+    2419,
+    null,
+    420
   ],
   [
     421,
@@ -4208,7 +5048,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     49,
     49,
-    2352
+    2352,
+    420,
+    420
   ],
   [
     422,
@@ -4218,7 +5060,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     39,
     39,
-    2028
+    2028,
+    null,
+    422
   ],
   [
     423,
@@ -4228,7 +5072,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     60,
     60,
-    3240
+    3240,
+    422,
+    422
   ],
   [
     424,
@@ -4238,7 +5084,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     87,
     87,
-    8352
+    8352,
+    190,
+    190
   ],
   [
     425,
@@ -4248,7 +5096,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     69,
     69,
-    4416
+    4416,
+    null,
+    425
   ],
   [
     426,
@@ -4258,7 +5108,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     73,
     73,
-    2628
+    2628,
+    425,
+    425
   ],
   [
     427,
@@ -4268,7 +5120,9 @@ const POKEMON_CATALOG_DATA = [
     91,
     68,
     68,
-    6188
+    6188,
+    null,
+    427
   ],
   [
     428,
@@ -4278,7 +5132,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     72,
     72,
-    3744
+    3744,
+    427,
+    427
   ],
   [
     429,
@@ -4288,7 +5144,9 @@ const POKEMON_CATALOG_DATA = [
     14,
     84,
     84,
-    1176
+    1176,
+    200,
+    200
   ],
   [
     430,
@@ -4298,7 +5156,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     77,
     77,
-    3311
+    3311,
+    198,
+    198
   ],
   [
     431,
@@ -4308,7 +5168,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     72,
     72,
-    6912
+    6912,
+    null,
+    431
   ],
   [
     432,
@@ -4318,7 +5180,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     67,
     67,
-    4087
+    4087,
+    431,
+    431
   ],
   [
     433,
@@ -4328,7 +5192,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     58,
     58,
-    4698
+    4698,
+    null,
+    433
   ],
   [
     434,
@@ -4338,7 +5204,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     56,
     56,
-    2632
+    2632,
+    null,
+    434
   ],
   [
     435,
@@ -4348,7 +5216,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     75,
     75,
-    3600
+    3600,
+    434,
+    434
   ],
   [
     436,
@@ -4358,7 +5228,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     59,
     59,
-    3717
+    3717,
+    null,
+    436
   ],
   [
     437,
@@ -4368,7 +5240,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     95,
     95,
-    5225
+    5225,
+    436,
+    436
   ],
   [
     438,
@@ -4378,7 +5252,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     57,
     57,
-    4446
+    4446,
+    null,
+    438
   ],
   [
     439,
@@ -4388,7 +5264,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     62,
     62,
-    4898
+    4898,
+    null,
+    439
   ],
   [
     440,
@@ -4398,7 +5276,9 @@ const POKEMON_CATALOG_DATA = [
     28,
     50,
     50,
-    1400
+    1400,
+    null,
+    440
   ],
   [
     441,
@@ -4408,7 +5288,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     49,
     49,
-    3920
+    3920,
+    null,
+    441
   ],
   [
     442,
@@ -4418,7 +5300,9 @@ const POKEMON_CATALOG_DATA = [
     112,
     67,
     67,
-    7504
+    7504,
+    null,
+    442
   ],
   [
     443,
@@ -4428,7 +5312,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     57,
     57,
-    3591
+    3591,
+    null,
+    443
   ],
   [
     444,
@@ -4438,7 +5324,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     71,
     71,
-    1917
+    1917,
+    443,
+    443
   ],
   [
     445,
@@ -4448,7 +5336,9 @@ const POKEMON_CATALOG_DATA = [
     44,
     82,
     82,
-    3608
+    3608,
+    444,
+    443
   ],
   [
     446,
@@ -4458,7 +5348,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     48,
     48,
-    3408
+    3408,
+    null,
+    446
   ],
   [
     447,
@@ -4468,7 +5360,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     49,
     49,
-    3087
+    3087,
+    null,
+    447
   ],
   [
     448,
@@ -4478,7 +5372,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     63,
     63,
-    4536
+    4536,
+    447,
+    447
   ],
   [
     449,
@@ -4488,7 +5384,9 @@ const POKEMON_CATALOG_DATA = [
     94,
     65,
     65,
-    6110
+    6110,
+    null,
+    449
   ],
   [
     450,
@@ -4498,7 +5396,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     84,
     84,
-    3780
+    3780,
+    449,
+    449
   ],
   [
     451,
@@ -4508,7 +5408,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     71,
     71,
-    3763
+    3763,
+    null,
+    451
   ],
   [
     452,
@@ -4518,7 +5420,9 @@ const POKEMON_CATALOG_DATA = [
     88,
     96,
     96,
-    8448
+    8448,
+    451,
+    451
   ],
   [
     453,
@@ -4528,7 +5432,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     50,
     50,
-    3850
+    3850,
+    null,
+    453
   ],
   [
     454,
@@ -4538,7 +5444,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     67,
     67,
-    4288
+    4288,
+    453,
+    453
   ],
   [
     455,
@@ -4548,7 +5456,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     91,
     91,
-    5278
+    5278,
+    null,
+    455
   ],
   [
     456,
@@ -4558,7 +5468,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     77,
     77,
-    6699
+    6699,
+    null,
+    456
   ],
   [
     457,
@@ -4568,7 +5480,9 @@ const POKEMON_CATALOG_DATA = [
     86,
     73,
     73,
-    6278
+    6278,
+    456,
+    456
   ],
   [
     458,
@@ -4578,7 +5492,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     65,
     65,
-    3120
+    3120,
+    null,
+    458
   ],
   [
     459,
@@ -4588,7 +5504,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     71,
     71,
-    3976
+    3976,
+    null,
+    459
   ],
   [
     460,
@@ -4598,7 +5516,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     95,
     95,
-    3895
+    3895,
+    459,
+    459
   ],
   [
     461,
@@ -4608,7 +5528,9 @@ const POKEMON_CATALOG_DATA = [
     98,
     81,
     81,
-    7938
+    7938,
+    215,
+    215
   ],
   [
     462,
@@ -4618,7 +5540,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     84,
     84,
-    3948
+    3948,
+    82,
+    81
   ],
   [
     463,
@@ -4628,7 +5552,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     78,
     78,
-    5070
+    5070,
+    108,
+    108
   ],
   [
     464,
@@ -4638,7 +5564,9 @@ const POKEMON_CATALOG_DATA = [
     126,
     83,
     83,
-    10458
+    10458,
+    112,
+    111
   ],
   [
     465,
@@ -4648,7 +5576,9 @@ const POKEMON_CATALOG_DATA = [
     95,
     98,
     98,
-    9310
+    9310,
+    114,
+    114
   ],
   [
     466,
@@ -4658,7 +5588,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     96,
     96,
-    4896
+    4896,
+    125,
+    239
   ],
   [
     467,
@@ -4668,7 +5600,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     89,
     89,
-    7120
+    7120,
+    126,
+    240
   ],
   [
     468,
@@ -4678,7 +5612,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     87,
     87,
-    4176
+    4176,
+    176,
+    175
   ],
   [
     469,
@@ -4688,7 +5624,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     94,
     94,
-    5264
+    5264,
+    193,
+    193
   ],
   [
     470,
@@ -4698,7 +5636,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     62,
     62,
-    4216
+    4216,
+    133,
+    133
   ],
   [
     471,
@@ -4708,7 +5648,9 @@ const POKEMON_CATALOG_DATA = [
     86,
     77,
     77,
-    6622
+    6622,
+    133,
+    133
   ],
   [
     472,
@@ -4718,7 +5660,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     85,
     85,
-    5610
+    5610,
+    207,
+    207
   ],
   [
     473,
@@ -4728,7 +5672,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     84,
     84,
-    6888
+    6888,
+    221,
+    220
   ],
   [
     474,
@@ -4738,7 +5684,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     58,
     58,
-    2726
+    2726,
+    233,
+    137
   ],
   [
     475,
@@ -4748,7 +5696,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     70,
     70,
-    4620
+    4620,
+    281,
+    280
   ],
   [
     476,
@@ -4758,7 +5708,9 @@ const POKEMON_CATALOG_DATA = [
     118,
     84,
     84,
-    9912
+    9912,
+    299,
+    299
   ],
   [
     477,
@@ -4768,7 +5720,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     75,
     75,
-    3600
+    3600,
+    356,
+    355
   ],
   [
     478,
@@ -4778,7 +5732,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     75,
     75,
-    4950
+    4950,
+    361,
+    361
   ],
   [
     479,
@@ -4788,7 +5744,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     88,
     88,
-    8448
+    8448,
+    null,
+    479
   ],
   [
     480,
@@ -4798,7 +5756,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     53,
     53,
-    5088
+    5088,
+    null,
+    480
   ],
   [
     481,
@@ -4808,7 +5768,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     90,
     90,
-    6480
+    6480,
+    null,
+    481
   ],
   [
     482,
@@ -4818,7 +5780,9 @@ const POKEMON_CATALOG_DATA = [
     132,
     75,
     75,
-    9900
+    9900,
+    null,
+    482
   ],
   [
     483,
@@ -4828,7 +5792,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     88,
     88,
-    5984
+    5984,
+    null,
+    483
   ],
   [
     484,
@@ -4838,7 +5804,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     87,
     87,
-    5568
+    5568,
+    null,
+    484
   ],
   [
     485,
@@ -4848,7 +5816,9 @@ const POKEMON_CATALOG_DATA = [
     101,
     86,
     86,
-    8686
+    8686,
+    null,
+    485
   ],
   [
     486,
@@ -4858,7 +5828,9 @@ const POKEMON_CATALOG_DATA = [
     73,
     87,
     87,
-    6351
+    6351,
+    null,
+    486
   ],
   [
     487,
@@ -4868,7 +5840,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     103,
     103,
-    8137
+    8137,
+    null,
+    487
   ],
   [
     488,
@@ -4878,7 +5852,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     81,
     81,
-    7776
+    7776,
+    null,
+    488
   ],
   [
     489,
@@ -4888,7 +5864,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     64,
     64,
-    4544
+    4544,
+    null,
+    490
   ],
   [
     490,
@@ -4898,7 +5876,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     57,
     57,
-    3420
+    3420,
+    null,
+    490
   ],
   [
     491,
@@ -4908,7 +5888,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     96,
     96,
-    6816
+    6816,
+    null,
+    491
   ],
   [
     492,
@@ -4918,7 +5900,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     37,
     37,
-    2109
+    2109,
+    null,
+    492
   ],
   [
     493,
@@ -4928,7 +5912,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     82,
     82,
-    3444
+    3444,
+    null,
+    493
   ],
   [
     494,
@@ -4938,7 +5924,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     62,
     62,
-    3038
+    3038,
+    null,
+    494
   ],
   [
     495,
@@ -4948,7 +5936,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     48,
     48,
-    3456
+    3456,
+    null,
+    495
   ],
   [
     496,
@@ -4958,7 +5948,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     66,
     66,
-    3168
+    3168,
+    495,
+    495
   ],
   [
     497,
@@ -4968,7 +5960,9 @@ const POKEMON_CATALOG_DATA = [
     73,
     90,
     90,
-    6570
+    6570,
+    496,
+    495
   ],
   [
     498,
@@ -4978,7 +5972,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     47,
     47,
-    2773
+    2773,
+    null,
+    498
   ],
   [
     499,
@@ -4988,7 +5984,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     67,
     67,
-    4221
+    4221,
+    498,
+    498
   ],
   [
     500,
@@ -4998,7 +5996,9 @@ const POKEMON_CATALOG_DATA = [
     83,
     89,
     89,
-    7387
+    7387,
+    499,
+    498
   ],
   [
     501,
@@ -5008,7 +6008,9 @@ const POKEMON_CATALOG_DATA = [
     148,
     51,
     51,
-    7548
+    7548,
+    null,
+    501
   ],
   [
     502,
@@ -5018,7 +6020,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     57,
     57,
-    2907
+    2907,
+    501,
+    501
   ],
   [
     503,
@@ -5028,7 +6032,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     102,
     102,
-    9792
+    9792,
+    502,
+    501
   ],
   [
     504,
@@ -5038,7 +6044,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     53,
     53,
-    2809
+    2809,
+    null,
+    504
   ],
   [
     505,
@@ -5048,7 +6056,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     69,
     69,
-    5796
+    5796,
+    504,
+    504
   ],
   [
     506,
@@ -5058,7 +6068,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     49,
     49,
-    3136
+    3136,
+    null,
+    506
   ],
   [
     507,
@@ -5068,7 +6080,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     58,
     58,
-    3364
+    3364,
+    506,
+    506
   ],
   [
     508,
@@ -5078,7 +6092,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     74,
     74,
-    5550
+    5550,
+    507,
+    506
   ],
   [
     509,
@@ -5088,7 +6104,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     58,
     58,
-    1856
+    1856,
+    null,
+    509
   ],
   [
     510,
@@ -5098,7 +6116,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     82,
     82,
-    4756
+    4756,
+    509,
+    509
   ],
   [
     511,
@@ -5108,7 +6128,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     50,
     50,
-    4350
+    4350,
+    null,
+    511
   ],
   [
     512,
@@ -5118,7 +6140,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     75,
     75,
-    5850
+    5850,
+    511,
+    511
   ],
   [
     513,
@@ -5128,7 +6152,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     49,
     49,
-    2352
+    2352,
+    null,
+    513
   ],
   [
     514,
@@ -5138,7 +6164,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     70,
     70,
-    3290
+    3290,
+    513,
+    513
   ],
   [
     515,
@@ -5148,7 +6176,9 @@ const POKEMON_CATALOG_DATA = [
     37,
     47,
     47,
-    1739
+    1739,
+    null,
+    515
   ],
   [
     516,
@@ -5158,7 +6188,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     61,
     61,
-    3111
+    3111,
+    515,
+    515
   ],
   [
     517,
@@ -5168,7 +6200,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     46,
     46,
-    4140
+    4140,
+    null,
+    517
   ],
   [
     518,
@@ -5178,7 +6212,9 @@ const POKEMON_CATALOG_DATA = [
     30,
     78,
     78,
-    2340
+    2340,
+    517,
+    517
   ],
   [
     519,
@@ -5188,7 +6224,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     37,
     37,
-    1591
+    1591,
+    null,
+    519
   ],
   [
     520,
@@ -5198,7 +6236,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     59,
     59,
-    4425
+    4425,
+    519,
+    519
   ],
   [
     521,
@@ -5208,7 +6248,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     75,
     75,
-    5625
+    5625,
+    520,
+    519
   ],
   [
     522,
@@ -5218,7 +6260,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     62,
     62,
-    4898
+    4898,
+    null,
+    522
   ],
   [
     523,
@@ -5228,7 +6272,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     74,
     74,
-    5624
+    5624,
+    522,
+    522
   ],
   [
     524,
@@ -5238,7 +6284,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     38,
     38,
-    2432
+    2432,
+    null,
+    524
   ],
   [
     525,
@@ -5248,7 +6296,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     61,
     61,
-    3599
+    3599,
+    524,
+    524
   ],
   [
     526,
@@ -5258,7 +6308,9 @@ const POKEMON_CATALOG_DATA = [
     99,
     81,
     81,
-    8019
+    8019,
+    525,
+    524
   ],
   [
     527,
@@ -5268,7 +6320,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     92,
     92,
-    7360
+    7360,
+    null,
+    527
   ],
   [
     528,
@@ -5278,7 +6332,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     105,
     105,
-    5775
+    5775,
+    527,
+    527
   ],
   [
     529,
@@ -5288,7 +6344,9 @@ const POKEMON_CATALOG_DATA = [
     51,
     82,
     82,
-    4182
+    4182,
+    null,
+    529
   ],
   [
     530,
@@ -5298,7 +6356,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     91,
     91,
-    7644
+    7644,
+    529,
+    529
   ],
   [
     531,
@@ -5308,7 +6368,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     52,
     52,
-    3120
+    3120,
+    null,
+    531
   ],
   [
     532,
@@ -5318,7 +6380,9 @@ const POKEMON_CATALOG_DATA = [
     67,
     69,
     69,
-    4623
+    4623,
+    null,
+    532
   ],
   [
     533,
@@ -5328,7 +6392,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     81,
     81,
-    5832
+    5832,
+    532,
+    532
   ],
   [
     534,
@@ -5338,7 +6404,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     102,
     102,
-    7038
+    7038,
+    533,
+    532
   ],
   [
     535,
@@ -5348,7 +6416,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     44,
     44,
-    4048
+    4048,
+    null,
+    535
   ],
   [
     536,
@@ -5358,7 +6428,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     57,
     57,
-    2793
+    2793,
+    535,
+    535
   ],
   [
     537,
@@ -5368,7 +6440,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     98,
     98,
-    9408
+    9408,
+    536,
+    535
   ],
   [
     538,
@@ -5378,7 +6452,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     75,
     75,
-    4200
+    4200,
+    null,
+    538
   ],
   [
     539,
@@ -5388,7 +6464,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     66,
     66,
-    4158
+    4158,
+    null,
+    539
   ],
   [
     540,
@@ -5398,7 +6476,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     36,
     36,
-    2808
+    2808,
+    null,
+    540
   ],
   [
     541,
@@ -5408,7 +6488,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     50,
     50,
-    3150
+    3150,
+    540,
+    540
   ],
   [
     542,
@@ -5418,7 +6500,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     75,
     75,
-    3750
+    3750,
+    541,
+    540
   ],
   [
     543,
@@ -5428,7 +6512,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     51,
     51,
-    4590
+    4590,
+    null,
+    543
   ],
   [
     544,
@@ -5438,7 +6524,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     69,
     69,
-    4761
+    4761,
+    543,
+    543
   ],
   [
     545,
@@ -5448,7 +6536,9 @@ const POKEMON_CATALOG_DATA = [
     116,
     104,
     104,
-    12064
+    12064,
+    544,
+    543
   ],
   [
     546,
@@ -5458,7 +6548,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     52,
     52,
-    3276
+    3276,
+    null,
+    546
   ],
   [
     547,
@@ -5468,7 +6560,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     71,
     71,
-    4189
+    4189,
+    546,
+    546
   ],
   [
     548,
@@ -5478,7 +6572,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     51,
     51,
-    2754
+    2754,
+    null,
+    548
   ],
   [
     549,
@@ -5488,7 +6584,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     70,
     70,
-    4200
+    4200,
+    548,
+    548
   ],
   [
     550,
@@ -5498,7 +6596,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     52,
     52,
-    4784
+    4784,
+    null,
+    550
   ],
   [
     551,
@@ -5508,7 +6608,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     52,
     52,
-    2704
+    2704,
+    null,
+    551
   ],
   [
     552,
@@ -5518,7 +6620,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     62,
     62,
-    3658
+    3658,
+    551,
+    551
   ],
   [
     553,
@@ -5528,7 +6632,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     95,
     95,
-    4940
+    4940,
+    552,
+    551
   ],
   [
     554,
@@ -5538,7 +6644,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     42,
     42,
-    3318
+    3318,
+    null,
+    554
   ],
   [
     555,
@@ -5548,7 +6656,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     69,
     69,
-    4968
+    4968,
+    554,
+    554
   ],
   [
     556,
@@ -5558,7 +6668,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     71,
     71,
-    5112
+    5112,
+    null,
+    556
   ],
   [
     557,
@@ -5568,7 +6680,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     41,
     41,
-    1681
+    1681,
+    null,
+    557
   ],
   [
     558,
@@ -5578,7 +6692,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     75,
     75,
-    4500
+    4500,
+    557,
+    557
   ],
   [
     559,
@@ -5588,7 +6704,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     41,
     41,
-    2952
+    2952,
+    null,
+    559
   ],
   [
     560,
@@ -5598,7 +6716,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     77,
     77,
-    6468
+    6468,
+    559,
+    559
   ],
   [
     561,
@@ -5608,7 +6728,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     120,
     120,
-    6960
+    6960,
+    null,
+    561
   ],
   [
     562,
@@ -5618,7 +6740,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     66,
     66,
-    4752
+    4752,
+    null,
+    562
   ],
   [
     563,
@@ -5628,7 +6752,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     122,
     122,
-    8784
+    8784,
+    562,
+    562
   ],
   [
     564,
@@ -5638,7 +6764,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     59,
     59,
-    3776
+    3776,
+    null,
+    564
   ],
   [
     565,
@@ -5648,7 +6776,9 @@ const POKEMON_CATALOG_DATA = [
     91,
     78,
     78,
-    7098
+    7098,
+    564,
+    564
   ],
   [
     566,
@@ -5658,7 +6788,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     60,
     60,
-    3780
+    3780,
+    null,
+    566
   ],
   [
     567,
@@ -5668,7 +6800,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     91,
     91,
-    3640
+    3640,
+    566,
+    566
   ],
   [
     568,
@@ -5678,7 +6812,9 @@ const POKEMON_CATALOG_DATA = [
     102,
     53,
     53,
-    5406
+    5406,
+    null,
+    568
   ],
   [
     569,
@@ -5688,7 +6824,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     93,
     93,
-    6324
+    6324,
+    568,
+    568
   ],
   [
     570,
@@ -5698,7 +6836,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     49,
     49,
-    2891
+    2891,
+    null,
+    570
   ],
   [
     571,
@@ -5708,7 +6848,9 @@ const POKEMON_CATALOG_DATA = [
     89,
     74,
     74,
-    6586
+    6586,
+    570,
+    570
   ],
   [
     572,
@@ -5718,7 +6860,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     64,
     64,
-    4480
+    4480,
+    null,
+    572
   ],
   [
     573,
@@ -5728,7 +6872,9 @@ const POKEMON_CATALOG_DATA = [
     50,
     66,
     66,
-    3300
+    3300,
+    572,
+    572
   ],
   [
     574,
@@ -5738,7 +6884,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     39,
     39,
-    2730
+    2730,
+    null,
+    574
   ],
   [
     575,
@@ -5748,7 +6896,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     61,
     61,
-    4880
+    4880,
+    574,
+    574
   ],
   [
     576,
@@ -5758,7 +6908,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     73,
     73,
-    7008
+    7008,
+    575,
+    574
   ],
   [
     577,
@@ -5768,7 +6920,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     37,
     37,
-    2257
+    2257,
+    null,
+    577
   ],
   [
     578,
@@ -5778,7 +6932,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     68,
     68,
-    5372
+    5372,
+    577,
+    577
   ],
   [
     579,
@@ -5788,7 +6944,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     99,
     99,
-    7128
+    7128,
+    578,
+    577
   ],
   [
     580,
@@ -5798,7 +6956,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     40,
     40,
-    1640
+    1640,
+    null,
+    580
   ],
   [
     581,
@@ -5808,7 +6968,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     138,
     138,
-    8556
+    8556,
+    580,
+    580
   ],
   [
     582,
@@ -5818,7 +6980,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     56,
     56,
-    2968
+    2968,
+    null,
+    582
   ],
   [
     583,
@@ -5828,7 +6992,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     64,
     64,
-    4608
+    4608,
+    582,
+    582
   ],
   [
     584,
@@ -5838,7 +7004,9 @@ const POKEMON_CATALOG_DATA = [
     107,
     72,
     72,
-    7704
+    7704,
+    583,
+    582
   ],
   [
     585,
@@ -5848,7 +7016,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     50,
     50,
-    3250
+    3250,
+    null,
+    585
   ],
   [
     586,
@@ -5858,7 +7028,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     77,
     77,
-    5390
+    5390,
+    585,
+    585
   ],
   [
     587,
@@ -5868,7 +7040,9 @@ const POKEMON_CATALOG_DATA = [
     94,
     83,
     83,
-    7802
+    7802,
+    null,
+    587
   ],
   [
     588,
@@ -5878,7 +7052,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     54,
     54,
-    4698
+    4698,
+    null,
+    588
   ],
   [
     589,
@@ -5888,7 +7064,9 @@ const POKEMON_CATALOG_DATA = [
     119,
     80,
     80,
-    9520
+    9520,
+    588,
+    588
   ],
   [
     590,
@@ -5898,7 +7076,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     36,
     36,
-    1764
+    1764,
+    null,
+    590
   ],
   [
     591,
@@ -5908,7 +7088,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     62,
     62,
-    2914
+    2914,
+    590,
+    590
   ],
   [
     592,
@@ -5918,7 +7100,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     72,
     72,
-    5904
+    5904,
+    null,
+    592
   ],
   [
     593,
@@ -5928,7 +7112,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     85,
     85,
-    5865
+    5865,
+    592,
+    592
   ],
   [
     594,
@@ -5938,7 +7124,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     87,
     87,
-    5133
+    5133,
+    null,
+    594
   ],
   [
     595,
@@ -5948,7 +7136,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     43,
     43,
-    1376
+    1376,
+    null,
+    595
   ],
   [
     596,
@@ -5958,7 +7148,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     68,
     68,
-    4828
+    4828,
+    595,
+    595
   ],
   [
     597,
@@ -5968,7 +7160,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     42,
     42,
-    3402
+    3402,
+    null,
+    597
   ],
   [
     598,
@@ -5978,7 +7172,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     78,
     78,
-    5070
+    5070,
+    597,
+    597
   ],
   [
     599,
@@ -5988,7 +7184,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     43,
     43,
-    2322
+    2322,
+    null,
+    599
   ],
   [
     600,
@@ -5998,7 +7196,9 @@ const POKEMON_CATALOG_DATA = [
     85,
     58,
     58,
-    4930
+    4930,
+    599,
+    599
   ],
   [
     601,
@@ -6008,7 +7208,9 @@ const POKEMON_CATALOG_DATA = [
     85,
     70,
     70,
-    5950
+    5950,
+    600,
+    599
   ],
   [
     602,
@@ -6018,7 +7220,9 @@ const POKEMON_CATALOG_DATA = [
     105,
     57,
     57,
-    5985
+    5985,
+    null,
+    602
   ],
   [
     603,
@@ -6028,7 +7232,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     69,
     69,
-    2967
+    2967,
+    602,
+    602
   ],
   [
     604,
@@ -6038,7 +7244,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     96,
     96,
-    6048
+    6048,
+    603,
+    602
   ],
   [
     605,
@@ -6048,7 +7256,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     50,
     50,
-    2800
+    2800,
+    null,
+    605
   ],
   [
     606,
@@ -6058,7 +7268,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     67,
     67,
-    3551
+    3551,
+    605,
+    605
   ],
   [
     607,
@@ -6068,7 +7280,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     44,
     44,
-    3388
+    3388,
+    null,
+    607
   ],
   [
     608,
@@ -6078,7 +7292,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     69,
     69,
-    4554
+    4554,
+    607,
+    607
   ],
   [
     609,
@@ -6088,7 +7304,9 @@ const POKEMON_CATALOG_DATA = [
     83,
     94,
     94,
-    7802
+    7802,
+    608,
+    607
   ],
   [
     610,
@@ -6098,7 +7316,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     45,
     45,
-    3375
+    3375,
+    null,
+    610
   ],
   [
     611,
@@ -6108,7 +7328,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     63,
     63,
-    3339
+    3339,
+    610,
+    610
   ],
   [
     612,
@@ -6118,7 +7340,9 @@ const POKEMON_CATALOG_DATA = [
     91,
     84,
     84,
-    7644
+    7644,
+    611,
+    610
   ],
   [
     613,
@@ -6128,7 +7352,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     38,
     38,
-    3496
+    3496,
+    null,
+    613
   ],
   [
     614,
@@ -6138,7 +7364,9 @@ const POKEMON_CATALOG_DATA = [
     112,
     79,
     79,
-    8848
+    8848,
+    613,
+    613
   ],
   [
     615,
@@ -6148,7 +7376,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     86,
     86,
-    6106
+    6106,
+    null,
+    615
   ],
   [
     616,
@@ -6158,7 +7388,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     49,
     49,
-    3038
+    3038,
+    null,
+    616
   ],
   [
     617,
@@ -6168,7 +7400,9 @@ const POKEMON_CATALOG_DATA = [
     109,
     75,
     75,
-    8175
+    8175,
+    616,
+    616
   ],
   [
     618,
@@ -6178,7 +7412,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     61,
     61,
-    3782
+    3782,
+    null,
+    618
   ],
   [
     619,
@@ -6188,7 +7424,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     66,
     66,
-    4356
+    4356,
+    null,
+    619
   ],
   [
     620,
@@ -6198,7 +7436,9 @@ const POKEMON_CATALOG_DATA = [
     67,
     88,
     88,
-    5896
+    5896,
+    619,
+    619
   ],
   [
     621,
@@ -6208,7 +7448,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     90,
     90,
-    5670
+    5670,
+    null,
+    621
   ],
   [
     622,
@@ -6218,7 +7460,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     58,
     58,
-    2320
+    2320,
+    null,
+    622
   ],
   [
     623,
@@ -6228,7 +7472,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     83,
     83,
-    6640
+    6640,
+    622,
+    622
   ],
   [
     624,
@@ -6238,7 +7484,9 @@ const POKEMON_CATALOG_DATA = [
     67,
     50,
     50,
-    3350
+    3350,
+    null,
+    624
   ],
   [
     625,
@@ -6248,7 +7496,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     75,
     75,
-    5925
+    5925,
+    624,
+    624
   ],
   [
     626,
@@ -6258,7 +7508,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     83,
     83,
-    6391
+    6391,
+    null,
+    626
   ],
   [
     627,
@@ -6268,7 +7520,9 @@ const POKEMON_CATALOG_DATA = [
     71,
     54,
     54,
-    3834
+    3834,
+    null,
+    627
   ],
   [
     628,
@@ -6278,7 +7532,9 @@ const POKEMON_CATALOG_DATA = [
     21,
     109,
     109,
-    2289
+    2289,
+    627,
+    627
   ],
   [
     629,
@@ -6288,7 +7544,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     62,
     62,
-    4278
+    4278,
+    null,
+    629
   ],
   [
     630,
@@ -6298,7 +7556,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     70,
     70,
-    4900
+    4900,
+    629,
+    629
   ],
   [
     631,
@@ -6308,7 +7568,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     94,
     94,
-    4512
+    4512,
+    null,
+    631
   ],
   [
     632,
@@ -6318,7 +7580,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     54,
     54,
-    1944
+    1944,
+    null,
+    632
   ],
   [
     633,
@@ -6328,7 +7592,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     50,
     50,
-    3150
+    3150,
+    null,
+    633
   ],
   [
     634,
@@ -6338,7 +7604,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     68,
     68,
-    3808
+    3808,
+    633,
+    633
   ],
   [
     635,
@@ -6348,7 +7616,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     107,
     107,
-    4066
+    4066,
+    634,
+    633
   ],
   [
     636,
@@ -6358,7 +7628,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     49,
     49,
-    4410
+    4410,
+    null,
+    636
   ],
   [
     637,
@@ -6368,7 +7640,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     93,
     93,
-    2232
+    2232,
+    636,
+    636
   ],
   [
     638,
@@ -6378,7 +7652,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     79,
     79,
-    5372
+    5372,
+    null,
+    638
   ],
   [
     639,
@@ -6388,7 +7664,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     81,
     81,
-    6561
+    6561,
+    null,
+    639
   ],
   [
     640,
@@ -6398,7 +7676,9 @@ const POKEMON_CATALOG_DATA = [
     91,
     72,
     72,
-    6552
+    6552,
+    null,
+    640
   ],
   [
     641,
@@ -6408,7 +7688,9 @@ const POKEMON_CATALOG_DATA = [
     118,
     101,
     101,
-    11918
+    11918,
+    null,
+    641
   ],
   [
     642,
@@ -6418,7 +7700,9 @@ const POKEMON_CATALOG_DATA = [
     98,
     110,
     110,
-    10780
+    10780,
+    null,
+    642
   ],
   [
     643,
@@ -6428,7 +7712,9 @@ const POKEMON_CATALOG_DATA = [
     111,
     108,
     108,
-    11988
+    11988,
+    null,
+    643
   ],
   [
     644,
@@ -6438,7 +7724,9 @@ const POKEMON_CATALOG_DATA = [
     95,
     102,
     102,
-    9690
+    9690,
+    null,
+    644
   ],
   [
     645,
@@ -6448,7 +7736,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     89,
     89,
-    8544
+    8544,
+    null,
+    645
   ],
   [
     646,
@@ -6458,7 +7748,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     99,
     99,
-    5643
+    5643,
+    null,
+    646
   ],
   [
     647,
@@ -6468,7 +7760,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     65,
     65,
-    4680
+    4680,
+    null,
+    647
   ],
   [
     648,
@@ -6478,7 +7772,9 @@ const POKEMON_CATALOG_DATA = [
     150,
     63,
     63,
-    9450
+    9450,
+    null,
+    648
   ],
   [
     649,
@@ -6488,7 +7784,9 @@ const POKEMON_CATALOG_DATA = [
     89,
     70,
     70,
-    6230
+    6230,
+    null,
+    649
   ],
   [
     650,
@@ -6498,7 +7796,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     50,
     50,
-    2600
+    2600,
+    null,
+    650
   ],
   [
     651,
@@ -6508,7 +7808,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     60,
     60,
-    4680
+    4680,
+    650,
+    650
   ],
   [
     652,
@@ -6518,7 +7820,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     96,
     96,
-    8640
+    8640,
+    651,
+    650
   ],
   [
     653,
@@ -6528,7 +7832,9 @@ const POKEMON_CATALOG_DATA = [
     73,
     49,
     49,
-    3577
+    3577,
+    null,
+    653
   ],
   [
     654,
@@ -6538,7 +7844,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     69,
     69,
-    5244
+    5244,
+    653,
+    653
   ],
   [
     655,
@@ -6548,7 +7856,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     96,
     96,
-    1536
+    1536,
+    654,
+    653
   ],
   [
     656,
@@ -6558,7 +7868,9 @@ const POKEMON_CATALOG_DATA = [
     31,
     96,
     96,
-    2976
+    2976,
+    null,
+    656
   ],
   [
     657,
@@ -6568,7 +7880,9 @@ const POKEMON_CATALOG_DATA = [
     23,
     96,
     96,
-    2208
+    2208,
+    656,
+    656
   ],
   [
     658,
@@ -6578,7 +7892,9 @@ const POKEMON_CATALOG_DATA = [
     23,
     96,
     96,
-    2208
+    2208,
+    657,
+    656
   ],
   [
     659,
@@ -6588,7 +7904,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     96,
     96,
-    1536
+    1536,
+    null,
+    659
   ],
   [
     660,
@@ -6598,7 +7916,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     96,
     96,
-    5856
+    5856,
+    659,
+    659
   ],
   [
     661,
@@ -6608,7 +7928,9 @@ const POKEMON_CATALOG_DATA = [
     31,
     96,
     96,
-    2976
+    2976,
+    null,
+    661
   ],
   [
     662,
@@ -6618,7 +7940,9 @@ const POKEMON_CATALOG_DATA = [
     27,
     86,
     86,
-    2322
+    2322,
+    661,
+    661
   ],
   [
     663,
@@ -6628,7 +7952,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     128,
     128,
-    10240
+    10240,
+    662,
+    661
   ],
   [
     664,
@@ -6638,7 +7964,9 @@ const POKEMON_CATALOG_DATA = [
     11,
     46,
     46,
-    506
+    506,
+    null,
+    664
   ],
   [
     665,
@@ -6648,7 +7976,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     81,
     81,
-    5265
+    5265,
+    664,
+    664
   ],
   [
     666,
@@ -6658,7 +7988,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     96,
     96,
-    5760
+    5760,
+    665,
+    664
   ],
   [
     667,
@@ -6668,7 +8000,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     96,
     96,
-    6912
+    6912,
+    null,
+    667
   ],
   [
     668,
@@ -6678,7 +8012,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     79,
     79,
-    7110
+    7110,
+    667,
+    667
   ],
   [
     669,
@@ -6688,7 +8024,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    669
   ],
   [
     670,
@@ -6698,7 +8036,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    669,
+    669
   ],
   [
     671,
@@ -6708,7 +8048,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     96,
     96,
-    2304
+    2304,
+    670,
+    669
   ],
   [
     672,
@@ -6718,7 +8060,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     58,
     58,
-    3016
+    3016,
+    null,
+    672
   ],
   [
     673,
@@ -6728,7 +8072,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     96,
     96,
-    1536
+    1536,
+    672,
+    672
   ],
   [
     674,
@@ -6738,7 +8084,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     50,
     50,
-    2750
+    2750,
+    null,
+    674
   ],
   [
     675,
@@ -6748,7 +8096,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     96,
     96,
-    2304
+    2304,
+    674,
+    674
   ],
   [
     676,
@@ -6758,7 +8108,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     96,
     96,
-    2304
+    2304,
+    null,
+    676
   ],
   [
     677,
@@ -6768,7 +8120,9 @@ const POKEMON_CATALOG_DATA = [
     28,
     96,
     96,
-    2688
+    2688,
+    null,
+    677
   ],
   [
     678,
@@ -6778,7 +8132,9 @@ const POKEMON_CATALOG_DATA = [
     11,
     80,
     80,
-    880
+    880,
+    677,
+    677
   ],
   [
     679,
@@ -6788,7 +8144,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    679
   ],
   [
     680,
@@ -6798,7 +8156,9 @@ const POKEMON_CATALOG_DATA = [
     17,
     96,
     96,
-    1632
+    1632,
+    679,
+    679
   ],
   [
     681,
@@ -6808,7 +8168,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     127,
     127,
-    8128
+    8128,
+    680,
+    679
   ],
   [
     682,
@@ -6818,7 +8180,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     96,
     96,
-    3456
+    3456,
+    null,
+    682
   ],
   [
     683,
@@ -6828,7 +8192,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    682,
+    682
   ],
   [
     684,
@@ -6838,7 +8204,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     53,
     53,
-    4770
+    4770,
+    null,
+    684
   ],
   [
     685,
@@ -6848,7 +8216,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     96,
     96,
-    2304
+    2304,
+    684,
+    684
   ],
   [
     686,
@@ -6858,7 +8228,9 @@ const POKEMON_CATALOG_DATA = [
     29,
     96,
     96,
-    2784
+    2784,
+    null,
+    686
   ],
   [
     687,
@@ -6868,7 +8240,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    686,
+    686
   ],
   [
     688,
@@ -6878,7 +8252,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     58,
     58,
-    4640
+    4640,
+    null,
+    688
   ],
   [
     689,
@@ -6888,7 +8264,9 @@ const POKEMON_CATALOG_DATA = [
     11,
     96,
     96,
-    1056
+    1056,
+    688,
+    688
   ],
   [
     690,
@@ -6898,7 +8276,9 @@ const POKEMON_CATALOG_DATA = [
     10,
     56,
     56,
-    560
+    560,
+    null,
+    690
   ],
   [
     691,
@@ -6908,7 +8288,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     98,
     98,
-    2548
+    2548,
+    690,
+    690
   ],
   [
     692,
@@ -6918,7 +8300,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     96,
     96,
-    8352
+    8352,
+    null,
+    692
   ],
   [
     693,
@@ -6928,7 +8312,9 @@ const POKEMON_CATALOG_DATA = [
     99,
     118,
     118,
-    11682
+    11682,
+    692,
+    692
   ],
   [
     694,
@@ -6938,7 +8324,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     62,
     62,
-    5208
+    5208,
+    null,
+    694
   ],
   [
     695,
@@ -6948,7 +8336,9 @@ const POKEMON_CATALOG_DATA = [
     13,
     80,
     80,
-    1040
+    1040,
+    694,
+    694
   ],
   [
     696,
@@ -6958,7 +8348,9 @@ const POKEMON_CATALOG_DATA = [
     116,
     96,
     96,
-    11136
+    11136,
+    null,
+    696
   ],
   [
     697,
@@ -6968,7 +8360,9 @@ const POKEMON_CATALOG_DATA = [
     108,
     100,
     100,
-    10800
+    10800,
+    696,
+    696
   ],
   [
     698,
@@ -6978,7 +8372,9 @@ const POKEMON_CATALOG_DATA = [
     156,
     96,
     96,
-    14976
+    14976,
+    null,
+    698
   ],
   [
     699,
@@ -6988,7 +8384,9 @@ const POKEMON_CATALOG_DATA = [
     14,
     96,
     96,
-    1344
+    1344,
+    698,
+    698
   ],
   [
     700,
@@ -6998,7 +8396,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     96,
     96,
-    6144
+    6144,
+    133,
+    133
   ],
   [
     701,
@@ -7008,7 +8408,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     96,
     96,
-    5088
+    5088,
+    null,
+    701
   ],
   [
     702,
@@ -7018,7 +8420,9 @@ const POKEMON_CATALOG_DATA = [
     31,
     96,
     96,
-    2976
+    2976,
+    null,
+    702
   ],
   [
     703,
@@ -7028,7 +8432,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     96,
     96,
-    1536
+    1536,
+    null,
+    703
   ],
   [
     704,
@@ -7038,7 +8444,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     96,
     96,
-    8064
+    8064,
+    null,
+    704
   ],
   [
     705,
@@ -7048,7 +8456,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     64,
     64,
-    4160
+    4160,
+    704,
+    704
   ],
   [
     706,
@@ -7058,7 +8468,9 @@ const POKEMON_CATALOG_DATA = [
     152,
     96,
     96,
-    14592
+    14592,
+    705,
+    704
   ],
   [
     707,
@@ -7068,7 +8480,9 @@ const POKEMON_CATALOG_DATA = [
     129,
     108,
     108,
-    13932
+    13932,
+    null,
+    707
   ],
   [
     708,
@@ -7078,7 +8492,9 @@ const POKEMON_CATALOG_DATA = [
     120,
     70,
     70,
-    8400
+    8400,
+    null,
+    708
   ],
   [
     709,
@@ -7088,7 +8504,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     96,
     96,
-    7680
+    7680,
+    708,
+    708
   ],
   [
     710,
@@ -7098,7 +8516,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     96,
     96,
-    6720
+    6720,
+    null,
+    710
   ],
   [
     711,
@@ -7108,7 +8528,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     96,
     96,
-    4128
+    4128,
+    710,
+    710
   ],
   [
     712,
@@ -7118,7 +8540,9 @@ const POKEMON_CATALOG_DATA = [
     131,
     44,
     44,
-    5764
+    5764,
+    null,
+    712
   ],
   [
     713,
@@ -7128,7 +8552,9 @@ const POKEMON_CATALOG_DATA = [
     121,
     96,
     96,
-    11616
+    11616,
+    712,
+    712
   ],
   [
     714,
@@ -7138,7 +8564,9 @@ const POKEMON_CATALOG_DATA = [
     28,
     70,
     70,
-    1960
+    1960,
+    null,
+    714
   ],
   [
     715,
@@ -7148,7 +8576,9 @@ const POKEMON_CATALOG_DATA = [
     18,
     101,
     101,
-    1818
+    1818,
+    714,
+    714
   ],
   [
     716,
@@ -7158,7 +8588,9 @@ const POKEMON_CATALOG_DATA = [
     1,
     96,
     96,
-    96
+    96,
+    null,
+    716
   ],
   [
     717,
@@ -7168,7 +8600,9 @@ const POKEMON_CATALOG_DATA = [
     10,
     126,
     126,
-    1260
+    1260,
+    null,
+    717
   ],
   [
     718,
@@ -7178,7 +8612,9 @@ const POKEMON_CATALOG_DATA = [
     88,
     92,
     92,
-    8096
+    8096,
+    null,
+    718
   ],
   [
     719,
@@ -7188,7 +8624,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     81,
     81,
-    7776
+    7776,
+    null,
+    719
   ],
   [
     720,
@@ -7198,7 +8636,9 @@ const POKEMON_CATALOG_DATA = [
     17,
     96,
     96,
-    1632
+    1632,
+    null,
+    720
   ],
   [
     721,
@@ -7208,7 +8648,9 @@ const POKEMON_CATALOG_DATA = [
     119,
     89,
     89,
-    10591
+    10591,
+    null,
+    721
   ],
   [
     722,
@@ -7218,7 +8660,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     96,
     96,
-    8064
+    8064,
+    null,
+    722
   ],
   [
     723,
@@ -7228,7 +8672,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     96,
     96,
-    4512
+    4512,
+    722,
+    722
   ],
   [
     724,
@@ -7238,7 +8684,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     96,
     96,
-    4704
+    4704,
+    723,
+    722
   ],
   [
     725,
@@ -7248,7 +8696,9 @@ const POKEMON_CATALOG_DATA = [
     118,
     96,
     96,
-    11328
+    11328,
+    null,
+    725
   ],
   [
     726,
@@ -7258,7 +8708,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     80,
     80,
-    960
+    960,
+    725,
+    725
   ],
   [
     727,
@@ -7268,7 +8720,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     87,
     87,
-    7134
+    7134,
+    726,
+    725
   ],
   [
     728,
@@ -7278,7 +8732,9 @@ const POKEMON_CATALOG_DATA = [
     85,
     55,
     55,
-    4675
+    4675,
+    null,
+    728
   ],
   [
     729,
@@ -7288,7 +8744,9 @@ const POKEMON_CATALOG_DATA = [
     116,
     65,
     65,
-    7540
+    7540,
+    728,
+    728
   ],
   [
     730,
@@ -7298,7 +8756,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     91,
     91,
-    8372
+    8372,
+    729,
+    728
   ],
   [
     731,
@@ -7308,7 +8768,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     42,
     42,
-    3318
+    3318,
+    null,
+    731
   ],
   [
     732,
@@ -7318,7 +8780,9 @@ const POKEMON_CATALOG_DATA = [
     137,
     96,
     96,
-    13152
+    13152,
+    731,
+    731
   ],
   [
     733,
@@ -7328,7 +8792,9 @@ const POKEMON_CATALOG_DATA = [
     130,
     89,
     89,
-    11570
+    11570,
+    732,
+    731
   ],
   [
     734,
@@ -7338,7 +8804,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     61,
     61,
-    3904
+    3904,
+    null,
+    734
   ],
   [
     735,
@@ -7348,7 +8816,9 @@ const POKEMON_CATALOG_DATA = [
     94,
     71,
     71,
-    6674
+    6674,
+    734,
+    734
   ],
   [
     736,
@@ -7358,7 +8828,9 @@ const POKEMON_CATALOG_DATA = [
     20,
     96,
     96,
-    1920
+    1920,
+    null,
+    736
   ],
   [
     737,
@@ -7368,7 +8840,9 @@ const POKEMON_CATALOG_DATA = [
     120,
     96,
     96,
-    11520
+    11520,
+    736,
+    736
   ],
   [
     738,
@@ -7378,7 +8852,9 @@ const POKEMON_CATALOG_DATA = [
     132,
     96,
     96,
-    12672
+    12672,
+    737,
+    736
   ],
   [
     739,
@@ -7388,7 +8864,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     72,
     72,
-    4680
+    4680,
+    null,
+    739
   ],
   [
     740,
@@ -7398,7 +8876,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     101,
     101,
-    9292
+    9292,
+    739,
+    739
   ],
   [
     741,
@@ -7408,7 +8888,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    741
   ],
   [
     742,
@@ -7418,7 +8900,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     90,
     90,
-    2880
+    2880,
+    null,
+    742
   ],
   [
     743,
@@ -7428,7 +8912,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     96,
     96,
-    6912
+    6912,
+    742,
+    742
   ],
   [
     744,
@@ -7438,7 +8924,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     96,
     96,
-    5952
+    5952,
+    null,
+    744
   ],
   [
     745,
@@ -7448,7 +8936,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     68,
     68,
-    4420
+    4420,
+    744,
+    744
   ],
   [
     746,
@@ -7458,7 +8948,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    746
   ],
   [
     747,
@@ -7468,7 +8960,9 @@ const POKEMON_CATALOG_DATA = [
     8,
     69,
     69,
-    552
+    552,
+    null,
+    747
   ],
   [
     748,
@@ -7478,7 +8972,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     90,
     90,
-    7830
+    7830,
+    747,
+    747
   ],
   [
     749,
@@ -7488,7 +8984,9 @@ const POKEMON_CATALOG_DATA = [
     113,
     71,
     71,
-    8023
+    8023,
+    null,
+    749
   ],
   [
     750,
@@ -7498,7 +8996,9 @@ const POKEMON_CATALOG_DATA = [
     102,
     90,
     90,
-    9180
+    9180,
+    749,
+    749
   ],
   [
     751,
@@ -7508,7 +9008,9 @@ const POKEMON_CATALOG_DATA = [
     144,
     43,
     43,
-    6192
+    6192,
+    null,
+    751
   ],
   [
     752,
@@ -7518,7 +9020,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     84,
     84,
-    5796
+    5796,
+    751,
+    751
   ],
   [
     753,
@@ -7528,7 +9032,9 @@ const POKEMON_CATALOG_DATA = [
     122,
     96,
     96,
-    11712
+    11712,
+    null,
+    753
   ],
   [
     754,
@@ -7538,7 +9044,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     96,
     96,
-    5088
+    5088,
+    753,
+    753
   ],
   [
     755,
@@ -7548,7 +9056,9 @@ const POKEMON_CATALOG_DATA = [
     132,
     96,
     96,
-    12672
+    12672,
+    null,
+    755
   ],
   [
     756,
@@ -7558,7 +9068,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     95,
     95,
-    7220
+    7220,
+    755,
+    755
   ],
   [
     757,
@@ -7568,7 +9080,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     96,
     96,
-    5376
+    5376,
+    null,
+    757
   ],
   [
     758,
@@ -7578,7 +9092,9 @@ const POKEMON_CATALOG_DATA = [
     18,
     150,
     150,
-    2700
+    2700,
+    757,
+    757
   ],
   [
     759,
@@ -7588,7 +9104,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     55,
     55,
-    3135
+    3135,
+    null,
+    759
   ],
   [
     760,
@@ -7598,7 +9116,9 @@ const POKEMON_CATALOG_DATA = [
     136,
     84,
     84,
-    11424
+    11424,
+    759,
+    759
   ],
   [
     761,
@@ -7608,7 +9128,9 @@ const POKEMON_CATALOG_DATA = [
     151,
     42,
     42,
-    6342
+    6342,
+    null,
+    761
   ],
   [
     762,
@@ -7618,7 +9140,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     96,
     96,
-    4992
+    4992,
+    761,
+    761
   ],
   [
     763,
@@ -7628,7 +9152,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     96,
     96,
-    6528
+    6528,
+    762,
+    761
   ],
   [
     764,
@@ -7638,7 +9164,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     83,
     83,
-    7968
+    7968,
+    null,
+    764
   ],
   [
     765,
@@ -7648,7 +9176,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    765
   ],
   [
     766,
@@ -7658,7 +9188,9 @@ const POKEMON_CATALOG_DATA = [
     13,
     96,
     96,
-    1248
+    1248,
+    null,
+    766
   ],
   [
     767,
@@ -7668,7 +9200,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     53,
     53,
-    4293
+    4293,
+    null,
+    767
   ],
   [
     768,
@@ -7678,7 +9212,9 @@ const POKEMON_CATALOG_DATA = [
     18,
     96,
     96,
-    1728
+    1728,
+    767,
+    767
   ],
   [
     769,
@@ -7688,7 +9224,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     65,
     65,
-    2925
+    2925,
+    null,
+    769
   ],
   [
     770,
@@ -7698,7 +9236,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     96,
     96,
-    6144
+    6144,
+    769,
+    769
   ],
   [
     771,
@@ -7708,7 +9248,9 @@ const POKEMON_CATALOG_DATA = [
     163,
     59,
     59,
-    9617
+    9617,
+    null,
+    771
   ],
   [
     772,
@@ -7718,7 +9260,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     96,
     96,
-    6624
+    6624,
+    null,
+    772
   ],
   [
     773,
@@ -7728,7 +9272,9 @@ const POKEMON_CATALOG_DATA = [
     134,
     86,
     86,
-    11524
+    11524,
+    772,
+    772
   ],
   [
     774,
@@ -7738,7 +9284,9 @@ const POKEMON_CATALOG_DATA = [
     94,
     96,
     96,
-    9024
+    9024,
+    null,
+    774
   ],
   [
     775,
@@ -7748,7 +9296,9 @@ const POKEMON_CATALOG_DATA = [
     128,
     60,
     60,
-    7680
+    7680,
+    null,
+    775
   ],
   [
     776,
@@ -7758,7 +9308,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     77,
     77,
-    6930
+    6930,
+    null,
+    776
   ],
   [
     777,
@@ -7768,7 +9320,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     96,
     96,
-    4320
+    4320,
+    null,
+    777
   ],
   [
     778,
@@ -7778,7 +9332,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     96,
     96,
-    6048
+    6048,
+    null,
+    778
   ],
   [
     779,
@@ -7788,7 +9344,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     96,
     96,
-    9216
+    9216,
+    null,
+    779
   ],
   [
     780,
@@ -7798,7 +9356,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     120,
     120,
-    1440
+    1440,
+    null,
+    780
   ],
   [
     781,
@@ -7808,7 +9368,9 @@ const POKEMON_CATALOG_DATA = [
     139,
     91,
     91,
-    12649
+    12649,
+    null,
+    781
   ],
   [
     782,
@@ -7818,7 +9380,9 @@ const POKEMON_CATALOG_DATA = [
     111,
     96,
     96,
-    10656
+    10656,
+    null,
+    782
   ],
   [
     783,
@@ -7828,7 +9392,9 @@ const POKEMON_CATALOG_DATA = [
     106,
     76,
     76,
-    8056
+    8056,
+    782,
+    782
   ],
   [
     784,
@@ -7838,7 +9404,9 @@ const POKEMON_CATALOG_DATA = [
     89,
     108,
     108,
-    9612
+    9612,
+    783,
+    782
   ],
   [
     785,
@@ -7848,7 +9416,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     100,
     100,
-    5600
+    5600,
+    null,
+    785
   ],
   [
     786,
@@ -7858,7 +9428,9 @@ const POKEMON_CATALOG_DATA = [
     15,
     126,
     126,
-    1890
+    1890,
+    null,
+    786
   ],
   [
     787,
@@ -7868,7 +9440,9 @@ const POKEMON_CATALOG_DATA = [
     85,
     92,
     92,
-    7820
+    7820,
+    null,
+    787
   ],
   [
     788,
@@ -7878,7 +9452,9 @@ const POKEMON_CATALOG_DATA = [
     14,
     126,
     126,
-    1764
+    1764,
+    null,
+    788
   ],
   [
     789,
@@ -7888,7 +9464,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     87,
     87,
-    8004
+    8004,
+    null,
+    789
   ],
   [
     790,
@@ -7898,7 +9476,9 @@ const POKEMON_CATALOG_DATA = [
     100,
     62,
     62,
-    6200
+    6200,
+    789,
+    789
   ],
   [
     791,
@@ -7908,7 +9488,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     99,
     99,
-    7524
+    7524,
+    790,
+    789
   ],
   [
     792,
@@ -7918,7 +9500,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     109,
     109,
-    8611
+    8611,
+    790,
+    789
   ],
   [
     793,
@@ -7928,7 +9512,9 @@ const POKEMON_CATALOG_DATA = [
     114,
     87,
     87,
-    9918
+    9918,
+    null,
+    793
   ],
   [
     794,
@@ -7938,7 +9524,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     96,
     96,
-    6912
+    6912,
+    null,
+    794
   ],
   [
     795,
@@ -7948,7 +9536,9 @@ const POKEMON_CATALOG_DATA = [
     97,
     93,
     93,
-    9021
+    9021,
+    null,
+    795
   ],
   [
     796,
@@ -7958,7 +9548,9 @@ const POKEMON_CATALOG_DATA = [
     124,
     102,
     102,
-    12648
+    12648,
+    null,
+    796
   ],
   [
     797,
@@ -7968,7 +9560,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     117,
     117,
-    8424
+    8424,
+    null,
+    797
   ],
   [
     798,
@@ -7978,7 +9572,9 @@ const POKEMON_CATALOG_DATA = [
     93,
     88,
     88,
-    8184
+    8184,
+    null,
+    798
   ],
   [
     799,
@@ -7988,7 +9584,9 @@ const POKEMON_CATALOG_DATA = [
     14,
     99,
     99,
-    1386
+    1386,
+    null,
+    799
   ],
   [
     800,
@@ -7998,7 +9596,9 @@ const POKEMON_CATALOG_DATA = [
     29,
     96,
     96,
-    2784
+    2784,
+    null,
+    800
   ],
   [
     801,
@@ -8008,7 +9608,9 @@ const POKEMON_CATALOG_DATA = [
     94,
     68,
     68,
-    6392
+    6392,
+    null,
+    801
   ],
   [
     802,
@@ -8018,7 +9620,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     51,
     51,
-    3162
+    3162,
+    null,
+    802
   ],
   [
     803,
@@ -8028,7 +9632,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     63,
     63,
-    2520
+    2520,
+    null,
+    803
   ],
   [
     804,
@@ -8038,7 +9644,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     94,
     94,
-    1128
+    1128,
+    803,
+    803
   ],
   [
     805,
@@ -8048,7 +9656,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     100,
     100,
-    9200
+    9200,
+    null,
+    805
   ],
   [
     806,
@@ -8058,7 +9668,9 @@ const POKEMON_CATALOG_DATA = [
     112,
     143,
     143,
-    16016
+    16016,
+    null,
+    806
   ],
   [
     807,
@@ -8068,7 +9680,9 @@ const POKEMON_CATALOG_DATA = [
     124,
     96,
     96,
-    11904
+    11904,
+    null,
+    807
   ],
   [
     808,
@@ -8078,7 +9692,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     38,
     38,
-    2014
+    2014,
+    null,
+    808
   ],
   [
     809,
@@ -8088,7 +9704,9 @@ const POKEMON_CATALOG_DATA = [
     28,
     101,
     101,
-    2828
+    2828,
+    808,
+    null
   ],
   [
     810,
@@ -8098,7 +9716,9 @@ const POKEMON_CATALOG_DATA = [
     56,
     96,
     96,
-    5376
+    5376,
+    null,
+    810
   ],
   [
     811,
@@ -8108,7 +9728,9 @@ const POKEMON_CATALOG_DATA = [
     83,
     58,
     58,
-    4814
+    4814,
+    810,
+    810
   ],
   [
     812,
@@ -8118,7 +9740,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    811,
+    810
   ],
   [
     813,
@@ -8128,7 +9752,9 @@ const POKEMON_CATALOG_DATA = [
     73,
     96,
     96,
-    7008
+    7008,
+    null,
+    813
   ],
   [
     814,
@@ -8138,7 +9764,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     58,
     58,
-    3480
+    3480,
+    813,
+    813
   ],
   [
     815,
@@ -8148,7 +9776,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    814,
+    813
   ],
   [
     816,
@@ -8158,7 +9788,9 @@ const POKEMON_CATALOG_DATA = [
     45,
     96,
     96,
-    4320
+    4320,
+    null,
+    816
   ],
   [
     817,
@@ -8168,7 +9800,9 @@ const POKEMON_CATALOG_DATA = [
     139,
     53,
     53,
-    7367
+    7367,
+    816,
+    816
   ],
   [
     818,
@@ -8178,7 +9812,9 @@ const POKEMON_CATALOG_DATA = [
     95,
     80,
     80,
-    7600
+    7600,
+    817,
+    816
   ],
   [
     819,
@@ -8188,7 +9824,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    819
   ],
   [
     820,
@@ -8198,7 +9836,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    819,
+    819
   ],
   [
     821,
@@ -8208,7 +9848,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     96,
     96,
-    8064
+    8064,
+    null,
+    821
   ],
   [
     822,
@@ -8218,7 +9860,9 @@ const POKEMON_CATALOG_DATA = [
     18,
     93,
     93,
-    1674
+    1674,
+    821,
+    821
   ],
   [
     823,
@@ -8228,7 +9872,9 @@ const POKEMON_CATALOG_DATA = [
     97,
     96,
     96,
-    9312
+    9312,
+    822,
+    821
   ],
   [
     824,
@@ -8238,7 +9884,9 @@ const POKEMON_CATALOG_DATA = [
     10,
     45,
     45,
-    450
+    450,
+    null,
+    824
   ],
   [
     825,
@@ -8248,7 +9896,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    824,
+    824
   ],
   [
     826,
@@ -8258,7 +9908,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    825,
+    824
   ],
   [
     827,
@@ -8268,7 +9920,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    827
   ],
   [
     828,
@@ -8278,7 +9932,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    827,
+    827
   ],
   [
     829,
@@ -8288,7 +9944,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    829
   ],
   [
     830,
@@ -8298,7 +9956,9 @@ const POKEMON_CATALOG_DATA = [
     49,
     72,
     72,
-    3528
+    3528,
+    829,
+    829
   ],
   [
     831,
@@ -8308,7 +9968,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     96,
     96,
-    4992
+    4992,
+    null,
+    831
   ],
   [
     832,
@@ -8318,7 +9980,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     76,
     76,
-    5472
+    5472,
+    831,
+    831
   ],
   [
     833,
@@ -8328,7 +9992,9 @@ const POKEMON_CATALOG_DATA = [
     55,
     47,
     47,
-    2585
+    2585,
+    null,
+    833
   ],
   [
     834,
@@ -8338,7 +10004,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     96,
     96,
-    3744
+    3744,
+    833,
+    833
   ],
   [
     835,
@@ -8348,7 +10016,9 @@ const POKEMON_CATALOG_DATA = [
     47,
     96,
     96,
-    4512
+    4512,
+    null,
+    835
   ],
   [
     836,
@@ -8358,7 +10028,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     96,
     96,
-    2304
+    2304,
+    835,
+    835
   ],
   [
     837,
@@ -8368,7 +10040,9 @@ const POKEMON_CATALOG_DATA = [
     41,
     96,
     96,
-    3936
+    3936,
+    null,
+    837
   ],
   [
     838,
@@ -8378,7 +10052,9 @@ const POKEMON_CATALOG_DATA = [
     91,
     65,
     65,
-    5915
+    5915,
+    837,
+    837
   ],
   [
     839,
@@ -8388,7 +10064,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     84,
     84,
-    7728
+    7728,
+    838,
+    837
   ],
   [
     840,
@@ -8398,7 +10076,9 @@ const POKEMON_CATALOG_DATA = [
     110,
     42,
     42,
-    4620
+    4620,
+    null,
+    840
   ],
   [
     841,
@@ -8408,7 +10088,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    840,
+    840
   ],
   [
     842,
@@ -8418,7 +10100,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    840,
+    840
   ],
   [
     843,
@@ -8428,7 +10112,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     50,
     50,
-    3500
+    3500,
+    null,
+    843
   ],
   [
     844,
@@ -8438,7 +10124,9 @@ const POKEMON_CATALOG_DATA = [
     132,
     87,
     87,
-    11484
+    11484,
+    843,
+    843
   ],
   [
     845,
@@ -8448,7 +10136,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     78,
     78,
-    4212
+    4212,
+    null,
+    845
   ],
   [
     846,
@@ -8458,7 +10148,9 @@ const POKEMON_CATALOG_DATA = [
     89,
     104,
     104,
-    9256
+    9256,
+    null,
+    846
   ],
   [
     847,
@@ -8468,7 +10160,9 @@ const POKEMON_CATALOG_DATA = [
     14,
     87,
     87,
-    1218
+    1218,
+    846,
+    846
   ],
   [
     848,
@@ -8478,7 +10172,9 @@ const POKEMON_CATALOG_DATA = [
     14,
     96,
     96,
-    1344
+    1344,
+    null,
+    848
   ],
   [
     849,
@@ -8488,7 +10184,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     85,
     85,
-    5100
+    5100,
+    848,
+    848
   ],
   [
     850,
@@ -8498,7 +10196,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    850
   ],
   [
     851,
@@ -8508,7 +10208,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     120,
     120,
-    1440
+    1440,
+    850,
+    850
   ],
   [
     852,
@@ -8518,7 +10220,9 @@ const POKEMON_CATALOG_DATA = [
     35,
     96,
     96,
-    3360
+    3360,
+    null,
+    852
   ],
   [
     853,
@@ -8528,7 +10232,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    852,
+    852
   ],
   [
     854,
@@ -8538,7 +10244,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    854
   ],
   [
     855,
@@ -8548,7 +10256,9 @@ const POKEMON_CATALOG_DATA = [
     13,
     96,
     96,
-    1248
+    1248,
+    854,
+    854
   ],
   [
     856,
@@ -8558,7 +10268,9 @@ const POKEMON_CATALOG_DATA = [
     17,
     96,
     96,
-    1632
+    1632,
+    null,
+    856
   ],
   [
     857,
@@ -8568,7 +10280,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     96,
     96,
-    3072
+    3072,
+    856,
+    856
   ],
   [
     858,
@@ -8578,7 +10292,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     83,
     83,
-    6972
+    6972,
+    857,
+    856
   ],
   [
     859,
@@ -8588,7 +10304,9 @@ const POKEMON_CATALOG_DATA = [
     59,
     54,
     54,
-    3186
+    3186,
+    null,
+    859
   ],
   [
     860,
@@ -8598,7 +10316,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    859,
+    859
   ],
   [
     861,
@@ -8608,7 +10328,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     93,
     93,
-    6138
+    6138,
+    860,
+    859
   ],
   [
     862,
@@ -8618,7 +10340,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     80,
     80,
-    3040
+    3040,
+    264,
+    263
   ],
   [
     863,
@@ -8628,7 +10352,9 @@ const POKEMON_CATALOG_DATA = [
     103,
     64,
     64,
-    6592
+    6592,
+    52,
+    52
   ],
   [
     864,
@@ -8638,7 +10364,9 @@ const POKEMON_CATALOG_DATA = [
     145,
     110,
     110,
-    15950
+    15950,
+    222,
+    222
   ],
   [
     865,
@@ -8648,7 +10376,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     96,
     96,
-    5184
+    5184,
+    83,
+    83
   ],
   [
     866,
@@ -8658,7 +10388,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     69,
     69,
-    6210
+    6210,
+    122,
+    439
   ],
   [
     867,
@@ -8668,7 +10400,9 @@ const POKEMON_CATALOG_DATA = [
     65,
     122,
     122,
-    7930
+    7930,
+    562,
+    562
   ],
   [
     868,
@@ -8678,7 +10412,9 @@ const POKEMON_CATALOG_DATA = [
     57,
     96,
     96,
-    5472
+    5472,
+    null,
+    868
   ],
   [
     869,
@@ -8688,7 +10424,9 @@ const POKEMON_CATALOG_DATA = [
     104,
     70,
     70,
-    7280
+    7280,
+    868,
+    868
   ],
   [
     870,
@@ -8698,7 +10436,9 @@ const POKEMON_CATALOG_DATA = [
     18,
     96,
     96,
-    1728
+    1728,
+    null,
+    870
   ],
   [
     871,
@@ -8708,7 +10448,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     96,
     96,
-    4128
+    4128,
+    null,
+    871
   ],
   [
     872,
@@ -8718,7 +10460,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     96,
     96,
-    3840
+    3840,
+    null,
+    872
   ],
   [
     873,
@@ -8728,7 +10472,9 @@ const POKEMON_CATALOG_DATA = [
     22,
     94,
     94,
-    2068
+    2068,
+    872,
+    872
   ],
   [
     874,
@@ -8738,7 +10484,9 @@ const POKEMON_CATALOG_DATA = [
     132,
     83,
     83,
-    10956
+    10956,
+    null,
+    874
   ],
   [
     875,
@@ -8748,7 +10496,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     85,
     85,
-    6120
+    6120,
+    null,
+    875
   ],
   [
     876,
@@ -8758,7 +10508,9 @@ const POKEMON_CATALOG_DATA = [
     74,
     55,
     55,
-    4070
+    4070,
+    null,
+    876
   ],
   [
     877,
@@ -8768,7 +10520,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     43,
     43,
-    1419
+    1419,
+    null,
+    877
   ],
   [
     878,
@@ -8778,7 +10532,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     78,
     78,
-    6240
+    6240,
+    null,
+    878
   ],
   [
     879,
@@ -8788,7 +10544,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    878,
+    878
   ],
   [
     880,
@@ -8798,7 +10556,9 @@ const POKEMON_CATALOG_DATA = [
     42,
     87,
     87,
-    3654
+    3654,
+    null,
+    880
   ],
   [
     881,
@@ -8808,7 +10568,9 @@ const POKEMON_CATALOG_DATA = [
     115,
     96,
     96,
-    11040
+    11040,
+    null,
+    881
   ],
   [
     882,
@@ -8818,7 +10580,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     84,
     84,
-    6552
+    6552,
+    null,
+    882
   ],
   [
     883,
@@ -8828,7 +10592,9 @@ const POKEMON_CATALOG_DATA = [
     134,
     91,
     91,
-    12194
+    12194,
+    null,
+    883
   ],
   [
     884,
@@ -8838,7 +10604,9 @@ const POKEMON_CATALOG_DATA = [
     8,
     96,
     96,
-    768
+    768,
+    null,
+    884
   ],
   [
     885,
@@ -8848,7 +10616,9 @@ const POKEMON_CATALOG_DATA = [
     88,
     59,
     59,
-    5192
+    5192,
+    null,
+    885
   ],
   [
     886,
@@ -8858,7 +10628,9 @@ const POKEMON_CATALOG_DATA = [
     105,
     88,
     88,
-    9240
+    9240,
+    885,
+    885
   ],
   [
     887,
@@ -8868,7 +10640,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     92,
     92,
-    6992
+    6992,
+    886,
+    885
   ],
   [
     888,
@@ -8878,7 +10652,9 @@ const POKEMON_CATALOG_DATA = [
     78,
     89,
     89,
-    6942
+    6942,
+    null,
+    888
   ],
   [
     889,
@@ -8888,7 +10664,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     96,
     96,
-    6528
+    6528,
+    null,
+    889
   ],
   [
     890,
@@ -8898,7 +10676,9 @@ const POKEMON_CATALOG_DATA = [
     120,
     111,
     111,
-    13320
+    13320,
+    null,
+    890
   ],
   [
     891,
@@ -8908,7 +10688,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     96,
     96,
-    3072
+    3072,
+    null,
+    891
   ],
   [
     892,
@@ -8918,7 +10700,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     96,
     96,
-    3072
+    3072,
+    891,
+    891
   ],
   [
     893,
@@ -8928,7 +10712,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    893
   ],
   [
     894,
@@ -8938,7 +10724,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     129,
     129,
-    1548
+    1548,
+    null,
+    894
   ],
   [
     895,
@@ -8948,7 +10736,9 @@ const POKEMON_CATALOG_DATA = [
     144,
     84,
     84,
-    12096
+    12096,
+    null,
+    895
   ],
   [
     896,
@@ -8958,7 +10748,9 @@ const POKEMON_CATALOG_DATA = [
     93,
     84,
     84,
-    7812
+    7812,
+    null,
+    896
   ],
   [
     897,
@@ -8968,7 +10760,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    897
   ],
   [
     898,
@@ -8978,7 +10772,9 @@ const POKEMON_CATALOG_DATA = [
     95,
     109,
     109,
-    10355
+    10355,
+    null,
+    898
   ],
   [
     899,
@@ -8988,7 +10784,9 @@ const POKEMON_CATALOG_DATA = [
     100,
     120,
     120,
-    12000
+    12000,
+    234,
+    234
   ],
   [
     900,
@@ -8998,7 +10796,9 @@ const POKEMON_CATALOG_DATA = [
     110,
     132,
     132,
-    14520
+    14520,
+    123,
+    123
   ],
   [
     901,
@@ -9008,7 +10808,9 @@ const POKEMON_CATALOG_DATA = [
     75,
     78,
     78,
-    5850
+    5850,
+    217,
+    216
   ],
   [
     902,
@@ -9018,7 +10820,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     110,
     110,
-    9900
+    9900,
+    550,
+    550
   ],
   [
     903,
@@ -9028,7 +10832,9 @@ const POKEMON_CATALOG_DATA = [
     61,
     96,
     96,
-    5856
+    5856,
+    215,
+    215
   ],
   [
     904,
@@ -9038,7 +10844,9 @@ const POKEMON_CATALOG_DATA = [
     101,
     107,
     107,
-    10807
+    10807,
+    211,
+    211
   ],
   [
     905,
@@ -9048,7 +10856,9 @@ const POKEMON_CATALOG_DATA = [
     113,
     96,
     96,
-    10848
+    10848,
+    null,
+    905
   ],
   [
     906,
@@ -9058,7 +10868,9 @@ const POKEMON_CATALOG_DATA = [
     53,
     96,
     96,
-    5088
+    5088,
+    null,
+    906
   ],
   [
     907,
@@ -9068,7 +10880,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     97,
     97,
-    6790
+    6790,
+    906,
+    906
   ],
   [
     908,
@@ -9078,7 +10892,9 @@ const POKEMON_CATALOG_DATA = [
     68,
     96,
     96,
-    6528
+    6528,
+    907,
+    906
   ],
   [
     909,
@@ -9088,7 +10904,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     96,
     96,
-    2496
+    2496,
+    null,
+    909
   ],
   [
     910,
@@ -9098,7 +10916,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     96,
     96,
-    7584
+    7584,
+    909,
+    909
   ],
   [
     911,
@@ -9108,7 +10928,9 @@ const POKEMON_CATALOG_DATA = [
     88,
     110,
     110,
-    9680
+    9680,
+    910,
+    909
   ],
   [
     912,
@@ -9118,7 +10940,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     96,
     96,
-    5952
+    5952,
+    null,
+    912
   ],
   [
     913,
@@ -9128,7 +10952,9 @@ const POKEMON_CATALOG_DATA = [
     70,
     96,
     96,
-    6720
+    6720,
+    912,
+    912
   ],
   [
     914,
@@ -9138,7 +10964,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     96,
     96,
-    5184
+    5184,
+    913,
+    912
   ],
   [
     915,
@@ -9148,7 +10976,9 @@ const POKEMON_CATALOG_DATA = [
     39,
     100,
     100,
-    3900
+    3900,
+    null,
+    915
   ],
   [
     916,
@@ -9158,7 +10988,9 @@ const POKEMON_CATALOG_DATA = [
     8,
     80,
     80,
-    640
+    640,
+    915,
+    915
   ],
   [
     917,
@@ -9168,7 +11000,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    917
   ],
   [
     918,
@@ -9178,7 +11012,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     100,
     100,
-    8700
+    8700,
+    917,
+    917
   ],
   [
     919,
@@ -9188,7 +11024,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     85,
     85,
-    6970
+    6970,
+    null,
+    919
   ],
   [
     920,
@@ -9198,7 +11036,9 @@ const POKEMON_CATALOG_DATA = [
     87,
     96,
     96,
-    8352
+    8352,
+    919,
+    919
   ],
   [
     921,
@@ -9208,7 +11048,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    921
   ],
   [
     922,
@@ -9218,7 +11060,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    921,
+    921
   ],
   [
     923,
@@ -9228,7 +11072,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    922,
+    921
   ],
   [
     924,
@@ -9238,7 +11084,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     77,
     77,
-    6160
+    6160,
+    null,
+    924
   ],
   [
     925,
@@ -9248,7 +11096,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     78,
     78,
-    6240
+    6240,
+    924,
+    924
   ],
   [
     926,
@@ -9258,7 +11108,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     96,
     96,
-    6048
+    6048,
+    null,
+    926
   ],
   [
     927,
@@ -9268,7 +11120,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     120,
     120,
-    8640
+    8640,
+    926,
+    926
   ],
   [
     928,
@@ -9278,7 +11132,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     100,
     100,
-    3200
+    3200,
+    null,
+    928
   ],
   [
     929,
@@ -9288,7 +11144,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     100,
     100,
-    4000
+    4000,
+    928,
+    928
   ],
   [
     930,
@@ -9298,7 +11156,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     100,
     100,
-    2400
+    2400,
+    929,
+    928
   ],
   [
     931,
@@ -9308,7 +11168,9 @@ const POKEMON_CATALOG_DATA = [
     72,
     96,
     96,
-    6912
+    6912,
+    null,
+    931
   ],
   [
     932,
@@ -9318,7 +11180,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     96,
     96,
-    3456
+    3456,
+    null,
+    932
   ],
   [
     933,
@@ -9328,7 +11192,9 @@ const POKEMON_CATALOG_DATA = [
     21,
     96,
     96,
-    2016
+    2016,
+    932,
+    932
   ],
   [
     934,
@@ -9338,7 +11204,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     120,
     120,
-    3120
+    3120,
+    933,
+    932
   ],
   [
     935,
@@ -9348,7 +11216,9 @@ const POKEMON_CATALOG_DATA = [
     20,
     100,
     100,
-    2000
+    2000,
+    null,
+    935
   ],
   [
     936,
@@ -9358,7 +11228,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     100,
     100,
-    2400
+    2400,
+    935,
+    935
   ],
   [
     937,
@@ -9368,7 +11240,9 @@ const POKEMON_CATALOG_DATA = [
     5,
     120,
     120,
-    600
+    600,
+    935,
+    935
   ],
   [
     938,
@@ -9378,7 +11252,9 @@ const POKEMON_CATALOG_DATA = [
     85,
     71,
     71,
-    6035
+    6035,
+    null,
+    938
   ],
   [
     939,
@@ -9388,7 +11264,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     96,
     96,
-    3072
+    3072,
+    938,
+    938
   ],
   [
     940,
@@ -9398,7 +11276,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     100,
     100,
-    1600
+    1600,
+    null,
+    940
   ],
   [
     941,
@@ -9408,7 +11288,9 @@ const POKEMON_CATALOG_DATA = [
     15,
     120,
     120,
-    1800
+    1800,
+    940,
+    940
   ],
   [
     942,
@@ -9418,7 +11300,9 @@ const POKEMON_CATALOG_DATA = [
     81,
     100,
     100,
-    8100
+    8100,
+    null,
+    942
   ],
   [
     943,
@@ -9428,7 +11312,9 @@ const POKEMON_CATALOG_DATA = [
     74,
     100,
     100,
-    7400
+    7400,
+    942,
+    942
   ],
   [
     944,
@@ -9438,7 +11324,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     76,
     76,
-    1216
+    1216,
+    null,
+    944
   ],
   [
     945,
@@ -9448,7 +11336,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     76,
     76,
-    1216
+    1216,
+    944,
+    944
   ],
   [
     946,
@@ -9458,7 +11348,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     96,
     96,
-    3648
+    3648,
+    null,
+    946
   ],
   [
     947,
@@ -9468,7 +11360,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     96,
     96,
-    3648
+    3648,
+    946,
+    946
   ],
   [
     948,
@@ -9478,7 +11372,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     123,
     123,
-    5904
+    5904,
+    null,
+    948
   ],
   [
     949,
@@ -9488,7 +11384,9 @@ const POKEMON_CATALOG_DATA = [
     8,
     96,
     96,
-    768
+    768,
+    948,
+    948
   ],
   [
     950,
@@ -9498,7 +11396,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     123,
     123,
-    5904
+    5904,
+    null,
+    950
   ],
   [
     951,
@@ -9508,7 +11408,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    null,
+    951
   ],
   [
     952,
@@ -9518,7 +11420,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     96,
     96,
-    1152
+    1152,
+    951,
+    951
   ],
   [
     953,
@@ -9528,7 +11432,9 @@ const POKEMON_CATALOG_DATA = [
     10,
     85,
     85,
-    850
+    850,
+    null,
+    953
   ],
   [
     954,
@@ -9538,7 +11444,9 @@ const POKEMON_CATALOG_DATA = [
     33,
     100,
     100,
-    3300
+    3300,
+    953,
+    953
   ],
   [
     955,
@@ -9548,7 +11456,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     96,
     96,
-    5952
+    5952,
+    null,
+    955
   ],
   [
     956,
@@ -9558,7 +11468,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     96,
     96,
-    5952
+    5952,
+    955,
+    955
   ],
   [
     957,
@@ -9568,7 +11480,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     100,
     100,
-    3600
+    3600,
+    null,
+    957
   ],
   [
     958,
@@ -9578,7 +11492,9 @@ const POKEMON_CATALOG_DATA = [
     107,
     100,
     100,
-    10700
+    10700,
+    957,
+    957
   ],
   [
     959,
@@ -9588,7 +11504,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     150,
     150,
-    2400
+    2400,
+    958,
+    957
   ],
   [
     960,
@@ -9598,7 +11516,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     96,
     96,
-    4992
+    4992,
+    null,
+    960
   ],
   [
     961,
@@ -9608,7 +11528,9 @@ const POKEMON_CATALOG_DATA = [
     97,
     96,
     96,
-    9312
+    9312,
+    960,
+    960
   ],
   [
     962,
@@ -9618,7 +11540,9 @@ const POKEMON_CATALOG_DATA = [
     7,
     100,
     100,
-    700
+    700,
+    null,
+    962
   ],
   [
     963,
@@ -9628,7 +11552,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     100,
     100,
-    7600
+    7600,
+    null,
+    963
   ],
   [
     964,
@@ -9638,7 +11564,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     100,
     100,
-    7600
+    7600,
+    963,
+    963
   ],
   [
     965,
@@ -9648,7 +11576,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     85,
     85,
-    4590
+    4590,
+    null,
+    965
   ],
   [
     966,
@@ -9658,7 +11588,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     122,
     122,
-    9638
+    9638,
+    965,
+    965
   ],
   [
     967,
@@ -9668,7 +11600,9 @@ const POKEMON_CATALOG_DATA = [
     93,
     88,
     88,
-    8184
+    8184,
+    null,
+    967
   ],
   [
     968,
@@ -9678,7 +11612,9 @@ const POKEMON_CATALOG_DATA = [
     94,
     100,
     100,
-    9400
+    9400,
+    null,
+    968
   ],
   [
     969,
@@ -9688,7 +11624,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     75,
     75,
-    5700
+    5700,
+    null,
+    969
   ],
   [
     970,
@@ -9698,7 +11636,9 @@ const POKEMON_CATALOG_DATA = [
     38,
     96,
     96,
-    3648
+    3648,
+    969,
+    969
   ],
   [
     971,
@@ -9708,7 +11648,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     96,
     96,
-    2496
+    2496,
+    null,
+    971
   ],
   [
     972,
@@ -9718,7 +11660,9 @@ const POKEMON_CATALOG_DATA = [
     12,
     64,
     64,
-    768
+    768,
+    971,
+    971
   ],
   [
     973,
@@ -9728,7 +11672,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     96,
     96,
-    7872
+    7872,
+    null,
+    973
   ],
   [
     974,
@@ -9738,7 +11684,9 @@ const POKEMON_CATALOG_DATA = [
     58,
     85,
     85,
-    4930
+    4930,
+    null,
+    974
   ],
   [
     975,
@@ -9748,7 +11696,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     100,
     100,
-    9600
+    9600,
+    974,
+    974
   ],
   [
     976,
@@ -9758,7 +11708,9 @@ const POKEMON_CATALOG_DATA = [
     52,
     96,
     96,
-    4992
+    4992,
+    null,
+    976
   ],
   [
     977,
@@ -9768,7 +11720,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     96,
     96,
-    3840
+    3840,
+    null,
+    977
   ],
   [
     978,
@@ -9778,7 +11732,9 @@ const POKEMON_CATALOG_DATA = [
     36,
     34,
     34,
-    1224
+    1224,
+    null,
+    978
   ],
   [
     979,
@@ -9788,7 +11744,9 @@ const POKEMON_CATALOG_DATA = [
     134,
     96,
     96,
-    12864
+    12864,
+    57,
+    56
   ],
   [
     980,
@@ -9798,7 +11756,9 @@ const POKEMON_CATALOG_DATA = [
     91,
     74,
     74,
-    6734
+    6734,
+    194,
+    194
   ],
   [
     981,
@@ -9808,7 +11768,9 @@ const POKEMON_CATALOG_DATA = [
     40,
     96,
     96,
-    3840
+    3840,
+    203,
+    203
   ],
   [
     982,
@@ -9818,7 +11780,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     96,
     96,
-    5952
+    5952,
+    206,
+    206
   ],
   [
     983,
@@ -9828,7 +11792,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     120,
     120,
-    3840
+    3840,
+    625,
+    624
   ],
   [
     984,
@@ -9838,7 +11804,9 @@ const POKEMON_CATALOG_DATA = [
     154,
     98,
     98,
-    15092
+    15092,
+    null,
+    984
   ],
   [
     985,
@@ -9848,7 +11816,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     69,
     69,
-    5658
+    5658,
+    null,
+    985
   ],
   [
     986,
@@ -9858,7 +11828,9 @@ const POKEMON_CATALOG_DATA = [
     43,
     73,
     73,
-    3139
+    3139,
+    null,
+    986
   ],
   [
     987,
@@ -9868,7 +11840,9 @@ const POKEMON_CATALOG_DATA = [
     96,
     72,
     72,
-    6912
+    6912,
+    null,
+    987
   ],
   [
     988,
@@ -9878,7 +11852,9 @@ const POKEMON_CATALOG_DATA = [
     92,
     77,
     77,
-    7084
+    7084,
+    null,
+    988
   ],
   [
     989,
@@ -9888,7 +11864,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     123,
     123,
-    5904
+    5904,
+    null,
+    989
   ],
   [
     990,
@@ -9898,7 +11876,9 @@ const POKEMON_CATALOG_DATA = [
     64,
     72,
     72,
-    4608
+    4608,
+    null,
+    990
   ],
   [
     991,
@@ -9908,7 +11888,9 @@ const POKEMON_CATALOG_DATA = [
     21,
     96,
     96,
-    2016
+    2016,
+    null,
+    991
   ],
   [
     992,
@@ -9918,7 +11900,9 @@ const POKEMON_CATALOG_DATA = [
     140,
     107,
     107,
-    14980
+    14980,
+    null,
+    992
   ],
   [
     993,
@@ -9928,7 +11912,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     123,
     123,
-    5904
+    5904,
+    null,
+    993
   ],
   [
     994,
@@ -9938,7 +11924,9 @@ const POKEMON_CATALOG_DATA = [
     48,
     123,
     123,
-    5904
+    5904,
+    null,
+    994
   ],
   [
     995,
@@ -9948,7 +11936,9 @@ const POKEMON_CATALOG_DATA = [
     32,
     92,
     92,
-    2944
+    2944,
+    null,
+    995
   ],
   [
     996,
@@ -9958,7 +11948,9 @@ const POKEMON_CATALOG_DATA = [
     84,
     37,
     37,
-    3108
+    3108,
+    null,
+    996
   ],
   [
     997,
@@ -9968,7 +11960,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     57,
     57,
-    4503
+    4503,
+    996,
+    996
   ],
   [
     998,
@@ -9978,7 +11972,9 @@ const POKEMON_CATALOG_DATA = [
     77,
     120,
     120,
-    9240
+    9240,
+    997,
+    996
   ],
   [
     999,
@@ -9988,7 +11984,9 @@ const POKEMON_CATALOG_DATA = [
     109,
     61,
     61,
-    6649
+    6649,
+    null,
+    999
   ],
   [
     1000,
@@ -9998,7 +11996,9 @@ const POKEMON_CATALOG_DATA = [
     93,
     119,
     119,
-    11067
+    11067,
+    999,
+    999
   ],
   [
     1001,
@@ -10008,7 +12008,9 @@ const POKEMON_CATALOG_DATA = [
     102,
     95,
     95,
-    9690
+    9690,
+    null,
+    1001
   ],
   [
     1002,
@@ -10018,7 +12020,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     99,
     99,
-    7524
+    7524,
+    null,
+    1002
   ],
   [
     1003,
@@ -10028,7 +12032,9 @@ const POKEMON_CATALOG_DATA = [
     80,
     97,
     97,
-    7760
+    7760,
+    null,
+    1003
   ],
   [
     1004,
@@ -10038,7 +12044,9 @@ const POKEMON_CATALOG_DATA = [
     114,
     68,
     68,
-    7752
+    7752,
+    null,
+    1004
   ],
   [
     1005,
@@ -10048,7 +12056,9 @@ const POKEMON_CATALOG_DATA = [
     16,
     128,
     128,
-    2048
+    2048,
+    null,
+    1005
   ],
   [
     1006,
@@ -10058,7 +12068,9 @@ const POKEMON_CATALOG_DATA = [
     67,
     93,
     93,
-    6231
+    6231,
+    null,
+    1006
   ],
   [
     1007,
@@ -10068,7 +12080,9 @@ const POKEMON_CATALOG_DATA = [
     82,
     156,
     156,
-    12792
+    12792,
+    null,
+    1007
   ],
   [
     1008,
@@ -10078,7 +12092,9 @@ const POKEMON_CATALOG_DATA = [
     102,
     108,
     108,
-    11016
+    11016,
+    null,
+    1008
   ],
   [
     1009,
@@ -10088,7 +12104,9 @@ const POKEMON_CATALOG_DATA = [
     90,
     147,
     147,
-    13230
+    13230,
+    null,
+    1009
   ],
   [
     1010,
@@ -10098,7 +12116,9 @@ const POKEMON_CATALOG_DATA = [
     62,
     96,
     96,
-    5952
+    5952,
+    null,
+    1010
   ],
   [
     1011,
@@ -10108,7 +12128,9 @@ const POKEMON_CATALOG_DATA = [
     66,
     96,
     96,
-    6336
+    6336,
+    840,
+    840
   ],
   [
     1012,
@@ -10118,7 +12140,9 @@ const POKEMON_CATALOG_DATA = [
     91,
     96,
     96,
-    8736
+    8736,
+    null,
+    1012
   ],
   [
     1013,
@@ -10128,7 +12152,9 @@ const POKEMON_CATALOG_DATA = [
     24,
     70,
     70,
-    1680
+    1680,
+    1012,
+    1012
   ],
   [
     1014,
@@ -10138,7 +12164,9 @@ const POKEMON_CATALOG_DATA = [
     123,
     96,
     96,
-    11808
+    11808,
+    null,
+    1014
   ],
   [
     1015,
@@ -10148,7 +12176,9 @@ const POKEMON_CATALOG_DATA = [
     26,
     64,
     64,
-    1664
+    1664,
+    null,
+    1015
   ],
   [
     1016,
@@ -10158,7 +12188,9 @@ const POKEMON_CATALOG_DATA = [
     132,
     96,
     96,
-    12672
+    12672,
+    null,
+    1016
   ],
   [
     1017,
@@ -10168,7 +12200,9 @@ const POKEMON_CATALOG_DATA = [
     63,
     77,
     77,
-    4851
+    4851,
+    null,
+    1017
   ],
   [
     1018,
@@ -10178,7 +12212,9 @@ const POKEMON_CATALOG_DATA = [
     54,
     96,
     96,
-    5184
+    5184,
+    884,
+    884
   ],
   [
     1019,
@@ -10188,7 +12224,9 @@ const POKEMON_CATALOG_DATA = [
     60,
     80,
     80,
-    4800
+    4800,
+    1011,
+    840
   ],
   [
     1020,
@@ -10198,7 +12236,9 @@ const POKEMON_CATALOG_DATA = [
     76,
     90,
     90,
-    6840
+    6840,
+    null,
+    1020
   ],
   [
     1021,
@@ -10208,7 +12248,9 @@ const POKEMON_CATALOG_DATA = [
     79,
     96,
     96,
-    7584
+    7584,
+    null,
+    1021
   ],
   [
     1022,
@@ -10218,7 +12260,9 @@ const POKEMON_CATALOG_DATA = [
     8,
     96,
     96,
-    768
+    768,
+    null,
+    1022
   ],
   [
     1023,
@@ -10228,7 +12272,9 @@ const POKEMON_CATALOG_DATA = [
     85,
     96,
     96,
-    8160
+    8160,
+    null,
+    1023
   ],
   [
     1024,
@@ -10238,7 +12284,9 @@ const POKEMON_CATALOG_DATA = [
     69,
     65,
     65,
-    4485
+    4485,
+    null,
+    1024
   ],
   [
     1025,
@@ -10248,6 +12296,8 @@ const POKEMON_CATALOG_DATA = [
     137,
     77,
     77,
-    10549
+    10549,
+    null,
+    1025
   ]
 ];

@@ -8,6 +8,7 @@ salvo no navegador e o projeto nao precisa de backend ou compilacao.
 ## O que ja funciona
 
 - Catalogo com as 1.025 especies e busca por nome ou ID.
+- Escolha direta apenas de especies-base; evolucoes aparecem com cadeado.
 - Sprites normais e Shiny animados em um gramado responsivo.
 - Fome, felicidade, energia, nivel e XP.
 - Comida, brincadeira, treino e descanso manual na Pokebola.
@@ -54,8 +55,8 @@ Evoluir e opcional. Um Bulbasaur de nivel 100 continua podendo usar a
 aparencia de Bulbasaur, Ivysaur ou Venusaur que estiver desbloqueada, sem perder
 nivel, XP ou atributos.
 
-Para trocar de forma ou de cor, abra a **Pokebola no topo** e entre na aba
-**Aparencia**. A versao Shiny aparece depois de 30 dias de vinculo.
+Para trocar de forma ou usar a versao Shiny, abra a **Pokebola no topo** e
+entre na aba **Aparencia**. A versao Shiny aparece depois de 30 dias de vinculo.
 
 ## Como trocar de Pokemon
 
@@ -63,8 +64,13 @@ Abra **Companheiros** pelo botao lateral ou por **Mais > Companheiros**. Busque
 pelo nome, identificador textual ou numero da Pokedex, como `Pikachu`,
 `pikachu`, `25` ou `#025`, e selecione o resultado.
 
-As 1.025 especies possuem progresso separado. Apenas os resultados da busca
-sao carregados na tela, evitando carregar todas as sprite sheets de uma vez.
+Somente especies-base podem ser escolhidas diretamente. Evolucoes continuam
+pesquisaveis, mas aparecem com cadeado e informam sua especie anterior. Na
+familia Bulbasaur, Ivysaur e Venusaur sao liberados nos niveis 16 e 32 pela
+aba **Aparencia**.
+
+As especies-base possuem progresso separado. Apenas os resultados da busca sao
+carregados na tela, evitando carregar todas as sprite sheets de uma vez.
 
 Para atualizar o catalogo depois de adicionar novos assets:
 
@@ -73,7 +79,7 @@ node scripts/generate-pokemon-catalog.mjs
 ```
 
 O gerador usa `front-index.json`, confere os sprites Normal e Shiny e associa
-cada especie ao numero oficial da Pokedex.
+cada especie ao numero oficial da Pokedex e a sua cadeia de evolucao.
 
 ## Arquivos principais
 

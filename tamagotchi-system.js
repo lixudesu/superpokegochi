@@ -289,6 +289,11 @@
     migrated.pets = Object.fromEntries(
       Object.entries(migrated.pets).map(([id, pet], index) => [id, migratePet(pet, id, index)])
     );
+    const selectedSpecies = DEX.find(mon => mon.id === migrated.selected);
+    if (selectedSpecies && selectedSpecies.selectable === false) {
+      const evolutionRoot = DEX.find(mon => mon.dexNumber === selectedSpecies.evolutionRootDexNumber);
+      migrated.selected = evolutionRoot && evolutionRoot.selectable !== false ? evolutionRoot.id : DEX[0].id;
+    }
     return migrated;
   }
 
@@ -1038,7 +1043,8 @@
       });
     } else {
       const selected = getDex();
-      matches = [selected, ...DEX.filter(mon => mon.id !== selected.id)];
+      const selectableSpecies = DEX.filter(mon => mon.selectable !== false);
+      matches = [selected, ...selectableSpecies.filter(mon => mon.id !== selected.id)];
     }
     return {
       total: matches.length,
@@ -1047,17 +1053,28 @@
   }
 
   function systemMiniCompanion(mon) {
+    const evolutionLocked = mon.selectable === false;
+    const evolvesFrom = evolutionLocked
+      ? DEX.find(candidate => candidate.dexNumber === mon.evolvesFromDexNumber)
+      : null;
+    const evolvesFromName = evolvesFrom ? evolvesFrom.name : `#${mon.evolvesFromDexNumber}`;
     const pet = state.pets[mon.id] || systemDefaultPet(mon);
-    systemApplyOfflineDecay(pet);
+    if (!evolutionLocked) systemApplyOfflineDecay(pet);
     const mood = systemMoodFor(pet);
-    const low = pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30;
+    const low = !evolutionLocked && (pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30);
     const appearance = getAppearance(mon, pet);
     const dexLabel = mon.dexNumber ? `#${String(mon.dexNumber).padStart(3, '0')}` : mon.id;
+    const detail = evolutionLocked
+      ? `Evolução de ${evolvesFromName}`
+      : `${mood.icon} ${mood.label} · Nv. ${pet.level}`;
+    const selectionAttributes = evolutionLocked
+      ? `disabled aria-label="${mon.name}, evolução bloqueada"`
+      : `data-select="${mon.id}" aria-label="Selecionar ${mon.name}"`;
     return `
-      <button class="companion-row ${state.selected === mon.id ? 'active' : ''}" type="button" data-select="${mon.id}" aria-label="Selecionar ${mon.name}">
+      <button class="companion-row ${state.selected === mon.id ? 'active' : ''} ${evolutionLocked ? 'evolution-locked' : ''}" type="button" ${selectionAttributes}>
         <span class="mini-orb ${low ? 'needs-care' : ''}">${renderPokemonVisual(appearance, 'mini-sprite', appearance.name)}</span>
-        <span class="companion-copy"><b>${mon.name}</b><small>${dexLabel} · ${mood.icon} ${mood.label} · Nv. ${pet.level}</small></span>
-        <span class="companion-chevron">›</span>
+        <span class="companion-copy"><b>${mon.name}</b><small>${dexLabel} · ${detail}</small></span>
+        <span class="companion-chevron" aria-hidden="true">${evolutionLocked ? '🔒' : '›'}</span>
       </button>`;
   }
 
@@ -1066,7 +1083,7 @@
     return {
       summary: companionQuery.trim()
         ? `${results.total} ${results.total === 1 ? 'resultado' : 'resultados'}`
-        : `${DEX.length} espécies cadastradas`,
+        : `${DEX.filter(mon => mon.selectable !== false).length} espécies-base · ${DEX.length} no catálogo`,
       html: results.visible.length
         ? results.visible.map(systemMiniCompanion).join('')
         : '<div class="companion-empty"><b>Nenhum Pokémon encontrado</b><small>Tente outro nome ou número.</small></div>',
@@ -1090,7 +1107,13 @@
   }
 
   function systemSelectPet(id) {
-    if (!state.pets[id]) state.pets[id] = systemDefaultPet(getDex(id), Object.keys(state.pets).length);
+    const species = getDex(id);
+    if (species.selectable === false) {
+      const evolvesFrom = DEX.find(mon => mon.dexNumber === species.evolvesFromDexNumber);
+      showToast(`${species.name} é uma evolução de ${evolvesFrom ? evolvesFrom.name : 'outra espécie'} e não pode ser escolhido diretamente.`);
+      return;
+    }
+    if (!state.pets[id]) state.pets[id] = systemDefaultPet(species, Object.keys(state.pets).length);
     state.selected = id;
     companionQuery = '';
     companionsOpen = false;
@@ -1098,7 +1121,7 @@
     foodOpen = false;
     saveState();
     render();
-    showToast(`${getDex(id).name} agora está no gramado.`);
+    showToast(`${species.name} agora está no gramado.`);
   }
 
   function systemRender() {
@@ -1188,7 +1211,7 @@
 
         ${hasCompanions ? `<button class="companions-fab ${anyNeedsCare ? 'alert' : ''}" type="button" data-companions-toggle aria-label="Abrir companheiros">
           <span class="stacked-faces">
-            ${DEX.slice(0,3).map(m => renderPokemonVisual(m, 'stack-sprite', m.name, true)).join('')}
+            ${DEX.filter(m => m.selectable !== false).slice(0,3).map(m => renderPokemonVisual(m, 'stack-sprite', m.name, true)).join('')}
           </span>
           <i>+</i>
         </button>` : ''}
