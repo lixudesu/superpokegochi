@@ -20,6 +20,7 @@ compilacao.
 - Minigame de treino com tres rodadas.
 - Descanso manual dentro de uma Pokebola.
 - Evolucao opcional e troca de aparencia.
+- Aparencia Shiny liberada com 30 dias de vinculo.
 - Historico das atividades recentes.
 - Progresso salvo automaticamente no navegador.
 - Layout adaptado para celular e desktop.
@@ -166,8 +167,8 @@ As formas configuradas atualmente sao:
 | Forma | Nivel de desbloqueio | Asset |
 | --- | ---: | --- |
 | Bulbasaur | 1 | Disponivel |
-| Ivysaur | 16 | Pendente |
-| Venusaur | 32 | Pendente |
+| Ivysaur | 16 | Disponivel |
+| Venusaur | 32 | Disponivel |
 
 Ao atingir o nivel necessario, o jogador pode:
 
@@ -179,14 +180,29 @@ Evoluir nao altera nivel, XP ou atributos. Assim, um Pokemon de nivel 100
 pode usar livremente as aparencias de Bulbasaur, Ivysaur ou Venusaur que ja
 estiverem desbloqueadas.
 
-Para ativar as formas pendentes, adicione:
+### Normal e Shiny
+
+Cada forma possui uma versao normal e uma versao Shiny. A troca fica em
+`Pokebola > Aparencia`.
+
+- Normal esta disponivel desde o inicio.
+- Shiny e liberado ao completar 30 dias de vinculo.
+- A paleta escolhida e salva separadamente da forma.
+- Trocar a paleta nao altera nivel, XP, status ou evolucao.
+
+Os sprites normais ficam em:
 
 ```txt
-assets/pokemons/IVYSAUR.webp
-assets/pokemons/VENUSAUR.webp
+assets/pokemons/Front/
 ```
 
-O sistema detecta automaticamente se o arquivo configurado existe.
+Os sprites Shiny ficam em:
+
+```txt
+assets/pokemons/Front shiny/
+```
+
+O sistema detecta automaticamente se os arquivos configurados existem.
 
 ## Vinculo
 
@@ -211,7 +227,7 @@ scrypet_tamagotchi_bulbasaur_v1
 ```
 
 O salvamento inclui atributos, nivel, XP, mochila, historico, descanso,
-aparencia selecionada, decisoes de evolucao e data inicial do vinculo.
+forma, paleta Normal/Shiny, decisoes de evolucao e data inicial do vinculo.
 
 Limpar os dados do site no navegador remove o progresso local.
 
@@ -227,13 +243,16 @@ Exemplo simplificado:
   name: 'Novo Pokemon',
   type: 'Grass',
   typeClass: 'grass-type',
-  img: 'assets/pokemons/NOVO-POKEMON.webp',
+  img: 'assets/pokemons/Front/NOVO-POKEMON.webp',
   forms: [
     {
       id: 'novo-pokemon',
       name: 'Novo Pokemon',
       unlockLevel: 1,
-      img: 'assets/pokemons/NOVO-POKEMON.webp'
+      img: 'assets/pokemons/Front/NOVO-POKEMON.webp',
+      shiny: {
+        img: 'assets/pokemons/Front%20shiny/NOVO-POKEMON.webp'
+      }
     }
   ],
   favoriteFood: 'Berry',
@@ -245,7 +264,7 @@ Para um sprite sheet animado, informe tambem:
 
 ```js
 sprite: {
-  src: 'assets/pokemons/NOVO-POKEMON.webp',
+  src: 'assets/pokemons/Front/NOVO-POKEMON.webp',
   frameWidth: 38,
   frameHeight: 38,
   frames: 49,
@@ -263,7 +282,9 @@ de sprite sheet.
 |-- assets/
 |   |-- grass.png
 |   `-- pokemons/
-|       `-- BULBASAUR.webp
+|       |-- Front/
+|       |-- Front shiny/
+|       `-- front-index.json
 |-- index.html
 |-- pokemon-data.js
 |-- tamagotchi-system.js
@@ -279,7 +300,9 @@ de sprite sheet.
 - `tamagotchi-system.js`: estado, regras, acoes e renderizacao.
 - `style.css`: interface, responsividade e animacoes.
 - `assets/grass.png`: textura usada no gramado.
-- `assets/pokemons/BULBASAUR.webp`: sprite sheet atual.
+- `assets/pokemons/Front/`: sprite sheets normais.
+- `assets/pokemons/Front shiny/`: sprite sheets Shiny.
+- `assets/pokemons/front-index.json`: dimensoes e quantidade de frames.
 - `app.js`: versao anterior preservada e nao carregada pelo HTML atual.
 
 ## Tecnologias

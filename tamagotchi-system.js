@@ -12,6 +12,7 @@
   const formAssetStatus = new Map();
 
   const BRASILIA_TIME_ZONE = 'America/Sao_Paulo';
+  const SHINY_UNLOCK_DAYS = 30;
 
   function readStoredState() {
     try {
@@ -36,8 +37,12 @@
       : [{ id: mon.id, name: mon.name, unlockLevel: 1, img: mon.img, sprite: mon.sprite }];
   }
 
-  function formAssetKey(mon, form) {
-    return `${mon.id}:${form.id}`;
+  function formVisual(form, palette = 'normal') {
+    return palette === 'shiny' && form.shiny ? form.shiny : form;
+  }
+
+  function formAssetKey(mon, form, palette = 'normal') {
+    return `${mon.id}:${form.id}:${palette}`;
   }
 
   function getForm(mon, formId) {
@@ -46,41 +51,51 @@
 
   function getAppearance(mon, pet) {
     const form = getForm(mon, pet && pet.activeAppearance);
+    const palette = pet && pet.appearancePalette === 'shiny' && isShinyUnlocked(pet)
+      ? 'shiny'
+      : 'normal';
+    const visual = formVisual(form, palette);
     return {
       ...mon,
       ...form,
+      ...visual,
       id: form.id,
       name: form.name,
       type: form.type || mon.type,
       typeClass: form.typeClass || mon.typeClass,
       moodLine: form.moodLine || mon.moodLine,
+      palette,
     };
   }
 
-  function isFormAssetReady(mon, form) {
-    return formAssetStatus.get(formAssetKey(mon, form)) === true;
+  function isFormAssetReady(mon, form, palette = 'normal') {
+    return formAssetStatus.get(formAssetKey(mon, form, palette)) === true;
   }
 
   function initializeFormAssetStatus() {
     DEX.forEach(mon => {
       const firstForm = getForms(mon)[0];
-      formAssetStatus.set(formAssetKey(mon, firstForm), true);
+      formAssetStatus.set(formAssetKey(mon, firstForm, 'normal'), true);
     });
   }
 
   function checkFormAssets() {
-    const checks = DEX.flatMap(mon => getForms(mon).map(form => new Promise(resolve => {
-      const image = new Image();
-      image.onload = () => {
-        formAssetStatus.set(formAssetKey(mon, form), true);
-        resolve();
-      };
-      image.onerror = () => {
-        formAssetStatus.set(formAssetKey(mon, form), false);
-        resolve();
-      };
-      image.src = form.sprite ? form.sprite.src : form.img;
-    })));
+    const checks = DEX.flatMap(mon => getForms(mon).flatMap(form => {
+      const palettes = form.shiny ? ['normal', 'shiny'] : ['normal'];
+      return palettes.map(palette => new Promise(resolve => {
+        const visual = formVisual(form, palette);
+        const image = new Image();
+        image.onload = () => {
+          formAssetStatus.set(formAssetKey(mon, form, palette), true);
+          resolve();
+        };
+        image.onerror = () => {
+          formAssetStatus.set(formAssetKey(mon, form, palette), false);
+          resolve();
+        };
+        image.src = visual.sprite ? visual.sprite.src : visual.img;
+      }));
+    }));
     Promise.all(checks).then(() => render());
   }
 
@@ -179,6 +194,7 @@
       bond: clamp(10 + index * 4),
       activeSince: now(),
       activeAppearance: getForms(mon)[0].id,
+      appearancePalette: 'normal',
       evolutionDecisions: {},
       sleeping: false,
       sleepStartedAt: null,
@@ -248,6 +264,9 @@
     const historyTimes = migrated.history.map(item => Number(item.at)).filter(Number.isFinite);
     migrated.activeSince = Number(pet && pet.activeSince)
       || (historyTimes.length ? Math.min(...historyTimes) : now());
+    migrated.appearancePalette = migrated.appearancePalette === 'shiny' && isShinyUnlocked(migrated)
+      ? 'shiny'
+      : 'normal';
     delete migrated.health;
     return migrated;
   }
@@ -323,6 +342,10 @@
     return Math.floor(elapsed / (24 * 60 * 60 * 1000)) + 1;
   }
 
+  function isShinyUnlocked(pet) {
+    return activeDaysFor(pet) >= SHINY_UNLOCK_DAYS;
+  }
+
   function isFormUnlocked(pet, form) {
     return pet.level >= (form.unlockLevel || 1);
   }
@@ -346,20 +369,49 @@
     const pet = getPet();
     const mon = getDex();
     const form = getForm(mon, formId);
+    const palette = pet.appearancePalette === 'shiny' ? 'shiny' : 'normal';
     if (!isFormUnlocked(pet, form)) {
       showToast(`${form.name} será liberado no nível ${form.unlockLevel}.`);
       return;
     }
-    if (!isFormAssetReady(mon, form)) {
-      showToast(`Adicione ${form.img.split('/').pop()} para usar essa aparência.`);
+    if (!isFormAssetReady(mon, form, palette)) {
+      const visual = formVisual(form, palette);
+      showToast(`Adicione ${visual.img.split('/').pop()} para usar essa aparência.`);
       return;
     }
 
     applyAppearance(mon, pet, form);
-    pet.lastAction = `${form.name} está usando esta aparência agora.`;
+    pet.lastAction = `${form.name} está usando a aparência ${palette === 'shiny' ? 'Shiny' : 'normal'}.`;
     saveState();
     render();
-    showToast(`Aparência alterada para ${form.name}.`);
+    showToast(`Aparência alterada para ${form.name}${palette === 'shiny' ? ' Shiny' : ''}.`);
+  }
+
+  function selectPalette(palette) {
+    const pet = getPet();
+    const mon = getDex();
+    const form = getForm(mon, pet.activeAppearance);
+    const nextPalette = palette === 'shiny' ? 'shiny' : 'normal';
+
+    if (nextPalette === 'shiny' && !isShinyUnlocked(pet)) {
+      const remaining = Math.max(0, SHINY_UNLOCK_DAYS - activeDaysFor(pet));
+      showToast(`Shiny libera com ${SHINY_UNLOCK_DAYS} dias de vínculo. Faltam ${remaining}.`);
+      return;
+    }
+    if (!isFormAssetReady(mon, form, nextPalette)) {
+      showToast(`A aparência ${nextPalette === 'shiny' ? 'Shiny' : 'normal'} ainda não tem sprite.`);
+      return;
+    }
+    if (pet.appearancePalette === nextPalette) return;
+
+    pet.appearancePalette = nextPalette;
+    pet.lastAction = nextPalette === 'shiny'
+      ? `${pet.customName} revelou sua aparência Shiny.`
+      : `${pet.customName} voltou para sua aparência normal.`;
+    systemAddHistory(pet, nextPalette === 'shiny' ? '✨' : '🌿', pet.lastAction);
+    saveState();
+    render();
+    showToast(pet.lastAction);
   }
 
   function chooseEvolution(formId, choice) {
@@ -737,6 +789,7 @@
 
   function renderPokemonVisual(mon, className = '', label = mon.name, hidden = false) {
     if (mon.sprite) {
+      const maxFrame = Math.max(mon.sprite.frameWidth, mon.sprite.frameHeight);
       const classes = ['pokemon-sprite', className].filter(Boolean).join(' ');
       const style = [
         `--sprite-url:url(${mon.sprite.src})`,
@@ -745,12 +798,22 @@
         `--sheet-width:${mon.sprite.sheetWidth}px`,
         `--sheet-shift:-${mon.sprite.sheetWidth}px`,
         `--sprite-frames:${mon.sprite.frames}`,
+        `--preview-scale:${Math.min(1, 42 / maxFrame).toFixed(3)}`,
+        `--mini-scale:${Math.min(1, 30 / maxFrame).toFixed(3)}`,
+        `--evolution-scale:${Math.min(2, 76 / maxFrame).toFixed(3)}`,
       ].join(';');
       const aria = hidden ? 'aria-hidden="true"' : `role="img" aria-label="${label}"`;
       return `<span class="${classes}" style="${style}" ${aria}></span>`;
     }
 
     return `<img class="${className}" src="${mon.img}" alt="${hidden ? '' : label}" ${hidden ? 'aria-hidden="true"' : ''} loading="lazy">`;
+  }
+
+  function stageVisualStyle(mon) {
+    if (!mon.sprite) return '';
+    const maxFrame = Math.max(mon.sprite.frameWidth, mon.sprite.frameHeight);
+    const scale = Math.min(5.45, 207 / maxFrame);
+    return `style="--sprite-stage-scale:${scale.toFixed(3)};--sprite-stage-scale-compact:${(scale * .98).toFixed(3)};--sprite-stage-scale-small:${(scale * .89).toFixed(3)};--sprite-stage-scale-short:${(scale * .92).toFixed(3)};width:${mon.sprite.frameWidth}px;height:${mon.sprite.frameHeight}px"`;
   }
 
   function bagCount() {
@@ -781,15 +844,38 @@
 
   function renderAppearancePanel(mon, pet) {
     const forms = getForms(mon);
+    const days = activeDaysFor(pet);
+    const shinyUnlocked = isShinyUnlocked(pet);
+    const palette = pet.appearancePalette === 'shiny' && shinyUnlocked ? 'shiny' : 'normal';
+    const currentForm = getForm(mon, pet.activeAppearance);
+    const currentShinyReady = isFormAssetReady(mon, currentForm, 'shiny');
     return `
       <div class="appearance-panel">
+        <div class="palette-block">
+          <div class="palette-heading">
+            <b>Cor</b>
+            <small>${shinyUnlocked ? 'Shiny liberado' : `${Math.min(days, SHINY_UNLOCK_DAYS)}/${SHINY_UNLOCK_DAYS} dias de vínculo`}</small>
+          </div>
+          <div class="palette-segment" role="group" aria-label="Cor da aparência">
+            <button type="button" data-palette="normal" class="${palette === 'normal' ? 'active' : ''}"
+              aria-pressed="${palette === 'normal'}">
+              <span class="palette-dot normal"></span><b>Normal</b>
+            </button>
+            <button type="button" data-palette="shiny" class="${palette === 'shiny' ? 'active' : ''}"
+              aria-pressed="${palette === 'shiny'}" ${(!shinyUnlocked || !currentShinyReady) ? 'disabled' : ''}>
+              <span class="palette-dot shiny"></span><b>Shiny</b>
+              ${!shinyUnlocked ? '<i aria-hidden="true">30</i>' : ''}
+            </button>
+          </div>
+        </div>
         <p class="appearance-note">O nível e os cuidados são compartilhados entre todas as formas.</p>
         <div class="appearance-list">
           ${forms.map(form => {
             const unlocked = isFormUnlocked(pet, form);
-            const assetReady = isFormAssetReady(mon, form);
+            const assetReady = isFormAssetReady(mon, form, palette);
             const selected = pet.activeAppearance === form.id;
-            const appearance = { ...mon, ...form, id: form.id, name: form.name };
+            const visual = formVisual(form, palette);
+            const appearance = { ...mon, ...form, ...visual, id: form.id, name: form.name, palette };
             let stateLabel = 'Disponível';
             if (selected) stateLabel = 'Em uso';
             else if (!unlocked) stateLabel = `Nível ${form.unlockLevel}`;
@@ -804,7 +890,7 @@
                 </span>
                 <span class="appearance-copy">
                   <b>${form.name}</b>
-                  <small>${assetReady ? `Desbloqueia no nível ${form.unlockLevel}` : form.img.split('/').pop()}</small>
+                  <small>${assetReady ? `Nível ${form.unlockLevel} · ${palette === 'shiny' ? 'Shiny' : 'Normal'}` : visual.img.split('/').pop()}</small>
                 </span>
                 <span class="appearance-state">${stateLabel}</span>
               </button>`;
@@ -969,6 +1055,7 @@
             <div class="name-line">
               <strong>${pet.customName}</strong>
               <span class="type-pill ${mon.typeClass}">${mon.type}</span>
+              ${mon.palette === 'shiny' ? '<span class="shiny-badge">Shiny</span>' : ''}
             </div>
             <div class="xp-bar" aria-label="Experiência"><i style="width:${xpPercent}%"></i></div>
           </div>
@@ -1014,7 +1101,7 @@
             <span class="pet-aura"></span>
             ${pet.sleeping
               ? '<span class="resting-pokeball" aria-hidden="true"><i></i></span>'
-              : `<span class="stage-sprite-wrap">${renderPokemonVisual(mon, 'stage-sprite', mon.name, true)}</span>`}
+              : `<span class="stage-sprite-wrap" ${stageVisualStyle(mon)}>${renderPokemonVisual(mon, 'stage-sprite', mon.name, true)}</span>`}
             <span class="pet-shadow"></span>
           </button>
           <div class="speech"><b>${mood.icon} ${mood.note}</b><br>${pet.customName} ${mon.moodLine}</div>
@@ -1085,6 +1172,7 @@
       render();
     }));
     document.querySelectorAll('[data-appearance]').forEach(btn => btn.addEventListener('click', () => selectAppearance(btn.dataset.appearance)));
+    document.querySelectorAll('[data-palette]').forEach(btn => btn.addEventListener('click', () => selectPalette(btn.dataset.palette)));
     document.querySelectorAll('[data-evolution-choice]').forEach(btn => btn.addEventListener('click', () => chooseEvolution(btn.dataset.evolutionForm, btn.dataset.evolutionChoice)));
     document.querySelectorAll('[data-training-hit]').forEach(btn => btn.addEventListener('click', hitTrainingTarget));
     document.querySelectorAll('[data-training-cancel]').forEach(btn => btn.addEventListener('click', cancelTrainingGame));

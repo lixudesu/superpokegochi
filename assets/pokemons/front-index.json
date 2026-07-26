@@ -1,0 +1,9636 @@
+{
+  "assets": [
+    {
+      "file": "ABOMASNOW_1.webp",
+      "frames": 49,
+      "height": 96,
+      "width": 4704
+    },
+    {
+      "file": "ABOMASNOW_female.webp",
+      "frames": 41,
+      "height": 95,
+      "width": 3895
+    },
+    {
+      "file": "ABOMASNOW.webp",
+      "frames": 41,
+      "height": 95,
+      "width": 3895
+    },
+    {
+      "file": "ABRA.webp",
+      "frames": 57,
+      "height": 63,
+      "width": 3591
+    },
+    {
+      "file": "ABSOL_1.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "ABSOL_2.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "ABSOL.webp",
+      "frames": 69,
+      "height": 65,
+      "width": 4485
+    },
+    {
+      "file": "ACCELGOR.webp",
+      "frames": 109,
+      "height": 75,
+      "width": 8175
+    },
+    {
+      "file": "AEGISLASH_1.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "AEGISLASH.webp",
+      "frames": 64,
+      "height": 127,
+      "width": 8128
+    },
+    {
+      "file": "AERODACTYL_1.webp",
+      "frames": 22,
+      "height": 96,
+      "width": 2112
+    },
+    {
+      "file": "AERODACTYL.webp",
+      "frames": 9,
+      "height": 93,
+      "width": 837
+    },
+    {
+      "file": "AGGRON_1.webp",
+      "frames": 10,
+      "height": 96,
+      "width": 960
+    },
+    {
+      "file": "AGGRON.webp",
+      "frames": 55,
+      "height": 77,
+      "width": 4235
+    },
+    {
+      "file": "AIPOM_female.webp",
+      "frames": 39,
+      "height": 58,
+      "width": 2262
+    },
+    {
+      "file": "AIPOM.webp",
+      "frames": 39,
+      "height": 56,
+      "width": 2184
+    },
+    {
+      "file": "ALAKAZAM_1.webp",
+      "frames": 24,
+      "height": 110,
+      "width": 2640
+    },
+    {
+      "file": "ALAKAZAM_female.webp",
+      "frames": 53,
+      "height": 93,
+      "width": 4929
+    },
+    {
+      "file": "ALAKAZAM.webp",
+      "frames": 53,
+      "height": 93,
+      "width": 4929
+    },
+    {
+      "file": "ALCREMIE_1.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_10.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_11.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_12.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_13.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_14.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_15.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_16.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_17.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_18.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_19.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_2.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_20.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_21.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_22.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_23.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_24.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_25.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_26.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_27.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_28.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_29.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_3.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_30.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_31.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_32.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_33.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_34.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_35.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_36.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_37.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_38.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_39.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_4.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_40.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_41.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_42.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_43.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_44.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_45.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_46.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_47.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_48.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_49.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_5.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_50.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_51.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_52.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_53.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_54.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_55.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_56.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_57.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_58.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_59.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_6.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_60.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_61.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_62.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_63.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "ALCREMIE_7.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_8.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE_9.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALCREMIE.webp",
+      "frames": 104,
+      "height": 70,
+      "width": 7280
+    },
+    {
+      "file": "ALOMOMOLA.webp",
+      "frames": 59,
+      "height": 87,
+      "width": 5133
+    },
+    {
+      "file": "ALTARIA_1.webp",
+      "frames": 27,
+      "height": 127,
+      "width": 3429
+    },
+    {
+      "file": "ALTARIA.webp",
+      "frames": 81,
+      "height": 64,
+      "width": 5184
+    },
+    {
+      "file": "AMAURA.webp",
+      "frames": 156,
+      "height": 96,
+      "width": 14976
+    },
+    {
+      "file": "AMBIPOM_female.webp",
+      "frames": 96,
+      "height": 87,
+      "width": 8352
+    },
+    {
+      "file": "AMBIPOM.webp",
+      "frames": 96,
+      "height": 87,
+      "width": 8352
+    },
+    {
+      "file": "AMOONGUSS.webp",
+      "frames": 47,
+      "height": 62,
+      "width": 2914
+    },
+    {
+      "file": "AMPHAROS_1.webp",
+      "frames": 10,
+      "height": 96,
+      "width": 960
+    },
+    {
+      "file": "AMPHAROS.webp",
+      "frames": 37,
+      "height": 67,
+      "width": 2479
+    },
+    {
+      "file": "ANNIHILAPE.webp",
+      "frames": 134,
+      "height": 96,
+      "width": 12864
+    },
+    {
+      "file": "ANORITH.webp",
+      "frames": 52,
+      "height": 54,
+      "width": 2808
+    },
+    {
+      "file": "APPLETUN_1.webp",
+      "frames": 4,
+      "height": 99,
+      "width": 396
+    },
+    {
+      "file": "APPLETUN.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "APPLIN.webp",
+      "frames": 110,
+      "height": 42,
+      "width": 4620
+    },
+    {
+      "file": "ARAQUANID.webp",
+      "frames": 69,
+      "height": 84,
+      "width": 5796
+    },
+    {
+      "file": "ARBOK.webp",
+      "frames": 37,
+      "height": 81,
+      "width": 2997
+    },
+    {
+      "file": "ARBOLIVA.webp",
+      "frames": 24,
+      "height": 100,
+      "width": 2400
+    },
+    {
+      "file": "ARCANINE_1.webp",
+      "frames": 102,
+      "height": 96,
+      "width": 9792
+    },
+    {
+      "file": "ARCANINE.webp",
+      "frames": 36,
+      "height": 77,
+      "width": 2772
+    },
+    {
+      "file": "ARCEUS_1.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_10.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_11.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_12.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_13.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_14.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_15.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_16.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_17.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_18.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_2.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_3.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_4.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_5.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_6.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_7.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_8.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS_9.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCEUS.webp",
+      "frames": 42,
+      "height": 82,
+      "width": 3444
+    },
+    {
+      "file": "ARCHALUDON.webp",
+      "frames": 54,
+      "height": 96,
+      "width": 5184
+    },
+    {
+      "file": "ARCHEN.webp",
+      "frames": 63,
+      "height": 60,
+      "width": 3780
+    },
+    {
+      "file": "ARCHEOPS.webp",
+      "frames": 40,
+      "height": 91,
+      "width": 3640
+    },
+    {
+      "file": "ARCTIBAX.webp",
+      "frames": 79,
+      "height": 57,
+      "width": 4503
+    },
+    {
+      "file": "ARCTOVISH.webp",
+      "frames": 134,
+      "height": 91,
+      "width": 12194
+    },
+    {
+      "file": "ARCTOZOLT.webp",
+      "frames": 115,
+      "height": 96,
+      "width": 11040
+    },
+    {
+      "file": "ARIADOS.webp",
+      "frames": 18,
+      "height": 64,
+      "width": 1152
+    },
+    {
+      "file": "ARMALDO.webp",
+      "frames": 77,
+      "height": 83,
+      "width": 6391
+    },
+    {
+      "file": "ARMAROUGE.webp",
+      "frames": 24,
+      "height": 100,
+      "width": 2400
+    },
+    {
+      "file": "AROMATISSE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "ARON.webp",
+      "frames": 15,
+      "height": 32,
+      "width": 480
+    },
+    {
+      "file": "ARROKUDA.webp",
+      "frames": 89,
+      "height": 104,
+      "width": 9256
+    },
+    {
+      "file": "ARTICUNO_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "ARTICUNO.webp",
+      "frames": 26,
+      "height": 81,
+      "width": 2106
+    },
+    {
+      "file": "AUDINO_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "AUDINO.webp",
+      "frames": 60,
+      "height": 52,
+      "width": 3120
+    },
+    {
+      "file": "AURORUS.webp",
+      "frames": 14,
+      "height": 96,
+      "width": 1344
+    },
+    {
+      "file": "AVALUGG_1.webp",
+      "frames": 124,
+      "height": 96,
+      "width": 11904
+    },
+    {
+      "file": "AVALUGG.webp",
+      "frames": 121,
+      "height": 96,
+      "width": 11616
+    },
+    {
+      "file": "AXEW.webp",
+      "frames": 75,
+      "height": 45,
+      "width": 3375
+    },
+    {
+      "file": "AZELF.webp",
+      "frames": 132,
+      "height": 75,
+      "width": 9900
+    },
+    {
+      "file": "AZUMARILL.webp",
+      "frames": 73,
+      "height": 73,
+      "width": 5329
+    },
+    {
+      "file": "AZURILL.webp",
+      "frames": 46,
+      "height": 63,
+      "width": 2898
+    },
+    {
+      "file": "BAGON.webp",
+      "frames": 27,
+      "height": 51,
+      "width": 1377
+    },
+    {
+      "file": "BALTOY.webp",
+      "frames": 41,
+      "height": 41,
+      "width": 1681
+    },
+    {
+      "file": "BANETTE_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "BANETTE.webp",
+      "frames": 64,
+      "height": 55,
+      "width": 3520
+    },
+    {
+      "file": "BARBARACLE_1.webp",
+      "frames": 90,
+      "height": 96,
+      "width": 8640
+    },
+    {
+      "file": "BARBARACLE.webp",
+      "frames": 11,
+      "height": 96,
+      "width": 1056
+    },
+    {
+      "file": "BARBOACH.webp",
+      "frames": 71,
+      "height": 48,
+      "width": 3408
+    },
+    {
+      "file": "BARRASKEWDA.webp",
+      "frames": 14,
+      "height": 87,
+      "width": 1218
+    },
+    {
+      "file": "BASCULEGION_1.webp",
+      "frames": 90,
+      "height": 110,
+      "width": 9900
+    },
+    {
+      "file": "BASCULEGION.webp",
+      "frames": 90,
+      "height": 110,
+      "width": 9900
+    },
+    {
+      "file": "BASCULIN_1.webp",
+      "frames": 92,
+      "height": 54,
+      "width": 4968
+    },
+    {
+      "file": "BASCULIN_2.webp",
+      "frames": 88,
+      "height": 52,
+      "width": 4576
+    },
+    {
+      "file": "BASCULIN.webp",
+      "frames": 92,
+      "height": 52,
+      "width": 4784
+    },
+    {
+      "file": "BASTIODON.webp",
+      "frames": 61,
+      "height": 70,
+      "width": 4270
+    },
+    {
+      "file": "BAXCALIBUR_1.webp",
+      "frames": 61,
+      "height": 132,
+      "width": 8052
+    },
+    {
+      "file": "BAXCALIBUR.webp",
+      "frames": 77,
+      "height": 120,
+      "width": 9240
+    },
+    {
+      "file": "BAYLEEF.webp",
+      "frames": 59,
+      "height": 80,
+      "width": 4720
+    },
+    {
+      "file": "BEARTIC.webp",
+      "frames": 112,
+      "height": 79,
+      "width": 8848
+    },
+    {
+      "file": "BEAUTIFLY_female.webp",
+      "frames": 77,
+      "height": 78,
+      "width": 6006
+    },
+    {
+      "file": "BEAUTIFLY.webp",
+      "frames": 77,
+      "height": 78,
+      "width": 6006
+    },
+    {
+      "file": "BEEDRILL_1.webp",
+      "frames": 135,
+      "height": 103,
+      "width": 13905
+    },
+    {
+      "file": "BEEDRILL.webp",
+      "frames": 30,
+      "height": 74,
+      "width": 2220
+    },
+    {
+      "file": "BEHEEYEM.webp",
+      "frames": 53,
+      "height": 67,
+      "width": 3551
+    },
+    {
+      "file": "BELDUM.webp",
+      "frames": 34,
+      "height": 48,
+      "width": 1632
+    },
+    {
+      "file": "BELLIBOLT.webp",
+      "frames": 32,
+      "height": 96,
+      "width": 3072
+    },
+    {
+      "file": "BELLOSSOM.webp",
+      "frames": 53,
+      "height": 56,
+      "width": 2968
+    },
+    {
+      "file": "BELLSPROUT.webp",
+      "frames": 47,
+      "height": 44,
+      "width": 2068
+    },
+    {
+      "file": "BERGMITE.webp",
+      "frames": 131,
+      "height": 44,
+      "width": 5764
+    },
+    {
+      "file": "BEWEAR.webp",
+      "frames": 136,
+      "height": 84,
+      "width": 11424
+    },
+    {
+      "file": "BIBAREL_female.webp",
+      "frames": 81,
+      "height": 71,
+      "width": 5751
+    },
+    {
+      "file": "BIBAREL.webp",
+      "frames": 81,
+      "height": 71,
+      "width": 5751
+    },
+    {
+      "file": "BIDOOF_female.webp",
+      "frames": 51,
+      "height": 48,
+      "width": 2448
+    },
+    {
+      "file": "BIDOOF.webp",
+      "frames": 52,
+      "height": 49,
+      "width": 2548
+    },
+    {
+      "file": "BINACLE.webp",
+      "frames": 80,
+      "height": 58,
+      "width": 4640
+    },
+    {
+      "file": "BISHARP.webp",
+      "frames": 79,
+      "height": 75,
+      "width": 5925
+    },
+    {
+      "file": "BLACEPHALON.webp",
+      "frames": 112,
+      "height": 143,
+      "width": 16016
+    },
+    {
+      "file": "BLASTOISE_1.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "BLASTOISE_2.webp",
+      "frames": 10,
+      "height": 96,
+      "width": 960
+    },
+    {
+      "file": "BLASTOISE.webp",
+      "frames": 122,
+      "height": 69,
+      "width": 8418
+    },
+    {
+      "file": "BLAZIKEN_1.webp",
+      "frames": 90,
+      "height": 115,
+      "width": 10350
+    },
+    {
+      "file": "BLAZIKEN_female.webp",
+      "frames": 56,
+      "height": 74,
+      "width": 4144
+    },
+    {
+      "file": "BLAZIKEN.webp",
+      "frames": 57,
+      "height": 75,
+      "width": 4275
+    },
+    {
+      "file": "BLIPBUG.webp",
+      "frames": 10,
+      "height": 45,
+      "width": 450
+    },
+    {
+      "file": "BLISSEY.webp",
+      "frames": 48,
+      "height": 61,
+      "width": 2928
+    },
+    {
+      "file": "BLITZLE.webp",
+      "frames": 79,
+      "height": 62,
+      "width": 4898
+    },
+    {
+      "file": "BOLDORE.webp",
+      "frames": 59,
+      "height": 61,
+      "width": 3599
+    },
+    {
+      "file": "BOLTUND.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "BOMBIRDIER.webp",
+      "frames": 7,
+      "height": 100,
+      "width": 700
+    },
+    {
+      "file": "BONSLY.webp",
+      "frames": 78,
+      "height": 57,
+      "width": 4446
+    },
+    {
+      "file": "BOUFFALANT.webp",
+      "frames": 77,
+      "height": 83,
+      "width": 6391
+    },
+    {
+      "file": "BOUNSWEET.webp",
+      "frames": 151,
+      "height": 42,
+      "width": 6342
+    },
+    {
+      "file": "BRAIXEN.webp",
+      "frames": 76,
+      "height": 69,
+      "width": 5244
+    },
+    {
+      "file": "BRAMBLEGHAST.webp",
+      "frames": 38,
+      "height": 96,
+      "width": 3648
+    },
+    {
+      "file": "BRAMBLIN.webp",
+      "frames": 38,
+      "height": 96,
+      "width": 3648
+    },
+    {
+      "file": "BRAVIARY_1.webp",
+      "frames": 80,
+      "height": 109,
+      "width": 8720
+    },
+    {
+      "file": "BRAVIARY.webp",
+      "frames": 21,
+      "height": 109,
+      "width": 2289
+    },
+    {
+      "file": "BRELOOM.webp",
+      "frames": 26,
+      "height": 71,
+      "width": 1846
+    },
+    {
+      "file": "BRIONNE.webp",
+      "frames": 116,
+      "height": 65,
+      "width": 7540
+    },
+    {
+      "file": "BRONZONG.webp",
+      "frames": 55,
+      "height": 95,
+      "width": 5225
+    },
+    {
+      "file": "BRONZOR.webp",
+      "frames": 63,
+      "height": 59,
+      "width": 3717
+    },
+    {
+      "file": "BRUTEBONNET.webp",
+      "frames": 43,
+      "height": 73,
+      "width": 3139
+    },
+    {
+      "file": "BRUXISH.webp",
+      "frames": 96,
+      "height": 96,
+      "width": 9216
+    },
+    {
+      "file": "BUDEW.webp",
+      "frames": 54,
+      "height": 55,
+      "width": 2970
+    },
+    {
+      "file": "BUIZEL_female.webp",
+      "frames": 60,
+      "height": 49,
+      "width": 2940
+    },
+    {
+      "file": "BUIZEL.webp",
+      "frames": 60,
+      "height": 49,
+      "width": 2940
+    },
+    {
+      "file": "BULBASAUR.webp",
+      "frames": 49,
+      "height": 38,
+      "width": 1862
+    },
+    {
+      "file": "BUNEARY.webp",
+      "frames": 91,
+      "height": 68,
+      "width": 6188
+    },
+    {
+      "file": "BUNNELBY.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "BURMY_1.webp",
+      "frames": 81,
+      "height": 56,
+      "width": 4536
+    },
+    {
+      "file": "BURMY_2.webp",
+      "frames": 81,
+      "height": 60,
+      "width": 4860
+    },
+    {
+      "file": "BURMY.webp",
+      "frames": 81,
+      "height": 62,
+      "width": 5022
+    },
+    {
+      "file": "BUTTERFREE_1.webp",
+      "frames": 18,
+      "height": 120,
+      "width": 2160
+    },
+    {
+      "file": "BUTTERFREE_female.webp",
+      "frames": 44,
+      "height": 62,
+      "width": 2728
+    },
+    {
+      "file": "BUTTERFREE.webp",
+      "frames": 44,
+      "height": 62,
+      "width": 2728
+    },
+    {
+      "file": "BUZZWOLE.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "CACNEA.webp",
+      "frames": 47,
+      "height": 59,
+      "width": 2773
+    },
+    {
+      "file": "CACTURNE_female.webp",
+      "frames": 57,
+      "height": 70,
+      "width": 3990
+    },
+    {
+      "file": "CACTURNE.webp",
+      "frames": 57,
+      "height": 70,
+      "width": 3990
+    },
+    {
+      "file": "CALYREX_1.webp",
+      "frames": 93,
+      "height": 84,
+      "width": 7812
+    },
+    {
+      "file": "CALYREX_2.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "CALYREX.webp",
+      "frames": 95,
+      "height": 109,
+      "width": 10355
+    },
+    {
+      "file": "CAMERUPT_1.webp",
+      "frames": 21,
+      "height": 96,
+      "width": 2016
+    },
+    {
+      "file": "CAMERUPT_female.webp",
+      "frames": 53,
+      "height": 79,
+      "width": 4187
+    },
+    {
+      "file": "CAMERUPT.webp",
+      "frames": 53,
+      "height": 79,
+      "width": 4187
+    },
+    {
+      "file": "CAPSAKID.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "CARBINK.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "CARKOL.webp",
+      "frames": 91,
+      "height": 65,
+      "width": 5915
+    },
+    {
+      "file": "CARNIVINE.webp",
+      "frames": 58,
+      "height": 91,
+      "width": 5278
+    },
+    {
+      "file": "CARRACOSTA.webp",
+      "frames": 91,
+      "height": 78,
+      "width": 7098
+    },
+    {
+      "file": "CARVANHA.webp",
+      "frames": 65,
+      "height": 58,
+      "width": 3770
+    },
+    {
+      "file": "CASCOON.webp",
+      "frames": 47,
+      "height": 55,
+      "width": 2585
+    },
+    {
+      "file": "CASTFORM_1.webp",
+      "frames": 51,
+      "height": 62,
+      "width": 3162
+    },
+    {
+      "file": "CASTFORM_2.webp",
+      "frames": 43,
+      "height": 61,
+      "width": 2623
+    },
+    {
+      "file": "CASTFORM_3.webp",
+      "frames": 43,
+      "height": 69,
+      "width": 2967
+    },
+    {
+      "file": "CASTFORM.webp",
+      "frames": 39,
+      "height": 47,
+      "width": 1833
+    },
+    {
+      "file": "CATERPIE.webp",
+      "frames": 41,
+      "height": 37,
+      "width": 1517
+    },
+    {
+      "file": "CELEBI.webp",
+      "frames": 32,
+      "height": 62,
+      "width": 1984
+    },
+    {
+      "file": "CELESTEELA.webp",
+      "frames": 72,
+      "height": 117,
+      "width": 8424
+    },
+    {
+      "file": "CENTISKORCH_1.webp",
+      "frames": 14,
+      "height": 107,
+      "width": 1498
+    },
+    {
+      "file": "CENTISKORCH.webp",
+      "frames": 12,
+      "height": 120,
+      "width": 1440
+    },
+    {
+      "file": "CERULEDGE.webp",
+      "frames": 5,
+      "height": 120,
+      "width": 600
+    },
+    {
+      "file": "CETITAN.webp",
+      "frames": 96,
+      "height": 100,
+      "width": 9600
+    },
+    {
+      "file": "CETODDLE.webp",
+      "frames": 58,
+      "height": 85,
+      "width": 4930
+    },
+    {
+      "file": "CHANDELURE_1.webp",
+      "frames": 26,
+      "height": 96,
+      "width": 2496
+    },
+    {
+      "file": "CHANDELURE.webp",
+      "frames": 83,
+      "height": 94,
+      "width": 7802
+    },
+    {
+      "file": "CHANSEY.webp",
+      "frames": 58,
+      "height": 61,
+      "width": 3538
+    },
+    {
+      "file": "CHARCADET.webp",
+      "frames": 20,
+      "height": 100,
+      "width": 2000
+    },
+    {
+      "file": "CHARIZARD_1.webp",
+      "frames": 96,
+      "height": 105,
+      "width": 10080
+    },
+    {
+      "file": "CHARIZARD_2.webp",
+      "frames": 26,
+      "height": 96,
+      "width": 2496
+    },
+    {
+      "file": "CHARIZARD_3.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "CHARIZARD.webp",
+      "frames": 72,
+      "height": 91,
+      "width": 6552
+    },
+    {
+      "file": "CHARJABUG.webp",
+      "frames": 120,
+      "height": 96,
+      "width": 11520
+    },
+    {
+      "file": "CHARMANDER.webp",
+      "frames": 53,
+      "height": 42,
+      "width": 2226
+    },
+    {
+      "file": "CHARMELEON.webp",
+      "frames": 45,
+      "height": 69,
+      "width": 3105
+    },
+    {
+      "file": "CHATOT.webp",
+      "frames": 80,
+      "height": 49,
+      "width": 3920
+    },
+    {
+      "file": "CHERRIM_1.webp",
+      "frames": 39,
+      "height": 44,
+      "width": 1716
+    },
+    {
+      "file": "CHERRIM.webp",
+      "frames": 48,
+      "height": 49,
+      "width": 2352
+    },
+    {
+      "file": "CHERUBI.webp",
+      "frames": 59,
+      "height": 41,
+      "width": 2419
+    },
+    {
+      "file": "CHESNAUGHT_1.webp",
+      "frames": 78,
+      "height": 96,
+      "width": 7488
+    },
+    {
+      "file": "CHESNAUGHT.webp",
+      "frames": 90,
+      "height": 96,
+      "width": 8640
+    },
+    {
+      "file": "CHESPIN.webp",
+      "frames": 52,
+      "height": 50,
+      "width": 2600
+    },
+    {
+      "file": "CHEWTLE.webp",
+      "frames": 55,
+      "height": 47,
+      "width": 2585
+    },
+    {
+      "file": "CHIENPAO.webp",
+      "frames": 76,
+      "height": 99,
+      "width": 7524
+    },
+    {
+      "file": "CHIKORITA.webp",
+      "frames": 25,
+      "height": 56,
+      "width": 1400
+    },
+    {
+      "file": "CHIMCHAR.webp",
+      "frames": 70,
+      "height": 55,
+      "width": 3850
+    },
+    {
+      "file": "CHIMECHO_1.webp",
+      "frames": 36,
+      "height": 113,
+      "width": 4068
+    },
+    {
+      "file": "CHIMECHO.webp",
+      "frames": 54,
+      "height": 66,
+      "width": 3564
+    },
+    {
+      "file": "CHINCHOU.webp",
+      "frames": 31,
+      "height": 66,
+      "width": 2046
+    },
+    {
+      "file": "CHINGLING.webp",
+      "frames": 81,
+      "height": 58,
+      "width": 4698
+    },
+    {
+      "file": "CHIYU.webp",
+      "frames": 114,
+      "height": 68,
+      "width": 7752
+    },
+    {
+      "file": "CINCCINO.webp",
+      "frames": 50,
+      "height": 66,
+      "width": 3300
+    },
+    {
+      "file": "CINDERACE_1.webp",
+      "frames": 72,
+      "height": 100,
+      "width": 7200
+    },
+    {
+      "file": "CINDERACE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "CLAMPERL.webp",
+      "frames": 43,
+      "height": 45,
+      "width": 1935
+    },
+    {
+      "file": "CLAUNCHER.webp",
+      "frames": 87,
+      "height": 96,
+      "width": 8352
+    },
+    {
+      "file": "CLAWITZER.webp",
+      "frames": 99,
+      "height": 118,
+      "width": 11682
+    },
+    {
+      "file": "CLAYDOL.webp",
+      "frames": 50,
+      "height": 72,
+      "width": 3600
+    },
+    {
+      "file": "CLEFABLE_1.webp",
+      "frames": 81,
+      "height": 96,
+      "width": 7776
+    },
+    {
+      "file": "CLEFABLE.webp",
+      "frames": 51,
+      "height": 55,
+      "width": 2805
+    },
+    {
+      "file": "CLEFAIRY.webp",
+      "frames": 67,
+      "height": 47,
+      "width": 3149
+    },
+    {
+      "file": "CLEFFA.webp",
+      "frames": 31,
+      "height": 37,
+      "width": 1147
+    },
+    {
+      "file": "CLOBBOPUS.webp",
+      "frames": 35,
+      "height": 96,
+      "width": 3360
+    },
+    {
+      "file": "CLODSIRE.webp",
+      "frames": 91,
+      "height": 74,
+      "width": 6734
+    },
+    {
+      "file": "CLOYSTER.webp",
+      "frames": 50,
+      "height": 74,
+      "width": 3700
+    },
+    {
+      "file": "COALOSSAL_1.webp",
+      "frames": 90,
+      "height": 111,
+      "width": 9990
+    },
+    {
+      "file": "COALOSSAL.webp",
+      "frames": 92,
+      "height": 84,
+      "width": 7728
+    },
+    {
+      "file": "COBALION.webp",
+      "frames": 68,
+      "height": 79,
+      "width": 5372
+    },
+    {
+      "file": "COFAGRIGUS.webp",
+      "frames": 72,
+      "height": 122,
+      "width": 8784
+    },
+    {
+      "file": "COMBEE_female.webp",
+      "frames": 16,
+      "height": 67,
+      "width": 1072
+    },
+    {
+      "file": "COMBEE.webp",
+      "frames": 16,
+      "height": 67,
+      "width": 1072
+    },
+    {
+      "file": "COMBUSKEN_female.webp",
+      "frames": 124,
+      "height": 71,
+      "width": 8804
+    },
+    {
+      "file": "COMBUSKEN.webp",
+      "frames": 110,
+      "height": 71,
+      "width": 7810
+    },
+    {
+      "file": "COMFEY.webp",
+      "frames": 96,
+      "height": 83,
+      "width": 7968
+    },
+    {
+      "file": "CONKELDURR.webp",
+      "frames": 69,
+      "height": 102,
+      "width": 7038
+    },
+    {
+      "file": "COPPERAJAH_1.webp",
+      "frames": 12,
+      "height": 94,
+      "width": 1128
+    },
+    {
+      "file": "COPPERAJAH.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "CORPHISH.webp",
+      "frames": 77,
+      "height": 59,
+      "width": 4543
+    },
+    {
+      "file": "CORSOLA_1.webp",
+      "frames": 75,
+      "height": 49,
+      "width": 3675
+    },
+    {
+      "file": "CORSOLA.webp",
+      "frames": 57,
+      "height": 52,
+      "width": 2964
+    },
+    {
+      "file": "CORVIKNIGHT_1.webp",
+      "frames": 1,
+      "height": 248,
+      "width": 12117
+    },
+    {
+      "file": "CORVIKNIGHT.webp",
+      "frames": 97,
+      "height": 96,
+      "width": 9312
+    },
+    {
+      "file": "CORVISQUIRE.webp",
+      "frames": 18,
+      "height": 93,
+      "width": 1674
+    },
+    {
+      "file": "COSMOEM.webp",
+      "frames": 100,
+      "height": 62,
+      "width": 6200
+    },
+    {
+      "file": "COSMOG.webp",
+      "frames": 92,
+      "height": 87,
+      "width": 8004
+    },
+    {
+      "file": "COTTONEE.webp",
+      "frames": 63,
+      "height": 52,
+      "width": 3276
+    },
+    {
+      "file": "CRABOMINABLE_1.webp",
+      "frames": 54,
+      "height": 144,
+      "width": 7776
+    },
+    {
+      "file": "CRABOMINABLE.webp",
+      "frames": 92,
+      "height": 101,
+      "width": 9292
+    },
+    {
+      "file": "CRABRAWLER.webp",
+      "frames": 65,
+      "height": 72,
+      "width": 4680
+    },
+    {
+      "file": "CRADILY.webp",
+      "frames": 66,
+      "height": 79,
+      "width": 5214
+    },
+    {
+      "file": "CRAMORANT_1.webp",
+      "frames": 12,
+      "height": 126,
+      "width": 1512
+    },
+    {
+      "file": "CRAMORANT_2.webp",
+      "frames": 12,
+      "height": 105,
+      "width": 1260
+    },
+    {
+      "file": "CRAMORANT.webp",
+      "frames": 54,
+      "height": 78,
+      "width": 4212
+    },
+    {
+      "file": "CRANIDOS.webp",
+      "frames": 63,
+      "height": 59,
+      "width": 3717
+    },
+    {
+      "file": "CRAWDAUNT.webp",
+      "frames": 49,
+      "height": 70,
+      "width": 3430
+    },
+    {
+      "file": "CRESSELIA.webp",
+      "frames": 96,
+      "height": 81,
+      "width": 7776
+    },
+    {
+      "file": "CROAGUNK_female.webp",
+      "frames": 77,
+      "height": 50,
+      "width": 3850
+    },
+    {
+      "file": "CROAGUNK.webp",
+      "frames": 77,
+      "height": 50,
+      "width": 3850
+    },
+    {
+      "file": "CROBAT.webp",
+      "frames": 47,
+      "height": 106,
+      "width": 4982
+    },
+    {
+      "file": "CROCALOR.webp",
+      "frames": 79,
+      "height": 96,
+      "width": 7584
+    },
+    {
+      "file": "CROCONAW.webp",
+      "frames": 90,
+      "height": 59,
+      "width": 5310
+    },
+    {
+      "file": "CRUSTLE.webp",
+      "frames": 60,
+      "height": 75,
+      "width": 4500
+    },
+    {
+      "file": "CRYOGONAL.webp",
+      "frames": 71,
+      "height": 86,
+      "width": 6106
+    },
+    {
+      "file": "CUBCHOO.webp",
+      "frames": 92,
+      "height": 38,
+      "width": 3496
+    },
+    {
+      "file": "CUBONE.webp",
+      "frames": 79,
+      "height": 49,
+      "width": 3871
+    },
+    {
+      "file": "CUFANT.webp",
+      "frames": 80,
+      "height": 78,
+      "width": 6240
+    },
+    {
+      "file": "CURSOLA.webp",
+      "frames": 145,
+      "height": 110,
+      "width": 15950
+    },
+    {
+      "file": "CUTIEFLY.webp",
+      "frames": 32,
+      "height": 90,
+      "width": 2880
+    },
+    {
+      "file": "CYCLIZAR.webp",
+      "frames": 93,
+      "height": 88,
+      "width": 8184
+    },
+    {
+      "file": "CYNDAQUIL.webp",
+      "frames": 128,
+      "height": 44,
+      "width": 5632
+    },
+    {
+      "file": "DACHSBUN.webp",
+      "frames": 72,
+      "height": 120,
+      "width": 8640
+    },
+    {
+      "file": "DARKRAI_1.webp",
+      "frames": 58,
+      "height": 143,
+      "width": 8294
+    },
+    {
+      "file": "DARKRAI.webp",
+      "frames": 71,
+      "height": 96,
+      "width": 6816
+    },
+    {
+      "file": "DARMANITAN_1.webp",
+      "frames": 67,
+      "height": 49,
+      "width": 3283
+    },
+    {
+      "file": "DARMANITAN_2.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "DARMANITAN_3.webp",
+      "frames": 6,
+      "height": 72,
+      "width": 432
+    },
+    {
+      "file": "DARMANITAN.webp",
+      "frames": 72,
+      "height": 69,
+      "width": 4968
+    },
+    {
+      "file": "DARTRIX.webp",
+      "frames": 47,
+      "height": 96,
+      "width": 4512
+    },
+    {
+      "file": "DARUMAKA_2.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "DARUMAKA.webp",
+      "frames": 79,
+      "height": 42,
+      "width": 3318
+    },
+    {
+      "file": "DECIDUEYE_1.webp",
+      "frames": 156,
+      "height": 81,
+      "width": 12636
+    },
+    {
+      "file": "DECIDUEYE.webp",
+      "frames": 49,
+      "height": 96,
+      "width": 4704
+    },
+    {
+      "file": "DEDENNE.webp",
+      "frames": 31,
+      "height": 96,
+      "width": 2976
+    },
+    {
+      "file": "DEERLING_1.webp",
+      "frames": 65,
+      "height": 50,
+      "width": 3250
+    },
+    {
+      "file": "DEERLING_2.webp",
+      "frames": 65,
+      "height": 50,
+      "width": 3250
+    },
+    {
+      "file": "DEERLING_3.webp",
+      "frames": 65,
+      "height": 50,
+      "width": 3250
+    },
+    {
+      "file": "DEERLING.webp",
+      "frames": 65,
+      "height": 50,
+      "width": 3250
+    },
+    {
+      "file": "DEINO.webp",
+      "frames": 63,
+      "height": 50,
+      "width": 3150
+    },
+    {
+      "file": "DELCATTY.webp",
+      "frames": 75,
+      "height": 61,
+      "width": 4575
+    },
+    {
+      "file": "DELIBIRD.webp",
+      "frames": 60,
+      "height": 51,
+      "width": 3060
+    },
+    {
+      "file": "DELPHOX_1.webp",
+      "frames": 74,
+      "height": 96,
+      "width": 7104
+    },
+    {
+      "file": "DELPHOX.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "DEOXYS_1.webp",
+      "frames": 80,
+      "height": 85,
+      "width": 6800
+    },
+    {
+      "file": "DEOXYS_2.webp",
+      "frames": 63,
+      "height": 87,
+      "width": 5481
+    },
+    {
+      "file": "DEOXYS_3.webp",
+      "frames": 85,
+      "height": 97,
+      "width": 8245
+    },
+    {
+      "file": "DEOXYS.webp",
+      "frames": 50,
+      "height": 77,
+      "width": 3850
+    },
+    {
+      "file": "DEWGONG.webp",
+      "frames": 61,
+      "height": 75,
+      "width": 4575
+    },
+    {
+      "file": "DEWOTT.webp",
+      "frames": 51,
+      "height": 57,
+      "width": 2907
+    },
+    {
+      "file": "DEWPIDER.webp",
+      "frames": 144,
+      "height": 43,
+      "width": 6192
+    },
+    {
+      "file": "DHELMISE.webp",
+      "frames": 139,
+      "height": 91,
+      "width": 12649
+    },
+    {
+      "file": "DIALGA_1.webp",
+      "frames": 117,
+      "height": 120,
+      "width": 14040
+    },
+    {
+      "file": "DIALGA.webp",
+      "frames": 68,
+      "height": 88,
+      "width": 5984
+    },
+    {
+      "file": "DIANCIE_1.webp",
+      "frames": 37,
+      "height": 93,
+      "width": 3441
+    },
+    {
+      "file": "DIANCIE.webp",
+      "frames": 96,
+      "height": 81,
+      "width": 7776
+    },
+    {
+      "file": "DIGGERSBY.webp",
+      "frames": 61,
+      "height": 96,
+      "width": 5856
+    },
+    {
+      "file": "DIGLETT_1.webp",
+      "frames": 53,
+      "height": 33,
+      "width": 1749
+    },
+    {
+      "file": "DIGLETT.webp",
+      "frames": 54,
+      "height": 38,
+      "width": 2052
+    },
+    {
+      "file": "DIPPLIN.webp",
+      "frames": 66,
+      "height": 96,
+      "width": 6336
+    },
+    {
+      "file": "DITTO.webp",
+      "frames": 40,
+      "height": 47,
+      "width": 1880
+    },
+    {
+      "file": "DODRIO_female.webp",
+      "frames": 77,
+      "height": 76,
+      "width": 5852
+    },
+    {
+      "file": "DODRIO.webp",
+      "frames": 77,
+      "height": 76,
+      "width": 5852
+    },
+    {
+      "file": "DODUO_female.webp",
+      "frames": 94,
+      "height": 60,
+      "width": 5640
+    },
+    {
+      "file": "DODUO.webp",
+      "frames": 94,
+      "height": 60,
+      "width": 5640
+    },
+    {
+      "file": "DOLLIV.webp",
+      "frames": 40,
+      "height": 100,
+      "width": 4000
+    },
+    {
+      "file": "DONDOZO.webp",
+      "frames": 40,
+      "height": 96,
+      "width": 3840
+    },
+    {
+      "file": "DONPHAN_female.webp",
+      "frames": 63,
+      "height": 82,
+      "width": 5166
+    },
+    {
+      "file": "DONPHAN.webp",
+      "frames": 63,
+      "height": 82,
+      "width": 5166
+    },
+    {
+      "file": "DOTTLER.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "DOUBLADE.webp",
+      "frames": 17,
+      "height": 96,
+      "width": 1632
+    },
+    {
+      "file": "DRACOVISH.webp",
+      "frames": 78,
+      "height": 84,
+      "width": 6552
+    },
+    {
+      "file": "DRACOZOLT.webp",
+      "frames": 42,
+      "height": 87,
+      "width": 3654
+    },
+    {
+      "file": "DRAGALGE_1.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "DRAGALGE.webp",
+      "frames": 26,
+      "height": 98,
+      "width": 2548
+    },
+    {
+      "file": "DRAGAPULT.webp",
+      "frames": 76,
+      "height": 92,
+      "width": 6992
+    },
+    {
+      "file": "DRAGONAIR.webp",
+      "frames": 63,
+      "height": 74,
+      "width": 4662
+    },
+    {
+      "file": "DRAGONITE_1.webp",
+      "frames": 32,
+      "height": 130,
+      "width": 4160
+    },
+    {
+      "file": "DRAGONITE.webp",
+      "frames": 51,
+      "height": 82,
+      "width": 4182
+    },
+    {
+      "file": "DRAKLOAK.webp",
+      "frames": 105,
+      "height": 88,
+      "width": 9240
+    },
+    {
+      "file": "DRAMPA_1.webp",
+      "frames": 35,
+      "height": 96,
+      "width": 3360
+    },
+    {
+      "file": "DRAMPA.webp",
+      "frames": 12,
+      "height": 120,
+      "width": 1440
+    },
+    {
+      "file": "DRAPION.webp",
+      "frames": 88,
+      "height": 96,
+      "width": 8448
+    },
+    {
+      "file": "DRATINI.webp",
+      "frames": 25,
+      "height": 51,
+      "width": 1275
+    },
+    {
+      "file": "DREDNAW_1.webp",
+      "frames": 85,
+      "height": 110,
+      "width": 9350
+    },
+    {
+      "file": "DREDNAW.webp",
+      "frames": 39,
+      "height": 96,
+      "width": 3744
+    },
+    {
+      "file": "DREEPY.webp",
+      "frames": 88,
+      "height": 59,
+      "width": 5192
+    },
+    {
+      "file": "DRIFBLIM.webp",
+      "frames": 36,
+      "height": 73,
+      "width": 2628
+    },
+    {
+      "file": "DRIFLOON.webp",
+      "frames": 64,
+      "height": 69,
+      "width": 4416
+    },
+    {
+      "file": "DRILBUR.webp",
+      "frames": 51,
+      "height": 82,
+      "width": 4182
+    },
+    {
+      "file": "DRIZZILE.webp",
+      "frames": 139,
+      "height": 53,
+      "width": 7367
+    },
+    {
+      "file": "DROWZEE.webp",
+      "frames": 76,
+      "height": 58,
+      "width": 4408
+    },
+    {
+      "file": "DRUDDIGON.webp",
+      "frames": 63,
+      "height": 90,
+      "width": 5670
+    },
+    {
+      "file": "DUBWOOL.webp",
+      "frames": 72,
+      "height": 76,
+      "width": 5472
+    },
+    {
+      "file": "DUCKLETT.webp",
+      "frames": 41,
+      "height": 40,
+      "width": 1640
+    },
+    {
+      "file": "DUDUNSPARCE_1.webp",
+      "frames": 16,
+      "height": 63,
+      "width": 1008
+    },
+    {
+      "file": "DUDUNSPARCE.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "DUGTRIO_1.webp",
+      "frames": 42,
+      "height": 48,
+      "width": 2016
+    },
+    {
+      "file": "DUGTRIO.webp",
+      "frames": 41,
+      "height": 52,
+      "width": 2132
+    },
+    {
+      "file": "DUNSPARCE.webp",
+      "frames": 48,
+      "height": 45,
+      "width": 2160
+    },
+    {
+      "file": "DUOSION.webp",
+      "frames": 79,
+      "height": 68,
+      "width": 5372
+    },
+    {
+      "file": "DURALUDON_1.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "DURALUDON.webp",
+      "frames": 8,
+      "height": 96,
+      "width": 768
+    },
+    {
+      "file": "DURANT.webp",
+      "frames": 36,
+      "height": 54,
+      "width": 1944
+    },
+    {
+      "file": "DUSCLOPS.webp",
+      "frames": 58,
+      "height": 84,
+      "width": 4872
+    },
+    {
+      "file": "DUSKNOIR.webp",
+      "frames": 48,
+      "height": 75,
+      "width": 3600
+    },
+    {
+      "file": "DUSKULL.webp",
+      "frames": 42,
+      "height": 51,
+      "width": 2142
+    },
+    {
+      "file": "DUSTOX_female.webp",
+      "frames": 82,
+      "height": 80,
+      "width": 6560
+    },
+    {
+      "file": "DUSTOX.webp",
+      "frames": 82,
+      "height": 80,
+      "width": 6560
+    },
+    {
+      "file": "DWEBBLE.webp",
+      "frames": 41,
+      "height": 41,
+      "width": 1681
+    },
+    {
+      "file": "EELEKTRIK.webp",
+      "frames": 43,
+      "height": 69,
+      "width": 2967
+    },
+    {
+      "file": "EELEKTROSS_1.webp",
+      "frames": 40,
+      "height": 96,
+      "width": 3840
+    },
+    {
+      "file": "EELEKTROSS.webp",
+      "frames": 63,
+      "height": 96,
+      "width": 6048
+    },
+    {
+      "file": "EEVEE_2.webp",
+      "frames": 77,
+      "height": 96,
+      "width": 7392
+    },
+    {
+      "file": "EEVEE.webp",
+      "frames": 63,
+      "height": 49,
+      "width": 3087
+    },
+    {
+      "file": "EISCUE_1.webp",
+      "frames": 65,
+      "height": 92,
+      "width": 5980
+    },
+    {
+      "file": "EISCUE.webp",
+      "frames": 72,
+      "height": 85,
+      "width": 6120
+    },
+    {
+      "file": "EKANS.webp",
+      "frames": 36,
+      "height": 59,
+      "width": 2124
+    },
+    {
+      "file": "ELDEGOSS.webp",
+      "frames": 49,
+      "height": 72,
+      "width": 3528
+    },
+    {
+      "file": "ELECTABUZZ.webp",
+      "frames": 48,
+      "height": 71,
+      "width": 3408
+    },
+    {
+      "file": "ELECTIVIRE.webp",
+      "frames": 51,
+      "height": 96,
+      "width": 4896
+    },
+    {
+      "file": "ELECTRIKE.webp",
+      "frames": 41,
+      "height": 50,
+      "width": 2050
+    },
+    {
+      "file": "ELECTRODE_1.webp",
+      "frames": 64,
+      "height": 59,
+      "width": 3776
+    },
+    {
+      "file": "ELECTRODE.webp",
+      "frames": 24,
+      "height": 52,
+      "width": 1248
+    },
+    {
+      "file": "ELEKID.webp",
+      "frames": 47,
+      "height": 52,
+      "width": 2444
+    },
+    {
+      "file": "ELGYEM.webp",
+      "frames": 56,
+      "height": 50,
+      "width": 2800
+    },
+    {
+      "file": "EMBOAR_1.webp",
+      "frames": 97,
+      "height": 96,
+      "width": 9312
+    },
+    {
+      "file": "EMBOAR.webp",
+      "frames": 83,
+      "height": 89,
+      "width": 7387
+    },
+    {
+      "file": "EMOLGA.webp",
+      "frames": 94,
+      "height": 83,
+      "width": 7802
+    },
+    {
+      "file": "EMPOLEON.webp",
+      "frames": 65,
+      "height": 88,
+      "width": 5720
+    },
+    {
+      "file": "ENAMORUS_1.webp",
+      "frames": 103,
+      "height": 120,
+      "width": 12360
+    },
+    {
+      "file": "ENAMORUS.webp",
+      "frames": 113,
+      "height": 96,
+      "width": 10848
+    },
+    {
+      "file": "ENTEI.webp",
+      "frames": 55,
+      "height": 76,
+      "width": 4180
+    },
+    {
+      "file": "ESCAVALIER.webp",
+      "frames": 119,
+      "height": 80,
+      "width": 9520
+    },
+    {
+      "file": "ESPATHRA.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "ESPEON.webp",
+      "frames": 65,
+      "height": 63,
+      "width": 4095
+    },
+    {
+      "file": "ESPURR.webp",
+      "frames": 28,
+      "height": 96,
+      "width": 2688
+    },
+    {
+      "file": "ETERNATUS_1.webp",
+      "frames": 35,
+      "height": 112,
+      "width": 3920
+    },
+    {
+      "file": "ETERNATUS.webp",
+      "frames": 120,
+      "height": 111,
+      "width": 13320
+    },
+    {
+      "file": "EXCADRILL_1.webp",
+      "frames": 106,
+      "height": 96,
+      "width": 10176
+    },
+    {
+      "file": "EXCADRILL.webp",
+      "frames": 84,
+      "height": 91,
+      "width": 7644
+    },
+    {
+      "file": "EXEGGCUTE.webp",
+      "frames": 27,
+      "height": 55,
+      "width": 1485
+    },
+    {
+      "file": "EXEGGUTOR_1.webp",
+      "frames": 101,
+      "height": 113,
+      "width": 11413
+    },
+    {
+      "file": "EXEGGUTOR.webp",
+      "frames": 45,
+      "height": 79,
+      "width": 3555
+    },
+    {
+      "file": "EXPLOUD.webp",
+      "frames": 59,
+      "height": 73,
+      "width": 4307
+    },
+    {
+      "file": "FALINKS_1.webp",
+      "frames": 100,
+      "height": 96,
+      "width": 9600
+    },
+    {
+      "file": "FALINKS.webp",
+      "frames": 18,
+      "height": 96,
+      "width": 1728
+    },
+    {
+      "file": "FARFETCHD_1.webp",
+      "frames": 156,
+      "height": 96,
+      "width": 14976
+    },
+    {
+      "file": "FARFETCHD.webp",
+      "frames": 32,
+      "height": 48,
+      "width": 1536
+    },
+    {
+      "file": "FARIGIRAF.webp",
+      "frames": 40,
+      "height": 96,
+      "width": 3840
+    },
+    {
+      "file": "FEAROW.webp",
+      "frames": 11,
+      "height": 105,
+      "width": 1155
+    },
+    {
+      "file": "FEEBAS.webp",
+      "frames": 45,
+      "height": 52,
+      "width": 2340
+    },
+    {
+      "file": "FENNEKIN.webp",
+      "frames": 73,
+      "height": 49,
+      "width": 3577
+    },
+    {
+      "file": "FERALIGATR_1.webp",
+      "frames": 148,
+      "height": 96,
+      "width": 14208
+    },
+    {
+      "file": "FERALIGATR.webp",
+      "frames": 41,
+      "height": 82,
+      "width": 3362
+    },
+    {
+      "file": "FERROSEED.webp",
+      "frames": 81,
+      "height": 42,
+      "width": 3402
+    },
+    {
+      "file": "FERROTHORN.webp",
+      "frames": 65,
+      "height": 78,
+      "width": 5070
+    },
+    {
+      "file": "FEZANDIPITI.webp",
+      "frames": 132,
+      "height": 96,
+      "width": 12672
+    },
+    {
+      "file": "FIDOUGH.webp",
+      "frames": 63,
+      "height": 96,
+      "width": 6048
+    },
+    {
+      "file": "FINIZEN.webp",
+      "frames": 76,
+      "height": 100,
+      "width": 7600
+    },
+    {
+      "file": "FINNEON_female.webp",
+      "frames": 87,
+      "height": 77,
+      "width": 6699
+    },
+    {
+      "file": "FINNEON.webp",
+      "frames": 87,
+      "height": 77,
+      "width": 6699
+    },
+    {
+      "file": "FLAAFFY.webp",
+      "frames": 55,
+      "height": 52,
+      "width": 2860
+    },
+    {
+      "file": "FLABEBE_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLABEBE_2.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLABEBE_3.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLABEBE_4.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLABEBE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLAMIGO.webp",
+      "frames": 82,
+      "height": 96,
+      "width": 7872
+    },
+    {
+      "file": "FLAPPLE_1.webp",
+      "frames": 4,
+      "height": 99,
+      "width": 396
+    },
+    {
+      "file": "FLAPPLE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLAREON.webp",
+      "frames": 59,
+      "height": 66,
+      "width": 3894
+    },
+    {
+      "file": "FLETCHINDER.webp",
+      "frames": 27,
+      "height": 86,
+      "width": 2322
+    },
+    {
+      "file": "FLETCHLING.webp",
+      "frames": 31,
+      "height": 96,
+      "width": 2976
+    },
+    {
+      "file": "FLITTLE.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "FLOATZEL_female.webp",
+      "frames": 84,
+      "height": 71,
+      "width": 5964
+    },
+    {
+      "file": "FLOATZEL.webp",
+      "frames": 84,
+      "height": 71,
+      "width": 5964
+    },
+    {
+      "file": "FLOETTE_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLOETTE_2.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLOETTE_3.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLOETTE_4.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLOETTE_5.webp",
+      "frames": 44,
+      "height": 80,
+      "width": 3520
+    },
+    {
+      "file": "FLOETTE_6.webp",
+      "frames": 106,
+      "height": 96,
+      "width": 10176
+    },
+    {
+      "file": "FLOETTE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "FLORAGATO.webp",
+      "frames": 70,
+      "height": 97,
+      "width": 6790
+    },
+    {
+      "file": "FLORGES_1.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "FLORGES_2.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "FLORGES_3.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "FLORGES_4.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "FLORGES.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "FLUTTERMANE.webp",
+      "frames": 96,
+      "height": 72,
+      "width": 6912
+    },
+    {
+      "file": "FLYGON.webp",
+      "frames": 63,
+      "height": 81,
+      "width": 5103
+    },
+    {
+      "file": "FOMANTIS.webp",
+      "frames": 122,
+      "height": 96,
+      "width": 11712
+    },
+    {
+      "file": "FOONGUS.webp",
+      "frames": 49,
+      "height": 36,
+      "width": 1764
+    },
+    {
+      "file": "FORRETRESS.webp",
+      "frames": 27,
+      "height": 63,
+      "width": 1701
+    },
+    {
+      "file": "FRAXURE.webp",
+      "frames": 53,
+      "height": 63,
+      "width": 3339
+    },
+    {
+      "file": "FRIGIBAX.webp",
+      "frames": 84,
+      "height": 37,
+      "width": 3108
+    },
+    {
+      "file": "FRILLISH_female.webp",
+      "frames": 82,
+      "height": 70,
+      "width": 5740
+    },
+    {
+      "file": "FRILLISH.webp",
+      "frames": 82,
+      "height": 72,
+      "width": 5904
+    },
+    {
+      "file": "FROAKIE.webp",
+      "frames": 31,
+      "height": 96,
+      "width": 2976
+    },
+    {
+      "file": "FROGADIER.webp",
+      "frames": 23,
+      "height": 96,
+      "width": 2208
+    },
+    {
+      "file": "FROSLASS_1.webp",
+      "frames": 105,
+      "height": 96,
+      "width": 10080
+    },
+    {
+      "file": "FROSLASS.webp",
+      "frames": 66,
+      "height": 75,
+      "width": 4950
+    },
+    {
+      "file": "FROSMOTH.webp",
+      "frames": 22,
+      "height": 94,
+      "width": 2068
+    },
+    {
+      "file": "FUECOCO.webp",
+      "frames": 26,
+      "height": 96,
+      "width": 2496
+    },
+    {
+      "file": "FURFROU_1.webp",
+      "frames": 12,
+      "height": 66,
+      "width": 792
+    },
+    {
+      "file": "FURFROU_2.webp",
+      "frames": 12,
+      "height": 66,
+      "width": 792
+    },
+    {
+      "file": "FURFROU_3.webp",
+      "frames": 12,
+      "height": 68,
+      "width": 816
+    },
+    {
+      "file": "FURFROU_4.webp",
+      "frames": 12,
+      "height": 61,
+      "width": 732
+    },
+    {
+      "file": "FURFROU_5.webp",
+      "frames": 12,
+      "height": 62,
+      "width": 744
+    },
+    {
+      "file": "FURFROU_6.webp",
+      "frames": 12,
+      "height": 65,
+      "width": 780
+    },
+    {
+      "file": "FURFROU_7.webp",
+      "frames": 12,
+      "height": 63,
+      "width": 756
+    },
+    {
+      "file": "FURFROU_8.webp",
+      "frames": 12,
+      "height": 64,
+      "width": 768
+    },
+    {
+      "file": "FURFROU_9.webp",
+      "frames": 12,
+      "height": 63,
+      "width": 756
+    },
+    {
+      "file": "FURFROU.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "FURRET.webp",
+      "frames": 55,
+      "height": 58,
+      "width": 3190
+    },
+    {
+      "file": "GABITE_female.webp",
+      "frames": 27,
+      "height": 71,
+      "width": 1917
+    },
+    {
+      "file": "GABITE.webp",
+      "frames": 27,
+      "height": 71,
+      "width": 1917
+    },
+    {
+      "file": "GALLADE_1.webp",
+      "frames": 117,
+      "height": 96,
+      "width": 11232
+    },
+    {
+      "file": "GALLADE.webp",
+      "frames": 66,
+      "height": 70,
+      "width": 4620
+    },
+    {
+      "file": "GALVANTULA.webp",
+      "frames": 71,
+      "height": 68,
+      "width": 4828
+    },
+    {
+      "file": "GARBODOR_1.webp",
+      "frames": 48,
+      "height": 110,
+      "width": 5280
+    },
+    {
+      "file": "GARBODOR.webp",
+      "frames": 68,
+      "height": 93,
+      "width": 6324
+    },
+    {
+      "file": "GARCHOMP_1.webp",
+      "frames": 114,
+      "height": 93,
+      "width": 10602
+    },
+    {
+      "file": "GARCHOMP_2.webp",
+      "frames": 39,
+      "height": 113,
+      "width": 4407
+    },
+    {
+      "file": "GARCHOMP_female.webp",
+      "frames": 44,
+      "height": 82,
+      "width": 3608
+    },
+    {
+      "file": "GARCHOMP.webp",
+      "frames": 44,
+      "height": 82,
+      "width": 3608
+    },
+    {
+      "file": "GARDEVOIR_1.webp",
+      "frames": 31,
+      "height": 96,
+      "width": 2976
+    },
+    {
+      "file": "GARDEVOIR.webp",
+      "frames": 122,
+      "height": 77,
+      "width": 9394
+    },
+    {
+      "file": "GARGANACL.webp",
+      "frames": 26,
+      "height": 120,
+      "width": 3120
+    },
+    {
+      "file": "GASTLY.webp",
+      "frames": 55,
+      "height": 75,
+      "width": 4125
+    },
+    {
+      "file": "GASTRODON_1.webp",
+      "frames": 61,
+      "height": 61,
+      "width": 3721
+    },
+    {
+      "file": "GASTRODON.webp",
+      "frames": 54,
+      "height": 60,
+      "width": 3240
+    },
+    {
+      "file": "GENESECT_1.webp",
+      "frames": 89,
+      "height": 70,
+      "width": 6230
+    },
+    {
+      "file": "GENESECT_2.webp",
+      "frames": 89,
+      "height": 70,
+      "width": 6230
+    },
+    {
+      "file": "GENESECT_3.webp",
+      "frames": 89,
+      "height": 70,
+      "width": 6230
+    },
+    {
+      "file": "GENESECT_4.webp",
+      "frames": 89,
+      "height": 70,
+      "width": 6230
+    },
+    {
+      "file": "GENESECT.webp",
+      "frames": 89,
+      "height": 70,
+      "width": 6230
+    },
+    {
+      "file": "GENGAR_1.webp",
+      "frames": 29,
+      "height": 78,
+      "width": 2262
+    },
+    {
+      "file": "GENGAR_2.webp",
+      "frames": 8,
+      "height": 104,
+      "width": 832
+    },
+    {
+      "file": "GENGAR.webp",
+      "frames": 44,
+      "height": 79,
+      "width": 3476
+    },
+    {
+      "file": "GEODUDE_1.webp",
+      "frames": 46,
+      "height": 70,
+      "width": 3220
+    },
+    {
+      "file": "GEODUDE.webp",
+      "frames": 52,
+      "height": 61,
+      "width": 3172
+    },
+    {
+      "file": "GHOLDENGO.webp",
+      "frames": 93,
+      "height": 119,
+      "width": 11067
+    },
+    {
+      "file": "GIBLE_female.webp",
+      "frames": 63,
+      "height": 57,
+      "width": 3591
+    },
+    {
+      "file": "GIBLE.webp",
+      "frames": 63,
+      "height": 57,
+      "width": 3591
+    },
+    {
+      "file": "GIGALITH.webp",
+      "frames": 99,
+      "height": 81,
+      "width": 8019
+    },
+    {
+      "file": "GIMMIGHOUL_1.webp",
+      "frames": 7,
+      "height": 50,
+      "width": 350
+    },
+    {
+      "file": "GIMMIGHOUL.webp",
+      "frames": 109,
+      "height": 61,
+      "width": 6649
+    },
+    {
+      "file": "GIRAFARIG_female.webp",
+      "frames": 52,
+      "height": 76,
+      "width": 3952
+    },
+    {
+      "file": "GIRAFARIG.webp",
+      "frames": 52,
+      "height": 76,
+      "width": 3952
+    },
+    {
+      "file": "GIRATINA_1.webp",
+      "frames": 13,
+      "height": 91,
+      "width": 1183
+    },
+    {
+      "file": "GIRATINA.webp",
+      "frames": 79,
+      "height": 103,
+      "width": 8137
+    },
+    {
+      "file": "GLACEON.webp",
+      "frames": 86,
+      "height": 77,
+      "width": 6622
+    },
+    {
+      "file": "GLALIE_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "GLALIE.webp",
+      "frames": 49,
+      "height": 62,
+      "width": 3038
+    },
+    {
+      "file": "GLAMEOW.webp",
+      "frames": 96,
+      "height": 72,
+      "width": 6912
+    },
+    {
+      "file": "GLASTRIER.webp",
+      "frames": 93,
+      "height": 84,
+      "width": 7812
+    },
+    {
+      "file": "GLIGAR_female.webp",
+      "frames": 34,
+      "height": 93,
+      "width": 3162
+    },
+    {
+      "file": "GLIGAR.webp",
+      "frames": 34,
+      "height": 93,
+      "width": 3162
+    },
+    {
+      "file": "GLIMMET.webp",
+      "frames": 76,
+      "height": 75,
+      "width": 5700
+    },
+    {
+      "file": "GLIMMORA_1.webp",
+      "frames": 33,
+      "height": 139,
+      "width": 4587
+    },
+    {
+      "file": "GLIMMORA.webp",
+      "frames": 38,
+      "height": 96,
+      "width": 3648
+    },
+    {
+      "file": "GLISCOR.webp",
+      "frames": 66,
+      "height": 85,
+      "width": 5610
+    },
+    {
+      "file": "GLOOM_female.webp",
+      "frames": 48,
+      "height": 51,
+      "width": 2448
+    },
+    {
+      "file": "GLOOM.webp",
+      "frames": 48,
+      "height": 51,
+      "width": 2448
+    },
+    {
+      "file": "GOGOAT.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "GOLBAT_female.webp",
+      "frames": 8,
+      "height": 111,
+      "width": 888
+    },
+    {
+      "file": "GOLBAT.webp",
+      "frames": 8,
+      "height": 111,
+      "width": 888
+    },
+    {
+      "file": "GOLDEEN_female.webp",
+      "frames": 57,
+      "height": 75,
+      "width": 4275
+    },
+    {
+      "file": "GOLDEEN.webp",
+      "frames": 57,
+      "height": 75,
+      "width": 4275
+    },
+    {
+      "file": "GOLDUCK.webp",
+      "frames": 38,
+      "height": 60,
+      "width": 2280
+    },
+    {
+      "file": "GOLEM_1.webp",
+      "frames": 106,
+      "height": 74,
+      "width": 7844
+    },
+    {
+      "file": "GOLEM.webp",
+      "frames": 45,
+      "height": 72,
+      "width": 3240
+    },
+    {
+      "file": "GOLETT.webp",
+      "frames": 40,
+      "height": 58,
+      "width": 2320
+    },
+    {
+      "file": "GOLISOPOD_1.webp",
+      "frames": 24,
+      "height": 102,
+      "width": 2448
+    },
+    {
+      "file": "GOLISOPOD.webp",
+      "frames": 18,
+      "height": 96,
+      "width": 1728
+    },
+    {
+      "file": "GOLURK_1.webp",
+      "frames": 22,
+      "height": 118,
+      "width": 2596
+    },
+    {
+      "file": "GOLURK.webp",
+      "frames": 80,
+      "height": 83,
+      "width": 6640
+    },
+    {
+      "file": "GOODRA_1.webp",
+      "frames": 95,
+      "height": 100,
+      "width": 9500
+    },
+    {
+      "file": "GOODRA.webp",
+      "frames": 152,
+      "height": 96,
+      "width": 14592
+    },
+    {
+      "file": "GOOMY.webp",
+      "frames": 84,
+      "height": 96,
+      "width": 8064
+    },
+    {
+      "file": "GOREBYSS.webp",
+      "frames": 53,
+      "height": 98,
+      "width": 5194
+    },
+    {
+      "file": "GOSSIFLEUR.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "GOTHITA.webp",
+      "frames": 70,
+      "height": 39,
+      "width": 2730
+    },
+    {
+      "file": "GOTHITELLE.webp",
+      "frames": 96,
+      "height": 73,
+      "width": 7008
+    },
+    {
+      "file": "GOTHORITA.webp",
+      "frames": 80,
+      "height": 61,
+      "width": 4880
+    },
+    {
+      "file": "GOUGINGFIRE.webp",
+      "frames": 76,
+      "height": 90,
+      "width": 6840
+    },
+    {
+      "file": "GOURGEIST.webp",
+      "frames": 43,
+      "height": 96,
+      "width": 4128
+    },
+    {
+      "file": "GRAFAIAI.webp",
+      "frames": 16,
+      "height": 76,
+      "width": 1216
+    },
+    {
+      "file": "GRANBULL.webp",
+      "frames": 63,
+      "height": 61,
+      "width": 3843
+    },
+    {
+      "file": "GRAPPLOCT.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "GRAVELER_1.webp",
+      "frames": 89,
+      "height": 84,
+      "width": 7476
+    },
+    {
+      "file": "GRAVELER.webp",
+      "frames": 24,
+      "height": 71,
+      "width": 1704
+    },
+    {
+      "file": "GREATTUSK.webp",
+      "frames": 154,
+      "height": 98,
+      "width": 15092
+    },
+    {
+      "file": "GREAVARD.webp",
+      "frames": 26,
+      "height": 96,
+      "width": 2496
+    },
+    {
+      "file": "GREEDENT.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "GRENINJA_2.webp",
+      "frames": 96,
+      "height": 104,
+      "width": 9984
+    },
+    {
+      "file": "GRENINJA_3.webp",
+      "frames": 100,
+      "height": 96,
+      "width": 9600
+    },
+    {
+      "file": "GRENINJA.webp",
+      "frames": 23,
+      "height": 96,
+      "width": 2208
+    },
+    {
+      "file": "GRIMER_1.webp",
+      "frames": 18,
+      "height": 61,
+      "width": 1098
+    },
+    {
+      "file": "GRIMER.webp",
+      "frames": 58,
+      "height": 73,
+      "width": 4234
+    },
+    {
+      "file": "GRIMMSNARL_1.webp",
+      "frames": 70,
+      "height": 96,
+      "width": 6720
+    },
+    {
+      "file": "GRIMMSNARL.webp",
+      "frames": 66,
+      "height": 93,
+      "width": 6138
+    },
+    {
+      "file": "GROOKEY.webp",
+      "frames": 56,
+      "height": 96,
+      "width": 5376
+    },
+    {
+      "file": "GROTLE.webp",
+      "frames": 57,
+      "height": 61,
+      "width": 3477
+    },
+    {
+      "file": "GROUDON_1.webp",
+      "frames": 50,
+      "height": 96,
+      "width": 4800
+    },
+    {
+      "file": "GROUDON.webp",
+      "frames": 49,
+      "height": 90,
+      "width": 4410
+    },
+    {
+      "file": "GROVYLE.webp",
+      "frames": 114,
+      "height": 70,
+      "width": 7980
+    },
+    {
+      "file": "GROWLITHE_1.webp",
+      "frames": 114,
+      "height": 88,
+      "width": 10032
+    },
+    {
+      "file": "GROWLITHE.webp",
+      "frames": 71,
+      "height": 55,
+      "width": 3905
+    },
+    {
+      "file": "GRUBBIN.webp",
+      "frames": 20,
+      "height": 96,
+      "width": 1920
+    },
+    {
+      "file": "GRUMPIG.webp",
+      "frames": 14,
+      "height": 68,
+      "width": 952
+    },
+    {
+      "file": "GULPIN_female.webp",
+      "frames": 49,
+      "height": 40,
+      "width": 1960
+    },
+    {
+      "file": "GULPIN.webp",
+      "frames": 49,
+      "height": 44,
+      "width": 2156
+    },
+    {
+      "file": "GUMSHOOS.webp",
+      "frames": 94,
+      "height": 71,
+      "width": 6674
+    },
+    {
+      "file": "GURDURR.webp",
+      "frames": 72,
+      "height": 81,
+      "width": 5832
+    },
+    {
+      "file": "GUZZLORD.webp",
+      "frames": 14,
+      "height": 99,
+      "width": 1386
+    },
+    {
+      "file": "GYARADOS_1.webp",
+      "frames": 12,
+      "height": 100,
+      "width": 1200
+    },
+    {
+      "file": "GYARADOS_female.webp",
+      "frames": 43,
+      "height": 102,
+      "width": 4386
+    },
+    {
+      "file": "GYARADOS.webp",
+      "frames": 43,
+      "height": 102,
+      "width": 4386
+    },
+    {
+      "file": "HAKAMOO.webp",
+      "frames": 106,
+      "height": 76,
+      "width": 8056
+    },
+    {
+      "file": "HAPPINY.webp",
+      "frames": 28,
+      "height": 50,
+      "width": 1400
+    },
+    {
+      "file": "HARIYAMA.webp",
+      "frames": 67,
+      "height": 88,
+      "width": 5896
+    },
+    {
+      "file": "HATENNA.webp",
+      "frames": 17,
+      "height": 96,
+      "width": 1632
+    },
+    {
+      "file": "HATTERENE_1.webp",
+      "frames": 22,
+      "height": 96,
+      "width": 2112
+    },
+    {
+      "file": "HATTERENE.webp",
+      "frames": 84,
+      "height": 83,
+      "width": 6972
+    },
+    {
+      "file": "HATTREM.webp",
+      "frames": 32,
+      "height": 96,
+      "width": 3072
+    },
+    {
+      "file": "HAUNTER.webp",
+      "frames": 13,
+      "height": 85,
+      "width": 1105
+    },
+    {
+      "file": "HAWLUCHA_1.webp",
+      "frames": 10,
+      "height": 96,
+      "width": 960
+    },
+    {
+      "file": "HAWLUCHA.webp",
+      "frames": 53,
+      "height": 96,
+      "width": 5088
+    },
+    {
+      "file": "HAXORUS.webp",
+      "frames": 91,
+      "height": 84,
+      "width": 7644
+    },
+    {
+      "file": "HEATMOR.webp",
+      "frames": 48,
+      "height": 94,
+      "width": 4512
+    },
+    {
+      "file": "HEATRAN_1.webp",
+      "frames": 33,
+      "height": 153,
+      "width": 5049
+    },
+    {
+      "file": "HEATRAN.webp",
+      "frames": 101,
+      "height": 86,
+      "width": 8686
+    },
+    {
+      "file": "HELIOLISK.webp",
+      "frames": 13,
+      "height": 80,
+      "width": 1040
+    },
+    {
+      "file": "HELIOPTILE.webp",
+      "frames": 84,
+      "height": 62,
+      "width": 5208
+    },
+    {
+      "file": "HERACROSS_1.webp",
+      "frames": 43,
+      "height": 96,
+      "width": 4128
+    },
+    {
+      "file": "HERACROSS_female.webp",
+      "frames": 42,
+      "height": 64,
+      "width": 2688
+    },
+    {
+      "file": "HERACROSS.webp",
+      "frames": 42,
+      "height": 70,
+      "width": 2940
+    },
+    {
+      "file": "HERDIER.webp",
+      "frames": 58,
+      "height": 58,
+      "width": 3364
+    },
+    {
+      "file": "HIPPOPOTAS_female.webp",
+      "frames": 94,
+      "height": 65,
+      "width": 6110
+    },
+    {
+      "file": "HIPPOPOTAS.webp",
+      "frames": 94,
+      "height": 65,
+      "width": 6110
+    },
+    {
+      "file": "HIPPOWDON_female.webp",
+      "frames": 45,
+      "height": 84,
+      "width": 3780
+    },
+    {
+      "file": "HIPPOWDON.webp",
+      "frames": 45,
+      "height": 84,
+      "width": 3780
+    },
+    {
+      "file": "HITMONCHAN.webp",
+      "frames": 41,
+      "height": 59,
+      "width": 2419
+    },
+    {
+      "file": "HITMONLEE.webp",
+      "frames": 56,
+      "height": 78,
+      "width": 4368
+    },
+    {
+      "file": "HITMONTOP.webp",
+      "frames": 65,
+      "height": 83,
+      "width": 5395
+    },
+    {
+      "file": "HONCHKROW.webp",
+      "frames": 43,
+      "height": 77,
+      "width": 3311
+    },
+    {
+      "file": "HONEDGE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "HOOH.webp",
+      "frames": 42,
+      "height": 107,
+      "width": 4494
+    },
+    {
+      "file": "HOOPA_1.webp",
+      "frames": 111,
+      "height": 96,
+      "width": 10656
+    },
+    {
+      "file": "HOOPA.webp",
+      "frames": 17,
+      "height": 96,
+      "width": 1632
+    },
+    {
+      "file": "HOOTHOOT.webp",
+      "frames": 68,
+      "height": 61,
+      "width": 4148
+    },
+    {
+      "file": "HOPPIP.webp",
+      "frames": 40,
+      "height": 67,
+      "width": 2680
+    },
+    {
+      "file": "HORSEA.webp",
+      "frames": 40,
+      "height": 43,
+      "width": 1720
+    },
+    {
+      "file": "HOUNDOOM_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "HOUNDOOM_female.webp",
+      "frames": 53,
+      "height": 77,
+      "width": 4081
+    },
+    {
+      "file": "HOUNDOOM.webp",
+      "frames": 53,
+      "height": 77,
+      "width": 4081
+    },
+    {
+      "file": "HOUNDOUR.webp",
+      "frames": 60,
+      "height": 45,
+      "width": 2700
+    },
+    {
+      "file": "HOUNDSTONE.webp",
+      "frames": 12,
+      "height": 64,
+      "width": 768
+    },
+    {
+      "file": "HUNTAIL.webp",
+      "frames": 57,
+      "height": 81,
+      "width": 4617
+    },
+    {
+      "file": "HYDRAPPLE.webp",
+      "frames": 60,
+      "height": 80,
+      "width": 4800
+    },
+    {
+      "file": "HYDREIGON.webp",
+      "frames": 38,
+      "height": 107,
+      "width": 4066
+    },
+    {
+      "file": "HYPNO_female.webp",
+      "frames": 62,
+      "height": 66,
+      "width": 4092
+    },
+    {
+      "file": "HYPNO.webp",
+      "frames": 62,
+      "height": 66,
+      "width": 4092
+    },
+    {
+      "file": "IGGLYBUFF.webp",
+      "frames": 81,
+      "height": 55,
+      "width": 4455
+    },
+    {
+      "file": "ILLUMISE.webp",
+      "frames": 22,
+      "height": 54,
+      "width": 1188
+    },
+    {
+      "file": "IMPIDIMP.webp",
+      "frames": 59,
+      "height": 54,
+      "width": 3186
+    },
+    {
+      "file": "INCINEROAR.webp",
+      "frames": 82,
+      "height": 87,
+      "width": 7134
+    },
+    {
+      "file": "INDEEDEE_1.webp",
+      "frames": 74,
+      "height": 52,
+      "width": 3848
+    },
+    {
+      "file": "INDEEDEE.webp",
+      "frames": 74,
+      "height": 55,
+      "width": 4070
+    },
+    {
+      "file": "INFERNAPE.webp",
+      "frames": 66,
+      "height": 80,
+      "width": 5280
+    },
+    {
+      "file": "INKAY.webp",
+      "frames": 29,
+      "height": 96,
+      "width": 2784
+    },
+    {
+      "file": "INTELEON_1.webp",
+      "frames": 26,
+      "height": 96,
+      "width": 2496
+    },
+    {
+      "file": "INTELEON.webp",
+      "frames": 95,
+      "height": 80,
+      "width": 7600
+    },
+    {
+      "file": "IRONBOULDER.webp",
+      "frames": 8,
+      "height": 96,
+      "width": 768
+    },
+    {
+      "file": "IRONBUNDLE.webp",
+      "frames": 21,
+      "height": 96,
+      "width": 2016
+    },
+    {
+      "file": "IRONCROWN.webp",
+      "frames": 85,
+      "height": 96,
+      "width": 8160
+    },
+    {
+      "file": "IRONHANDS.webp",
+      "frames": 140,
+      "height": 107,
+      "width": 14980
+    },
+    {
+      "file": "IRONJUGULIS.webp",
+      "frames": 48,
+      "height": 123,
+      "width": 5904
+    },
+    {
+      "file": "IRONLEAVES.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "IRONMOTH.webp",
+      "frames": 48,
+      "height": 123,
+      "width": 5904
+    },
+    {
+      "file": "IRONTHORNS.webp",
+      "frames": 32,
+      "height": 92,
+      "width": 2944
+    },
+    {
+      "file": "IRONTREADS.webp",
+      "frames": 64,
+      "height": 72,
+      "width": 4608
+    },
+    {
+      "file": "IRONVALIANT.webp",
+      "frames": 67,
+      "height": 93,
+      "width": 6231
+    },
+    {
+      "file": "IVYSAUR.webp",
+      "frames": 55,
+      "height": 58,
+      "width": 3190
+    },
+    {
+      "file": "JANGMOO.webp",
+      "frames": 111,
+      "height": 96,
+      "width": 10656
+    },
+    {
+      "file": "JELLICENT_female.webp",
+      "frames": 68,
+      "height": 86,
+      "width": 5848
+    },
+    {
+      "file": "JELLICENT.webp",
+      "frames": 69,
+      "height": 85,
+      "width": 5865
+    },
+    {
+      "file": "JIGGLYPUFF.webp",
+      "frames": 56,
+      "height": 49,
+      "width": 2744
+    },
+    {
+      "file": "JIRACHI.webp",
+      "frames": 73,
+      "height": 54,
+      "width": 3942
+    },
+    {
+      "file": "JOLTEON.webp",
+      "frames": 50,
+      "height": 49,
+      "width": 2450
+    },
+    {
+      "file": "JOLTIK.webp",
+      "frames": 32,
+      "height": 43,
+      "width": 1376
+    },
+    {
+      "file": "JUMPLUFF.webp",
+      "frames": 48,
+      "height": 65,
+      "width": 3120
+    },
+    {
+      "file": "JYNX.webp",
+      "frames": 54,
+      "height": 63,
+      "width": 3402
+    },
+    {
+      "file": "KABUTO.webp",
+      "frames": 34,
+      "height": 41,
+      "width": 1394
+    },
+    {
+      "file": "KABUTOPS.webp",
+      "frames": 24,
+      "height": 65,
+      "width": 1560
+    },
+    {
+      "file": "KADABRA_female.webp",
+      "frames": 60,
+      "height": 79,
+      "width": 4740
+    },
+    {
+      "file": "KADABRA.webp",
+      "frames": 60,
+      "height": 79,
+      "width": 4740
+    },
+    {
+      "file": "KAKUNA.webp",
+      "frames": 39,
+      "height": 40,
+      "width": 1560
+    },
+    {
+      "file": "KANGASKHAN_1.webp",
+      "frames": 64,
+      "height": 96,
+      "width": 6144
+    },
+    {
+      "file": "KANGASKHAN.webp",
+      "frames": 127,
+      "height": 79,
+      "width": 10033
+    },
+    {
+      "file": "KARRABLAST.webp",
+      "frames": 87,
+      "height": 54,
+      "width": 4698
+    },
+    {
+      "file": "KARTANA.webp",
+      "frames": 93,
+      "height": 88,
+      "width": 8184
+    },
+    {
+      "file": "KECLEON.webp",
+      "frames": 43,
+      "height": 65,
+      "width": 2795
+    },
+    {
+      "file": "KELDEO_1.webp",
+      "frames": 52,
+      "height": 78,
+      "width": 4056
+    },
+    {
+      "file": "KELDEO.webp",
+      "frames": 72,
+      "height": 65,
+      "width": 4680
+    },
+    {
+      "file": "KILOWATTREL.webp",
+      "frames": 15,
+      "height": 120,
+      "width": 1800
+    },
+    {
+      "file": "KINGAMBIT.webp",
+      "frames": 32,
+      "height": 120,
+      "width": 3840
+    },
+    {
+      "file": "KINGDRA.webp",
+      "frames": 27,
+      "height": 91,
+      "width": 2457
+    },
+    {
+      "file": "KINGLER_1.webp",
+      "frames": 8,
+      "height": 104,
+      "width": 832
+    },
+    {
+      "file": "KINGLER.webp",
+      "frames": 48,
+      "height": 82,
+      "width": 3936
+    },
+    {
+      "file": "KIRLIA.webp",
+      "frames": 76,
+      "height": 63,
+      "width": 4788
+    },
+    {
+      "file": "KLANG.webp",
+      "frames": 85,
+      "height": 58,
+      "width": 4930
+    },
+    {
+      "file": "KLAWF.webp",
+      "frames": 48,
+      "height": 123,
+      "width": 5904
+    },
+    {
+      "file": "KLEAVOR.webp",
+      "frames": 110,
+      "height": 132,
+      "width": 14520
+    },
+    {
+      "file": "KLEFKI.webp",
+      "frames": 129,
+      "height": 108,
+      "width": 13932
+    },
+    {
+      "file": "KLINK.webp",
+      "frames": 54,
+      "height": 43,
+      "width": 2322
+    },
+    {
+      "file": "KLINKLANG.webp",
+      "frames": 85,
+      "height": 70,
+      "width": 5950
+    },
+    {
+      "file": "KOFFING.webp",
+      "frames": 44,
+      "height": 91,
+      "width": 4004
+    },
+    {
+      "file": "KOMALA.webp",
+      "frames": 128,
+      "height": 60,
+      "width": 7680
+    },
+    {
+      "file": "KOMMOO.webp",
+      "frames": 89,
+      "height": 108,
+      "width": 9612
+    },
+    {
+      "file": "KORAIDON.webp",
+      "frames": 82,
+      "height": 156,
+      "width": 12792
+    },
+    {
+      "file": "KRABBY.webp",
+      "frames": 37,
+      "height": 55,
+      "width": 2035
+    },
+    {
+      "file": "KRICKETOT_female.webp",
+      "frames": 75,
+      "height": 45,
+      "width": 3375
+    },
+    {
+      "file": "KRICKETOT.webp",
+      "frames": 75,
+      "height": 45,
+      "width": 3375
+    },
+    {
+      "file": "KRICKETUNE_female.webp",
+      "frames": 51,
+      "height": 69,
+      "width": 3519
+    },
+    {
+      "file": "KRICKETUNE.webp",
+      "frames": 51,
+      "height": 69,
+      "width": 3519
+    },
+    {
+      "file": "KROKOROK.webp",
+      "frames": 59,
+      "height": 62,
+      "width": 3658
+    },
+    {
+      "file": "KROOKODILE.webp",
+      "frames": 52,
+      "height": 95,
+      "width": 4940
+    },
+    {
+      "file": "KUBFU.webp",
+      "frames": 32,
+      "height": 96,
+      "width": 3072
+    },
+    {
+      "file": "KYOGRE_1.webp",
+      "frames": 85,
+      "height": 121,
+      "width": 10285
+    },
+    {
+      "file": "KYOGRE.webp",
+      "frames": 125,
+      "height": 109,
+      "width": 13625
+    },
+    {
+      "file": "KYUREM_1.webp",
+      "frames": 156,
+      "height": 103,
+      "width": 16068
+    },
+    {
+      "file": "KYUREM_2.webp",
+      "frames": 86,
+      "height": 106,
+      "width": 9116
+    },
+    {
+      "file": "KYUREM_3.webp",
+      "frames": 156,
+      "height": 103,
+      "width": 16068
+    },
+    {
+      "file": "KYUREM_4.webp",
+      "frames": 86,
+      "height": 106,
+      "width": 9116
+    },
+    {
+      "file": "KYUREM.webp",
+      "frames": 57,
+      "height": 99,
+      "width": 5643
+    },
+    {
+      "file": "LAIRON.webp",
+      "frames": 58,
+      "height": 63,
+      "width": 3654
+    },
+    {
+      "file": "LAMPENT.webp",
+      "frames": 66,
+      "height": 69,
+      "width": 4554
+    },
+    {
+      "file": "LANDORUS_1.webp",
+      "frames": 158,
+      "height": 92,
+      "width": 14536
+    },
+    {
+      "file": "LANDORUS.webp",
+      "frames": 96,
+      "height": 89,
+      "width": 8544
+    },
+    {
+      "file": "LANTURN.webp",
+      "frames": 63,
+      "height": 73,
+      "width": 4599
+    },
+    {
+      "file": "LAPRAS_1.webp",
+      "frames": 20,
+      "height": 95,
+      "width": 1900
+    },
+    {
+      "file": "LAPRAS.webp",
+      "frames": 33,
+      "height": 71,
+      "width": 2343
+    },
+    {
+      "file": "LARVESTA.webp",
+      "frames": 90,
+      "height": 49,
+      "width": 4410
+    },
+    {
+      "file": "LARVITAR.webp",
+      "frames": 43,
+      "height": 52,
+      "width": 2236
+    },
+    {
+      "file": "LATIAS_1.webp",
+      "frames": 95,
+      "height": 109,
+      "width": 10355
+    },
+    {
+      "file": "LATIAS.webp",
+      "frames": 54,
+      "height": 93,
+      "width": 5022
+    },
+    {
+      "file": "LATIOS_1.webp",
+      "frames": 95,
+      "height": 104,
+      "width": 9880
+    },
+    {
+      "file": "LATIOS.webp",
+      "frames": 38,
+      "height": 95,
+      "width": 3610
+    },
+    {
+      "file": "LEAFEON.webp",
+      "frames": 68,
+      "height": 62,
+      "width": 4216
+    },
+    {
+      "file": "LEAVANNY.webp",
+      "frames": 50,
+      "height": 75,
+      "width": 3750
+    },
+    {
+      "file": "LECHONK.webp",
+      "frames": 39,
+      "height": 100,
+      "width": 3900
+    },
+    {
+      "file": "LEDIAN_female.webp",
+      "frames": 20,
+      "height": 62,
+      "width": 1240
+    },
+    {
+      "file": "LEDIAN.webp",
+      "frames": 20,
+      "height": 64,
+      "width": 1280
+    },
+    {
+      "file": "LEDYBA_female.webp",
+      "frames": 48,
+      "height": 48,
+      "width": 2304
+    },
+    {
+      "file": "LEDYBA.webp",
+      "frames": 49,
+      "height": 51,
+      "width": 2499
+    },
+    {
+      "file": "LICKILICKY.webp",
+      "frames": 65,
+      "height": 78,
+      "width": 5070
+    },
+    {
+      "file": "LICKITUNG.webp",
+      "frames": 35,
+      "height": 69,
+      "width": 2415
+    },
+    {
+      "file": "LIEPARD.webp",
+      "frames": 58,
+      "height": 82,
+      "width": 4756
+    },
+    {
+      "file": "LILEEP.webp",
+      "frames": 71,
+      "height": 61,
+      "width": 4331
+    },
+    {
+      "file": "LILLIGANT_1.webp",
+      "frames": 112,
+      "height": 81,
+      "width": 9072
+    },
+    {
+      "file": "LILLIGANT.webp",
+      "frames": 60,
+      "height": 70,
+      "width": 4200
+    },
+    {
+      "file": "LILLIPUP.webp",
+      "frames": 64,
+      "height": 49,
+      "width": 3136
+    },
+    {
+      "file": "LINOONE_1.webp",
+      "frames": 48,
+      "height": 82,
+      "width": 3936
+    },
+    {
+      "file": "LINOONE.webp",
+      "frames": 57,
+      "height": 81,
+      "width": 4617
+    },
+    {
+      "file": "LITLEO.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "LITTEN.webp",
+      "frames": 118,
+      "height": 96,
+      "width": 11328
+    },
+    {
+      "file": "LITWICK.webp",
+      "frames": 77,
+      "height": 44,
+      "width": 3388
+    },
+    {
+      "file": "LOKIX.webp",
+      "frames": 87,
+      "height": 96,
+      "width": 8352
+    },
+    {
+      "file": "LOMBRE.webp",
+      "frames": 42,
+      "height": 52,
+      "width": 2184
+    },
+    {
+      "file": "LOPUNNY_1.webp",
+      "frames": 81,
+      "height": 96,
+      "width": 7776
+    },
+    {
+      "file": "LOPUNNY.webp",
+      "frames": 52,
+      "height": 72,
+      "width": 3744
+    },
+    {
+      "file": "LOTAD.webp",
+      "frames": 56,
+      "height": 45,
+      "width": 2520
+    },
+    {
+      "file": "LOUDRED.webp",
+      "frames": 57,
+      "height": 63,
+      "width": 3591
+    },
+    {
+      "file": "LUCARIO_1.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "LUCARIO_2.webp",
+      "frames": 36,
+      "height": 96,
+      "width": 3456
+    },
+    {
+      "file": "LUCARIO.webp",
+      "frames": 72,
+      "height": 63,
+      "width": 4536
+    },
+    {
+      "file": "LUDICOLO_female.webp",
+      "frames": 38,
+      "height": 85,
+      "width": 3230
+    },
+    {
+      "file": "LUDICOLO.webp",
+      "frames": 38,
+      "height": 85,
+      "width": 3230
+    },
+    {
+      "file": "LUGIA.webp",
+      "frames": 60,
+      "height": 154,
+      "width": 9240
+    },
+    {
+      "file": "LUMINEON_female.webp",
+      "frames": 86,
+      "height": 73,
+      "width": 6278
+    },
+    {
+      "file": "LUMINEON.webp",
+      "frames": 86,
+      "height": 73,
+      "width": 6278
+    },
+    {
+      "file": "LUNALA.webp",
+      "frames": 79,
+      "height": 109,
+      "width": 8611
+    },
+    {
+      "file": "LUNATONE.webp",
+      "frames": 84,
+      "height": 59,
+      "width": 4956
+    },
+    {
+      "file": "LURANTIS.webp",
+      "frames": 53,
+      "height": 96,
+      "width": 5088
+    },
+    {
+      "file": "LUVDISC.webp",
+      "frames": 39,
+      "height": 37,
+      "width": 1443
+    },
+    {
+      "file": "LUXIO_female.webp",
+      "frames": 96,
+      "height": 67,
+      "width": 6432
+    },
+    {
+      "file": "LUXIO.webp",
+      "frames": 96,
+      "height": 67,
+      "width": 6432
+    },
+    {
+      "file": "LUXRAY_female.webp",
+      "frames": 85,
+      "height": 76,
+      "width": 6460
+    },
+    {
+      "file": "LUXRAY.webp",
+      "frames": 86,
+      "height": 77,
+      "width": 6622
+    },
+    {
+      "file": "LYCANROC_1.webp",
+      "frames": 92,
+      "height": 80,
+      "width": 7360
+    },
+    {
+      "file": "LYCANROC_2.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "LYCANROC.webp",
+      "frames": 65,
+      "height": 68,
+      "width": 4420
+    },
+    {
+      "file": "MABOSSTIFF.webp",
+      "frames": 74,
+      "height": 100,
+      "width": 7400
+    },
+    {
+      "file": "MACHAMP_1.webp",
+      "frames": 12,
+      "height": 93,
+      "width": 1116
+    },
+    {
+      "file": "MACHAMP.webp",
+      "frames": 29,
+      "height": 76,
+      "width": 2204
+    },
+    {
+      "file": "MACHOKE.webp",
+      "frames": 49,
+      "height": 71,
+      "width": 3479
+    },
+    {
+      "file": "MACHOP.webp",
+      "frames": 75,
+      "height": 51,
+      "width": 3825
+    },
+    {
+      "file": "MAGBY.webp",
+      "frames": 33,
+      "height": 56,
+      "width": 1848
+    },
+    {
+      "file": "MAGCARGO.webp",
+      "frames": 32,
+      "height": 59,
+      "width": 1888
+    },
+    {
+      "file": "MAGEARNA_1.webp",
+      "frames": 94,
+      "height": 68,
+      "width": 6392
+    },
+    {
+      "file": "MAGEARNA_2.webp",
+      "frames": 49,
+      "height": 108,
+      "width": 5292
+    },
+    {
+      "file": "MAGEARNA_3.webp",
+      "frames": 49,
+      "height": 108,
+      "width": 5292
+    },
+    {
+      "file": "MAGEARNA.webp",
+      "frames": 94,
+      "height": 68,
+      "width": 6392
+    },
+    {
+      "file": "MAGIKARP_female.webp",
+      "frames": 60,
+      "height": 63,
+      "width": 3780
+    },
+    {
+      "file": "MAGIKARP.webp",
+      "frames": 60,
+      "height": 63,
+      "width": 3780
+    },
+    {
+      "file": "MAGMAR.webp",
+      "frames": 33,
+      "height": 73,
+      "width": 2409
+    },
+    {
+      "file": "MAGMORTAR.webp",
+      "frames": 80,
+      "height": 89,
+      "width": 7120
+    },
+    {
+      "file": "MAGNEMITE.webp",
+      "frames": 52,
+      "height": 38,
+      "width": 1976
+    },
+    {
+      "file": "MAGNETON.webp",
+      "frames": 71,
+      "height": 68,
+      "width": 4828
+    },
+    {
+      "file": "MAGNEZONE.webp",
+      "frames": 47,
+      "height": 84,
+      "width": 3948
+    },
+    {
+      "file": "MAKUHITA.webp",
+      "frames": 58,
+      "height": 63,
+      "width": 3654
+    },
+    {
+      "file": "MALAMAR_1.webp",
+      "frames": 70,
+      "height": 145,
+      "width": 10150
+    },
+    {
+      "file": "MALAMAR.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "MAMOSWINE_female.webp",
+      "frames": 83,
+      "height": 83,
+      "width": 6889
+    },
+    {
+      "file": "MAMOSWINE.webp",
+      "frames": 82,
+      "height": 84,
+      "width": 6888
+    },
+    {
+      "file": "MANAPHY.webp",
+      "frames": 60,
+      "height": 57,
+      "width": 3420
+    },
+    {
+      "file": "MANDIBUZZ.webp",
+      "frames": 70,
+      "height": 70,
+      "width": 4900
+    },
+    {
+      "file": "MANECTRIC_1.webp",
+      "frames": 81,
+      "height": 92,
+      "width": 7452
+    },
+    {
+      "file": "MANECTRIC.webp",
+      "frames": 38,
+      "height": 70,
+      "width": 2660
+    },
+    {
+      "file": "MANKEY.webp",
+      "frames": 60,
+      "height": 66,
+      "width": 3960
+    },
+    {
+      "file": "MANTINE.webp",
+      "frames": 84,
+      "height": 83,
+      "width": 6972
+    },
+    {
+      "file": "MANTYKE.webp",
+      "frames": 48,
+      "height": 65,
+      "width": 3120
+    },
+    {
+      "file": "MARACTUS.webp",
+      "frames": 72,
+      "height": 71,
+      "width": 5112
+    },
+    {
+      "file": "MAREANIE.webp",
+      "frames": 8,
+      "height": 69,
+      "width": 552
+    },
+    {
+      "file": "MAREEP.webp",
+      "frames": 48,
+      "height": 50,
+      "width": 2400
+    },
+    {
+      "file": "MARILL.webp",
+      "frames": 67,
+      "height": 54,
+      "width": 3618
+    },
+    {
+      "file": "MAROWAK_1.webp",
+      "frames": 47,
+      "height": 96,
+      "width": 4512
+    },
+    {
+      "file": "MAROWAK.webp",
+      "frames": 68,
+      "height": 68,
+      "width": 4624
+    },
+    {
+      "file": "MARSHADOW.webp",
+      "frames": 62,
+      "height": 51,
+      "width": 3162
+    },
+    {
+      "file": "MARSHTOMP.webp",
+      "frames": 61,
+      "height": 58,
+      "width": 3538
+    },
+    {
+      "file": "MASCHIFF.webp",
+      "frames": 81,
+      "height": 100,
+      "width": 8100
+    },
+    {
+      "file": "MASQUERAIN.webp",
+      "frames": 85,
+      "height": 74,
+      "width": 6290
+    },
+    {
+      "file": "MAUSHOLD_1.webp",
+      "frames": 80,
+      "height": 77,
+      "width": 6160
+    },
+    {
+      "file": "MAUSHOLD.webp",
+      "frames": 80,
+      "height": 78,
+      "width": 6240
+    },
+    {
+      "file": "MAWILE_1.webp",
+      "frames": 16,
+      "height": 96,
+      "width": 1536
+    },
+    {
+      "file": "MAWILE.webp",
+      "frames": 77,
+      "height": 80,
+      "width": 6160
+    },
+    {
+      "file": "MEDICHAM_1.webp",
+      "frames": 92,
+      "height": 93,
+      "width": 8556
+    },
+    {
+      "file": "MEDICHAM_female.webp",
+      "frames": 45,
+      "height": 73,
+      "width": 3285
+    },
+    {
+      "file": "MEDICHAM.webp",
+      "frames": 44,
+      "height": 74,
+      "width": 3256
+    },
+    {
+      "file": "MEDITITE_female.webp",
+      "frames": 143,
+      "height": 54,
+      "width": 7722
+    },
+    {
+      "file": "MEDITITE.webp",
+      "frames": 143,
+      "height": 54,
+      "width": 7722
+    },
+    {
+      "file": "MEGANIUM_1.webp",
+      "frames": 91,
+      "height": 96,
+      "width": 8736
+    },
+    {
+      "file": "MEGANIUM_female.webp",
+      "frames": 45,
+      "height": 82,
+      "width": 3690
+    },
+    {
+      "file": "MEGANIUM.webp",
+      "frames": 45,
+      "height": 82,
+      "width": 3690
+    },
+    {
+      "file": "MELMETAL_1.webp",
+      "frames": 44,
+      "height": 96,
+      "width": 4224
+    },
+    {
+      "file": "MELMETAL.webp",
+      "frames": 28,
+      "height": 101,
+      "width": 2828
+    },
+    {
+      "file": "MELOETTA_1.webp",
+      "frames": 76,
+      "height": 76,
+      "width": 5776
+    },
+    {
+      "file": "MELOETTA.webp",
+      "frames": 150,
+      "height": 63,
+      "width": 9450
+    },
+    {
+      "file": "MELTAN.webp",
+      "frames": 53,
+      "height": 38,
+      "width": 2014
+    },
+    {
+      "file": "MEOWSCARADA.webp",
+      "frames": 68,
+      "height": 96,
+      "width": 6528
+    },
+    {
+      "file": "MEOWSTIC_1.webp",
+      "frames": 144,
+      "height": 80,
+      "width": 11520
+    },
+    {
+      "file": "MEOWSTIC_2.webp",
+      "frames": 50,
+      "height": 102,
+      "width": 5100
+    },
+    {
+      "file": "MEOWSTIC_3.webp",
+      "frames": 50,
+      "height": 102,
+      "width": 5100
+    },
+    {
+      "file": "MEOWSTIC.webp",
+      "frames": 11,
+      "height": 80,
+      "width": 880
+    },
+    {
+      "file": "MEOWTH_1.webp",
+      "frames": 57,
+      "height": 46,
+      "width": 2622
+    },
+    {
+      "file": "MEOWTH_2.webp",
+      "frames": 75,
+      "height": 96,
+      "width": 7200
+    },
+    {
+      "file": "MEOWTH_3.webp",
+      "frames": 20,
+      "height": 96,
+      "width": 1920
+    },
+    {
+      "file": "MEOWTH.webp",
+      "frames": 70,
+      "height": 65,
+      "width": 4550
+    },
+    {
+      "file": "MESPRIT.webp",
+      "frames": 72,
+      "height": 90,
+      "width": 6480
+    },
+    {
+      "file": "METAGROSS_1.webp",
+      "frames": 12,
+      "height": 120,
+      "width": 1440
+    },
+    {
+      "file": "METAGROSS.webp",
+      "frames": 53,
+      "height": 83,
+      "width": 4399
+    },
+    {
+      "file": "METANG.webp",
+      "frames": 86,
+      "height": 82,
+      "width": 7052
+    },
+    {
+      "file": "METAPOD.webp",
+      "frames": 55,
+      "height": 38,
+      "width": 2090
+    },
+    {
+      "file": "MEW.webp",
+      "frames": 59,
+      "height": 78,
+      "width": 4602
+    },
+    {
+      "file": "MEWTWO_1.webp",
+      "frames": 10,
+      "height": 96,
+      "width": 960
+    },
+    {
+      "file": "MEWTWO_2.webp",
+      "frames": 20,
+      "height": 96,
+      "width": 1920
+    },
+    {
+      "file": "MEWTWO.webp",
+      "frames": 62,
+      "height": 90,
+      "width": 5580
+    },
+    {
+      "file": "MIENFOO.webp",
+      "frames": 66,
+      "height": 66,
+      "width": 4356
+    },
+    {
+      "file": "MIENSHAO.webp",
+      "frames": 67,
+      "height": 88,
+      "width": 5896
+    },
+    {
+      "file": "MIGHTYENA.webp",
+      "frames": 45,
+      "height": 73,
+      "width": 3285
+    },
+    {
+      "file": "MILCERY.webp",
+      "frames": 57,
+      "height": 96,
+      "width": 5472
+    },
+    {
+      "file": "MILOTIC_female.webp",
+      "frames": 95,
+      "height": 86,
+      "width": 8170
+    },
+    {
+      "file": "MILOTIC.webp",
+      "frames": 95,
+      "height": 86,
+      "width": 8170
+    },
+    {
+      "file": "MILTANK.webp",
+      "frames": 47,
+      "height": 60,
+      "width": 2820
+    },
+    {
+      "file": "MIMEJR.webp",
+      "frames": 79,
+      "height": 62,
+      "width": 4898
+    },
+    {
+      "file": "MIMIKYU_1.webp",
+      "frames": 63,
+      "height": 96,
+      "width": 6048
+    },
+    {
+      "file": "MIMIKYU.webp",
+      "frames": 63,
+      "height": 96,
+      "width": 6048
+    },
+    {
+      "file": "MINCCINO.webp",
+      "frames": 70,
+      "height": 64,
+      "width": 4480
+    },
+    {
+      "file": "MINIOR_10.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINIOR_11.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINIOR_12.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINIOR_13.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINIOR_7.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINIOR_8.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINIOR_9.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINIOR.webp",
+      "frames": 94,
+      "height": 96,
+      "width": 9024
+    },
+    {
+      "file": "MINUN.webp",
+      "frames": 72,
+      "height": 49,
+      "width": 3528
+    },
+    {
+      "file": "MIRAIDON.webp",
+      "frames": 102,
+      "height": 108,
+      "width": 11016
+    },
+    {
+      "file": "MISDREAVUS.webp",
+      "frames": 48,
+      "height": 57,
+      "width": 2736
+    },
+    {
+      "file": "MISMAGIUS.webp",
+      "frames": 14,
+      "height": 84,
+      "width": 1176
+    },
+    {
+      "file": "MOLTRES_1.webp",
+      "frames": 22,
+      "height": 97,
+      "width": 2134
+    },
+    {
+      "file": "MOLTRES.webp",
+      "frames": 27,
+      "height": 129,
+      "width": 3483
+    },
+    {
+      "file": "MONFERNO.webp",
+      "frames": 64,
+      "height": 71,
+      "width": 4544
+    },
+    {
+      "file": "MORELULL.webp",
+      "frames": 132,
+      "height": 96,
+      "width": 12672
+    },
+    {
+      "file": "MORGREM.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "MORPEKO_1.webp",
+      "frames": 33,
+      "height": 43,
+      "width": 1419
+    },
+    {
+      "file": "MORPEKO.webp",
+      "frames": 33,
+      "height": 43,
+      "width": 1419
+    },
+    {
+      "file": "MOTHIM.webp",
+      "frames": 9,
+      "height": 83,
+      "width": 747
+    },
+    {
+      "file": "MRMIME_1.webp",
+      "frames": 12,
+      "height": 67,
+      "width": 804
+    },
+    {
+      "file": "MRMIME.webp",
+      "frames": 64,
+      "height": 57,
+      "width": 3648
+    },
+    {
+      "file": "MRRIME.webp",
+      "frames": 90,
+      "height": 69,
+      "width": 6210
+    },
+    {
+      "file": "MUDBRAY.webp",
+      "frames": 113,
+      "height": 71,
+      "width": 8023
+    },
+    {
+      "file": "MUDKIP.webp",
+      "frames": 70,
+      "height": 49,
+      "width": 3430
+    },
+    {
+      "file": "MUDSDALE.webp",
+      "frames": 102,
+      "height": 90,
+      "width": 9180
+    },
+    {
+      "file": "MUK_1.webp",
+      "frames": 120,
+      "height": 83,
+      "width": 9960
+    },
+    {
+      "file": "MUK.webp",
+      "frames": 51,
+      "height": 94,
+      "width": 4794
+    },
+    {
+      "file": "MUNCHLAX.webp",
+      "frames": 71,
+      "height": 48,
+      "width": 3408
+    },
+    {
+      "file": "MUNKIDORI.webp",
+      "frames": 26,
+      "height": 64,
+      "width": 1664
+    },
+    {
+      "file": "MUNNA.webp",
+      "frames": 90,
+      "height": 46,
+      "width": 4140
+    },
+    {
+      "file": "MURKROW_female.webp",
+      "frames": 30,
+      "height": 44,
+      "width": 1320
+    },
+    {
+      "file": "MURKROW.webp",
+      "frames": 30,
+      "height": 44,
+      "width": 1320
+    },
+    {
+      "file": "MUSHARNA.webp",
+      "frames": 30,
+      "height": 78,
+      "width": 2340
+    },
+    {
+      "file": "NACLI.webp",
+      "frames": 36,
+      "height": 96,
+      "width": 3456
+    },
+    {
+      "file": "NACLSTACK.webp",
+      "frames": 21,
+      "height": 96,
+      "width": 2016
+    },
+    {
+      "file": "NAGANADEL.webp",
+      "frames": 12,
+      "height": 94,
+      "width": 1128
+    },
+    {
+      "file": "NATU.webp",
+      "frames": 65,
+      "height": 41,
+      "width": 2665
+    },
+    {
+      "file": "NECROZMA_1.webp",
+      "frames": 76,
+      "height": 106,
+      "width": 8056
+    },
+    {
+      "file": "NECROZMA_2.webp",
+      "frames": 79,
+      "height": 114,
+      "width": 9006
+    },
+    {
+      "file": "NECROZMA_3.webp",
+      "frames": 90,
+      "height": 140,
+      "width": 12600
+    },
+    {
+      "file": "NECROZMA_4.webp",
+      "frames": 90,
+      "height": 140,
+      "width": 12600
+    },
+    {
+      "file": "NECROZMA.webp",
+      "frames": 29,
+      "height": 96,
+      "width": 2784
+    },
+    {
+      "file": "NICKIT.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "NIDOKING.webp",
+      "frames": 48,
+      "height": 86,
+      "width": 4128
+    },
+    {
+      "file": "NIDOQUEEN.webp",
+      "frames": 61,
+      "height": 76,
+      "width": 4636
+    },
+    {
+      "file": "NIDORANfE.webp",
+      "frames": 44,
+      "height": 36,
+      "width": 1584
+    },
+    {
+      "file": "NIDORANmA.webp",
+      "frames": 61,
+      "height": 37,
+      "width": 2257
+    },
+    {
+      "file": "NIDORINA.webp",
+      "frames": 24,
+      "height": 52,
+      "width": 1248
+    },
+    {
+      "file": "NIDORINO.webp",
+      "frames": 49,
+      "height": 56,
+      "width": 2744
+    },
+    {
+      "file": "NIHILEGO.webp",
+      "frames": 114,
+      "height": 87,
+      "width": 9918
+    },
+    {
+      "file": "NINCADA.webp",
+      "frames": 54,
+      "height": 51,
+      "width": 2754
+    },
+    {
+      "file": "NINETALES_1.webp",
+      "frames": 16,
+      "height": 86,
+      "width": 1376
+    },
+    {
+      "file": "NINETALES.webp",
+      "frames": 26,
+      "height": 76,
+      "width": 1976
+    },
+    {
+      "file": "NINJASK.webp",
+      "frames": 37,
+      "height": 57,
+      "width": 2109
+    },
+    {
+      "file": "NOCTOWL.webp",
+      "frames": 36,
+      "height": 66,
+      "width": 2376
+    },
+    {
+      "file": "NOIBAT.webp",
+      "frames": 28,
+      "height": 70,
+      "width": 1960
+    },
+    {
+      "file": "NOIVERN.webp",
+      "frames": 18,
+      "height": 101,
+      "width": 1818
+    },
+    {
+      "file": "NOSEPASS.webp",
+      "frames": 7,
+      "height": 46,
+      "width": 322
+    },
+    {
+      "file": "NUMEL_female.webp",
+      "frames": 24,
+      "height": 48,
+      "width": 1152
+    },
+    {
+      "file": "NUMEL.webp",
+      "frames": 24,
+      "height": 48,
+      "width": 1152
+    },
+    {
+      "file": "NUZLEAF_female.webp",
+      "frames": 47,
+      "height": 58,
+      "width": 2726
+    },
+    {
+      "file": "NUZLEAF.webp",
+      "frames": 47,
+      "height": 58,
+      "width": 2726
+    },
+    {
+      "file": "NYMBLE.webp",
+      "frames": 82,
+      "height": 85,
+      "width": 6970
+    },
+    {
+      "file": "OBSTAGOON.webp",
+      "frames": 38,
+      "height": 80,
+      "width": 3040
+    },
+    {
+      "file": "OCTILLERY_female.webp",
+      "frames": 17,
+      "height": 67,
+      "width": 1139
+    },
+    {
+      "file": "OCTILLERY.webp",
+      "frames": 17,
+      "height": 67,
+      "width": 1139
+    },
+    {
+      "file": "ODDISH.webp",
+      "frames": 54,
+      "height": 50,
+      "width": 2700
+    },
+    {
+      "file": "OGERPON_1.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OGERPON_10.webp",
+      "frames": 38,
+      "height": 97,
+      "width": 3686
+    },
+    {
+      "file": "OGERPON_11.webp",
+      "frames": 38,
+      "height": 91,
+      "width": 3458
+    },
+    {
+      "file": "OGERPON_2.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OGERPON_3.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OGERPON_4.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OGERPON_5.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OGERPON_6.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OGERPON_7.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OGERPON_8.webp",
+      "frames": 38,
+      "height": 96,
+      "width": 3648
+    },
+    {
+      "file": "OGERPON_9.webp",
+      "frames": 38,
+      "height": 93,
+      "width": 3534
+    },
+    {
+      "file": "OGERPON.webp",
+      "frames": 63,
+      "height": 77,
+      "width": 4851
+    },
+    {
+      "file": "OINKOLOGNE_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "OINKOLOGNE.webp",
+      "frames": 8,
+      "height": 80,
+      "width": 640
+    },
+    {
+      "file": "OKIDOGI.webp",
+      "frames": 123,
+      "height": 96,
+      "width": 11808
+    },
+    {
+      "file": "OMANYTE.webp",
+      "frames": 34,
+      "height": 45,
+      "width": 1530
+    },
+    {
+      "file": "OMASTAR.webp",
+      "frames": 78,
+      "height": 63,
+      "width": 4914
+    },
+    {
+      "file": "ONIX.webp",
+      "frames": 49,
+      "height": 74,
+      "width": 3626
+    },
+    {
+      "file": "ORANGURU.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "ORBEETLE_1.webp",
+      "frames": 84,
+      "height": 100,
+      "width": 8400
+    },
+    {
+      "file": "ORBEETLE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "ORICORIO_1.webp",
+      "frames": 73,
+      "height": 63,
+      "width": 4599
+    },
+    {
+      "file": "ORICORIO_2.webp",
+      "frames": 78,
+      "height": 54,
+      "width": 4212
+    },
+    {
+      "file": "ORICORIO_3.webp",
+      "frames": 75,
+      "height": 65,
+      "width": 4875
+    },
+    {
+      "file": "ORICORIO.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "ORTHWORM.webp",
+      "frames": 94,
+      "height": 100,
+      "width": 9400
+    },
+    {
+      "file": "OSHAWOTT.webp",
+      "frames": 148,
+      "height": 51,
+      "width": 7548
+    },
+    {
+      "file": "OVERQWIL.webp",
+      "frames": 101,
+      "height": 107,
+      "width": 10807
+    },
+    {
+      "file": "PACHIRISU_female.webp",
+      "frames": 56,
+      "height": 55,
+      "width": 3080
+    },
+    {
+      "file": "PACHIRISU.webp",
+      "frames": 56,
+      "height": 55,
+      "width": 3080
+    },
+    {
+      "file": "PALAFIN_1.webp",
+      "frames": 34,
+      "height": 100,
+      "width": 3400
+    },
+    {
+      "file": "PALAFIN.webp",
+      "frames": 76,
+      "height": 100,
+      "width": 7600
+    },
+    {
+      "file": "PALKIA_1.webp",
+      "frames": 120,
+      "height": 120,
+      "width": 14400
+    },
+    {
+      "file": "PALKIA.webp",
+      "frames": 64,
+      "height": 87,
+      "width": 5568
+    },
+    {
+      "file": "PALOSSAND.webp",
+      "frames": 64,
+      "height": 96,
+      "width": 6144
+    },
+    {
+      "file": "PALPITOAD.webp",
+      "frames": 49,
+      "height": 57,
+      "width": 2793
+    },
+    {
+      "file": "PANCHAM.webp",
+      "frames": 55,
+      "height": 50,
+      "width": 2750
+    },
+    {
+      "file": "PANGORO.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "PANPOUR.webp",
+      "frames": 37,
+      "height": 47,
+      "width": 1739
+    },
+    {
+      "file": "PANSAGE.webp",
+      "frames": 87,
+      "height": 50,
+      "width": 4350
+    },
+    {
+      "file": "PANSEAR.webp",
+      "frames": 48,
+      "height": 49,
+      "width": 2352
+    },
+    {
+      "file": "PARAS.webp",
+      "frames": 36,
+      "height": 48,
+      "width": 1728
+    },
+    {
+      "file": "PARASECT.webp",
+      "frames": 36,
+      "height": 63,
+      "width": 2268
+    },
+    {
+      "file": "PASSIMIAN.webp",
+      "frames": 13,
+      "height": 96,
+      "width": 1248
+    },
+    {
+      "file": "PATRAT.webp",
+      "frames": 53,
+      "height": 53,
+      "width": 2809
+    },
+    {
+      "file": "PAWMI.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "PAWMO.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "PAWMOT.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "PAWNIARD.webp",
+      "frames": 67,
+      "height": 50,
+      "width": 3350
+    },
+    {
+      "file": "PECHARUNT.webp",
+      "frames": 137,
+      "height": 77,
+      "width": 10549
+    },
+    {
+      "file": "PELIPPER.webp",
+      "frames": 71,
+      "height": 96,
+      "width": 6816
+    },
+    {
+      "file": "PERRSERKER.webp",
+      "frames": 103,
+      "height": 64,
+      "width": 6592
+    },
+    {
+      "file": "PERSIAN_1.webp",
+      "frames": 85,
+      "height": 74,
+      "width": 6290
+    },
+    {
+      "file": "PERSIAN.webp",
+      "frames": 54,
+      "height": 73,
+      "width": 3942
+    },
+    {
+      "file": "PETILIL.webp",
+      "frames": 54,
+      "height": 51,
+      "width": 2754
+    },
+    {
+      "file": "PHANPY.webp",
+      "frames": 54,
+      "height": 46,
+      "width": 2484
+    },
+    {
+      "file": "PHANTUMP.webp",
+      "frames": 120,
+      "height": 70,
+      "width": 8400
+    },
+    {
+      "file": "PHEROMOSA.webp",
+      "frames": 97,
+      "height": 93,
+      "width": 9021
+    },
+    {
+      "file": "PHIONE.webp",
+      "frames": 71,
+      "height": 64,
+      "width": 4544
+    },
+    {
+      "file": "PICHU_2.webp",
+      "frames": 113,
+      "height": 49,
+      "width": 5537
+    },
+    {
+      "file": "PICHU.webp",
+      "frames": 57,
+      "height": 49,
+      "width": 2793
+    },
+    {
+      "file": "PIDGEOT_1.webp",
+      "frames": 20,
+      "height": 96,
+      "width": 1920
+    },
+    {
+      "file": "PIDGEOT.webp",
+      "frames": 35,
+      "height": 68,
+      "width": 2380
+    },
+    {
+      "file": "PIDGEOTTO.webp",
+      "frames": 17,
+      "height": 116,
+      "width": 1972
+    },
+    {
+      "file": "PIDGEY.webp",
+      "frames": 20,
+      "height": 48,
+      "width": 960
+    },
+    {
+      "file": "PIDOVE.webp",
+      "frames": 43,
+      "height": 37,
+      "width": 1591
+    },
+    {
+      "file": "PIGNITE.webp",
+      "frames": 63,
+      "height": 67,
+      "width": 4221
+    },
+    {
+      "file": "PIKACHU_10.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_11.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_12.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_13.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_14.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_15.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_17.webp",
+      "frames": 18,
+      "height": 96,
+      "width": 1728
+    },
+    {
+      "file": "PIKACHU_2.webp",
+      "frames": 57,
+      "height": 50,
+      "width": 2850
+    },
+    {
+      "file": "PIKACHU_3.webp",
+      "frames": 10,
+      "height": 50,
+      "width": 500
+    },
+    {
+      "file": "PIKACHU_4.webp",
+      "frames": 10,
+      "height": 50,
+      "width": 500
+    },
+    {
+      "file": "PIKACHU_5.webp",
+      "frames": 10,
+      "height": 50,
+      "width": 500
+    },
+    {
+      "file": "PIKACHU_6.webp",
+      "frames": 10,
+      "height": 50,
+      "width": 500
+    },
+    {
+      "file": "PIKACHU_7.webp",
+      "frames": 30,
+      "height": 50,
+      "width": 1500
+    },
+    {
+      "file": "PIKACHU_8.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_9.webp",
+      "frames": 113,
+      "height": 48,
+      "width": 5424
+    },
+    {
+      "file": "PIKACHU_female.webp",
+      "frames": 56,
+      "height": 51,
+      "width": 2856
+    },
+    {
+      "file": "PIKACHU.webp",
+      "frames": 56,
+      "height": 50,
+      "width": 2800
+    },
+    {
+      "file": "PIKIPEK.webp",
+      "frames": 79,
+      "height": 42,
+      "width": 3318
+    },
+    {
+      "file": "PILOSWINE_female.webp",
+      "frames": 35,
+      "height": 56,
+      "width": 1960
+    },
+    {
+      "file": "PILOSWINE.webp",
+      "frames": 35,
+      "height": 56,
+      "width": 1960
+    },
+    {
+      "file": "PINCURCHIN.webp",
+      "frames": 43,
+      "height": 96,
+      "width": 4128
+    },
+    {
+      "file": "PINECO.webp",
+      "frames": 48,
+      "height": 53,
+      "width": 2544
+    },
+    {
+      "file": "PINSIR_1.webp",
+      "frames": 120,
+      "height": 96,
+      "width": 11520
+    },
+    {
+      "file": "PINSIR.webp",
+      "frames": 71,
+      "height": 72,
+      "width": 5112
+    },
+    {
+      "file": "PIPLUP.webp",
+      "frames": 75,
+      "height": 41,
+      "width": 3075
+    },
+    {
+      "file": "PLUSLE.webp",
+      "frames": 72,
+      "height": 49,
+      "width": 3528
+    },
+    {
+      "file": "POIPOLE.webp",
+      "frames": 40,
+      "height": 63,
+      "width": 2520
+    },
+    {
+      "file": "POLITOED_female.webp",
+      "frames": 48,
+      "height": 79,
+      "width": 3792
+    },
+    {
+      "file": "POLITOED.webp",
+      "frames": 48,
+      "height": 79,
+      "width": 3792
+    },
+    {
+      "file": "POLIWAG.webp",
+      "frames": 39,
+      "height": 54,
+      "width": 2106
+    },
+    {
+      "file": "POLIWHIRL.webp",
+      "frames": 53,
+      "height": 74,
+      "width": 3922
+    },
+    {
+      "file": "POLIWRATH.webp",
+      "frames": 45,
+      "height": 81,
+      "width": 3645
+    },
+    {
+      "file": "POLTCHAGEIST.webp",
+      "frames": 91,
+      "height": 96,
+      "width": 8736
+    },
+    {
+      "file": "POLTEAGEIST.webp",
+      "frames": 13,
+      "height": 96,
+      "width": 1248
+    },
+    {
+      "file": "PONYTA_1.webp",
+      "frames": 41,
+      "height": 96,
+      "width": 3936
+    },
+    {
+      "file": "PONYTA.webp",
+      "frames": 46,
+      "height": 57,
+      "width": 2622
+    },
+    {
+      "file": "POOCHYENA.webp",
+      "frames": 46,
+      "height": 52,
+      "width": 2392
+    },
+    {
+      "file": "POPPLIO.webp",
+      "frames": 85,
+      "height": 55,
+      "width": 4675
+    },
+    {
+      "file": "PORYGON.webp",
+      "frames": 30,
+      "height": 56,
+      "width": 1680
+    },
+    {
+      "file": "PORYGON2.webp",
+      "frames": 48,
+      "height": 49,
+      "width": 2352
+    },
+    {
+      "file": "PORYGONZ.webp",
+      "frames": 47,
+      "height": 58,
+      "width": 2726
+    },
+    {
+      "file": "PRIMARINA.webp",
+      "frames": 92,
+      "height": 91,
+      "width": 8372
+    },
+    {
+      "file": "PRIMEAPE.webp",
+      "frames": 28,
+      "height": 66,
+      "width": 1848
+    },
+    {
+      "file": "PRINPLUP.webp",
+      "frames": 63,
+      "height": 61,
+      "width": 3843
+    },
+    {
+      "file": "PROBOPASS.webp",
+      "frames": 118,
+      "height": 84,
+      "width": 9912
+    },
+    {
+      "file": "PSYDUCK.webp",
+      "frames": 22,
+      "height": 46,
+      "width": 1012
+    },
+    {
+      "file": "PUMPKABOO.webp",
+      "frames": 70,
+      "height": 96,
+      "width": 6720
+    },
+    {
+      "file": "PUPITAR.webp",
+      "frames": 31,
+      "height": 54,
+      "width": 1674
+    },
+    {
+      "file": "PURRLOIN.webp",
+      "frames": 32,
+      "height": 58,
+      "width": 1856
+    },
+    {
+      "file": "PURUGLY.webp",
+      "frames": 61,
+      "height": 67,
+      "width": 4087
+    },
+    {
+      "file": "PYROAR_1.webp",
+      "frames": 69,
+      "height": 96,
+      "width": 6624
+    },
+    {
+      "file": "PYROAR_female.webp",
+      "frames": 90,
+      "height": 80,
+      "width": 7200
+    },
+    {
+      "file": "PYROAR.webp",
+      "frames": 90,
+      "height": 79,
+      "width": 7110
+    },
+    {
+      "file": "PYUKUMUKU.webp",
+      "frames": 163,
+      "height": 59,
+      "width": 9617
+    },
+    {
+      "file": "QUAGSIRE_female.webp",
+      "frames": 37,
+      "height": 69,
+      "width": 2553
+    },
+    {
+      "file": "QUAGSIRE.webp",
+      "frames": 37,
+      "height": 69,
+      "width": 2553
+    },
+    {
+      "file": "QUAQUAVAL.webp",
+      "frames": 54,
+      "height": 96,
+      "width": 5184
+    },
+    {
+      "file": "QUAXLY.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "QUAXWELL.webp",
+      "frames": 70,
+      "height": 96,
+      "width": 6720
+    },
+    {
+      "file": "QUILAVA.webp",
+      "frames": 82,
+      "height": 63,
+      "width": 5166
+    },
+    {
+      "file": "QUILLADIN.webp",
+      "frames": 78,
+      "height": 60,
+      "width": 4680
+    },
+    {
+      "file": "QWILFISH_1.webp",
+      "frames": 110,
+      "height": 96,
+      "width": 10560
+    },
+    {
+      "file": "QWILFISH.webp",
+      "frames": 32,
+      "height": 56,
+      "width": 1792
+    },
+    {
+      "file": "RABOOT.webp",
+      "frames": 60,
+      "height": 58,
+      "width": 3480
+    },
+    {
+      "file": "RABSCA.webp",
+      "frames": 33,
+      "height": 100,
+      "width": 3300
+    },
+    {
+      "file": "RAGINGBOLT.webp",
+      "frames": 79,
+      "height": 96,
+      "width": 7584
+    },
+    {
+      "file": "RAICHU_1.webp",
+      "frames": 108,
+      "height": 105,
+      "width": 11340
+    },
+    {
+      "file": "RAICHU_2.webp",
+      "frames": 54,
+      "height": 96,
+      "width": 5184
+    },
+    {
+      "file": "RAICHU_3.webp",
+      "frames": 68,
+      "height": 96,
+      "width": 6528
+    },
+    {
+      "file": "RAICHU_female.webp",
+      "frames": 84,
+      "height": 73,
+      "width": 6132
+    },
+    {
+      "file": "RAICHU.webp",
+      "frames": 83,
+      "height": 74,
+      "width": 6142
+    },
+    {
+      "file": "RAIKOU.webp",
+      "frames": 87,
+      "height": 84,
+      "width": 7308
+    },
+    {
+      "file": "RALTS.webp",
+      "frames": 66,
+      "height": 39,
+      "width": 2574
+    },
+    {
+      "file": "RAMPARDOS.webp",
+      "frames": 87,
+      "height": 80,
+      "width": 6960
+    },
+    {
+      "file": "RAPIDASH_1.webp",
+      "frames": 16,
+      "height": 81,
+      "width": 1296
+    },
+    {
+      "file": "RAPIDASH.webp",
+      "frames": 23,
+      "height": 74,
+      "width": 1702
+    },
+    {
+      "file": "RATICATE_1.webp",
+      "frames": 40,
+      "height": 96,
+      "width": 3840
+    },
+    {
+      "file": "RATICATE_female.webp",
+      "frames": 59,
+      "height": 62,
+      "width": 3658
+    },
+    {
+      "file": "RATICATE.webp",
+      "frames": 60,
+      "height": 65,
+      "width": 3900
+    },
+    {
+      "file": "RATTATA_1.webp",
+      "frames": 53,
+      "height": 96,
+      "width": 5088
+    },
+    {
+      "file": "RATTATA_female.webp",
+      "frames": 51,
+      "height": 43,
+      "width": 2193
+    },
+    {
+      "file": "RATTATA.webp",
+      "frames": 51,
+      "height": 43,
+      "width": 2193
+    },
+    {
+      "file": "RAYQUAZA_1.webp",
+      "frames": 12,
+      "height": 130,
+      "width": 1560
+    },
+    {
+      "file": "RAYQUAZA.webp",
+      "frames": 57,
+      "height": 110,
+      "width": 6270
+    },
+    {
+      "file": "REGICE.webp",
+      "frames": 42,
+      "height": 87,
+      "width": 3654
+    },
+    {
+      "file": "REGIDRAGO.webp",
+      "frames": 144,
+      "height": 84,
+      "width": 12096
+    },
+    {
+      "file": "REGIELEKI.webp",
+      "frames": 12,
+      "height": 129,
+      "width": 1548
+    },
+    {
+      "file": "REGIGIGAS.webp",
+      "frames": 73,
+      "height": 87,
+      "width": 6351
+    },
+    {
+      "file": "REGIROCK.webp",
+      "frames": 50,
+      "height": 78,
+      "width": 3900
+    },
+    {
+      "file": "REGISTEEL.webp",
+      "frames": 40,
+      "height": 72,
+      "width": 2880
+    },
+    {
+      "file": "RELICANTH_female.webp",
+      "frames": 57,
+      "height": 59,
+      "width": 3363
+    },
+    {
+      "file": "RELICANTH.webp",
+      "frames": 57,
+      "height": 59,
+      "width": 3363
+    },
+    {
+      "file": "RELLOR.webp",
+      "frames": 10,
+      "height": 85,
+      "width": 850
+    },
+    {
+      "file": "REMORAID.webp",
+      "frames": 46,
+      "height": 47,
+      "width": 2162
+    },
+    {
+      "file": "RESHIRAM.webp",
+      "frames": 111,
+      "height": 108,
+      "width": 11988
+    },
+    {
+      "file": "REUNICLUS.webp",
+      "frames": 72,
+      "height": 99,
+      "width": 7128
+    },
+    {
+      "file": "REVAVROOM.webp",
+      "frames": 79,
+      "height": 122,
+      "width": 9638
+    },
+    {
+      "file": "RHYDON_female.webp",
+      "frames": 96,
+      "height": 78,
+      "width": 7488
+    },
+    {
+      "file": "RHYDON.webp",
+      "frames": 96,
+      "height": 78,
+      "width": 7488
+    },
+    {
+      "file": "RHYHORN_female.webp",
+      "frames": 76,
+      "height": 66,
+      "width": 5016
+    },
+    {
+      "file": "RHYHORN.webp",
+      "frames": 78,
+      "height": 68,
+      "width": 5304
+    },
+    {
+      "file": "RHYPERIOR_female.webp",
+      "frames": 126,
+      "height": 83,
+      "width": 10458
+    },
+    {
+      "file": "RHYPERIOR.webp",
+      "frames": 126,
+      "height": 83,
+      "width": 10458
+    },
+    {
+      "file": "RIBOMBEE.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "RILLABOOM_1.webp",
+      "frames": 28,
+      "height": 106,
+      "width": 2968
+    },
+    {
+      "file": "RILLABOOM.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "RIOLU.webp",
+      "frames": 63,
+      "height": 49,
+      "width": 3087
+    },
+    {
+      "file": "ROARINGMOON.webp",
+      "frames": 16,
+      "height": 128,
+      "width": 2048
+    },
+    {
+      "file": "ROCKRUFF.webp",
+      "frames": 62,
+      "height": 96,
+      "width": 5952
+    },
+    {
+      "file": "ROGGENROLA.webp",
+      "frames": 64,
+      "height": 38,
+      "width": 2432
+    },
+    {
+      "file": "ROLYCOLY.webp",
+      "frames": 41,
+      "height": 96,
+      "width": 3936
+    },
+    {
+      "file": "ROOKIDEE.webp",
+      "frames": 84,
+      "height": 96,
+      "width": 8064
+    },
+    {
+      "file": "ROSELIA_female.webp",
+      "frames": 61,
+      "height": 62,
+      "width": 3782
+    },
+    {
+      "file": "ROSELIA.webp",
+      "frames": 61,
+      "height": 62,
+      "width": 3782
+    },
+    {
+      "file": "ROSERADE_female.webp",
+      "frames": 102,
+      "height": 71,
+      "width": 7242
+    },
+    {
+      "file": "ROSERADE.webp",
+      "frames": 102,
+      "height": 71,
+      "width": 7242
+    },
+    {
+      "file": "ROTOM_1.webp",
+      "frames": 80,
+      "height": 79,
+      "width": 6320
+    },
+    {
+      "file": "ROTOM_2.webp",
+      "frames": 106,
+      "height": 98,
+      "width": 10388
+    },
+    {
+      "file": "ROTOM_3.webp",
+      "frames": 86,
+      "height": 113,
+      "width": 9718
+    },
+    {
+      "file": "ROTOM_4.webp",
+      "frames": 85,
+      "height": 94,
+      "width": 7990
+    },
+    {
+      "file": "ROTOM_5.webp",
+      "frames": 81,
+      "height": 78,
+      "width": 6318
+    },
+    {
+      "file": "ROTOM.webp",
+      "frames": 96,
+      "height": 88,
+      "width": 8448
+    },
+    {
+      "file": "ROWLET.webp",
+      "frames": 84,
+      "height": 96,
+      "width": 8064
+    },
+    {
+      "file": "RUFFLET.webp",
+      "frames": 71,
+      "height": 54,
+      "width": 3834
+    },
+    {
+      "file": "RUNERIGUS.webp",
+      "frames": 65,
+      "height": 122,
+      "width": 7930
+    },
+    {
+      "file": "SABLEYE_1.webp",
+      "frames": 35,
+      "height": 96,
+      "width": 3360
+    },
+    {
+      "file": "SABLEYE.webp",
+      "frames": 46,
+      "height": 49,
+      "width": 2254
+    },
+    {
+      "file": "SALAMENCE_1.webp",
+      "frames": 103,
+      "height": 108,
+      "width": 11124
+    },
+    {
+      "file": "SALAMENCE.webp",
+      "frames": 62,
+      "height": 86,
+      "width": 5332
+    },
+    {
+      "file": "SALANDIT.webp",
+      "frames": 56,
+      "height": 96,
+      "width": 5376
+    },
+    {
+      "file": "SALAZZLE.webp",
+      "frames": 18,
+      "height": 150,
+      "width": 2700
+    },
+    {
+      "file": "SAMUROTT_1.webp",
+      "frames": 85,
+      "height": 94,
+      "width": 7990
+    },
+    {
+      "file": "SAMUROTT.webp",
+      "frames": 96,
+      "height": 102,
+      "width": 9792
+    },
+    {
+      "file": "SANDACONDA_1.webp",
+      "frames": 28,
+      "height": 96,
+      "width": 2688
+    },
+    {
+      "file": "SANDACONDA.webp",
+      "frames": 132,
+      "height": 87,
+      "width": 11484
+    },
+    {
+      "file": "SANDILE.webp",
+      "frames": 52,
+      "height": 52,
+      "width": 2704
+    },
+    {
+      "file": "SANDSHREW_1.webp",
+      "frames": 63,
+      "height": 40,
+      "width": 2520
+    },
+    {
+      "file": "SANDSHREW.webp",
+      "frames": 62,
+      "height": 39,
+      "width": 2418
+    },
+    {
+      "file": "SANDSLASH_1.webp",
+      "frames": 100,
+      "height": 61,
+      "width": 6100
+    },
+    {
+      "file": "SANDSLASH.webp",
+      "frames": 56,
+      "height": 59,
+      "width": 3304
+    },
+    {
+      "file": "SANDYGAST.webp",
+      "frames": 45,
+      "height": 65,
+      "width": 2925
+    },
+    {
+      "file": "SANDYSHOCKS.webp",
+      "frames": 48,
+      "height": 123,
+      "width": 5904
+    },
+    {
+      "file": "SAWK.webp",
+      "frames": 63,
+      "height": 66,
+      "width": 4158
+    },
+    {
+      "file": "SAWSBUCK_1.webp",
+      "frames": 69,
+      "height": 84,
+      "width": 5796
+    },
+    {
+      "file": "SAWSBUCK_2.webp",
+      "frames": 69,
+      "height": 84,
+      "width": 5796
+    },
+    {
+      "file": "SAWSBUCK_3.webp",
+      "frames": 70,
+      "height": 77,
+      "width": 5390
+    },
+    {
+      "file": "SAWSBUCK.webp",
+      "frames": 70,
+      "height": 77,
+      "width": 5390
+    },
+    {
+      "file": "SCATTERBUG.webp",
+      "frames": 11,
+      "height": 46,
+      "width": 506
+    },
+    {
+      "file": "SCEPTILE_1.webp",
+      "frames": 12,
+      "height": 102,
+      "width": 1224
+    },
+    {
+      "file": "SCEPTILE.webp",
+      "frames": 63,
+      "height": 73,
+      "width": 4599
+    },
+    {
+      "file": "SCIZOR_1.webp",
+      "frames": 84,
+      "height": 92,
+      "width": 7728
+    },
+    {
+      "file": "SCIZOR_female.webp",
+      "frames": 53,
+      "height": 75,
+      "width": 3975
+    },
+    {
+      "file": "SCIZOR.webp",
+      "frames": 53,
+      "height": 75,
+      "width": 3975
+    },
+    {
+      "file": "SCOLIPEDE_1.webp",
+      "frames": 91,
+      "height": 96,
+      "width": 8736
+    },
+    {
+      "file": "SCOLIPEDE.webp",
+      "frames": 116,
+      "height": 104,
+      "width": 12064
+    },
+    {
+      "file": "SCORBUNNY.webp",
+      "frames": 73,
+      "height": 96,
+      "width": 7008
+    },
+    {
+      "file": "SCOVILLAIN_1.webp",
+      "frames": 60,
+      "height": 85,
+      "width": 5100
+    },
+    {
+      "file": "SCOVILLAIN.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "SCRAFTY_1.webp",
+      "frames": 107,
+      "height": 96,
+      "width": 10272
+    },
+    {
+      "file": "SCRAFTY.webp",
+      "frames": 84,
+      "height": 77,
+      "width": 6468
+    },
+    {
+      "file": "SCRAGGY.webp",
+      "frames": 72,
+      "height": 41,
+      "width": 2952
+    },
+    {
+      "file": "SCREAMTAIL.webp",
+      "frames": 82,
+      "height": 69,
+      "width": 5658
+    },
+    {
+      "file": "SCYTHER_female.webp",
+      "frames": 69,
+      "height": 61,
+      "width": 4209
+    },
+    {
+      "file": "SCYTHER.webp",
+      "frames": 69,
+      "height": 61,
+      "width": 4209
+    },
+    {
+      "file": "SEADRA.webp",
+      "frames": 32,
+      "height": 58,
+      "width": 1856
+    },
+    {
+      "file": "SEAKING_female.webp",
+      "frames": 48,
+      "height": 72,
+      "width": 3456
+    },
+    {
+      "file": "SEAKING.webp",
+      "frames": 48,
+      "height": 74,
+      "width": 3552
+    },
+    {
+      "file": "SEALEO.webp",
+      "frames": 56,
+      "height": 67,
+      "width": 3752
+    },
+    {
+      "file": "SEEDOT.webp",
+      "frames": 129,
+      "height": 38,
+      "width": 4902
+    },
+    {
+      "file": "SEEL.webp",
+      "frames": 24,
+      "height": 62,
+      "width": 1488
+    },
+    {
+      "file": "SEISMITOAD.webp",
+      "frames": 96,
+      "height": 98,
+      "width": 9408
+    },
+    {
+      "file": "SENTRET.webp",
+      "frames": 36,
+      "height": 67,
+      "width": 2412
+    },
+    {
+      "file": "SERPERIOR.webp",
+      "frames": 73,
+      "height": 90,
+      "width": 6570
+    },
+    {
+      "file": "SERVINE.webp",
+      "frames": 48,
+      "height": 66,
+      "width": 3168
+    },
+    {
+      "file": "SEVIPER.webp",
+      "frames": 43,
+      "height": 103,
+      "width": 4429
+    },
+    {
+      "file": "SEWADDLE.webp",
+      "frames": 78,
+      "height": 36,
+      "width": 2808
+    },
+    {
+      "file": "SHARPEDO_1.webp",
+      "frames": 44,
+      "height": 86,
+      "width": 3784
+    },
+    {
+      "file": "SHARPEDO.webp",
+      "frames": 63,
+      "height": 72,
+      "width": 4536
+    },
+    {
+      "file": "SHAYMIN_1.webp",
+      "frames": 87,
+      "height": 69,
+      "width": 6003
+    },
+    {
+      "file": "SHAYMIN.webp",
+      "frames": 57,
+      "height": 37,
+      "width": 2109
+    },
+    {
+      "file": "SHEDINJA.webp",
+      "frames": 8,
+      "height": 48,
+      "width": 384
+    },
+    {
+      "file": "SHELGON.webp",
+      "frames": 48,
+      "height": 49,
+      "width": 2352
+    },
+    {
+      "file": "SHELLDER.webp",
+      "frames": 43,
+      "height": 42,
+      "width": 1806
+    },
+    {
+      "file": "SHELLOS_1.webp",
+      "frames": 52,
+      "height": 39,
+      "width": 2028
+    },
+    {
+      "file": "SHELLOS.webp",
+      "frames": 52,
+      "height": 39,
+      "width": 2028
+    },
+    {
+      "file": "SHELMET.webp",
+      "frames": 62,
+      "height": 49,
+      "width": 3038
+    },
+    {
+      "file": "SHIELDON.webp",
+      "frames": 58,
+      "height": 49,
+      "width": 2842
+    },
+    {
+      "file": "SHIFTRY_female.webp",
+      "frames": 54,
+      "height": 99,
+      "width": 5346
+    },
+    {
+      "file": "SHIFTRY.webp",
+      "frames": 54,
+      "height": 101,
+      "width": 5454
+    },
+    {
+      "file": "SHIINOTIC.webp",
+      "frames": 76,
+      "height": 95,
+      "width": 7220
+    },
+    {
+      "file": "SHINX_female.webp",
+      "frames": 64,
+      "height": 51,
+      "width": 3264
+    },
+    {
+      "file": "SHINX.webp",
+      "frames": 64,
+      "height": 51,
+      "width": 3264
+    },
+    {
+      "file": "SHROODLE.webp",
+      "frames": 16,
+      "height": 76,
+      "width": 1216
+    },
+    {
+      "file": "SHROOMISH.webp",
+      "frames": 27,
+      "height": 47,
+      "width": 1269
+    },
+    {
+      "file": "SHUCKLE.webp",
+      "frames": 51,
+      "height": 54,
+      "width": 2754
+    },
+    {
+      "file": "SHUPPET.webp",
+      "frames": 42,
+      "height": 58,
+      "width": 2436
+    },
+    {
+      "file": "SIGILYPH.webp",
+      "frames": 58,
+      "height": 120,
+      "width": 6960
+    },
+    {
+      "file": "SILCOON.webp",
+      "frames": 45,
+      "height": 51,
+      "width": 2295
+    },
+    {
+      "file": "SILICOBRA.webp",
+      "frames": 70,
+      "height": 50,
+      "width": 3500
+    },
+    {
+      "file": "SILVALLY_1.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_10.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_11.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_12.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_13.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_14.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_15.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_16.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_17.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_18.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_2.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_3.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_4.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_5.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_6.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_7.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY_8.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SILVALLY.webp",
+      "frames": 134,
+      "height": 86,
+      "width": 11524
+    },
+    {
+      "file": "SIMIPOUR.webp",
+      "frames": 51,
+      "height": 61,
+      "width": 3111
+    },
+    {
+      "file": "SIMISAGE.webp",
+      "frames": 78,
+      "height": 75,
+      "width": 5850
+    },
+    {
+      "file": "SIMISEAR.webp",
+      "frames": 47,
+      "height": 70,
+      "width": 3290
+    },
+    {
+      "file": "SINISTCHA.webp",
+      "frames": 24,
+      "height": 70,
+      "width": 1680
+    },
+    {
+      "file": "SINISTEA.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "SIRFETCHD.webp",
+      "frames": 54,
+      "height": 96,
+      "width": 5184
+    },
+    {
+      "file": "SIZZLIPEDE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "SKARMORY_1.webp",
+      "frames": 74,
+      "height": 96,
+      "width": 7104
+    },
+    {
+      "file": "SKARMORY.webp",
+      "frames": 48,
+      "height": 70,
+      "width": 3360
+    },
+    {
+      "file": "SKELEDIRGE.webp",
+      "frames": 88,
+      "height": 110,
+      "width": 9680
+    },
+    {
+      "file": "SKIDDO.webp",
+      "frames": 52,
+      "height": 58,
+      "width": 3016
+    },
+    {
+      "file": "SKIPLOOM.webp",
+      "frames": 48,
+      "height": 53,
+      "width": 2544
+    },
+    {
+      "file": "SKITTY.webp",
+      "frames": 77,
+      "height": 55,
+      "width": 4235
+    },
+    {
+      "file": "SKORUPI.webp",
+      "frames": 53,
+      "height": 71,
+      "width": 3763
+    },
+    {
+      "file": "SKRELP.webp",
+      "frames": 10,
+      "height": 56,
+      "width": 560
+    },
+    {
+      "file": "SKUNTANK.webp",
+      "frames": 48,
+      "height": 75,
+      "width": 3600
+    },
+    {
+      "file": "SKWOVET.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "SLAKING.webp",
+      "frames": 55,
+      "height": 75,
+      "width": 4125
+    },
+    {
+      "file": "SLAKOTH.webp",
+      "frames": 24,
+      "height": 52,
+      "width": 1248
+    },
+    {
+      "file": "SLIGGOO_1.webp",
+      "frames": 90,
+      "height": 65,
+      "width": 5850
+    },
+    {
+      "file": "SLIGGOO.webp",
+      "frames": 65,
+      "height": 64,
+      "width": 4160
+    },
+    {
+      "file": "SLITHERWING.webp",
+      "frames": 92,
+      "height": 77,
+      "width": 7084
+    },
+    {
+      "file": "SLOWBRO_1.webp",
+      "frames": 87,
+      "height": 96,
+      "width": 8352
+    },
+    {
+      "file": "SLOWBRO_2.webp",
+      "frames": 52,
+      "height": 96,
+      "width": 4992
+    },
+    {
+      "file": "SLOWBRO.webp",
+      "frames": 57,
+      "height": 63,
+      "width": 3591
+    },
+    {
+      "file": "SLOWKING_1.webp",
+      "frames": 67,
+      "height": 96,
+      "width": 6432
+    },
+    {
+      "file": "SLOWKING.webp",
+      "frames": 51,
+      "height": 69,
+      "width": 3519
+    },
+    {
+      "file": "SLOWPOKE_1.webp",
+      "frames": 89,
+      "height": 96,
+      "width": 8544
+    },
+    {
+      "file": "SLOWPOKE.webp",
+      "frames": 44,
+      "height": 64,
+      "width": 2816
+    },
+    {
+      "file": "SLUGMA.webp",
+      "frames": 32,
+      "height": 40,
+      "width": 1280
+    },
+    {
+      "file": "SLURPUFF.webp",
+      "frames": 24,
+      "height": 96,
+      "width": 2304
+    },
+    {
+      "file": "SMEARGLE.webp",
+      "frames": 48,
+      "height": 59,
+      "width": 2832
+    },
+    {
+      "file": "SMOLIV.webp",
+      "frames": 32,
+      "height": 100,
+      "width": 3200
+    },
+    {
+      "file": "SMOOCHUM.webp",
+      "frames": 48,
+      "height": 47,
+      "width": 2256
+    },
+    {
+      "file": "SNEASEL_1_female.webp",
+      "frames": 49,
+      "height": 53,
+      "width": 2597
+    },
+    {
+      "file": "SNEASEL_1.webp",
+      "frames": 98,
+      "height": 96,
+      "width": 9408
+    },
+    {
+      "file": "SNEASEL_female.webp",
+      "frames": 56,
+      "height": 56,
+      "width": 3136
+    },
+    {
+      "file": "SNEASEL.webp",
+      "frames": 57,
+      "height": 59,
+      "width": 3363
+    },
+    {
+      "file": "SNEASLER.webp",
+      "frames": 61,
+      "height": 96,
+      "width": 5856
+    },
+    {
+      "file": "SNIVY.webp",
+      "frames": 72,
+      "height": 48,
+      "width": 3456
+    },
+    {
+      "file": "SNOM.webp",
+      "frames": 40,
+      "height": 96,
+      "width": 3840
+    },
+    {
+      "file": "SNORLAX_1.webp",
+      "frames": 10,
+      "height": 96,
+      "width": 960
+    },
+    {
+      "file": "SNORLAX.webp",
+      "frames": 87,
+      "height": 75,
+      "width": 6525
+    },
+    {
+      "file": "SNORUNT.webp",
+      "frames": 27,
+      "height": 39,
+      "width": 1053
+    },
+    {
+      "file": "SNOVER_female.webp",
+      "frames": 56,
+      "height": 71,
+      "width": 3976
+    },
+    {
+      "file": "SNOVER.webp",
+      "frames": 56,
+      "height": 71,
+      "width": 3976
+    },
+    {
+      "file": "SNUBBULL.webp",
+      "frames": 52,
+      "height": 42,
+      "width": 2184
+    },
+    {
+      "file": "SOBBLE.webp",
+      "frames": 45,
+      "height": 96,
+      "width": 4320
+    },
+    {
+      "file": "SOLGALEO.webp",
+      "frames": 76,
+      "height": 99,
+      "width": 7524
+    },
+    {
+      "file": "SOLOSIS.webp",
+      "frames": 61,
+      "height": 37,
+      "width": 2257
+    },
+    {
+      "file": "SOLROCK.webp",
+      "frames": 111,
+      "height": 88,
+      "width": 9768
+    },
+    {
+      "file": "SPEAROW.webp",
+      "frames": 31,
+      "height": 39,
+      "width": 1209
+    },
+    {
+      "file": "SPECTRIER.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "SPEWPA.webp",
+      "frames": 65,
+      "height": 81,
+      "width": 5265
+    },
+    {
+      "file": "SPHEAL.webp",
+      "frames": 43,
+      "height": 43,
+      "width": 1849
+    },
+    {
+      "file": "SPIDOPS.webp",
+      "frames": 87,
+      "height": 100,
+      "width": 8700
+    },
+    {
+      "file": "SPINARAK.webp",
+      "frames": 33,
+      "height": 43,
+      "width": 1419
+    },
+    {
+      "file": "SPINDA.webp",
+      "frames": 52,
+      "height": 51,
+      "width": 2652
+    },
+    {
+      "file": "SPIRITOMB.webp",
+      "frames": 112,
+      "height": 67,
+      "width": 7504
+    },
+    {
+      "file": "SPOINK.webp",
+      "frames": 62,
+      "height": 66,
+      "width": 4092
+    },
+    {
+      "file": "SPRIGATITO.webp",
+      "frames": 53,
+      "height": 96,
+      "width": 5088
+    },
+    {
+      "file": "SPRITZEE.webp",
+      "frames": 36,
+      "height": 96,
+      "width": 3456
+    },
+    {
+      "file": "SQUAWKABILLY_1.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "SQUAWKABILLY_2.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "SQUAWKABILLY_3.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "SQUAWKABILLY.webp",
+      "frames": 72,
+      "height": 96,
+      "width": 6912
+    },
+    {
+      "file": "SQUIRTLE.webp",
+      "frames": 26,
+      "height": 43,
+      "width": 1118
+    },
+    {
+      "file": "STAKATAKA.webp",
+      "frames": 92,
+      "height": 100,
+      "width": 9200
+    },
+    {
+      "file": "STANTLER.webp",
+      "frames": 43,
+      "height": 77,
+      "width": 3311
+    },
+    {
+      "file": "STARAPTOR_1.webp",
+      "frames": 24,
+      "height": 140,
+      "width": 3360
+    },
+    {
+      "file": "STARAPTOR_female.webp",
+      "frames": 47,
+      "height": 69,
+      "width": 3243
+    },
+    {
+      "file": "STARAPTOR.webp",
+      "frames": 47,
+      "height": 69,
+      "width": 3243
+    },
+    {
+      "file": "STARAVIA_female.webp",
+      "frames": 57,
+      "height": 53,
+      "width": 3021
+    },
+    {
+      "file": "STARAVIA.webp",
+      "frames": 57,
+      "height": 53,
+      "width": 3021
+    },
+    {
+      "file": "STARLY_female.webp",
+      "frames": 49,
+      "height": 40,
+      "width": 1960
+    },
+    {
+      "file": "STARLY.webp",
+      "frames": 49,
+      "height": 40,
+      "width": 1960
+    },
+    {
+      "file": "STARMIE_1.webp",
+      "frames": 63,
+      "height": 96,
+      "width": 6048
+    },
+    {
+      "file": "STARMIE.webp",
+      "frames": 80,
+      "height": 65,
+      "width": 5200
+    },
+    {
+      "file": "STARYU.webp",
+      "frames": 40,
+      "height": 57,
+      "width": 2280
+    },
+    {
+      "file": "STEELIX_1.webp",
+      "frames": 12,
+      "height": 102,
+      "width": 1224
+    },
+    {
+      "file": "STEELIX_female.webp",
+      "frames": 48,
+      "height": 93,
+      "width": 4464
+    },
+    {
+      "file": "STEELIX.webp",
+      "frames": 48,
+      "height": 93,
+      "width": 4464
+    },
+    {
+      "file": "STEENEE.webp",
+      "frames": 52,
+      "height": 96,
+      "width": 4992
+    },
+    {
+      "file": "STONJOURNER.webp",
+      "frames": 132,
+      "height": 83,
+      "width": 10956
+    },
+    {
+      "file": "STOUTLAND.webp",
+      "frames": 75,
+      "height": 74,
+      "width": 5550
+    },
+    {
+      "file": "STUFFUL.webp",
+      "frames": 57,
+      "height": 55,
+      "width": 3135
+    },
+    {
+      "file": "STUNFISK_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "STUNFISK.webp",
+      "frames": 62,
+      "height": 61,
+      "width": 3782
+    },
+    {
+      "file": "STUNKY.webp",
+      "frames": 47,
+      "height": 56,
+      "width": 2632
+    },
+    {
+      "file": "SUDOWOODO_female.webp",
+      "frames": 33,
+      "height": 66,
+      "width": 2178
+    },
+    {
+      "file": "SUDOWOODO.webp",
+      "frames": 33,
+      "height": 66,
+      "width": 2178
+    },
+    {
+      "file": "SUICUNE.webp",
+      "frames": 47,
+      "height": 82,
+      "width": 3854
+    },
+    {
+      "file": "SUNFLORA.webp",
+      "frames": 45,
+      "height": 51,
+      "width": 2295
+    },
+    {
+      "file": "SUNKERN.webp",
+      "frames": 32,
+      "height": 40,
+      "width": 1280
+    },
+    {
+      "file": "SURSKIT.webp",
+      "frames": 60,
+      "height": 68,
+      "width": 4080
+    },
+    {
+      "file": "SWABLU.webp",
+      "frames": 11,
+      "height": 74,
+      "width": 814
+    },
+    {
+      "file": "SWADLOON.webp",
+      "frames": 63,
+      "height": 50,
+      "width": 3150
+    },
+    {
+      "file": "SWALOT_female.webp",
+      "frames": 50,
+      "height": 63,
+      "width": 3150
+    },
+    {
+      "file": "SWALOT.webp",
+      "frames": 49,
+      "height": 64,
+      "width": 3136
+    },
+    {
+      "file": "SWAMPERT_1.webp",
+      "frames": 93,
+      "height": 130,
+      "width": 12090
+    },
+    {
+      "file": "SWAMPERT.webp",
+      "frames": 46,
+      "height": 76,
+      "width": 3496
+    },
+    {
+      "file": "SWANNA.webp",
+      "frames": 62,
+      "height": 138,
+      "width": 8556
+    },
+    {
+      "file": "SWELLOW.webp",
+      "frames": 68,
+      "height": 73,
+      "width": 4964
+    },
+    {
+      "file": "SWINUB.webp",
+      "frames": 32,
+      "height": 35,
+      "width": 1120
+    },
+    {
+      "file": "SWIRLIX.webp",
+      "frames": 90,
+      "height": 53,
+      "width": 4770
+    },
+    {
+      "file": "SWOOBAT.webp",
+      "frames": 55,
+      "height": 105,
+      "width": 5775
+    },
+    {
+      "file": "SYLVEON.webp",
+      "frames": 64,
+      "height": 96,
+      "width": 6144,
+      "visualScale": 1.46,
+      "visualOffsetY": 30
+    },
+    {
+      "file": "TADBULB.webp",
+      "frames": 85,
+      "height": 71,
+      "width": 6035
+    },
+    {
+      "file": "TAILLOW.webp",
+      "frames": 32,
+      "height": 44,
+      "width": 1408
+    },
+    {
+      "file": "TALONFLAME.webp",
+      "frames": 80,
+      "height": 128,
+      "width": 10240
+    },
+    {
+      "file": "TANDEMAUS.webp",
+      "frames": 80,
+      "height": 77,
+      "width": 6160
+    },
+    {
+      "file": "TANGELA.webp",
+      "frames": 32,
+      "height": 49,
+      "width": 1568
+    },
+    {
+      "file": "TANGROWTH_female.webp",
+      "frames": 95,
+      "height": 98,
+      "width": 9310
+    },
+    {
+      "file": "TANGROWTH.webp",
+      "frames": 95,
+      "height": 98,
+      "width": 9310
+    },
+    {
+      "file": "TAPUBULU.webp",
+      "frames": 85,
+      "height": 92,
+      "width": 7820
+    },
+    {
+      "file": "TAPUFINI.webp",
+      "frames": 14,
+      "height": 126,
+      "width": 1764
+    },
+    {
+      "file": "TAPUKOKO.webp",
+      "frames": 56,
+      "height": 100,
+      "width": 5600
+    },
+    {
+      "file": "TAPULELE.webp",
+      "frames": 15,
+      "height": 126,
+      "width": 1890
+    },
+    {
+      "file": "TAROUNTULA.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "TATSUGIRI_1.webp",
+      "frames": 36,
+      "height": 34,
+      "width": 1224
+    },
+    {
+      "file": "TATSUGIRI_2.webp",
+      "frames": 36,
+      "height": 34,
+      "width": 1224
+    },
+    {
+      "file": "TATSUGIRI_3.webp",
+      "frames": 60,
+      "height": 129,
+      "width": 7740
+    },
+    {
+      "file": "TATSUGIRI_4.webp",
+      "frames": 60,
+      "height": 122,
+      "width": 7320
+    },
+    {
+      "file": "TATSUGIRI_5.webp",
+      "frames": 60,
+      "height": 115,
+      "width": 6900
+    },
+    {
+      "file": "TATSUGIRI.webp",
+      "frames": 36,
+      "height": 34,
+      "width": 1224
+    },
+    {
+      "file": "TAUROS_1.webp",
+      "frames": 69,
+      "height": 96,
+      "width": 6624
+    },
+    {
+      "file": "TAUROS_2.webp",
+      "frames": 36,
+      "height": 96,
+      "width": 3456
+    },
+    {
+      "file": "TAUROS_3.webp",
+      "frames": 36,
+      "height": 96,
+      "width": 3456
+    },
+    {
+      "file": "TAUROS.webp",
+      "frames": 39,
+      "height": 76,
+      "width": 2964
+    },
+    {
+      "file": "TEDDIURSA.webp",
+      "frames": 39,
+      "height": 36,
+      "width": 1404
+    },
+    {
+      "file": "TENTACOOL.webp",
+      "frames": 48,
+      "height": 71,
+      "width": 3408
+    },
+    {
+      "file": "TENTACRUEL.webp",
+      "frames": 40,
+      "height": 84,
+      "width": 3360
+    },
+    {
+      "file": "TEPIG.webp",
+      "frames": 59,
+      "height": 47,
+      "width": 2773
+    },
+    {
+      "file": "TERAPAGOS_1.webp",
+      "frames": 96,
+      "height": 82,
+      "width": 7872
+    },
+    {
+      "file": "TERAPAGOS_2.webp",
+      "frames": 36,
+      "height": 96,
+      "width": 3456
+    },
+    {
+      "file": "TERAPAGOS.webp",
+      "frames": 69,
+      "height": 65,
+      "width": 4485
+    },
+    {
+      "file": "TERRAKION.webp",
+      "frames": 81,
+      "height": 81,
+      "width": 6561
+    },
+    {
+      "file": "THIEVUL.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "THROH.webp",
+      "frames": 56,
+      "height": 75,
+      "width": 4200
+    },
+    {
+      "file": "THUNDURUS_1.webp",
+      "frames": 94,
+      "height": 129,
+      "width": 12126
+    },
+    {
+      "file": "THUNDURUS.webp",
+      "frames": 98,
+      "height": 110,
+      "width": 10780
+    },
+    {
+      "file": "THWACKEY.webp",
+      "frames": 83,
+      "height": 58,
+      "width": 4814
+    },
+    {
+      "file": "TIMBURR.webp",
+      "frames": 67,
+      "height": 69,
+      "width": 4623
+    },
+    {
+      "file": "TINGLU.webp",
+      "frames": 80,
+      "height": 97,
+      "width": 7760
+    },
+    {
+      "file": "TINKATINK.webp",
+      "frames": 36,
+      "height": 100,
+      "width": 3600
+    },
+    {
+      "file": "TINKATON.webp",
+      "frames": 16,
+      "height": 150,
+      "width": 2400
+    },
+    {
+      "file": "TINKATUFF.webp",
+      "frames": 107,
+      "height": 100,
+      "width": 10700
+    },
+    {
+      "file": "TIRTOUGA.webp",
+      "frames": 64,
+      "height": 59,
+      "width": 3776
+    },
+    {
+      "file": "TOEDSCOOL.webp",
+      "frames": 48,
+      "height": 123,
+      "width": 5904
+    },
+    {
+      "file": "TOEDSCRUEL.webp",
+      "frames": 8,
+      "height": 96,
+      "width": 768
+    },
+    {
+      "file": "TOGEDEMARU.webp",
+      "frames": 45,
+      "height": 96,
+      "width": 4320
+    },
+    {
+      "file": "TOGEKISS.webp",
+      "frames": 48,
+      "height": 87,
+      "width": 4176
+    },
+    {
+      "file": "TOGEPI.webp",
+      "frames": 51,
+      "height": 39,
+      "width": 1989
+    },
+    {
+      "file": "TOGETIC.webp",
+      "frames": 52,
+      "height": 70,
+      "width": 3640
+    },
+    {
+      "file": "TORCHIC_female.webp",
+      "frames": 74,
+      "height": 46,
+      "width": 3404
+    },
+    {
+      "file": "TORCHIC.webp",
+      "frames": 74,
+      "height": 46,
+      "width": 3404
+    },
+    {
+      "file": "TORKOAL.webp",
+      "frames": 65,
+      "height": 65,
+      "width": 4225
+    },
+    {
+      "file": "TORNADUS_1.webp",
+      "frames": 88,
+      "height": 149,
+      "width": 13112
+    },
+    {
+      "file": "TORNADUS.webp",
+      "frames": 118,
+      "height": 101,
+      "width": 11918
+    },
+    {
+      "file": "TORRACAT.webp",
+      "frames": 12,
+      "height": 80,
+      "width": 960
+    },
+    {
+      "file": "TORTERRA.webp",
+      "frames": 57,
+      "height": 80,
+      "width": 4560
+    },
+    {
+      "file": "TOTODILE.webp",
+      "frames": 44,
+      "height": 59,
+      "width": 2596
+    },
+    {
+      "file": "TOUCANNON.webp",
+      "frames": 130,
+      "height": 89,
+      "width": 11570
+    },
+    {
+      "file": "TOXAPEX.webp",
+      "frames": 87,
+      "height": 90,
+      "width": 7830
+    },
+    {
+      "file": "TOXEL.webp",
+      "frames": 14,
+      "height": 96,
+      "width": 1344
+    },
+    {
+      "file": "TOXICROAK_female.webp",
+      "frames": 64,
+      "height": 67,
+      "width": 4288
+    },
+    {
+      "file": "TOXICROAK.webp",
+      "frames": 64,
+      "height": 67,
+      "width": 4288
+    },
+    {
+      "file": "TOXTRICITY_1.webp",
+      "frames": 7,
+      "height": 87,
+      "width": 609
+    },
+    {
+      "file": "TOXTRICITY_2.webp",
+      "frames": 21,
+      "height": 93,
+      "width": 1953
+    },
+    {
+      "file": "TOXTRICITY_3.webp",
+      "frames": 21,
+      "height": 93,
+      "width": 1953
+    },
+    {
+      "file": "TOXTRICITY.webp",
+      "frames": 60,
+      "height": 85,
+      "width": 5100
+    },
+    {
+      "file": "TRANQUILL.webp",
+      "frames": 75,
+      "height": 59,
+      "width": 4425
+    },
+    {
+      "file": "TRAPINCH.webp",
+      "frames": 16,
+      "height": 42,
+      "width": 672
+    },
+    {
+      "file": "TREECKO.webp",
+      "frames": 54,
+      "height": 63,
+      "width": 3402
+    },
+    {
+      "file": "TREVENANT.webp",
+      "frames": 80,
+      "height": 96,
+      "width": 7680
+    },
+    {
+      "file": "TROPIUS.webp",
+      "frames": 44,
+      "height": 94,
+      "width": 4136
+    },
+    {
+      "file": "TRUBBISH.webp",
+      "frames": 102,
+      "height": 53,
+      "width": 5406
+    },
+    {
+      "file": "TRUMBEAK.webp",
+      "frames": 137,
+      "height": 96,
+      "width": 13152
+    },
+    {
+      "file": "TSAREENA.webp",
+      "frames": 68,
+      "height": 96,
+      "width": 6528
+    },
+    {
+      "file": "TURTONATOR.webp",
+      "frames": 90,
+      "height": 77,
+      "width": 6930
+    },
+    {
+      "file": "TURTWIG.webp",
+      "frames": 50,
+      "height": 68,
+      "width": 3400
+    },
+    {
+      "file": "TYMPOLE.webp",
+      "frames": 92,
+      "height": 44,
+      "width": 4048
+    },
+    {
+      "file": "TYNAMO.webp",
+      "frames": 105,
+      "height": 57,
+      "width": 5985
+    },
+    {
+      "file": "TYPENULL.webp",
+      "frames": 69,
+      "height": 96,
+      "width": 6624
+    },
+    {
+      "file": "TYPHLOSION_1.webp",
+      "frames": 114,
+      "height": 96,
+      "width": 10944
+    },
+    {
+      "file": "TYPHLOSION.webp",
+      "frames": 112,
+      "height": 72,
+      "width": 8064
+    },
+    {
+      "file": "TYRANITAR_1.webp",
+      "frames": 102,
+      "height": 94,
+      "width": 9588
+    },
+    {
+      "file": "TYRANITAR.webp",
+      "frames": 42,
+      "height": 88,
+      "width": 3696
+    },
+    {
+      "file": "TYRANTRUM.webp",
+      "frames": 108,
+      "height": 100,
+      "width": 10800
+    },
+    {
+      "file": "TYROGUE.webp",
+      "frames": 37,
+      "height": 45,
+      "width": 1665
+    },
+    {
+      "file": "TYRUNT.webp",
+      "frames": 116,
+      "height": 96,
+      "width": 11136
+    },
+    {
+      "file": "UMBREON.webp",
+      "frames": 33,
+      "height": 51,
+      "width": 1683
+    },
+    {
+      "file": "UNFEZANT_female.webp",
+      "frames": 75,
+      "height": 72,
+      "width": 5400
+    },
+    {
+      "file": "UNFEZANT.webp",
+      "frames": 75,
+      "height": 75,
+      "width": 5625
+    },
+    {
+      "file": "UNOWN_1.webp",
+      "frames": 48,
+      "height": 43,
+      "width": 2064
+    },
+    {
+      "file": "UNOWN_10.webp",
+      "frames": 48,
+      "height": 41,
+      "width": 1968
+    },
+    {
+      "file": "UNOWN_11.webp",
+      "frames": 48,
+      "height": 37,
+      "width": 1776
+    },
+    {
+      "file": "UNOWN_12.webp",
+      "frames": 47,
+      "height": 36,
+      "width": 1692
+    },
+    {
+      "file": "UNOWN_13.webp",
+      "frames": 47,
+      "height": 36,
+      "width": 1692
+    },
+    {
+      "file": "UNOWN_14.webp",
+      "frames": 46,
+      "height": 50,
+      "width": 2300
+    },
+    {
+      "file": "UNOWN_15.webp",
+      "frames": 48,
+      "height": 37,
+      "width": 1776
+    },
+    {
+      "file": "UNOWN_16.webp",
+      "frames": 48,
+      "height": 33,
+      "width": 1584
+    },
+    {
+      "file": "UNOWN_17.webp",
+      "frames": 48,
+      "height": 37,
+      "width": 1776
+    },
+    {
+      "file": "UNOWN_18.webp",
+      "frames": 48,
+      "height": 51,
+      "width": 2448
+    },
+    {
+      "file": "UNOWN_19.webp",
+      "frames": 48,
+      "height": 39,
+      "width": 1872
+    },
+    {
+      "file": "UNOWN_2.webp",
+      "frames": 45,
+      "height": 47,
+      "width": 2115
+    },
+    {
+      "file": "UNOWN_20.webp",
+      "frames": 48,
+      "height": 39,
+      "width": 1872
+    },
+    {
+      "file": "UNOWN_21.webp",
+      "frames": 48,
+      "height": 41,
+      "width": 1968
+    },
+    {
+      "file": "UNOWN_22.webp",
+      "frames": 47,
+      "height": 38,
+      "width": 1786
+    },
+    {
+      "file": "UNOWN_23.webp",
+      "frames": 47,
+      "height": 34,
+      "width": 1598
+    },
+    {
+      "file": "UNOWN_24.webp",
+      "frames": 47,
+      "height": 40,
+      "width": 1880
+    },
+    {
+      "file": "UNOWN_25.webp",
+      "frames": 47,
+      "height": 44,
+      "width": 2068
+    },
+    {
+      "file": "UNOWN_26.webp",
+      "frames": 48,
+      "height": 47,
+      "width": 2256
+    },
+    {
+      "file": "UNOWN_27.webp",
+      "frames": 48,
+      "height": 45,
+      "width": 2160
+    },
+    {
+      "file": "UNOWN_3.webp",
+      "frames": 47,
+      "height": 44,
+      "width": 2068
+    },
+    {
+      "file": "UNOWN_4.webp",
+      "frames": 48,
+      "height": 41,
+      "width": 1968
+    },
+    {
+      "file": "UNOWN_5.webp",
+      "frames": 48,
+      "height": 41,
+      "width": 1968
+    },
+    {
+      "file": "UNOWN_6.webp",
+      "frames": 48,
+      "height": 47,
+      "width": 2256
+    },
+    {
+      "file": "UNOWN_7.webp",
+      "frames": 47,
+      "height": 42,
+      "width": 1974
+    },
+    {
+      "file": "UNOWN_8.webp",
+      "frames": 48,
+      "height": 43,
+      "width": 2064
+    },
+    {
+      "file": "UNOWN_9.webp",
+      "frames": 47,
+      "height": 40,
+      "width": 1880
+    },
+    {
+      "file": "UNOWN.webp",
+      "frames": 48,
+      "height": 45,
+      "width": 2160
+    },
+    {
+      "file": "URSALUNA_1.webp",
+      "frames": 137,
+      "height": 77,
+      "width": 10549
+    },
+    {
+      "file": "URSALUNA.webp",
+      "frames": 75,
+      "height": 78,
+      "width": 5850
+    },
+    {
+      "file": "URSARING_female.webp",
+      "frames": 62,
+      "height": 80,
+      "width": 4960
+    },
+    {
+      "file": "URSARING.webp",
+      "frames": 62,
+      "height": 80,
+      "width": 4960
+    },
+    {
+      "file": "URSHIFU_1.webp",
+      "frames": 32,
+      "height": 96,
+      "width": 3072
+    },
+    {
+      "file": "URSHIFU_2.webp",
+      "frames": 52,
+      "height": 102,
+      "width": 5304
+    },
+    {
+      "file": "URSHIFU_3.webp",
+      "frames": 44,
+      "height": 96,
+      "width": 4224
+    },
+    {
+      "file": "URSHIFU.webp",
+      "frames": 32,
+      "height": 96,
+      "width": 3072
+    },
+    {
+      "file": "UXIE.webp",
+      "frames": 96,
+      "height": 53,
+      "width": 5088
+    },
+    {
+      "file": "VANILLISH.webp",
+      "frames": 72,
+      "height": 64,
+      "width": 4608
+    },
+    {
+      "file": "VANILLITE.webp",
+      "frames": 53,
+      "height": 56,
+      "width": 2968
+    },
+    {
+      "file": "VANILLUXE.webp",
+      "frames": 107,
+      "height": 72,
+      "width": 7704
+    },
+    {
+      "file": "VAPOREON.webp",
+      "frames": 51,
+      "height": 59,
+      "width": 3009
+    },
+    {
+      "file": "VAROOM.webp",
+      "frames": 54,
+      "height": 85,
+      "width": 4590
+    },
+    {
+      "file": "VELUZA.webp",
+      "frames": 52,
+      "height": 96,
+      "width": 4992
+    },
+    {
+      "file": "VENIPEDE.webp",
+      "frames": 90,
+      "height": 51,
+      "width": 4590
+    },
+    {
+      "file": "VENOMOTH.webp",
+      "frames": 11,
+      "height": 75,
+      "width": 825
+    },
+    {
+      "file": "VENONAT.webp",
+      "frames": 48,
+      "height": 53,
+      "width": 2544
+    },
+    {
+      "file": "VENUSAUR_1.webp",
+      "frames": 40,
+      "height": 96,
+      "width": 3840
+    },
+    {
+      "file": "VENUSAUR_2.webp",
+      "frames": 10,
+      "height": 96,
+      "width": 960
+    },
+    {
+      "file": "VENUSAUR_female.webp",
+      "frames": 83,
+      "height": 86,
+      "width": 7138
+    },
+    {
+      "file": "VENUSAUR.webp",
+      "frames": 83,
+      "height": 86,
+      "width": 7138
+    },
+    {
+      "file": "VESPIQUEN.webp",
+      "frames": 112,
+      "height": 79,
+      "width": 8848
+    },
+    {
+      "file": "VIBRAVA.webp",
+      "frames": 42,
+      "height": 62,
+      "width": 2604
+    },
+    {
+      "file": "VICTINI.webp",
+      "frames": 49,
+      "height": 62,
+      "width": 3038
+    },
+    {
+      "file": "VICTREEBEL_1.webp",
+      "frames": 38,
+      "height": 96,
+      "width": 3648
+    },
+    {
+      "file": "VICTREEBEL.webp",
+      "frames": 36,
+      "height": 71,
+      "width": 2556
+    },
+    {
+      "file": "VIGOROTH.webp",
+      "frames": 44,
+      "height": 67,
+      "width": 2948
+    },
+    {
+      "file": "VIKAVOLT.webp",
+      "frames": 132,
+      "height": 96,
+      "width": 12672
+    },
+    {
+      "file": "VILEPLUME_female.webp",
+      "frames": 35,
+      "height": 56,
+      "width": 1960
+    },
+    {
+      "file": "VILEPLUME.webp",
+      "frames": 35,
+      "height": 56,
+      "width": 1960
+    },
+    {
+      "file": "VIRIZION.webp",
+      "frames": 91,
+      "height": 72,
+      "width": 6552
+    },
+    {
+      "file": "VIVILLON_1.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_10.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_11.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_12.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_13.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_14.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_15.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_16.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_17.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_18.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_19.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_2.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_3.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_4.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_5.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_6.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_7.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_8.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON_9.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VIVILLON.webp",
+      "frames": 60,
+      "height": 96,
+      "width": 5760
+    },
+    {
+      "file": "VOLBEAT.webp",
+      "frames": 27,
+      "height": 64,
+      "width": 1728
+    },
+    {
+      "file": "VOLCANION.webp",
+      "frames": 119,
+      "height": 89,
+      "width": 10591
+    },
+    {
+      "file": "VOLCARONA.webp",
+      "frames": 24,
+      "height": 93,
+      "width": 2232
+    },
+    {
+      "file": "VOLTORB_1.webp",
+      "frames": 45,
+      "height": 51,
+      "width": 2295
+    },
+    {
+      "file": "VOLTORB.webp",
+      "frames": 35,
+      "height": 46,
+      "width": 1610
+    },
+    {
+      "file": "VULLABY.webp",
+      "frames": 69,
+      "height": 62,
+      "width": 4278
+    },
+    {
+      "file": "VULPIX_1.webp",
+      "frames": 10,
+      "height": 59,
+      "width": 590
+    },
+    {
+      "file": "VULPIX.webp",
+      "frames": 36,
+      "height": 59,
+      "width": 2124
+    },
+    {
+      "file": "WAILMER.webp",
+      "frames": 54,
+      "height": 85,
+      "width": 4590
+    },
+    {
+      "file": "WAILORD.webp",
+      "frames": 56,
+      "height": 103,
+      "width": 5768
+    },
+    {
+      "file": "WALKINGWAKE.webp",
+      "frames": 90,
+      "height": 147,
+      "width": 13230
+    },
+    {
+      "file": "WALREIN.webp",
+      "frames": 54,
+      "height": 78,
+      "width": 4212
+    },
+    {
+      "file": "WARTORTLE.webp",
+      "frames": 44,
+      "height": 61,
+      "width": 2684
+    },
+    {
+      "file": "WATCHOG.webp",
+      "frames": 84,
+      "height": 69,
+      "width": 5796
+    },
+    {
+      "file": "WATTREL.webp",
+      "frames": 16,
+      "height": 100,
+      "width": 1600
+    },
+    {
+      "file": "WEAVILE_female.webp",
+      "frames": 130,
+      "height": 81,
+      "width": 10530
+    },
+    {
+      "file": "WEAVILE.webp",
+      "frames": 98,
+      "height": 81,
+      "width": 7938
+    },
+    {
+      "file": "WEEDLE.webp",
+      "frames": 61,
+      "height": 46,
+      "width": 2806
+    },
+    {
+      "file": "WEEPINBELL.webp",
+      "frames": 49,
+      "height": 69,
+      "width": 3381
+    },
+    {
+      "file": "WEEZING_1.webp",
+      "frames": 43,
+      "height": 96,
+      "width": 4128
+    },
+    {
+      "file": "WEEZING.webp",
+      "frames": 49,
+      "height": 86,
+      "width": 4214
+    },
+    {
+      "file": "WHIMSICOTT.webp",
+      "frames": 59,
+      "height": 71,
+      "width": 4189
+    },
+    {
+      "file": "WHIRLIPEDE.webp",
+      "frames": 69,
+      "height": 69,
+      "width": 4761
+    },
+    {
+      "file": "WHISCASH.webp",
+      "frames": 96,
+      "height": 75,
+      "width": 7200
+    },
+    {
+      "file": "WHISMUR.webp",
+      "frames": 30,
+      "height": 43,
+      "width": 1290
+    },
+    {
+      "file": "WIGGLYTUFF.webp",
+      "frames": 54,
+      "height": 82,
+      "width": 4428
+    },
+    {
+      "file": "WIGLETT.webp",
+      "frames": 52,
+      "height": 96,
+      "width": 4992
+    },
+    {
+      "file": "WIMPOD.webp",
+      "frames": 81,
+      "height": 53,
+      "width": 4293
+    },
+    {
+      "file": "WINGULL.webp",
+      "frames": 75,
+      "height": 64,
+      "width": 4800
+    },
+    {
+      "file": "WISHIWASHI_1.webp",
+      "frames": 20,
+      "height": 104,
+      "width": 2080
+    },
+    {
+      "file": "WISHIWASHI.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "WOBBUFFET_female.webp",
+      "frames": 61,
+      "height": 57,
+      "width": 3477
+    },
+    {
+      "file": "WOBBUFFET.webp",
+      "frames": 61,
+      "height": 57,
+      "width": 3477
+    },
+    {
+      "file": "WOCHIEN.webp",
+      "frames": 102,
+      "height": 95,
+      "width": 9690
+    },
+    {
+      "file": "WOOBAT.webp",
+      "frames": 80,
+      "height": 92,
+      "width": 7360
+    },
+    {
+      "file": "WOOLOO.webp",
+      "frames": 52,
+      "height": 96,
+      "width": 4992
+    },
+    {
+      "file": "WOOPER_1.webp",
+      "frames": 32,
+      "height": 90,
+      "width": 2880
+    },
+    {
+      "file": "WOOPER_female.webp",
+      "frames": 48,
+      "height": 40,
+      "width": 1920
+    },
+    {
+      "file": "WOOPER.webp",
+      "frames": 48,
+      "height": 44,
+      "width": 2112
+    },
+    {
+      "file": "WORMADAM_1.webp",
+      "frames": 112,
+      "height": 62,
+      "width": 6944
+    },
+    {
+      "file": "WORMADAM_2.webp",
+      "frames": 112,
+      "height": 62,
+      "width": 6944
+    },
+    {
+      "file": "WORMADAM.webp",
+      "frames": 112,
+      "height": 62,
+      "width": 6944
+    },
+    {
+      "file": "WUGTRIO.webp",
+      "frames": 97,
+      "height": 96,
+      "width": 9312
+    },
+    {
+      "file": "WURMPLE.webp",
+      "frames": 35,
+      "height": 46,
+      "width": 1610
+    },
+    {
+      "file": "WYNAUT.webp",
+      "frames": 53,
+      "height": 58,
+      "width": 3074
+    },
+    {
+      "file": "WYRDEER.webp",
+      "frames": 100,
+      "height": 120,
+      "width": 12000
+    },
+    {
+      "file": "XATU_female.webp",
+      "frames": 48,
+      "height": 60,
+      "width": 2880
+    },
+    {
+      "file": "XATU.webp",
+      "frames": 48,
+      "height": 60,
+      "width": 2880
+    },
+    {
+      "file": "XERNEAS_1.webp",
+      "frames": 48,
+      "height": 96,
+      "width": 4608
+    },
+    {
+      "file": "XERNEAS.webp",
+      "frames": 1,
+      "height": 96,
+      "width": 96
+    },
+    {
+      "file": "XURKITREE.webp",
+      "frames": 124,
+      "height": 102,
+      "width": 12648
+    },
+    {
+      "file": "YAMASK_1.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "YAMASK.webp",
+      "frames": 72,
+      "height": 66,
+      "width": 4752
+    },
+    {
+      "file": "YAMPER.webp",
+      "frames": 47,
+      "height": 96,
+      "width": 4512
+    },
+    {
+      "file": "YANMA.webp",
+      "frames": 21,
+      "height": 91,
+      "width": 1911
+    },
+    {
+      "file": "YANMEGA.webp",
+      "frames": 56,
+      "height": 94,
+      "width": 5264
+    },
+    {
+      "file": "YUNGOOS.webp",
+      "frames": 64,
+      "height": 61,
+      "width": 3904
+    },
+    {
+      "file": "YVELTAL.webp",
+      "frames": 10,
+      "height": 126,
+      "width": 1260
+    },
+    {
+      "file": "ZACIAN_1.webp",
+      "frames": 77,
+      "height": 96,
+      "width": 7392
+    },
+    {
+      "file": "ZACIAN.webp",
+      "frames": 78,
+      "height": 89,
+      "width": 6942
+    },
+    {
+      "file": "ZAMAZENTA_1.webp",
+      "frames": 124,
+      "height": 93,
+      "width": 11532
+    },
+    {
+      "file": "ZAMAZENTA.webp",
+      "frames": 68,
+      "height": 96,
+      "width": 6528
+    },
+    {
+      "file": "ZANGOOSE.webp",
+      "frames": 56,
+      "height": 72,
+      "width": 4032
+    },
+    {
+      "file": "ZAPDOS_1.webp",
+      "frames": 172,
+      "height": 72,
+      "width": 12384
+    },
+    {
+      "file": "ZAPDOS.webp",
+      "frames": 9,
+      "height": 97,
+      "width": 873
+    },
+    {
+      "file": "ZARUDE_1.webp",
+      "frames": 22,
+      "height": 90,
+      "width": 1980
+    },
+    {
+      "file": "ZARUDE.webp",
+      "frames": 12,
+      "height": 96,
+      "width": 1152
+    },
+    {
+      "file": "ZEBSTRIKA.webp",
+      "frames": 76,
+      "height": 74,
+      "width": 5624
+    },
+    {
+      "file": "ZEKROM.webp",
+      "frames": 95,
+      "height": 102,
+      "width": 9690
+    },
+    {
+      "file": "ZERAORA_1.webp",
+      "frames": 79,
+      "height": 120,
+      "width": 9480
+    },
+    {
+      "file": "ZERAORA.webp",
+      "frames": 124,
+      "height": 96,
+      "width": 11904
+    },
+    {
+      "file": "ZIGZAGOON_1.webp",
+      "frames": 91,
+      "height": 58,
+      "width": 5278
+    },
+    {
+      "file": "ZIGZAGOON.webp",
+      "frames": 56,
+      "height": 58,
+      "width": 3248
+    },
+    {
+      "file": "ZOROARK_1.webp",
+      "frames": 24,
+      "height": 77,
+      "width": 1848
+    },
+    {
+      "file": "ZOROARK.webp",
+      "frames": 89,
+      "height": 74,
+      "width": 6586
+    },
+    {
+      "file": "ZORUA_1.webp",
+      "frames": 108,
+      "height": 96,
+      "width": 10368
+    },
+    {
+      "file": "ZORUA.webp",
+      "frames": 59,
+      "height": 49,
+      "width": 2891
+    },
+    {
+      "file": "ZUBAT_female.webp",
+      "frames": 27,
+      "height": 53,
+      "width": 1431
+    },
+    {
+      "file": "ZUBAT.webp",
+      "frames": 27,
+      "height": 53,
+      "width": 1431
+    },
+    {
+      "file": "ZWEILOUS.webp",
+      "frames": 56,
+      "height": 68,
+      "width": 3808
+    },
+    {
+      "file": "ZYGARDE_1.webp",
+      "frames": 75,
+      "height": 69,
+      "width": 5175
+    },
+    {
+      "file": "ZYGARDE_2.webp",
+      "frames": 40,
+      "height": 127,
+      "width": 5080
+    },
+    {
+      "file": "ZYGARDE_3.webp",
+      "frames": 40,
+      "height": 127,
+      "width": 5080
+    },
+    {
+      "file": "ZYGARDE_4.webp",
+      "frames": 32,
+      "height": 96,
+      "width": 3072
+    },
+    {
+      "file": "ZYGARDE_5.webp",
+      "frames": 32,
+      "height": 96,
+      "width": 3072
+    },
+    {
+      "file": "ZYGARDE.webp",
+      "frames": 88,
+      "height": 92,
+      "width": 8096
+    }
+  ]
+}
