@@ -16,6 +16,7 @@ sozinho, sem backend ou compilação, e salva o progresso no navegador com
 - Sprites normais e Shiny animados em um gramado responsivo.
 - Escala inteira de pixels para sprites mais nítidos em celulares.
 - Controle de animações em **Automático**, **Ativado** ou **Desativado**.
+- Cinco músicas de fundo com controle de volume no gramado.
 - Fome, felicidade, energia, nível, XP e dias de vínculo.
 - Comida, brincadeira, treino, descanso, mochila e histórico.
 - Recompensa diária e ciclo de dia e noite no horário de Brasília.
@@ -89,6 +90,14 @@ Em **Pokébola → Pokémon → Animações**, escolha:
 As miniaturas do catálogo permanecem paradas para reduzir o consumo de recursos
 em celulares. O companheiro principal continua animado conforme a configuração.
 
+## Música de fundo
+
+O botão de volume no canto superior esquerdo do gramado liga ou desliga a
+música. As cinco faixas tocam em sequência com volume suave, definido em 14%.
+
+Alguns navegadores só permitem iniciar o áudio depois que o usuário interage
+com a página. A preferência e a faixa atual ficam salvas no `localStorage`.
+
 ## Arquivos principais
 
 ```text
@@ -96,6 +105,7 @@ em celulares. O companheiro principal continua animado conforme a configuração
 |-- assets/
 |   |-- arrow-ios-back.svg
 |   |-- grass.png
+|   |-- musics/
 |   |-- superpokegochi-preview.png
 |   `-- pokemons/
 |       |-- Front/

@@ -16,9 +16,21 @@
   const SHINY_UNLOCK_DAYS = 30;
   const COMPANION_RESULT_LIMIT = 36;
   const MOTION_PREFERENCES = new Set(['auto', 'on', 'off']);
+  const MUSIC_VOLUME = 0.14;
+  const MUSIC_TRACKS = [
+    '1-02. Theme Of Pallet Town.mp3',
+    '1-03. Professor Oak.mp3',
+    "1-04. Oak's Laboratory.mp3",
+    '1-09. Theme Of Pewter City.mp3',
+    '1-24. St. Anne.mp3',
+  ];
+  const MUSIC_BASE_PATH = document.documentElement.dataset.musicBase || 'assets/musics/';
+  const backgroundMusic = new Audio();
   const reducedMotionQuery = window.matchMedia
     ? window.matchMedia('(prefers-reduced-motion: reduce)')
     : null;
+  let loadedMusicTrackIndex = -1;
+  let musicResumeArmed = false;
 
   function readStoredState() {
     try {
@@ -58,6 +70,82 @@
     render();
     showToast(motionPreferenceSummary());
   }
+
+  function getMusicEnabled() {
+    return Boolean(state && state.settings && state.settings.musicEnabled);
+  }
+
+  function getMusicTrackIndex() {
+    const index = Number(state && state.settings && state.settings.musicTrackIndex);
+    if (!Number.isInteger(index) || index < 0) return 0;
+    return index % MUSIC_TRACKS.length;
+  }
+
+  function musicTrackUrl(index) {
+    return new URL(`${MUSIC_BASE_PATH}${encodeURIComponent(MUSIC_TRACKS[index])}`, document.baseURI).href;
+  }
+
+  function loadBackgroundMusic(index = getMusicTrackIndex()) {
+    if (loadedMusicTrackIndex === index && backgroundMusic.src) return;
+    loadedMusicTrackIndex = index;
+    backgroundMusic.src = musicTrackUrl(index);
+    backgroundMusic.volume = MUSIC_VOLUME;
+    backgroundMusic.preload = 'metadata';
+  }
+
+  function armMusicResume() {
+    if (musicResumeArmed) return;
+    musicResumeArmed = true;
+    const resume = () => {
+      document.removeEventListener('pointerdown', resume, true);
+      document.removeEventListener('keydown', resume, true);
+      musicResumeArmed = false;
+      if (getMusicEnabled() && backgroundMusic.paused) void playBackgroundMusic();
+    };
+    document.addEventListener('pointerdown', resume, true);
+    document.addEventListener('keydown', resume, true);
+  }
+
+  async function playBackgroundMusic(showFeedback = false) {
+    if (!getMusicEnabled()) return false;
+    loadBackgroundMusic();
+    backgroundMusic.volume = MUSIC_VOLUME;
+    try {
+      await backgroundMusic.play();
+      if (showFeedback) showToast('Música ligada · volume suave.');
+      return true;
+    } catch {
+      armMusicResume();
+      if (showFeedback) showToast('Música ligada. Toque na tela para começar.');
+      return false;
+    }
+  }
+
+  function setMusicEnabled(enabled) {
+    state.settings = {
+      ...(state.settings || {}),
+      musicEnabled: Boolean(enabled),
+    };
+    saveState();
+    render();
+    if (enabled) {
+      void playBackgroundMusic(true);
+    } else {
+      backgroundMusic.pause();
+      showToast('Música desligada.');
+    }
+  }
+
+  function playNextMusicTrack() {
+    if (!state || !getMusicEnabled()) return;
+    const nextIndex = (getMusicTrackIndex() + 1) % MUSIC_TRACKS.length;
+    state.settings = { ...(state.settings || {}), musicTrackIndex: nextIndex };
+    saveState();
+    loadBackgroundMusic(nextIndex);
+    void playBackgroundMusic();
+  }
+
+  backgroundMusic.addEventListener('ended', playNextMusicTrack);
 
   function getDex(id) {
     const target = id || (state && state.selected) || 'bulbasaur';
@@ -252,6 +340,8 @@
       bag: systemDefaultBag(),
       daily: { lastFoodGrant: null },
       settings: {
+        musicEnabled: false,
+        musicTrackIndex: 0,
         motionPreference: 'auto',
       },
       pets: Object.fromEntries(DEX.slice(0, 1).map((mon, index) => [mon.id, systemDefaultPet(mon, index)])),
@@ -327,6 +417,11 @@
     if (!MOTION_PREFERENCES.has(migrated.settings.motionPreference)) {
       migrated.settings.motionPreference = 'auto';
     }
+    migrated.settings.musicEnabled = migrated.settings.musicEnabled === true;
+    const musicTrackIndex = Number(migrated.settings.musicTrackIndex);
+    migrated.settings.musicTrackIndex = Number.isInteger(musicTrackIndex) && musicTrackIndex >= 0
+      ? musicTrackIndex % MUSIC_TRACKS.length
+      : 0;
     migrated.pets = Object.fromEntries(
       Object.entries(migrated.pets).map(([id, pet], index) => [id, migratePet(pet, id, index)])
     );
@@ -1244,6 +1339,7 @@
     const companionResults = hasCompanions && companionsOpen ? companionResultsMarkup() : null;
     const clock = brasiliaClock();
     const evolutionOffer = getEvolutionOffer(species, pet);
+    const musicEnabled = getMusicEnabled();
 
     root.innerHTML = `
       <section class="phone-shell">
@@ -1297,6 +1393,28 @@
 
         <main class="camp-area ${mood.className} phase-${clock.phase}" data-brasilia-time="${clock.label}">
           <div class="time-light" aria-hidden="true"></div>
+          <button
+            class="music-toggle ${musicEnabled ? 'active' : ''}"
+            type="button"
+            data-music-toggle
+            aria-label="${musicEnabled ? 'Desativar música de fundo' : 'Ativar música de fundo'}"
+            aria-pressed="${musicEnabled}"
+            title="${musicEnabled ? 'Desativar música' : 'Ativar música'}"
+          >
+            ${musicEnabled ? `
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M11 5 6.8 8.5H3.5v7h3.3L11 19V5Z"></path>
+                <path d="M15 9.2c.8.7 1.2 1.6 1.2 2.8s-.4 2.1-1.2 2.8"></path>
+                <path d="M18 6.8c1.4 1.3 2.2 3.1 2.2 5.2s-.8 3.9-2.2 5.2"></path>
+              </svg>
+            ` : `
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M11 5 6.8 8.5H3.5v7h3.3L11 19V5Z"></path>
+                <path d="m15.2 9.2 5.6 5.6"></path>
+                <path d="m20.8 9.2-5.6 5.6"></path>
+              </svg>
+            `}
+          </button>
           <div class="mood-pill ${needsCare ? 'need' : ''}"><span>${mood.icon}</span><b>${mood.label}</b></div>
           <button class="pet-stage ${selectedImgStyle} ${pet.sleeping ? 'is-sleeping' : pet.energy < 20 ? 'is-tired' : ''}" type="button" data-status-toggle aria-label="Abrir status de ${pet.customName}">
             <span class="pet-aura"></span>
@@ -1375,6 +1493,9 @@
     document.querySelectorAll('[data-appearance]').forEach(btn => btn.addEventListener('click', () => selectAppearance(btn.dataset.appearance)));
     document.querySelectorAll('[data-palette]').forEach(btn => btn.addEventListener('click', () => selectPalette(btn.dataset.palette)));
     document.querySelectorAll('[data-motion-option]').forEach(btn => btn.addEventListener('click', () => setMotionPreference(btn.dataset.motionOption)));
+    document.querySelectorAll('[data-music-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      setMusicEnabled(!getMusicEnabled());
+    }));
     document.querySelectorAll('[data-evolution-choice]').forEach(btn => btn.addEventListener('click', () => chooseEvolution(btn.dataset.evolutionForm, btn.dataset.evolutionChoice)));
     document.querySelectorAll('[data-training-hit]').forEach(btn => btn.addEventListener('click', hitTrainingTarget));
     document.querySelectorAll('[data-training-cancel]').forEach(btn => btn.addEventListener('click', cancelTrainingGame));
@@ -1414,6 +1535,8 @@
   syncAllPets(state);
   saveState();
   render();
+  loadBackgroundMusic();
+  if (getMusicEnabled()) void playBackgroundMusic();
   checkFormAssets();
   if (dailyRewardMessage) setTimeout(() => showToast(dailyRewardMessage), 300);
   const handleReducedMotionChange = () => {

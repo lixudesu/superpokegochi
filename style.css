@@ -159,6 +159,15 @@ html,body{overflow-x:hidden}
 .camp-area.phase-night .time-light{background-color:rgba(20,43,82,.46)}
 .camp-area.phase-night{box-shadow:inset 0 0 0 1px rgba(193,220,255,.22),inset 0 -28px 48px rgba(11,34,58,.28)!important}
 .camp-area.phase-night .speech,.camp-area.phase-night .mood-pill{background:rgba(247,251,255,.9)}
+.music-toggle{position:absolute;left:18px;top:18px;z-index:6;width:40px;height:40px;padding:0;border:1px solid rgba(218,235,225,.95);border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.88);color:#607268;cursor:pointer;transition:transform .18s cubic-bezier(.22,1,.36,1),background-color .18s ease,color .18s ease}
+.music-toggle:hover{transform:translateY(-1px);background:#fff;color:#347a50}
+.music-toggle:active{transform:translateY(1px)}
+.music-toggle.active{background:#f3fff7;color:#258653;border-color:#b8ddc5}
+.music-toggle:focus-visible{outline:3px solid rgba(255,255,255,.95);outline-offset:2px}
+.music-toggle svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.camp-area.phase-night .music-toggle{background:rgba(247,251,255,.9);border-color:rgba(204,222,239,.9)}
+@media (max-width:420px){.music-toggle{left:14px;top:14px;width:38px;height:38px}.music-toggle svg{width:20px;height:20px}}
+@media (max-height:680px){.music-toggle{top:12px}}
 .pet-stage.is-sleeping .stage-sprite-wrap{animation:none!important;transform:scale(var(--stage-scale))!important}
 .pet-stage.is-sleeping .pokemon-sprite{animation:none!important;background-position:0 0!important}
 .pet-stage.is-sleeping:hover{transform:translateX(-50%)!important}
