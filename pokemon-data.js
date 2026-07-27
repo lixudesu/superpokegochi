@@ -140,6 +140,32 @@ function catalogPokemonFromRow(row) {
 const CATALOG_DEX = POKEMON_CATALOG_DATA.map(catalogPokemonFromRow);
 const featuredIds = new Set(FEATURED_DEX.map(mon => mon.id));
 const DEX = [...FEATURED_DEX, ...CATALOG_DEX.filter(mon => !featuredIds.has(mon.id))];
+const CATALOG_BY_DEX = new Map(CATALOG_DEX.map(mon => [mon.dexNumber, mon]));
+
+function catalogEvolutionDepth(mon) {
+  let depth = 0;
+  let current = mon;
+  const visited = new Set();
+
+  while (current && current.evolvesFromDexNumber && !visited.has(current.dexNumber)) {
+    visited.add(current.dexNumber);
+    depth += 1;
+    current = CATALOG_BY_DEX.get(current.evolvesFromDexNumber);
+  }
+
+  return depth;
+}
+
+DEX.filter(mon => mon.selectable !== false && !featuredIds.has(mon.id)).forEach(rootMon => {
+  rootMon.forms = CATALOG_DEX
+    .filter(mon => mon.evolutionRootDexNumber === rootMon.dexNumber)
+    .sort((first, second) => catalogEvolutionDepth(first) - catalogEvolutionDepth(second) || first.dexNumber - second.dexNumber)
+    .map(mon => ({
+      ...mon.forms[0],
+      dexNumber: mon.dexNumber,
+      unlockLevel: catalogEvolutionDepth(mon) === 0 ? 1 : catalogEvolutionDepth(mon) * 16,
+    }));
+});
 
 const STORAGE_KEY = 'scrypet_tamagotchi_bulbasaur_v1';
 const clamp = (value, min = 0, max = 100) => Math.max(min, Math.min(max, Math.round(value)));

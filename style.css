@@ -13,7 +13,7 @@
   --purple:#8d72ff;
   --shadow:0 22px 55px rgba(56,91,66,.22);
   --soft-shadow:0 12px 28px rgba(44,70,50,.18);
-  --grass:url("assets/grass.png");
+  --grass:url("/pokegochi/grass.png");
   font-family: Inter, ui-rounded, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 *{box-sizing:border-box}
@@ -48,7 +48,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 @keyframes alert-pulse{0%,100%{filter:none}50%{filter:drop-shadow(0 0 10px rgba(255,79,95,.55))}}
 @keyframes pet-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes aura{0%,100%{opacity:.45;transform:translateX(-50%) scale(.96)}50%{opacity:.8;transform:translateX(-50%) scale(1.05)}}@keyframes twinkle{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}@keyframes soft-shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-2deg)}40%{transform:rotate(2deg)}60%{transform:rotate(-1deg)}}@keyframes eat-bounce{0%{transform:scale(1)}45%{transform:scale(1.1) translateY(-6px)}100%{transform:scale(1)}}@keyframes happy-hop{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-26px) rotate(-8deg)}70%{transform:translateY(-8px) rotate(7deg)}}@keyframes sleepy-sway{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(4deg) translateY(4px)}}@keyframes train-pop{0%{transform:scale(1)}40%{transform:scale(1.18) rotate(-8deg)}100%{transform:scale(1)}}@keyframes button-pop{0%{transform:translateY(0) scale(1)}55%{transform:translateY(-7px) scale(1.03)}100%{transform:translateY(-5px) scale(1)}}
 @media (max-width:420px){.app-wrap{padding:0}.phone-shell{width:100vw;height:100dvh;min-height:650px;border-radius:0}.topbar{left:12px;right:12px;top:12px}.camp-area{left:0;right:0;top:102px;border-radius:0 0 28px 28px;height:492px}.status-dropdown{left:12px;right:12px;top:98px}.companions-fab{right:12px}.care-sheet{padding-inline:12px}.action-dock{gap:8px}.action-btn{min-height:88px;border-radius:22px}.action-btn span{width:44px;height:44px}.drawer-card{right:10px;top:90px;bottom:178px;width:calc(100% - 20px)}}
-@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media (prefers-reduced-motion:reduce){html:not([data-motion="on"]) *,html:not([data-motion="on"]) *:before,html:not([data-motion="on"]) *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 /* v5 tamagotchi system */
 html,body{min-height:100%;overflow:auto}
@@ -179,7 +179,7 @@ html,body{overflow-x:hidden}
 @keyframes training-sweep{from{left:6%}to{left:94%}}
 @media (max-width:420px){.training-overlay{padding:12px}.training-panel{width:100%;padding:24px 18px 20px}.training-track{margin-inline:8px}.training-heading h2{font-size:22px}}
 @media (max-height:680px){.training-panel{padding:18px 17px 16px}.training-heading h2{font-size:20px}.training-heading p{font-size:11px}.training-meta{margin-top:14px}.training-feedback{height:35px;margin-top:7px}.training-rounds{margin-bottom:10px}.training-hit{height:48px}.training-cost{margin-top:8px}}
-@media (prefers-reduced-motion:reduce){.training-marker{left:50%;animation:none!important}}
+@media (prefers-reduced-motion:reduce){html:not([data-motion="on"]) .training-marker{left:50%;animation:none!important}}
 
 /* v10 appearance evolution and time-based bond */
 .status-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:13px 0 11px;padding:4px;border:1px solid #dce9e1;border-radius:14px;background:#eef5f1}
@@ -189,6 +189,7 @@ html,body{overflow-x:hidden}
 .appearance-list{display:grid;gap:7px}.appearance-option{width:100%;min-height:64px;border:1px solid #dce9e1;border-radius:14px;background:#f8fbf9;display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:10px;padding:6px 9px;text-align:left;color:#3d5045;cursor:pointer}.appearance-option.selected{border-color:#72c994;background:#ecfaf1}.appearance-option.missing{background:#f5f7f6;color:#758078}.appearance-option:disabled{opacity:1;cursor:default}
 .appearance-preview{width:50px;height:50px;border:1px solid #dce9e1;border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden}.appearance-preview .pokemon-sprite{width:38px;height:38px}.appearance-preview img{max-width:46px;max-height:46px;object-fit:contain}.appearance-preview>b{font-size:20px;color:#98a49d}
 .appearance-copy{min-width:0}.appearance-copy>b{display:block;font-size:13px}.appearance-copy small{display:block;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#819087;font-size:9.5px;font-weight:800}.appearance-state{max-width:82px;text-align:right;color:#438461;font-size:9.5px;font-weight:950}.appearance-option.missing .appearance-state{color:#8b7777}
+.appearance-option.locked{border-color:#d7ddda;background:#eef1ef;color:#606b65}.appearance-option.locked .appearance-preview{border-color:#d1d8d4;background:#e4e8e6}.appearance-option.locked .appearance-preview .pokemon-sprite,.appearance-option.locked .appearance-preview img{filter:grayscale(1);opacity:.42}.appearance-option.locked .appearance-copy small,.appearance-option.locked .appearance-state{color:#606b65}
 .evolution-overlay{position:absolute;inset:0;z-index:90;display:grid;place-items:center;padding:16px;background:rgba(24,48,35,.52);backdrop-filter:blur(5px)}.evolution-panel{width:min(350px,100%);border:1px solid #d8e9df;border-radius:25px;background:#fcfffd;padding:24px 20px;text-align:center;color:#35483d;box-shadow:0 28px 70px rgba(19,43,29,.3)}.evolution-panel>small:first-child{display:block;color:#2c9860;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.08em}.evolution-preview{width:92px;height:92px;margin:12px auto 8px;border:1px solid #dce9e1;border-radius:50%;background:#edf9f1;display:grid;place-items:center}.evolution-preview .pokemon-sprite{width:38px;height:38px;transform:scale(2);image-rendering:pixelated}.evolution-preview img{max-width:84px;max-height:84px;object-fit:contain}.evolution-panel h2{margin:6px 0;font-size:22px;letter-spacing:0}.evolution-panel p{margin:0 auto 17px;max-width:290px;color:#6b7b72;font-size:12px;line-height:1.45}
 .evolution-primary,.evolution-secondary{width:100%;min-height:48px;border-radius:14px;font-weight:950;cursor:pointer}.evolution-primary{border:1px solid #288752;background:#39bc70;color:#fff;box-shadow:0 4px 0 #24834d}.evolution-primary span{margin-right:6px}.evolution-secondary{margin-top:9px;border:1px solid #d7e6dd;background:#f2f7f4;color:#52665a}.evolution-hint{display:block;margin-top:12px;color:#7c8a82;font-size:9.5px;line-height:1.35}
 @media (max-width:420px){.status-tabs{margin-top:11px}.appearance-option{grid-template-columns:50px minmax(0,1fr) auto;gap:8px}.evolution-overlay{padding:12px}.evolution-panel{padding:22px 17px}}
@@ -424,6 +425,40 @@ html,body{overflow-x:hidden}
 }
 .palette-heading{justify-content:flex-end}
 
+/* Keep navigation available beside the existing More control. */
+.sheet-toggle-row{
+  position:absolute;
+  top:-27px;
+  left:50%;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  transform:translateX(-50%);
+}
+.sheet-toggle-row .more-toggle{
+  position:static;
+  transform:none;
+}
+.sheet-toggle-row .back-toggle span{
+  background:#4d9cff;
+}
+.sheet-toggle-row .back-toggle img{
+  display:block;
+  width:18px;
+  height:18px;
+}
+
+@media (max-width:420px){
+  .sheet-toggle-row{
+    gap:7px;
+  }
+  .sheet-toggle-row .more-toggle{
+    height:48px;
+    padding-inline:14px;
+  }
+}
+
 /* Full Pokemon catalog */
 .catalog-type{background:#65788a}
 .companions-drawer .drawer-card{
@@ -500,14 +535,19 @@ html,body{overflow-x:hidden}
   white-space:nowrap;
 }
 .companion-row.evolution-locked{
-  cursor:not-allowed;
+  cursor:pointer;
   background:#f1f4f2;
-  color:#718078;
+  color:#606b65;
   box-shadow:inset 0 0 0 1px #dce5df;
 }
+.companion-row.evolution-locked .companion-copy small{color:#606b65}
 .companion-row.evolution-locked .mini-orb{
-  opacity:.72;
-  filter:saturate(.55);
+  background:#e4e8e6;
+}
+.companion-row.evolution-locked .mini-orb .pokemon-sprite,
+.companion-row.evolution-locked .mini-orb img{
+  filter:grayscale(1);
+  opacity:.45;
 }
 .companion-row.evolution-locked .companion-chevron{
   color:#687970;
@@ -526,3 +566,104 @@ html,body{overflow-x:hidden}
 }
 .companion-empty b{font-size:13px}
 .companion-empty small{color:#829087;font-size:10px}
+
+/* Crisp integer-scaled sprites and explicit motion preferences. */
+.pokemon-sprite{
+  image-rendering:-webkit-optimize-contrast;
+  image-rendering:crisp-edges;
+  image-rendering:pixelated;
+}
+.stage-sprite-wrap{
+  --stage-current-width:var(--stage-render-width,190px);
+  --stage-current-height:var(--stage-render-height,190px);
+  --stage-current-sheet-width:var(--stage-render-sheet-width,190px);
+  --stage-current-sheet-shift:var(--stage-render-sheet-shift,-190px);
+  width:var(--stage-current-width)!important;
+  height:var(--stage-current-height)!important;
+  transform:none;
+}
+.stage-sprite-wrap .stage-sprite{
+  width:100%!important;
+  height:100%!important;
+  background-size:var(--stage-current-sheet-width) var(--stage-current-height)!important;
+  animation-name:stage-sprite-sheet;
+}
+.companions-list .pokemon-sprite{
+  animation:none;
+  background-position:0 0;
+}
+@media (max-height:740px){
+  .stage-sprite-wrap{
+    --stage-current-width:var(--stage-render-width-short,184px);
+    --stage-current-height:var(--stage-render-height-short,184px);
+    --stage-current-sheet-width:var(--stage-render-sheet-width-short,184px);
+    --stage-current-sheet-shift:var(--stage-render-sheet-shift-short,-184px);
+  }
+}
+@media (max-width:420px){
+  .stage-sprite-wrap{
+    --stage-current-width:var(--stage-render-width-compact,198px);
+    --stage-current-height:var(--stage-render-height-compact,198px);
+    --stage-current-sheet-width:var(--stage-render-sheet-width-compact,198px);
+    --stage-current-sheet-shift:var(--stage-render-sheet-shift-compact,-198px);
+  }
+}
+@media (max-width:360px){
+  .stage-sprite-wrap{
+    --stage-current-width:var(--stage-render-width-small,180px);
+    --stage-current-height:var(--stage-render-height-small,180px);
+    --stage-current-sheet-width:var(--stage-render-sheet-width-small,180px);
+    --stage-current-sheet-shift:var(--stage-render-sheet-shift-small,-180px);
+  }
+}
+@keyframes stage-sprite-sheet{
+  from{background-position:0 0}
+  to{background-position:var(--stage-current-sheet-shift) 0}
+}
+@keyframes stage-bob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+@keyframes tired-stage-bob{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-2px)}
+}
+@keyframes eat-bounce-stage{
+  0%,100%{transform:translateY(0)}
+  45%{transform:translateY(-10px)}
+}
+@keyframes happy-hop-stage{
+  0%,100%{transform:translateY(0)}
+  35%{transform:translateY(-18px)}
+  70%{transform:translateY(-6px)}
+}
+@keyframes sleepy-stage{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(3px)}
+}
+@keyframes train-pop-stage{
+  0%,100%{transform:translateY(0)}
+  40%{transform:translateY(-8px)}
+}
+@keyframes wake-up-stage{
+  0%{transform:translateY(3px)}
+  45%{transform:translateY(-12px)}
+  100%{transform:translateY(0)}
+}
+
+.motion-block{margin:9px 0 10px}
+.motion-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 2px 6px}
+.motion-heading b{font-size:11px;color:#405248}
+.motion-heading small{color:#697970;font-size:9.5px;font-weight:800;text-align:right}
+.motion-segment{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border:1px solid #dce9e1;border-radius:14px;background:#eef5f1}
+.motion-segment button{min-width:0;height:32px;padding:0 5px;border:0;border-radius:10px;background:transparent;color:#606f67;font-size:9.5px;font-weight:900;cursor:pointer}
+.motion-segment button.active{background:#fff;color:#287b4f;box-shadow:0 2px 6px rgba(41,91,61,.1)}
+.motion-segment button:focus-visible{outline:2px solid #2d8e5a;outline-offset:1px}
+
+html[data-motion="off"] *,
+html[data-motion="off"] *:before,
+html[data-motion="off"] *:after{
+  animation:none!important;
+  transition:none!important;
+  scroll-behavior:auto!important;
+}

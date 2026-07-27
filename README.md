@@ -1,23 +1,26 @@
-# SuperPokegochi
+# SuperPokégochi
 
-Tamagotchi de Pokemon feito com HTML, CSS e JavaScript puro. O progresso fica
-salvo no navegador e o projeto nao precisa de backend ou compilacao.
+Tamagotchi de Pokémon feito com HTML, CSS e JavaScript puro. O projeto funciona
+sozinho, sem backend ou compilação, e salva o progresso no navegador com
+`localStorage`.
 
-![Previa do SuperPokegochi](assets/superpokegochi-preview.png)
+![Prévia do SuperPokégochi](assets/superpokegochi-preview.png)
 
-## O que ja funciona
+## O que já funciona
 
-- Catalogo com as 1.025 especies e busca por nome ou ID.
-- Escolha direta apenas de especies-base; evolucoes aparecem com cadeado.
+- Catálogo pesquisável com 1.025 espécies.
+- Escolha de qualquer Pokémon do catálogo.
+- Evoluções escolhidas pela primeira vez começam na forma inicial da linha.
+- Nível, XP, vínculo e cuidados compartilhados pela linha evolutiva.
+- Evolução opcional e troca livre entre as formas desbloqueadas.
 - Sprites normais e Shiny animados em um gramado responsivo.
-- Fome, felicidade, energia, nivel e XP.
-- Comida, brincadeira, treino e descanso manual na Pokebola.
-- Evolucao opcional nos niveis 16 e 32.
-- Troca livre entre as formas ja desbloqueadas.
-- Aparencia Shiny liberada com 30 dias de vinculo.
-- Ciclo de dia e noite pelo horario de Brasilia.
-- Mochila, recompensa diaria e historico de atividades.
-- Salvamento automatico com `localStorage`.
+- Escala inteira de pixels para sprites mais nítidos em celulares.
+- Controle de animações em **Automático**, **Ativado** ou **Desativado**.
+- Fome, felicidade, energia, nível, XP e dias de vínculo.
+- Comida, brincadeira, treino, descanso, mochila e histórico.
+- Recompensa diária e ciclo de dia e noite no horário de Brasília.
+- Aparência Shiny liberada com 30 dias de vínculo.
+- Salvamento automático no navegador.
 
 ## Executar
 
@@ -29,63 +32,69 @@ python -m http.server 5182
 
 Depois acesse `http://127.0.0.1:5182/`.
 
-## Regras principais
+## Como cuidar e ganhar XP
 
-| Acao | Resultado |
+| Ação | Resultado |
 | --- | --- |
-| Comida | Recupera fome e um pouco de felicidade |
-| Brincar | Aumenta felicidade e gasta energia |
-| Treino | Minigame de tres rodadas que entrega XP e premios |
-| Descansar | Recupera 10 de energia a cada 30 minutos |
+| Comida comum | Recupera fome e concede 4 XP |
+| Fruta rara | Recupera mais fome e concede 8 XP |
+| Brincar | Aumenta a felicidade e gasta energia |
+| Treino | Minigame de três rodadas e principal fonte de XP |
+| Descansar | Recupera 10 de energia e concede 4 XP a cada 30 minutos |
 
-Com energia abaixo de 10, brincadeira e treino ficam bloqueados ate o Pokemon
-descansar, mas ele ainda pode comer enquanto estiver acordado. Durante o
-descanso, todas as acoes ficam bloqueadas. O descanso termina em 80 de energia,
-mas tambem pode ser encerrado manualmente.
+O XP do descanso considera o tempo transcorrido mesmo quando o jogo está
+fechado. Cada período já recompensado fica registrado para não conceder o mesmo
+XP duas vezes.
 
-## Evolucao e aparencia
+Com energia abaixo de 10, brincadeira e treino ficam bloqueados até o Pokémon
+descansar. Ele ainda pode comer enquanto estiver acordado. Durante o descanso,
+as demais ações ficam bloqueadas, mas o treinador pode encerrá-lo manualmente.
 
-| Forma | Desbloqueio |
-| --- | ---: |
-| Bulbasaur | Nivel 1 |
-| Ivysaur | Nivel 16 |
-| Venusaur | Nivel 32 |
+## Evolução e progresso compartilhado
 
-Evoluir e opcional. Um Bulbasaur de nivel 100 continua podendo usar a
-aparencia de Bulbasaur, Ivysaur ou Venusaur que estiver desbloqueada, sem perder
-nivel, XP ou atributos.
+O progresso pertence à linha evolutiva inteira, não a cada aparência.
 
-Para trocar de forma ou usar a versao Shiny, abra a **Pokebola no topo** e
-entre na aba **Pokemon**. A versao Shiny aparece depois de 30 dias de vinculo.
-
-## Como trocar de Pokemon
-
-Abra a **Pokebola no topo**, entre na aba **Pokemon** e escolha **Alterar Pokemon
-companheiro**. Busque pelo nome, identificador textual ou numero da Pokedex,
-como `Pikachu`, `pikachu`, `25` ou `#025`, e selecione o resultado.
-
-Somente especies-base podem ser escolhidas diretamente. Evolucoes continuam
-pesquisaveis, mas aparecem com cadeado e informam sua especie anterior. Na
-familia Bulbasaur, Ivysaur e Venusaur sao liberados nos niveis 16 e 32 pela
-aba **Pokemon**.
-
-As especies-base possuem progresso separado. Apenas os resultados da busca sao
-carregados na tela, evitando carregar todas as sprite sheets de uma vez.
-
-Para atualizar o catalogo depois de adicionar novos assets:
-
-```bash
-node scripts/generate-pokemon-catalog.mjs
+```text
+Ralts → Kirlia → Gardevoir
+Nível compartilhado: 100
 ```
 
-O gerador usa `front-index.json`, confere os sprites Normal e Shiny e associa
-cada especie ao numero oficial da Pokedex e a sua cadeia de evolucao.
+Ao alcançar o requisito, o treinador pode evoluir imediatamente ou continuar
+com a forma atual. Depois de desbloqueada, qualquer forma da linha pode ser
+usada novamente sem perder nível, XP, vínculo ou cuidados.
+
+No catálogo completo, cada estágio evolutivo adicional é liberado a cada 16
+níveis. Algumas linhas destacadas podem possuir configuração própria.
+
+## Como trocar de Pokémon
+
+Abra a **Pokébola no topo**, entre na aba **Pokémon** e escolha **Alterar Pokémon
+companheiro**. A busca aceita nome, identificador ou número da Pokédex, como
+`Pikachu`, `pikachu`, `25` ou `#025`.
+
+Se uma evolução for escolhida e sua linha nunca tiver sido treinada, o cuidado
+começa pela forma inicial. Se aquela forma já tiver sido desbloqueada, o jogo
+recupera o progresso da linha e pode exibi-la imediatamente.
+
+Os ícones de formas bloqueadas aparecem em cinza para facilitar a identificação.
+
+## Animações e nitidez
+
+Em **Pokébola → Pokémon → Animações**, escolha:
+
+- **Automático**: acompanha a preferência de movimento reduzido do aparelho;
+- **Ativado**: mantém as animações ligadas;
+- **Desativado**: remove as animações.
+
+As miniaturas do catálogo permanecem paradas para reduzir o consumo de recursos
+em celulares. O companheiro principal continua animado conforme a configuração.
 
 ## Arquivos principais
 
-```txt
+```text
 .
 |-- assets/
+|   |-- arrow-ios-back.svg
 |   |-- grass.png
 |   |-- superpokegochi-preview.png
 |   `-- pokemons/
@@ -102,12 +111,13 @@ cada especie ao numero oficial da Pokedex e a sua cadeia de evolucao.
 `-- README.md
 ```
 
-- `pokemon-catalog.js`: catalogo gerado das 1.025 especies.
-- `pokemon-data.js`: montagem do DEX e configuracao especial das evolucoes.
-- `tamagotchi-system.js`: regras, estado, acoes e interface.
-- `style.css`: layout responsivo e animacoes.
+Para atualizar o catálogo depois de adicionar novos sprites:
+
+```bash
+node scripts/generate-pokemon-catalog.mjs
+```
 
 ## Aviso
 
-Projeto de fas, sem afiliacao oficial com Nintendo, Game Freak ou The Pokemon
-Company. Pokemon e seus personagens pertencem aos respectivos detentores.
+Projeto de fãs, sem afiliação oficial com Nintendo, Game Freak ou The Pokémon
+Company. Pokémon e seus personagens pertencem aos respectivos detentores.

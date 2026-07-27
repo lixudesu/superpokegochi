@@ -15,6 +15,10 @@
   const BRASILIA_TIME_ZONE = 'America/Sao_Paulo';
   const SHINY_UNLOCK_DAYS = 30;
   const COMPANION_RESULT_LIMIT = 36;
+  const MOTION_PREFERENCES = new Set(['auto', 'on', 'off']);
+  const reducedMotionQuery = window.matchMedia
+    ? window.matchMedia('(prefers-reduced-motion: reduce)')
+    : null;
 
   function readStoredState() {
     try {
@@ -26,6 +30,33 @@
 
   function saveState() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  function getMotionPreference() {
+    const preference = state && state.settings && state.settings.motionPreference;
+    return MOTION_PREFERENCES.has(preference) ? preference : 'auto';
+  }
+
+  function applyMotionPreference() {
+    document.documentElement.dataset.motion = getMotionPreference();
+  }
+
+  function motionPreferenceSummary() {
+    const preference = getMotionPreference();
+    if (preference === 'on') return 'Sempre animado';
+    if (preference === 'off') return 'Sem animações';
+    return reducedMotionQuery && reducedMotionQuery.matches
+      ? 'Automático · movimento reduzido pelo celular'
+      : 'Automático · animações ativas';
+  }
+
+  function setMotionPreference(preference) {
+    if (!MOTION_PREFERENCES.has(preference) || preference === getMotionPreference()) return;
+    state.settings = { ...(state.settings || {}), motionPreference: preference };
+    applyMotionPreference();
+    saveState();
+    render();
+    showToast(motionPreferenceSummary());
   }
 
   function getDex(id) {
@@ -146,7 +177,7 @@
   }
 
   function goBack() {
-    showToast('Voltando para o perfil...');
+    showToast('Voltando...');
     setTimeout(() => {
       if (history.length > 1) history.back();
     }, 380);
@@ -157,6 +188,7 @@
     play: { happiness: 12, energy: -12, hunger: -5 },
     sleepTickMs: 30 * 60 * 1000,
     sleepEnergyPerTick: 10,
+    sleepXpPerTick: 4,
     wakeEnergy: 80,
     trainDurationMs: 10 * 60 * 1000,
     trainCost: { energy: 20, hunger: 10 },
@@ -164,11 +196,11 @@
   };
 
   const FOOD_ITEMS = [
-    { id: 'apple', label: 'Maçã', icon: '🍎', rarity: 'common', hunger: 25, happiness: 2, bond: 1 },
-    { id: 'berry', label: 'Berry', icon: '🫐', rarity: 'common', hunger: 25, happiness: 2, bond: 1 },
-    { id: 'biscuit', label: 'Biscoito', icon: '🍪', rarity: 'common', hunger: 25, happiness: 2, bond: 1 },
-    { id: 'candy', label: 'Doce', icon: '🍬', rarity: 'common', hunger: 25, happiness: 2, bond: 1 },
-    { id: 'rareFruit', label: 'Fruta rara', icon: '✨', rarity: 'rare', hunger: 40, happiness: 5, bond: 2 },
+    { id: 'apple', label: 'Maçã', icon: '🍎', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
+    { id: 'berry', label: 'Berry', icon: '🫐', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
+    { id: 'biscuit', label: 'Biscoito', icon: '🍪', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
+    { id: 'candy', label: 'Doce', icon: '🍬', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
+    { id: 'rareFruit', label: 'Fruta rara', icon: '✨', rarity: 'rare', hunger: 40, happiness: 5, bond: 2, xp: 8 },
   ];
 
   const FOOD_BY_ID = Object.fromEntries(FOOD_ITEMS.map(food => [food.id, food]));
@@ -205,6 +237,7 @@
       sleeping: false,
       sleepStartedAt: null,
       lastSleepTick: null,
+      sleepXpEarned: 0,
       training: null,
       lastUpdate: now(),
       lastAction: 'Pronto para começar a jornada.',
@@ -218,6 +251,9 @@
       session: 21,
       bag: systemDefaultBag(),
       daily: { lastFoodGrant: null },
+      settings: {
+        motionPreference: 'auto',
+      },
       pets: Object.fromEntries(DEX.slice(0, 1).map((mon, index) => [mon.id, systemDefaultPet(mon, index)])),
     };
   }
@@ -257,6 +293,7 @@
     migrated.sleeping = Boolean(migrated.sleeping);
     migrated.sleepStartedAt = migrated.sleepStartedAt || null;
     migrated.lastSleepTick = migrated.lastSleepTick || null;
+    migrated.sleepXpEarned = Math.max(0, Number(migrated.sleepXpEarned) || 0);
     migrated.training = migrated.training && migrated.training.endsAt ? migrated.training : null;
     if (migrated.training && !migrated.training.startedAt) migrated.training.startedAt = now();
     migrated.lastUpdate = migrated.lastUpdate || now();
@@ -284,8 +321,12 @@
       ...current,
       bag: migrateBag(current && current.bag),
       daily: { ...base.daily, ...(current && current.daily) },
+      settings: { ...base.settings, ...(current && current.settings) },
       pets: { ...base.pets, ...((current && current.pets) || {}) },
     };
+    if (!MOTION_PREFERENCES.has(migrated.settings.motionPreference)) {
+      migrated.settings.motionPreference = 'auto';
+    }
     migrated.pets = Object.fromEntries(
       Object.entries(migrated.pets).map(([id, pet], index) => [id, migratePet(pet, id, index)])
     );
@@ -564,6 +605,7 @@
     pet.sleeping = true;
     pet.sleepStartedAt = now();
     pet.lastSleepTick = now();
+    pet.sleepXpEarned = 0;
     pet.training = null;
     pet.lastAction = automatic
       ? `${pet.customName} começou a descansar porque ficou cansado.`
@@ -573,12 +615,14 @@
 
   function wakePet(pet) {
     if (!pet.sleeping) return;
+    const earnedXp = Math.max(0, Number(pet.sleepXpEarned) || 0);
     pet.sleeping = false;
     pet.sleepStartedAt = null;
     pet.lastSleepTick = null;
+    pet.sleepXpEarned = 0;
     pet.lastAction = pet.energy < 10
       ? `${pet.customName} levantou, mas ainda está cansado e precisa descansar.`
-      : `${pet.customName} terminou o descanso e está pronto para brincar.`;
+      : `${pet.customName} terminou o descanso e está pronto para brincar.${earnedXp > 0 ? ` +${earnedXp} XP.` : ''}`;
     systemAddHistory(pet, '☀️', pet.lastAction);
   }
 
@@ -588,14 +632,19 @@
     const ticks = Math.floor((timestamp - lastTick) / RULES.sleepTickMs);
     if (ticks > 0) {
       pet.energy = clamp(pet.energy + ticks * RULES.sleepEnergyPerTick);
+      const earnedXp = ticks * RULES.sleepXpPerTick;
+      systemAddXp(pet, earnedXp);
+      pet.sleepXpEarned = Math.max(0, Number(pet.sleepXpEarned) || 0) + earnedXp;
       pet.lastSleepTick = lastTick + ticks * RULES.sleepTickMs;
     }
     if (pet.energy >= RULES.wakeEnergy) {
+      const earnedXp = Math.max(0, Number(pet.sleepXpEarned) || 0);
       pet.energy = clamp(Math.max(pet.energy, RULES.wakeEnergy));
       pet.sleeping = false;
       pet.sleepStartedAt = null;
       pet.lastSleepTick = null;
-      pet.lastAction = `${pet.customName} terminou o descanso com energia renovada.`;
+      pet.sleepXpEarned = 0;
+      pet.lastAction = `${pet.customName} terminou o descanso com energia renovada.${earnedXp > 0 ? ` +${earnedXp} XP.` : ''}`;
       systemAddHistory(pet, '☀️', pet.lastAction);
     }
   }
@@ -665,7 +714,8 @@
     state.bag[foodId] -= 1;
     pet.hunger = clamp(pet.hunger + food.hunger);
     pet.happiness = clamp(pet.happiness + food.happiness);
-    pet.lastAction = `${pet.customName} comeu ${food.label}.`;
+    systemAddXp(pet, food.xp);
+    pet.lastAction = `${pet.customName} comeu ${food.label}. +${food.xp} XP.`;
     systemAddHistory(pet, food.icon, pet.lastAction);
     pet.lastUpdate = now();
     selectedAction = 'feed';
@@ -805,6 +855,7 @@
         `--sheet-width:${mon.sprite.sheetWidth}px`,
         `--sheet-shift:-${mon.sprite.sheetWidth}px`,
         `--sprite-frames:${mon.sprite.frames}`,
+        `animation-timing-function:steps(${Math.max(1, Math.round(mon.sprite.frames))})`,
         `--preview-scale:${Math.min(1, 42 / maxFrame).toFixed(3)}`,
         `--mini-scale:${Math.min(1, 30 / maxFrame).toFixed(3)}`,
         `--evolution-scale:${Math.min(2, 76 / maxFrame).toFixed(3)}`,
@@ -819,8 +870,18 @@
   function stageVisualStyle(mon) {
     if (!mon.sprite) return '';
     const maxFrame = Math.max(mon.sprite.frameWidth, mon.sprite.frameHeight);
-    const scale = Math.min(5.45, 207 / maxFrame);
-    return `style="--sprite-stage-scale:${scale.toFixed(3)};--sprite-stage-scale-compact:${(scale * .98).toFixed(3)};--sprite-stage-scale-small:${(scale * .89).toFixed(3)};--sprite-stage-scale-short:${(scale * .92).toFixed(3)};width:${mon.sprite.frameWidth}px;height:${mon.sprite.frameHeight}px"`;
+    const scaleFor = target => Math.max(1, Math.min(5, Math.round(target / maxFrame)));
+    const dimensionsFor = (suffix, scale) => [
+      `--stage-render-width${suffix}:${mon.sprite.frameWidth * scale}px`,
+      `--stage-render-height${suffix}:${mon.sprite.frameHeight * scale}px`,
+      `--stage-render-sheet-width${suffix}:${mon.sprite.sheetWidth * scale}px`,
+      `--stage-render-sheet-shift${suffix}:-${mon.sprite.sheetWidth * scale}px`,
+    ].join(';');
+    const desktopScale = scaleFor(207);
+    const compactScale = scaleFor(198);
+    const smallScale = scaleFor(180);
+    const shortScale = scaleFor(184);
+    return `style="${dimensionsFor('', desktopScale)};${dimensionsFor('-compact', compactScale)};${dimensionsFor('-small', smallScale)};${dimensionsFor('-short', shortScale)}"`;
   }
 
   function bagCount() {
@@ -841,7 +902,7 @@
               <button class="food-item ${food.rarity}" type="button" data-feed-food="${food.id}" ${count <= 0 ? 'disabled' : ''}>
                 <span>${food.icon}</span>
                 <b>${food.label}</b>
-                <small>${food.rarity === 'rare' ? '+40 fome' : '+25 fome'} · x${count}</small>
+                <small>${food.rarity === 'rare' ? '+40 fome' : '+25 fome'} · +${food.xp} XP · x${count}</small>
               </button>`;
           }).join('')}
         </div>
@@ -856,13 +917,14 @@
     const palette = pet.appearancePalette === 'shiny' && shinyUnlocked ? 'shiny' : 'normal';
     const currentForm = getForm(mon, pet.activeAppearance);
     const currentShinyReady = isFormAssetReady(mon, currentForm, 'shiny');
+    const motionPreference = getMotionPreference();
     return `
       <div class="appearance-panel">
         <button class="change-companion" type="button" data-companions-toggle aria-label="Alterar Pokémon companheiro">
           <span class="change-companion-icon" aria-hidden="true"><i></i></span>
           <span class="change-companion-copy">
             <b>Alterar Pokémon companheiro</b>
-            <small>Escolha outra espécie-base</small>
+            <small>Escolha qualquer Pokémon</small>
           </span>
           <span class="change-companion-arrow" aria-hidden="true">›</span>
         </button>
@@ -882,6 +944,17 @@
             </button>
           </div>
         </div>
+        <div class="motion-block">
+          <div class="motion-heading">
+            <b>Animações</b>
+            <small>${motionPreferenceSummary()}</small>
+          </div>
+          <div class="motion-segment" role="group" aria-label="Preferência de animação">
+            <button type="button" data-motion-option="auto" class="${motionPreference === 'auto' ? 'active' : ''}" aria-pressed="${motionPreference === 'auto'}">Automático</button>
+            <button type="button" data-motion-option="on" class="${motionPreference === 'on' ? 'active' : ''}" aria-pressed="${motionPreference === 'on'}">Ativado</button>
+            <button type="button" data-motion-option="off" class="${motionPreference === 'off' ? 'active' : ''}" aria-pressed="${motionPreference === 'off'}">Desativado</button>
+          </div>
+        </div>
         <p class="appearance-note">O nível e os cuidados são compartilhados entre todas as formas do Pokémon.</p>
         <div class="appearance-list">
           ${forms.map(form => {
@@ -891,14 +964,19 @@
             const visual = formVisual(form, palette);
             const appearance = { ...mon, ...form, ...visual, id: form.id, name: form.name, palette };
             let stateLabel = 'Disponível';
+            let ariaLabel = `Usar aparência ${form.name}`;
             if (selected) stateLabel = 'Em uso';
-            else if (!unlocked) stateLabel = `Nível ${form.unlockLevel}`;
+            else if (!unlocked) {
+              stateLabel = 'Bloqueado';
+              ariaLabel = `${form.name} bloqueado até o nível ${form.unlockLevel}`;
+            }
             else if (!assetReady) stateLabel = 'Sprite pendente';
+            if (selected) ariaLabel = `${form.name} em uso`;
 
             return `
-              <button class="appearance-option ${selected ? 'selected' : ''} ${!assetReady ? 'missing' : ''}" type="button"
+              <button class="appearance-option ${selected ? 'selected' : ''} ${!unlocked ? 'locked' : ''} ${!assetReady ? 'missing' : ''}" type="button"
                 data-appearance="${form.id}" ${(!unlocked || !assetReady || selected) ? 'disabled' : ''}
-                aria-label="${selected ? `${form.name} em uso` : `Usar aparência ${form.name}`}">
+                aria-label="${ariaLabel}">
                 <span class="appearance-preview">
                   ${assetReady ? renderPokemonVisual(appearance, 'form-sprite', form.name) : '<b>?</b>'}
                 </span>
@@ -988,7 +1066,7 @@
     if (pet.sleeping) {
       return `
         <div class="activity-card sleeping-card">
-          <div class="activity-copy"><span>💤</span><div><b>Descansando</b><small>Energia +10 a cada 30 minutos. Você também pode encerrar o descanso.</small></div></div>
+          <div class="activity-copy"><span>💤</span><div><b>Descansando</b><small>+10 energia e +${RULES.sleepXpPerTick} XP a cada 30 minutos.${pet.sleepXpEarned > 0 ? ` XP deste descanso: ${pet.sleepXpEarned}.` : ''}</small></div></div>
           <div class="activity-bar"><i style="width:${pet.energy}%"></i></div>
         </div>`;
     }
@@ -1076,13 +1154,13 @@
       ? `Evolução de ${evolvesFromName}`
       : `${mood.icon} ${mood.label} · Nv. ${pet.level}`;
     const selectionAttributes = evolutionLocked
-      ? `disabled aria-label="${mon.name}, evolução bloqueada"`
+      ? `data-select="${mon.id}" aria-label="Selecionar a linha evolutiva de ${mon.name}"`
       : `data-select="${mon.id}" aria-label="Selecionar ${mon.name}"`;
     return `
       <button class="companion-row ${state.selected === mon.id ? 'active' : ''} ${evolutionLocked ? 'evolution-locked' : ''}" type="button" ${selectionAttributes}>
         <span class="mini-orb ${low ? 'needs-care' : ''}">${renderPokemonVisual(appearance, 'mini-sprite', appearance.name)}</span>
         <span class="companion-copy"><b>${mon.name}</b><small>${dexLabel} · ${detail}</small></span>
-        <span class="companion-chevron" aria-hidden="true">${evolutionLocked ? '🔒' : '›'}</span>
+        <span class="companion-chevron" aria-hidden="true">›</span>
       </button>`;
   }
 
@@ -1091,7 +1169,7 @@
     return {
       summary: companionQuery.trim()
         ? `${results.total} ${results.total === 1 ? 'resultado' : 'resultados'}`
-        : `${DEX.filter(mon => mon.selectable !== false).length} espécies-base · ${DEX.length} no catálogo`,
+        : `${DEX.length} Pokémon no catálogo`,
       html: results.visible.length
         ? results.visible.map(systemMiniCompanion).join('')
         : '<div class="companion-empty"><b>Nenhum Pokémon encontrado</b><small>Tente outro nome ou número.</small></div>',
@@ -1115,21 +1193,35 @@
   }
 
   function systemSelectPet(id) {
-    const species = getDex(id);
-    if (species.selectable === false) {
-      const evolvesFrom = DEX.find(mon => mon.dexNumber === species.evolvesFromDexNumber);
-      showToast(`${species.name} é uma evolução de ${evolvesFrom ? evolvesFrom.name : 'outra espécie'} e não pode ser escolhido diretamente.`);
-      return;
+    const requestedSpecies = getDex(id);
+    const rootSpecies = requestedSpecies.selectable === false
+      ? DEX.find(mon => mon.dexNumber === requestedSpecies.evolutionRootDexNumber) || requestedSpecies
+      : requestedSpecies;
+
+    if (!state.pets[rootSpecies.id]) {
+      state.pets[rootSpecies.id] = systemDefaultPet(rootSpecies, Object.keys(state.pets).length);
     }
-    if (!state.pets[id]) state.pets[id] = systemDefaultPet(species, Object.keys(state.pets).length);
-    state.selected = id;
+
+    const nextPet = state.pets[rootSpecies.id];
+    const requestedForm = getForms(rootSpecies).find(form => form.id === requestedSpecies.id);
+    const canUseRequestedForm = requestedForm && isFormUnlocked(nextPet, requestedForm);
+
+    if (canUseRequestedForm) {
+      applyAppearance(rootSpecies, nextPet, requestedForm);
+    }
+
+    state.selected = rootSpecies.id;
     companionQuery = '';
     companionsOpen = false;
     moreOpen = false;
     foodOpen = false;
     saveState();
     render();
-    showToast(`${species.name} agora está no gramado.`);
+    showToast(
+      requestedSpecies.id !== rootSpecies.id && !canUseRequestedForm
+        ? `${requestedSpecies.name} pertence à linha de ${rootSpecies.name}; o cuidado começou pela forma inicial.`
+        : `${requestedSpecies.name} agora está no gramado.`,
+    );
   }
 
   function systemRender() {
@@ -1187,7 +1279,7 @@
               <button type="button" role="tab" data-status-tab="appearance" class="${statusTab === 'appearance' ? 'active' : ''}" aria-selected="${statusTab === 'appearance'}">Pokémon</button>
             </div>
             ${statusTab === 'status' ? `
-              ${needsCare ? `<div class="status-alert"><b>${hungry ? '🍎 Está com fome!' : '⚠ Precisa de atenção!'}</b><span>Bloqueios leves, sem vida e sem morte.</span></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
+              ${needsCare ? `<div class="status-alert"><b>${hungry ? '🍎 Está com fome!' : '⚠ Precisa de atenção!'}</b></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
               <div class="status-grid">
                 ${systemStatBar('Fome', pet.hunger, '🍎')}
                 ${systemStatBar('Felicidade', pet.happiness, '✨')}
@@ -1217,10 +1309,16 @@
         </main>
 
         <section class="care-sheet ${sheetExpanded ? 'expanded' : ''}" aria-label="Cuidar do Tamagotchi">
-          <button class="more-toggle" type="button" data-more-toggle aria-expanded="${moreOpen}">
-            <span>${moreOpen ? '⌄' : '⌃'}</span>
-            <b>${moreOpen ? 'Fechar' : 'Mais'}</b>
-          </button>
+          <div class="sheet-toggle-row">
+            <button class="more-toggle" type="button" data-more-toggle aria-expanded="${moreOpen}">
+              <span>${moreOpen ? '⌄' : '⌃'}</span>
+              <b>${moreOpen ? 'Fechar' : 'Mais'}</b>
+            </button>
+            <button class="more-toggle back-toggle" type="button" data-go-back>
+              <span aria-hidden="true"><img src="assets/arrow-ios-back.svg" alt=""></span>
+              <b>Voltar</b>
+            </button>
+          </div>
 
           ${foodOpen && !foodLocked ? renderFoodTray(pet) : ''}
 
@@ -1229,9 +1327,6 @@
             <div class="more-card history-card">
               <div class="more-title"><span>📜</span><b>Histórico</b></div>
               ${systemRecentHistory(pet)}
-            </div>
-            <div class="more-actions">
-              <button type="button" class="soft-option" data-go-back><span>↩</span>Voltar</button>
             </div>
           </div>
 
@@ -1255,11 +1350,11 @@
         ${renderTrainingGame(pet)}
         ${renderEvolutionOffer(species, pet, evolutionOffer)}
 
-        ${hasCompanions && companionsOpen ? `<aside class="companions-drawer open" aria-label="Lista de companheiros">
+        ${hasCompanions && companionsOpen ? `<aside class="companions-drawer open" aria-label="Lista de Pokémon">
           <div class="drawer-card">
             <div class="drawer-head">
-              <div><small>Equipe do perfil</small><h2>Companheiros</h2></div>
-              <button type="button" class="close-panel" data-companions-toggle aria-label="Fechar companheiros">×</button>
+              <div><small>Escolha seu companheiro</small><h2>Pokémon</h2></div>
+              <button type="button" class="close-panel" data-companions-toggle aria-label="Fechar lista de Pokémon">×</button>
             </div>
             <label class="companion-search">
               <span aria-hidden="true">⌕</span>
@@ -1279,6 +1374,7 @@
     }));
     document.querySelectorAll('[data-appearance]').forEach(btn => btn.addEventListener('click', () => selectAppearance(btn.dataset.appearance)));
     document.querySelectorAll('[data-palette]').forEach(btn => btn.addEventListener('click', () => selectPalette(btn.dataset.palette)));
+    document.querySelectorAll('[data-motion-option]').forEach(btn => btn.addEventListener('click', () => setMotionPreference(btn.dataset.motionOption)));
     document.querySelectorAll('[data-evolution-choice]').forEach(btn => btn.addEventListener('click', () => chooseEvolution(btn.dataset.evolutionForm, btn.dataset.evolutionChoice)));
     document.querySelectorAll('[data-training-hit]').forEach(btn => btn.addEventListener('click', hitTrainingTarget));
     document.querySelectorAll('[data-training-cancel]').forEach(btn => btn.addEventListener('click', cancelTrainingGame));
@@ -1313,12 +1409,23 @@
   const render = systemRender;
   initializeFormAssetStatus();
   state = systemMigrateState(readStoredState());
+  applyMotionPreference();
   dailyRewardMessage = claimDailyLoginReward(state);
   syncAllPets(state);
   saveState();
   render();
   checkFormAssets();
   if (dailyRewardMessage) setTimeout(() => showToast(dailyRewardMessage), 300);
+  const handleReducedMotionChange = () => {
+    if (getMotionPreference() === 'auto') render();
+  };
+  if (reducedMotionQuery) {
+    if (typeof reducedMotionQuery.addEventListener === 'function') {
+      reducedMotionQuery.addEventListener('change', handleReducedMotionChange);
+    } else if (typeof reducedMotionQuery.addListener === 'function') {
+      reducedMotionQuery.addListener(handleReducedMotionChange);
+    }
+  }
   setInterval(() => {
     syncAllPets(state);
     saveState();
