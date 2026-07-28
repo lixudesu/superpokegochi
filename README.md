@@ -15,10 +15,13 @@ sozinho, sem backend ou compilação, e salva o progresso no navegador com
 - Evolução opcional e troca livre entre as formas desbloqueadas.
 - Sprites normais e Shiny animados em um gramado responsivo.
 - Escala inteira de pixels para sprites mais nítidos em celulares.
-- Controle de animações em **Automático**, **Ativado** ou **Desativado**.
+- Animações automáticas, respeitando a preferência de movimento reduzido do aparelho.
 - Cinco músicas de fundo com controle de volume no gramado.
 - Fome, felicidade, energia, nível, XP e dias de vínculo.
 - Comida, brincadeira, treino, descanso, mochila e histórico.
+- Frutas e ícones de cuidados em pixel art.
+- Folhas e frutas coletáveis que aparecem periodicamente no gramado.
+- Sujeira acumulada depois de um dia sem cuidados, removida com um clique.
 - Recompensa diária e ciclo de dia e noite no horário de Brasília.
 - Aparência Shiny liberada com 30 dias de vínculo.
 - Salvamento automático no navegador.
@@ -37,19 +40,25 @@ Depois acesse `http://127.0.0.1:5182/`.
 
 | Ação | Resultado |
 | --- | --- |
-| Comida comum | Recupera fome e concede 4 XP |
-| Fruta rara | Recupera mais fome e concede 8 XP |
-| Brincar | Aumenta a felicidade e gasta energia |
+| Frutas | Recuperam fome e concedem de 4 a 8 XP |
+| Brincar | Aumenta a felicidade, concede 6 XP e gasta 6 de energia |
 | Treino | Minigame de três rodadas e principal fonte de XP |
-| Descansar | Recupera 10 de energia e concede 4 XP a cada 30 minutos |
+| Descansar | Recupera 12 de energia e concede 3 XP a cada 30 minutos |
+| Coletar folha | Concede 2 XP; até dez folhas podem ficar no gramado |
+| Coletar fruta | Guarda a fruta encontrada na mochila |
 
 O XP do descanso considera o tempo transcorrido mesmo quando o jogo está
 fechado. Cada período já recompensado fica registrado para não conceder o mesmo
 XP duas vezes.
 
-Com energia abaixo de 10, brincadeira e treino ficam bloqueados até o Pokémon
-descansar. Ele ainda pode comer enquanto estiver acordado. Durante o descanso,
+Brincar fica disponível com pelo menos 8 de energia, e o treino exige mais de
+18 de energia e 15 de fome. Ele ainda pode comer enquanto estiver acordado. Durante o descanso,
 as demais ações ficam bloqueadas, mas o treinador pode encerrá-lo manualmente.
+
+As necessidades diminuem lentamente com o tempo: fome em 2,5 pontos, felicidade
+em 1 ponto e energia em 1,25 ponto por hora. Depois de aproximadamente 24 horas
+sem cuidados, aparece sujeira no gramado. Clique nela para limpar; essa ação não
+concede XP.
 
 ## Evolução e progresso compartilhado
 
@@ -81,19 +90,16 @@ Os ícones de formas bloqueadas aparecem em cinza para facilitar a identificaç�
 
 ## Animações e nitidez
 
-Em **Pokébola → Pokémon → Animações**, escolha:
-
-- **Automático**: acompanha a preferência de movimento reduzido do aparelho;
-- **Ativado**: mantém as animações ligadas;
-- **Desativado**: remove as animações.
-
-As miniaturas do catálogo permanecem paradas para reduzir o consumo de recursos
-em celulares. O companheiro principal continua animado conforme a configuração.
+As animações funcionam automaticamente e seguem a preferência de movimento
+reduzido do aparelho. Para poupar recursos em celulares, as miniaturas do
+catálogo ficam paradas, enquanto o companheiro principal continua animado quando
+o aparelho permite movimento.
 
 ## Música de fundo
 
 O botão de volume no canto superior esquerdo do gramado liga ou desliga a
-música. As cinco faixas tocam em sequência com volume suave, definido em 14%.
+música. Ao abrir o SuperPokégochi, a faixa inicial é sorteada; depois, as cinco
+faixas seguem em sequência com volume suave, definido em 14%.
 
 Alguns navegadores só permitem iniciar o áudio depois que o usuário interage
 com a página. A preferência e a faixa atual ficam salvas no `localStorage`.
@@ -105,6 +111,7 @@ com a página. A preferência e a faixa atual ficam salvas no `localStorage`.
 |-- assets/
 |   |-- arrow-ios-back.svg
 |   |-- grass.png
+|   |-- items/
 |   |-- musics/
 |   |-- superpokegochi-preview.png
 |   `-- pokemons/

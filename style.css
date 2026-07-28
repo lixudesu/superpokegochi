@@ -48,7 +48,7 @@ button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 @keyframes alert-pulse{0%,100%{filter:none}50%{filter:drop-shadow(0 0 10px rgba(255,79,95,.55))}}
 @keyframes pet-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes aura{0%,100%{opacity:.45;transform:translateX(-50%) scale(.96)}50%{opacity:.8;transform:translateX(-50%) scale(1.05)}}@keyframes twinkle{0%,100%{opacity:.35;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}@keyframes soft-shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-2deg)}40%{transform:rotate(2deg)}60%{transform:rotate(-1deg)}}@keyframes eat-bounce{0%{transform:scale(1)}45%{transform:scale(1.1) translateY(-6px)}100%{transform:scale(1)}}@keyframes happy-hop{0%,100%{transform:translateY(0) rotate(0)}35%{transform:translateY(-26px) rotate(-8deg)}70%{transform:translateY(-8px) rotate(7deg)}}@keyframes sleepy-sway{0%,100%{transform:rotate(0) translateY(0)}50%{transform:rotate(4deg) translateY(4px)}}@keyframes train-pop{0%{transform:scale(1)}40%{transform:scale(1.18) rotate(-8deg)}100%{transform:scale(1)}}@keyframes button-pop{0%{transform:translateY(0) scale(1)}55%{transform:translateY(-7px) scale(1.03)}100%{transform:translateY(-5px) scale(1)}}
 @media (max-width:420px){.app-wrap{padding:0}.phone-shell{width:100vw;height:100dvh;min-height:650px;border-radius:0}.topbar{left:12px;right:12px;top:12px}.camp-area{left:0;right:0;top:102px;border-radius:0 0 28px 28px;height:492px}.status-dropdown{left:12px;right:12px;top:98px}.companions-fab{right:12px}.care-sheet{padding-inline:12px}.action-dock{gap:8px}.action-btn{min-height:88px;border-radius:22px}.action-btn span{width:44px;height:44px}.drawer-card{right:10px;top:90px;bottom:178px;width:calc(100% - 20px)}}
-@media (prefers-reduced-motion:reduce){html:not([data-motion="on"]) *,html:not([data-motion="on"]) *:before,html:not([data-motion="on"]) *:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 /* v5 tamagotchi system */
 html,body{min-height:100%;overflow:auto}
@@ -188,7 +188,7 @@ html,body{overflow-x:hidden}
 @keyframes training-sweep{from{left:6%}to{left:94%}}
 @media (max-width:420px){.training-overlay{padding:12px}.training-panel{width:100%;padding:24px 18px 20px}.training-track{margin-inline:8px}.training-heading h2{font-size:22px}}
 @media (max-height:680px){.training-panel{padding:18px 17px 16px}.training-heading h2{font-size:20px}.training-heading p{font-size:11px}.training-meta{margin-top:14px}.training-feedback{height:35px;margin-top:7px}.training-rounds{margin-bottom:10px}.training-hit{height:48px}.training-cost{margin-top:8px}}
-@media (prefers-reduced-motion:reduce){html:not([data-motion="on"]) .training-marker{left:50%;animation:none!important}}
+@media (prefers-reduced-motion:reduce){.training-marker{left:50%;animation:none!important}}
 
 /* v10 appearance evolution and time-based bond */
 .status-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:13px 0 11px;padding:4px;border:1px solid #dce9e1;border-radius:14px;background:#eef5f1}
@@ -654,25 +654,50 @@ html,body{overflow-x:hidden}
   0%,100%{transform:translateY(0)}
   40%{transform:translateY(-8px)}
 }
+
+/* Keep the companion centered now that the lower speech card is gone. */
+.pet-stage:not(.is-sleeping){
+  top:50%!important;
+  bottom:auto!important;
+  transform:translate(-50%,-50%);
+}
+.pet-stage:not(.is-sleeping):hover{
+  transform:translate(-50%,calc(-50% - 4px))!important;
+}
+
+/* v17 pixel items, balanced care and collectible grass */
+.status-pixel-icon{width:24px;height:24px;display:grid;place-items:center;flex:0 0 24px}
+.status-pixel-icon img{width:23px;height:23px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.food-tray{max-height:min(390px,52dvh);overflow:auto;overscroll-behavior:contain}
+.food-pixel-icon{width:38px!important;height:38px!important;display:grid;place-items:center}
+.food-pixel-icon img{width:36px;height:36px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.food-item.uncommon{background:rgba(240,252,245,.94);border-color:#b9dfc8}
+.food-item.rare{background:rgba(255,249,222,.94);border-color:#ead48e}
+.action-btn span img{width:40px;height:40px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+.activity-pixel-icon img{width:28px;height:28px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.world-layer{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.world-item{position:absolute;left:var(--item-x);bottom:var(--item-bottom);margin:0;padding:0;border:0;background:transparent;display:grid;place-items:center;transform:translateX(-50%);pointer-events:auto;cursor:pointer;touch-action:manipulation}
+.world-item img{display:block;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none}
+.world-item:focus-visible,.dirt-layer button:focus-visible{outline:3px solid rgba(255,255,255,.96);outline-offset:1px;border-radius:50%}
+.world-item:hover{filter:brightness(1.08)}
+.world-leaf{width:40px;height:40px}
+.world-leaf img{width:30px;height:30px;filter:drop-shadow(0 2px 1px rgba(25,76,33,.22))}
+.world-leaf.falling{transform:none;animation:leaf-fall var(--fall-duration) linear var(--fall-delay) both}
+.world-leaf.settled{transform:translateX(-50%) rotate(var(--leaf-rotation))}
+.world-food{width:48px;height:48px;animation:world-food-arrive .22s cubic-bezier(.22,1,.36,1) both}
+.world-food img{width:36px;height:36px;filter:drop-shadow(0 3px 2px rgba(34,78,39,.22))}
+@keyframes leaf-fall{0%{translate:-50% var(--fall-start);rotate:-55deg}35%{rotate:24deg}70%{rotate:-16deg}100%{translate:-50% 0;rotate:var(--leaf-rotation)}}
+@keyframes world-food-arrive{from{opacity:0;transform:translateX(-50%) scale(.72)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+.dirt-layer{position:absolute;inset:0;z-index:5;pointer-events:none}
+.dirt-layer button{position:absolute;width:46px;height:46px;margin:0;padding:0;border:0;background:transparent;display:grid;place-items:center;pointer-events:auto;cursor:pointer;touch-action:manipulation}
+.dirt-layer button img{width:34px;height:34px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges;filter:drop-shadow(0 2px 1px rgba(39,62,43,.18));pointer-events:none}
+.dirt-layer button:nth-child(1){left:31%;bottom:58px;transform:rotate(-7deg)}
+.dirt-layer button:nth-child(2){right:29%;bottom:68px;transform:rotate(8deg)}
+.dirt-layer button:nth-child(3){left:48%;bottom:34px;transform:rotate(-2deg)}
+.dirt-layer button:hover{filter:brightness(1.1)}
+@media (max-width:420px){.food-tray{max-height:50dvh}.food-pixel-icon{width:34px!important;height:34px!important}.food-pixel-icon img{width:32px;height:32px}.action-btn span img{width:36px;height:36px}.world-leaf img{width:28px;height:28px}.world-food img{width:33px;height:33px}.dirt-layer button:nth-child(1){left:25%;bottom:52px}.dirt-layer button:nth-child(2){right:24%;bottom:62px}}
 @keyframes wake-up-stage{
   0%{transform:translateY(3px)}
   45%{transform:translateY(-12px)}
   100%{transform:translateY(0)}
-}
-
-.motion-block{margin:9px 0 10px}
-.motion-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 2px 6px}
-.motion-heading b{font-size:11px;color:#405248}
-.motion-heading small{color:#697970;font-size:9.5px;font-weight:800;text-align:right}
-.motion-segment{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;border:1px solid #dce9e1;border-radius:14px;background:#eef5f1}
-.motion-segment button{min-width:0;height:32px;padding:0 5px;border:0;border-radius:10px;background:transparent;color:#606f67;font-size:9.5px;font-weight:900;cursor:pointer}
-.motion-segment button.active{background:#fff;color:#287b4f;box-shadow:0 2px 6px rgba(41,91,61,.1)}
-.motion-segment button:focus-visible{outline:2px solid #2d8e5a;outline-offset:1px}
-
-html[data-motion="off"] *,
-html[data-motion="off"] *:before,
-html[data-motion="off"] *:after{
-  animation:none!important;
-  transition:none!important;
-  scroll-behavior:auto!important;
 }

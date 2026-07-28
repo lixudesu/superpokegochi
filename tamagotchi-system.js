@@ -15,8 +15,21 @@
   const BRASILIA_TIME_ZONE = 'America/Sao_Paulo';
   const SHINY_UNLOCK_DAYS = 30;
   const COMPANION_RESULT_LIMIT = 36;
-  const MOTION_PREFERENCES = new Set(['auto', 'on', 'off']);
   const MUSIC_VOLUME = 0.14;
+  const ITEM_BASE_PATH = document.documentElement.dataset.itemBase || 'assets/items/';
+  const CARE_DAY_MS = 24 * 60 * 60 * 1000;
+  const WORLD_RULES = {
+    firstFoodDelayMs: 75 * 1000,
+    firstLeafDelayMs: 12 * 1000,
+    foodLifetimeMs: 10 * 60 * 1000,
+    foodSpawnMaxMs: 6 * 60 * 1000,
+    foodSpawnMinMs: 3 * 60 * 1000,
+    leafLifetimeMs: 8 * 60 * 1000,
+    leafSpawnMaxMs: 65 * 1000,
+    leafSpawnMinMs: 35 * 1000,
+    maxFoodDrops: 3,
+    maxLeaves: 10,
+  };
   const MUSIC_TRACKS = [
     '1-02. Theme Of Pallet Town.mp3',
     '1-03. Professor Oak.mp3',
@@ -26,9 +39,6 @@
   ];
   const MUSIC_BASE_PATH = document.documentElement.dataset.musicBase || 'assets/musics/';
   const backgroundMusic = new Audio();
-  const reducedMotionQuery = window.matchMedia
-    ? window.matchMedia('(prefers-reduced-motion: reduce)')
-    : null;
   let loadedMusicTrackIndex = -1;
   let musicResumeArmed = false;
 
@@ -44,33 +54,6 @@
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
 
-  function getMotionPreference() {
-    const preference = state && state.settings && state.settings.motionPreference;
-    return MOTION_PREFERENCES.has(preference) ? preference : 'auto';
-  }
-
-  function applyMotionPreference() {
-    document.documentElement.dataset.motion = getMotionPreference();
-  }
-
-  function motionPreferenceSummary() {
-    const preference = getMotionPreference();
-    if (preference === 'on') return 'Sempre animado';
-    if (preference === 'off') return 'Sem animações';
-    return reducedMotionQuery && reducedMotionQuery.matches
-      ? 'Automático · movimento reduzido pelo celular'
-      : 'Automático · animações ativas';
-  }
-
-  function setMotionPreference(preference) {
-    if (!MOTION_PREFERENCES.has(preference) || preference === getMotionPreference()) return;
-    state.settings = { ...(state.settings || {}), motionPreference: preference };
-    applyMotionPreference();
-    saveState();
-    render();
-    showToast(motionPreferenceSummary());
-  }
-
   function getMusicEnabled() {
     return Boolean(state && state.settings && state.settings.musicEnabled);
   }
@@ -79,6 +62,15 @@
     const index = Number(state && state.settings && state.settings.musicTrackIndex);
     if (!Number.isInteger(index) || index < 0) return 0;
     return index % MUSIC_TRACKS.length;
+  }
+
+  function chooseRandomStartingMusicTrack() {
+    const currentIndex = getMusicTrackIndex();
+    const nextIndex = MUSIC_TRACKS.length > 1
+      ? (currentIndex + 1 + Math.floor(Math.random() * (MUSIC_TRACKS.length - 1))) % MUSIC_TRACKS.length
+      : 0;
+    state.settings = { ...(state.settings || {}), musicTrackIndex: nextIndex };
+    loadedMusicTrackIndex = -1;
   }
 
   function musicTrackUrl(index) {
@@ -112,11 +104,11 @@
     backgroundMusic.volume = MUSIC_VOLUME;
     try {
       await backgroundMusic.play();
-      if (showFeedback) showToast('Música ligada · volume suave.');
+      if (showFeedback) showToast('Música ligada.');
       return true;
     } catch {
       armMusicResume();
-      if (showFeedback) showToast('Música ligada. Toque na tela para começar.');
+      if (showFeedback) showToast('Música ligada.');
       return false;
     }
   }
@@ -272,23 +264,27 @@
   }
   const RULES = {
     maxOfflineHours: 24,
-    decayPerHour: { hunger: 4, happiness: 2, energy: 3 },
-    play: { happiness: 12, energy: -12, hunger: -5 },
+    decayPerHour: { hunger: 2.5, happiness: 1, energy: 1.25 },
+    play: { happiness: 12, energy: -6, hunger: -3, bond: 2, xp: 6 },
     sleepTickMs: 30 * 60 * 1000,
-    sleepEnergyPerTick: 10,
-    sleepXpPerTick: 4,
-    wakeEnergy: 80,
+    sleepEnergyPerTick: 12,
+    sleepXpPerTick: 3,
+    wakeEnergy: 88,
     trainDurationMs: 10 * 60 * 1000,
-    trainCost: { energy: 20, hunger: 10 },
+    trainCost: { energy: 12, hunger: 6 },
     trainXp: 30,
   };
 
   const FOOD_ITEMS = [
-    { id: 'apple', label: 'Maçã', icon: '🍎', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
-    { id: 'berry', label: 'Berry', icon: '🫐', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
-    { id: 'biscuit', label: 'Biscoito', icon: '🍪', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
-    { id: 'candy', label: 'Doce', icon: '🍬', rarity: 'common', hunger: 25, happiness: 2, bond: 1, xp: 4 },
-    { id: 'rareFruit', label: 'Fruta rara', icon: '✨', rarity: 'rare', hunger: 40, happiness: 5, bond: 2, xp: 8 },
+    { id: 'apple', label: 'Maçã', asset: 'food-apple.png', historyIcon: '🍎', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, xp: 4 },
+    { id: 'strawberry', label: 'Morango', asset: 'food-strawberry.png', historyIcon: '🍓', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, xp: 4 },
+    { id: 'blackberry', label: 'Amora', asset: 'food-blackberry.png', historyIcon: '🫐', rarity: 'common', hunger: 18, happiness: 4, energy: 1, bond: 1, xp: 4 },
+    { id: 'pear', label: 'Pera', asset: 'food-pear.png', historyIcon: '🍐', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, xp: 4 },
+    { id: 'grape', label: 'Uva', asset: 'food-grape.png', historyIcon: '🍇', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, xp: 4 },
+    { id: 'orange', label: 'Laranja', asset: 'food-orange.png', historyIcon: '🍊', rarity: 'common', hunger: 22, happiness: 3, energy: 2, bond: 1, xp: 4 },
+    { id: 'banana', label: 'Banana', asset: 'food-banana.png', historyIcon: '🍌', rarity: 'common', hunger: 28, happiness: 2, energy: 3, bond: 1, xp: 5 },
+    { id: 'watermelon', label: 'Melancia', asset: 'food-watermelon.png', historyIcon: '🍉', rarity: 'uncommon', hunger: 32, happiness: 3, energy: 2, bond: 2, xp: 6 },
+    { id: 'pineapple', label: 'Abacaxi', asset: 'food-pineapple.png', historyIcon: '🍍', rarity: 'rare', hunger: 38, happiness: 5, energy: 3, bond: 2, xp: 8 },
   ];
 
   const FOOD_BY_ID = Object.fromEntries(FOOD_ITEMS.map(food => [food.id, food]));
@@ -296,7 +292,17 @@
   let dailyRewardMessage = null;
 
   function systemDefaultBag() {
-    return { apple: 2, berry: 2, biscuit: 2, candy: 1, rareFruit: 0 };
+    return { apple: 2, strawberry: 1, blackberry: 1, pear: 1, grape: 1, orange: 1, banana: 1, watermelon: 0, pineapple: 0 };
+  }
+
+  function systemDefaultWorld() {
+    const timestamp = now();
+    return {
+      foodDrops: [],
+      leaves: [],
+      nextFoodAt: timestamp + WORLD_RULES.firstFoodDelayMs,
+      nextLeafAt: timestamp + WORLD_RULES.firstLeafDelayMs,
+    };
   }
 
   function todayKey() {
@@ -328,6 +334,9 @@
       sleepXpEarned: 0,
       training: null,
       lastUpdate: now(),
+      lastCareAt: now(),
+      dirtCycleAt: now(),
+      dirtLevel: 0,
       lastAction: 'Pronto para começar a jornada.',
       history: [{ at: now(), text: 'Entrou no gramado.', icon: '🌿' }],
     };
@@ -339,17 +348,29 @@
       session: 21,
       bag: systemDefaultBag(),
       daily: { lastFoodGrant: null },
+      world: systemDefaultWorld(),
       settings: {
         musicEnabled: false,
         musicTrackIndex: 0,
-        motionPreference: 'auto',
       },
       pets: Object.fromEntries(DEX.slice(0, 1).map((mon, index) => [mon.id, systemDefaultPet(mon, index)])),
     };
   }
 
   function migrateBag(bag = {}) {
-    return { ...systemDefaultBag(), ...bag };
+    const migrated = { ...systemDefaultBag() };
+    const legacy = bag && typeof bag === 'object' ? bag : {};
+    if (Object.keys(legacy).length === 0) return migrated;
+    for (const food of FOOD_ITEMS) {
+      migrated[food.id] = Object.prototype.hasOwnProperty.call(legacy, food.id)
+        ? Math.max(0, Number(legacy[food.id]) || 0)
+        : 0;
+    }
+    migrated.blackberry += Math.max(0, Number(legacy.berry) || 0);
+    migrated.banana += Math.max(0, Number(legacy.biscuit) || 0);
+    migrated.strawberry += Math.max(0, Number(legacy.candy) || 0);
+    migrated.pineapple += Math.max(0, Number(legacy.rareFruit) || 0);
+    return migrated;
   }
 
   function migrateRestCopy(text, name) {
@@ -360,6 +381,23 @@
       [`${name} acordou e está pronto para brincar.`]: `${name} terminou o descanso e está pronto para brincar.`,
     };
     return replacements[text] || text;
+  }
+
+  function migrateWorld(world) {
+    const fallback = systemDefaultWorld();
+    const source = world && typeof world === 'object' ? world : {};
+    const leaves = Array.isArray(source.leaves)
+      ? source.leaves.filter(item => item && typeof item.id === 'string' && Number.isFinite(Number(item.expiresAt))).slice(-WORLD_RULES.maxLeaves)
+      : [];
+    const foodDrops = Array.isArray(source.foodDrops)
+      ? source.foodDrops.filter(item => item && typeof item.id === 'string' && FOOD_BY_ID[item.foodId] && Number.isFinite(Number(item.expiresAt))).slice(-WORLD_RULES.maxFoodDrops)
+      : [];
+    return {
+      leaves,
+      foodDrops,
+      nextLeafAt: Number(source.nextLeafAt) || fallback.nextLeafAt,
+      nextFoodAt: Number(source.nextFoodAt) || fallback.nextFoodAt,
+    };
   }
 
   function migratePet(pet, id, index = 0) {
@@ -387,6 +425,9 @@
     migrated.training = migrated.training && migrated.training.endsAt ? migrated.training : null;
     if (migrated.training && !migrated.training.startedAt) migrated.training.startedAt = now();
     migrated.lastUpdate = migrated.lastUpdate || now();
+    migrated.lastCareAt = Number(migrated.lastCareAt) || Number(migrated.lastUpdate) || now();
+    migrated.dirtCycleAt = Number(migrated.dirtCycleAt) || migrated.lastCareAt;
+    migrated.dirtLevel = clamp(Math.round(Number(migrated.dirtLevel) || 0), 0, 3);
     migrated.lastAction = migrateRestCopy(migrated.lastAction || fresh.lastAction, migrated.customName);
     migrated.history = Array.isArray(migrated.history) && migrated.history.length
       ? migrated.history.slice(0, 12).map(item => ({
@@ -412,11 +453,10 @@
       bag: migrateBag(current && current.bag),
       daily: { ...base.daily, ...(current && current.daily) },
       settings: { ...base.settings, ...(current && current.settings) },
+      world: migrateWorld(current && current.world),
       pets: { ...base.pets, ...((current && current.pets) || {}) },
     };
-    if (!MOTION_PREFERENCES.has(migrated.settings.motionPreference)) {
-      migrated.settings.motionPreference = 'auto';
-    }
+    delete migrated.settings.motionPreference;
     migrated.settings.musicEnabled = migrated.settings.musicEnabled === true;
     const musicTrackIndex = Number(migrated.settings.musicTrackIndex);
     migrated.settings.musicTrackIndex = Number.isInteger(musicTrackIndex) && musicTrackIndex >= 0
@@ -443,6 +483,13 @@
     return common[Math.floor(Math.random() * common.length)].id;
   }
 
+  function randomFoodDropId() {
+    const roll = Math.random();
+    if (roll < 0.08) return 'pineapple';
+    if (roll < 0.22) return 'watermelon';
+    return randomCommonFoodId();
+  }
+
   function claimDailyLoginReward(appState) {
     const key = todayKey();
     appState.daily = appState.daily || {};
@@ -450,7 +497,7 @@
 
     const drops = [];
     for (let i = 0; i < 3; i += 1) {
-      const foodId = Math.random() < 0.12 ? 'rareFruit' : randomCommonFoodId();
+      const foodId = randomFoodDropId();
       drops.push(foodId);
       addFoodToBag(appState, foodId, 1);
     }
@@ -482,6 +529,108 @@
       systemAddHistory(pet, '⭐', `${pet.customName} subiu para o nível ${pet.level}.`);
       showToast(`${pet.customName} subiu para o nível ${pet.level}!`);
     }
+  }
+
+  function randomBetween(minimum, maximum) {
+    return minimum + Math.random() * (maximum - minimum);
+  }
+
+  function markPetCaredFor(pet, timestamp = now()) {
+    pet.lastCareAt = timestamp;
+    pet.dirtCycleAt = timestamp;
+  }
+
+  function processDirt(pet, timestamp = now()) {
+    const dirtCycleAt = Number(pet.dirtCycleAt) || Number(pet.lastCareAt) || timestamp;
+    const elapsedCycles = Math.floor(Math.max(0, timestamp - dirtCycleAt) / CARE_DAY_MS);
+    if (elapsedCycles <= 0) return false;
+    pet.dirtLevel = Math.min(3, Math.max(0, Number(pet.dirtLevel) || 0) + elapsedCycles);
+    pet.dirtCycleAt = dirtCycleAt + elapsedCycles * CARE_DAY_MS;
+    return true;
+  }
+
+  function processWorld(appState, timestamp = now()) {
+    appState.world = migrateWorld(appState.world);
+    const world = appState.world;
+    let changed = false;
+    const activeLeaves = world.leaves.filter(item => Number(item.expiresAt) > timestamp);
+    const activeFoodDrops = world.foodDrops.filter(item => Number(item.expiresAt) > timestamp);
+    if (activeLeaves.length !== world.leaves.length || activeFoodDrops.length !== world.foodDrops.length) changed = true;
+    world.leaves = activeLeaves;
+    world.foodDrops = activeFoodDrops;
+
+    if (timestamp >= world.nextLeafAt) {
+      if (world.leaves.length < WORLD_RULES.maxLeaves) {
+        const fallDuration = Math.round(randomBetween(6200, 9000));
+        const spawnedAt = timestamp;
+        const settledAt = spawnedAt + fallDuration;
+        world.leaves.push({
+          bottom: Math.round(randomBetween(18, 72)),
+          drift: Math.round(randomBetween(-54, 54)),
+          expiresAt: settledAt + WORLD_RULES.leafLifetimeMs,
+          fallDuration,
+          id: `leaf-${timestamp}-${Math.random().toString(36).slice(2, 8)}`,
+          rotation: Math.round(randomBetween(-38, 38)),
+          settledAt,
+          spawnedAt,
+          variant: Math.random() < 0.5 ? 1 : 2,
+          x: Math.round(randomBetween(9, 89)),
+        });
+        changed = true;
+      }
+      world.nextLeafAt = timestamp + Math.round(randomBetween(WORLD_RULES.leafSpawnMinMs, WORLD_RULES.leafSpawnMaxMs));
+    }
+
+    if (timestamp >= world.nextFoodAt) {
+      if (world.foodDrops.length < WORLD_RULES.maxFoodDrops) {
+        world.foodDrops.push({
+          bottom: Math.round(randomBetween(22, 76)),
+          expiresAt: timestamp + WORLD_RULES.foodLifetimeMs,
+          foodId: randomFoodDropId(),
+          id: `food-${timestamp}-${Math.random().toString(36).slice(2, 8)}`,
+          spawnedAt: timestamp,
+          x: Math.round(randomBetween(10, 88)),
+        });
+        changed = true;
+      }
+      world.nextFoodAt = timestamp + Math.round(randomBetween(WORLD_RULES.foodSpawnMinMs, WORLD_RULES.foodSpawnMaxMs));
+    }
+    return changed;
+  }
+
+  function cleanDirt() {
+    const pet = getPet();
+    if (!pet.dirtLevel) return;
+    pet.dirtLevel = 0;
+    markPetCaredFor(pet);
+    pet.lastAction = `${pet.customName} ficou limpinho e o gramado foi organizado.`;
+    systemAddHistory(pet, '🧼', pet.lastAction);
+    saveState();
+    render();
+    showToast('Tudo limpo!');
+  }
+
+  function collectWorldLeaf(itemId) {
+    const pet = getPet();
+    const previousLength = state.world.leaves.length;
+    state.world.leaves = state.world.leaves.filter(item => item.id !== itemId);
+    if (state.world.leaves.length === previousLength) return;
+    systemAddXp(pet, 2);
+    pet.lastAction = `${pet.customName} encontrou uma folha brilhante. +2 XP.`;
+    systemAddHistory(pet, '🍃', pet.lastAction);
+    saveState();
+    render();
+    showToast('Folha coletada: +2 XP.');
+  }
+
+  function collectWorldFood(itemId) {
+    const item = state.world.foodDrops.find(drop => drop.id === itemId);
+    if (!item || !FOOD_BY_ID[item.foodId]) return;
+    state.world.foodDrops = state.world.foodDrops.filter(drop => drop.id !== itemId);
+    addFoodToBag(state, item.foodId, 1);
+    saveState();
+    render();
+    showToast(`${FOOD_BY_ID[item.foodId].label} guardada na mochila.`);
   }
 
   function activeDaysFor(pet) {
@@ -598,8 +747,8 @@
       addFoodToBag(appState, second, 1);
       return 'Ganhou 2 comidas comuns.';
     }
-    addFoodToBag(appState, 'rareFruit', 1);
-    return 'Ganhou 1 Fruta rara.';
+    addFoodToBag(appState, 'pineapple', 1);
+    return 'Ganhou 1 Abacaxi raro.';
   }
 
   function trainingTargetCenter(round) {
@@ -640,7 +789,9 @@
     pet.energy = clamp(pet.energy - RULES.trainCost.energy);
     pet.hunger = clamp(pet.hunger - RULES.trainCost.hunger);
     pet.happiness = clamp(pet.happiness + 4);
+    pet.bond = clamp(pet.bond + 2);
     systemAddXp(pet, game.score);
+    markPetCaredFor(pet);
     pet.lastAction = `${pet.customName} concluiu o treino com ${game.score} XP. ${reward}`;
     systemAddHistory(pet, '🏅', pet.lastAction);
     pet.lastUpdate = now();
@@ -702,6 +853,7 @@
     pet.lastSleepTick = now();
     pet.sleepXpEarned = 0;
     pet.training = null;
+    markPetCaredFor(pet);
     pet.lastAction = automatic
       ? `${pet.customName} começou a descansar porque ficou cansado.`
       : `${pet.customName} começou a descansar.`;
@@ -715,6 +867,7 @@
     pet.sleepStartedAt = null;
     pet.lastSleepTick = null;
     pet.sleepXpEarned = 0;
+    markPetCaredFor(pet);
     pet.lastAction = pet.energy < 10
       ? `${pet.customName} levantou, mas ainda está cansado e precisa descansar.`
       : `${pet.customName} terminou o descanso e está pronto para brincar.${earnedXp > 0 ? ` +${earnedXp} XP.` : ''}`;
@@ -749,6 +902,8 @@
     const reward = rollTrainingReward(appState);
     pet.training = null;
     systemAddXp(pet, RULES.trainXp);
+    pet.bond = clamp(pet.bond + 2);
+    markPetCaredFor(pet, timestamp);
     pet.lastAction = `${pet.customName} terminou o treino. +${RULES.trainXp} XP. ${reward}`;
     systemAddHistory(pet, '🏅', pet.lastAction);
   }
@@ -771,10 +926,12 @@
 
     processTraining(pet, appState, timestamp);
     processSleep(pet, timestamp);
+    processDirt(pet, timestamp);
   }
 
   function syncAllPets(appState = state) {
     for (const pet of Object.values(appState.pets)) systemApplyOfflineDecay(pet, appState);
+    processWorld(appState);
   }
 
   function busyMessage(pet) {
@@ -784,7 +941,7 @@
   }
 
   function needsRest(pet) {
-    return !pet.sleeping && pet.energy < 10;
+    return !pet.sleeping && pet.energy < 5;
   }
 
   function feedPet(foodId) {
@@ -809,9 +966,12 @@
     state.bag[foodId] -= 1;
     pet.hunger = clamp(pet.hunger + food.hunger);
     pet.happiness = clamp(pet.happiness + food.happiness);
+    pet.energy = clamp(pet.energy + food.energy);
+    pet.bond = clamp(pet.bond + food.bond);
     systemAddXp(pet, food.xp);
+    markPetCaredFor(pet);
     pet.lastAction = `${pet.customName} comeu ${food.label}. +${food.xp} XP.`;
-    systemAddHistory(pet, food.icon, pet.lastAction);
+    systemAddHistory(pet, food.historyIcon, pet.lastAction);
     pet.lastUpdate = now();
     selectedAction = 'feed';
     saveState();
@@ -828,36 +988,39 @@
     play: {
       label: 'Brincar',
       short: 'Brincar',
-      icon: '✨',
+      asset: 'action-play.png',
       run(pet) {
         const busy = busyMessage(pet);
         if (busy) return busy;
-        if (pet.energy < 10) return 'Seu companheiro está cansado demais para brincar.';
+        if (pet.energy < 8) return 'Seu companheiro está cansado demais para brincar.';
 
         pet.happiness = clamp(pet.happiness + RULES.play.happiness);
         pet.energy = clamp(pet.energy + RULES.play.energy);
         pet.hunger = clamp(pet.hunger + RULES.play.hunger);
-        pet.lastAction = `${pet.customName} brincou com você.`;
-        systemAddHistory(pet, '✨', pet.lastAction);
+        pet.bond = clamp(pet.bond + RULES.play.bond);
+        systemAddXp(pet, RULES.play.xp);
+        markPetCaredFor(pet);
+        pet.lastAction = `${pet.customName} brincou com você. +${RULES.play.xp} XP.`;
+        systemAddHistory(pet, '🎾', pet.lastAction);
         return null;
       },
     },
     sleep: {
       label: 'Descansar',
       short: 'Descansar',
-      icon: '💤',
+      asset: 'action-rest.png',
       run(pet) {
         if (pet.training) return `${pet.customName} está treinando agora.`;
         if (pet.sleeping) {
           wakePet(pet);
           return null;
         }
-        if (pet.energy < 50) {
+        if (pet.energy < 70) {
           startSleep(pet, false);
           return null;
         }
 
-        const refusalChance = pet.energy > 75 ? 0.9 : 0.55;
+        const refusalChance = pet.energy > 88 ? 0.85 : 0.35;
         if (Math.random() < refusalChance) return `${pet.customName} não precisa descansar agora.`;
         startSleep(pet, false);
         return null;
@@ -866,12 +1029,12 @@
     train: {
       label: 'Treinar',
       short: 'Treino',
-      icon: '🏅',
+      asset: 'action-train.png',
       run(pet) {
         const busy = busyMessage(pet);
         if (busy) return busy;
-        if (pet.energy <= 30) return 'Seu companheiro está cansado demais para treinar.';
-        if (pet.hunger <= 20) return 'Seu companheiro precisa comer antes de treinar.';
+        if (pet.energy <= 18) return 'Seu companheiro está cansado demais para treinar.';
+        if (pet.hunger <= 15) return 'Seu companheiro precisa comer antes de treinar.';
 
         startTrainingGame();
         return false;
@@ -924,7 +1087,7 @@
     const safe = clamp(value);
     return `
       <div class="stat-row">
-        <div class="stat-label"><span>${icon}</span>${name}</div>
+        <div class="stat-label"><span class="status-pixel-icon"><img src="${ITEM_BASE_PATH}${icon}" alt=""></span>${name}</div>
         <div class="stat-track"><i style="width:${safe}%"></i></div>
         <strong>${safe}</strong>
       </div>`;
@@ -934,7 +1097,7 @@
     const days = activeDaysFor(pet);
     return `
       <div class="stat-row bond-days-row">
-        <div class="stat-label"><span>🤝</span>Vínculo</div>
+        <div class="stat-label"><span class="status-pixel-icon"><img src="${ITEM_BASE_PATH}status-bond.png" alt=""></span>Vínculo</div>
         <div class="bond-days-value"><strong>${days} ${days === 1 ? 'dia' : 'dias'}</strong><small>juntos</small></div>
       </div>`;
   }
@@ -995,13 +1158,50 @@
             const count = (state.bag && state.bag[food.id]) || 0;
             return `
               <button class="food-item ${food.rarity}" type="button" data-feed-food="${food.id}" ${count <= 0 ? 'disabled' : ''}>
-                <span>${food.icon}</span>
+                <span class="food-pixel-icon"><img src="${ITEM_BASE_PATH}${food.asset}" alt=""></span>
                 <b>${food.label}</b>
-                <small>${food.rarity === 'rare' ? '+40 fome' : '+25 fome'} · +${food.xp} XP · x${count}</small>
+                <small>+${food.hunger} fome · +${food.xp} XP · x${count}</small>
               </button>`;
           }).join('')}
         </div>
         ${pet.hunger > 90 ? `<p class="tray-note">${pet.customName} já está satisfeito.</p>` : ''}
+      </div>`;
+  }
+
+  function renderWorldLayer(timestamp = now()) {
+    const world = state.world || systemDefaultWorld();
+    const leaves = world.leaves.map(item => {
+      const fallDuration = Math.max(1, Number(item.fallDuration) || 7000);
+      const elapsed = Math.max(0, Math.min(fallDuration, timestamp - Number(item.spawnedAt || timestamp)));
+      const falling = timestamp < Number(item.settledAt);
+      const itemBottom = Number(item.bottom) || 30;
+      const estimatedCampHeight = clamp(window.innerHeight - (window.innerWidth <= 420 ? 262 : 284), 330, 612);
+      const fallDistance = Math.round(estimatedCampHeight - itemBottom + 48);
+      return `
+        <button class="world-item world-leaf ${falling ? 'falling' : 'settled'}" type="button" data-collect-leaf="${item.id}" aria-label="Coletar folha e ganhar 2 XP" style="--item-x:${Number(item.x) || 50}%;--item-bottom:${itemBottom}px;--fall-start:-${fallDistance}px;--leaf-rotation:${Number(item.rotation) || 0}deg;--fall-duration:${fallDuration}ms;--fall-delay:-${elapsed}ms">
+          <img src="${ITEM_BASE_PATH}leaf-${item.variant === 2 ? 2 : 1}.png" alt="">
+        </button>`;
+    }).join('');
+    const foodDrops = world.foodDrops.map(item => {
+      const food = FOOD_BY_ID[item.foodId];
+      if (!food) return '';
+      return `
+        <button class="world-item world-food" type="button" data-collect-food="${item.id}" aria-label="Guardar ${food.label} na mochila" style="--item-x:${Number(item.x) || 50}%;--item-bottom:${Number(item.bottom) || 36}px">
+          <img src="${ITEM_BASE_PATH}${food.asset}" alt="">
+        </button>`;
+    }).join('');
+    return `<div class="world-layer" role="group" aria-label="Itens no gramado">${leaves}${foodDrops}</div>`;
+  }
+
+  function renderDirtLayer(pet) {
+    const dirtLevel = clamp(Math.round(Number(pet.dirtLevel) || 0), 0, 3);
+    if (dirtLevel <= 0) return '';
+    return `
+      <div class="dirt-layer" aria-label="Sujeira acumulada">
+        ${Array.from({ length: dirtLevel }, (_, index) => `
+          <button type="button" data-clean-dirt aria-label="Limpar a sujeira do gramado">
+            <img src="${ITEM_BASE_PATH}dirt-${index + 1}.png" alt="">
+          </button>`).join('')}
       </div>`;
   }
 
@@ -1012,7 +1212,6 @@
     const palette = pet.appearancePalette === 'shiny' && shinyUnlocked ? 'shiny' : 'normal';
     const currentForm = getForm(mon, pet.activeAppearance);
     const currentShinyReady = isFormAssetReady(mon, currentForm, 'shiny');
-    const motionPreference = getMotionPreference();
     return `
       <div class="appearance-panel">
         <button class="change-companion" type="button" data-companions-toggle aria-label="Alterar Pokémon companheiro">
@@ -1037,17 +1236,6 @@
               <span class="palette-dot shiny"></span><b>Shiny</b>
               ${!shinyUnlocked ? '<i aria-hidden="true">30</i>' : ''}
             </button>
-          </div>
-        </div>
-        <div class="motion-block">
-          <div class="motion-heading">
-            <b>Animações</b>
-            <small>${motionPreferenceSummary()}</small>
-          </div>
-          <div class="motion-segment" role="group" aria-label="Preferência de animação">
-            <button type="button" data-motion-option="auto" class="${motionPreference === 'auto' ? 'active' : ''}" aria-pressed="${motionPreference === 'auto'}">Automático</button>
-            <button type="button" data-motion-option="on" class="${motionPreference === 'on' ? 'active' : ''}" aria-pressed="${motionPreference === 'on'}">Ativado</button>
-            <button type="button" data-motion-option="off" class="${motionPreference === 'off' ? 'active' : ''}" aria-pressed="${motionPreference === 'off'}">Desativado</button>
           </div>
         </div>
         <p class="appearance-note">O nível e os cuidados são compartilhados entre todas as formas do Pokémon.</p>
@@ -1161,7 +1349,7 @@
     if (pet.sleeping) {
       return `
         <div class="activity-card sleeping-card">
-          <div class="activity-copy"><span>💤</span><div><b>Descansando</b><small>+10 energia e +${RULES.sleepXpPerTick} XP a cada 30 minutos.${pet.sleepXpEarned > 0 ? ` XP deste descanso: ${pet.sleepXpEarned}.` : ''}</small></div></div>
+          <div class="activity-copy"><span class="activity-pixel-icon"><img src="${ITEM_BASE_PATH}action-rest.png" alt=""></span><div><b>Descansando</b><small>+${RULES.sleepEnergyPerTick} energia e +${RULES.sleepXpPerTick} XP a cada 30 minutos.${pet.sleepXpEarned > 0 ? ` XP deste descanso: ${pet.sleepXpEarned}.` : ''}</small></div></div>
           <div class="activity-bar"><i style="width:${pet.energy}%"></i></div>
         </div>`;
     }
@@ -1328,7 +1516,8 @@
     const mon = getAppearance(species, pet);
     const mood = systemMoodFor(pet);
     const xpPercent = Math.min(100, (pet.xp / systemXpNeeded(pet)) * 100);
-    const needsCare = pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30;
+    const dirty = Number(pet.dirtLevel) > 0;
+    const needsCare = pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30 || dirty;
     const hungry = pet.hunger < 30;
     const restRequired = needsRest(pet);
     const careLocked = pet.sleeping || restRequired;
@@ -1375,11 +1564,11 @@
               <button type="button" role="tab" data-status-tab="appearance" class="${statusTab === 'appearance' ? 'active' : ''}" aria-selected="${statusTab === 'appearance'}">Pokémon</button>
             </div>
             ${statusTab === 'status' ? `
-              ${needsCare ? `<div class="status-alert"><b>${hungry ? '🍎 Está com fome!' : '⚠ Precisa de atenção!'}</b></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
+              ${needsCare ? `<div class="status-alert"><b>${hungry ? '🍎 Está com fome!' : dirty ? '🧼 Precisa de limpeza!' : '⚠ Precisa de atenção!'}</b></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
               <div class="status-grid">
-                ${systemStatBar('Fome', pet.hunger, '🍎')}
-                ${systemStatBar('Felicidade', pet.happiness, '✨')}
-                ${systemStatBar('Energia', pet.energy, '💤')}
+                ${systemStatBar('Fome', pet.hunger, 'action-food.png')}
+                ${systemStatBar('Felicidade', pet.happiness, 'status-happiness.png')}
+                ${systemStatBar('Energia', pet.energy, 'status-energy.png')}
                 ${systemBondDays(pet)}
               </div>
               <div class="status-meta">
@@ -1393,6 +1582,8 @@
 
         <main class="camp-area ${mood.className} phase-${clock.phase}" data-brasilia-time="${clock.label}">
           <div class="time-light" aria-hidden="true"></div>
+          ${renderWorldLayer()}
+          ${renderDirtLayer(pet)}
           <button
             class="music-toggle ${musicEnabled ? 'active' : ''}"
             type="button"
@@ -1423,7 +1614,6 @@
               : `<span class="stage-sprite-wrap" ${stageVisualStyle(mon)}>${renderPokemonVisual(mon, 'stage-sprite', mon.name, true)}</span>`}
             <span class="pet-shadow"></span>
           </button>
-          <div class="speech"><b>${mood.icon} ${mood.note}</b><br>${pet.customName} ${mon.moodLine}</div>
         </main>
 
         <section class="care-sheet ${sheetExpanded ? 'expanded' : ''}" aria-label="Cuidar do Tamagotchi">
@@ -1450,16 +1640,16 @@
 
           <div class="action-dock">
             <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="Abrir mochila de comidas" ${foodLocked ? 'disabled' : ''}>
-              <span>🎒</span><b>Comida</b>
+              <span><img src="${ITEM_BASE_PATH}action-food.png" alt=""></span><b>Comida</b>
             </button>
             ${Object.entries(SYSTEM_ACTIONS).map(([key, action]) => {
               const endingRest = key === 'sleep' && pet.sleeping;
               const label = endingRest ? 'Levantar' : action.short;
-              const icon = endingRest ? '☀️' : action.icon;
+              const icon = endingRest ? 'action-wake.png' : action.asset;
               const disabled = key !== 'sleep' && careLocked;
               return `
                 <button class="action-btn action-${key}-btn ${endingRest ? 'action-wake-btn' : ''} ${selectedAction === (endingRest ? 'wake' : key) ? 'active' : ''}" data-action="${key}" type="button" aria-label="${label}" ${disabled ? 'disabled' : ''}>
-                  <span>${icon}</span><b>${label}</b>
+                  <span><img src="${ITEM_BASE_PATH}${icon}" alt=""></span><b>${label}</b>
                 </button>`;
             }).join('')}
           </div>
@@ -1492,7 +1682,6 @@
     }));
     document.querySelectorAll('[data-appearance]').forEach(btn => btn.addEventListener('click', () => selectAppearance(btn.dataset.appearance)));
     document.querySelectorAll('[data-palette]').forEach(btn => btn.addEventListener('click', () => selectPalette(btn.dataset.palette)));
-    document.querySelectorAll('[data-motion-option]').forEach(btn => btn.addEventListener('click', () => setMotionPreference(btn.dataset.motionOption)));
     document.querySelectorAll('[data-music-toggle]').forEach(btn => btn.addEventListener('click', () => {
       setMusicEnabled(!getMusicEnabled());
     }));
@@ -1500,6 +1689,9 @@
     document.querySelectorAll('[data-training-hit]').forEach(btn => btn.addEventListener('click', hitTrainingTarget));
     document.querySelectorAll('[data-training-cancel]').forEach(btn => btn.addEventListener('click', cancelTrainingGame));
     document.querySelectorAll('[data-feed-food]').forEach(btn => btn.addEventListener('click', () => feedPet(btn.dataset.feedFood)));
+    document.querySelectorAll('[data-collect-leaf]').forEach(btn => btn.addEventListener('click', () => collectWorldLeaf(btn.dataset.collectLeaf)));
+    document.querySelectorAll('[data-collect-food]').forEach(btn => btn.addEventListener('click', () => collectWorldFood(btn.dataset.collectFood)));
+    document.querySelectorAll('[data-clean-dirt]').forEach(btn => btn.addEventListener('click', cleanDirt));
     document.querySelectorAll('[data-food-toggle]').forEach(btn => btn.addEventListener('click', () => {
       foodOpen = !foodOpen;
       moreOpen = false;
@@ -1530,7 +1722,7 @@
   const render = systemRender;
   initializeFormAssetStatus();
   state = systemMigrateState(readStoredState());
-  applyMotionPreference();
+  chooseRandomStartingMusicTrack();
   dailyRewardMessage = claimDailyLoginReward(state);
   syncAllPets(state);
   saveState();
@@ -1539,16 +1731,6 @@
   if (getMusicEnabled()) void playBackgroundMusic();
   checkFormAssets();
   if (dailyRewardMessage) setTimeout(() => showToast(dailyRewardMessage), 300);
-  const handleReducedMotionChange = () => {
-    if (getMotionPreference() === 'auto') render();
-  };
-  if (reducedMotionQuery) {
-    if (typeof reducedMotionQuery.addEventListener === 'function') {
-      reducedMotionQuery.addEventListener('change', handleReducedMotionChange);
-    } else if (typeof reducedMotionQuery.addListener === 'function') {
-      reducedMotionQuery.addListener(handleReducedMotionChange);
-    }
-  }
   setInterval(() => {
     syncAllPets(state);
     saveState();
