@@ -3,46 +3,103 @@
   let statusOpen = false;
   let moreOpen = false;
   let companionsOpen = false;
+  let companionSearchOpen = false;
   let companionQuery = '';
+  let pendingCompanionSelection = null;
+  let pendingArchiveCompanion = null;
   let selectedAction = null;
   let historyVisibleCount = 2;
   let statusTab = 'status';
+  let battleMenuOpen = false;
+  let battleMenuTab = 'train';
+  let battleHistoryVisibleCount = 5;
   let trainingGame = null;
   let trainingGameId = 0;
   let trainingTransitionTimer = null;
+  let battleHydrationKey = null;
+  let moveEditorOpen = false;
+  let moveSelectionDraft = [];
   const formAssetStatus = new Map();
 
   const BRASILIA_TIME_ZONE = 'America/Sao_Paulo';
   const SHINY_UNLOCK_DAYS = 30;
   const COMPANION_RESULT_LIMIT = 36;
+  const BRIDGE_NAME_PREFIX = 'superpokegochi:';
+  const BRIDGE_HASH_PREFIX = '#state=';
   const MUSIC_VOLUME = 0.14;
+  const DUCKED_MUSIC_VOLUME = 0.065;
+  const SOUND_EFFECT_VOLUME = 0.24;
   const ITEM_BASE_PATH = document.documentElement.dataset.itemBase || 'assets/items/';
   const CARE_DAY_MS = 24 * 60 * 60 * 1000;
+  const BOND_GRACE_PERIOD_MS = CARE_DAY_MS;
+  const BOND_RESET_VALUE = 10;
+  const MINIGAME_REWARD_COOLDOWN_MS = 15 * 60 * 1000;
   const WORLD_RULES = {
-    firstFoodDelayMs: 75 * 1000,
-    firstLeafDelayMs: 12 * 1000,
+    firstFoodDelayMs: 20 * 60 * 1000,
+    firstLeafDelayMs: 75 * 1000,
     foodLifetimeMs: 10 * 60 * 1000,
-    foodSpawnMaxMs: 6 * 60 * 1000,
-    foodSpawnMinMs: 3 * 60 * 1000,
-    leafLifetimeMs: 8 * 60 * 1000,
-    leafSpawnMaxMs: 65 * 1000,
-    leafSpawnMinMs: 35 * 1000,
-    maxFoodDrops: 3,
-    maxLeaves: 10,
+    foodSpawnMaxMs: 65 * 60 * 1000,
+    foodSpawnMinMs: 35 * 60 * 1000,
+    leafLifetimeMs: 10 * 60 * 1000,
+    leafSpawnMaxMs: 3 * 60 * 1000,
+    leafSpawnMinMs: 90 * 1000,
+    maxFoodDrops: 1,
+    maxLeaves: 5,
+    maxOfflineLeaves: 3,
+    offlineLeafIntervalMs: 40 * 60 * 1000,
   };
   const MUSIC_TRACKS = [
-    '1-02. Theme Of Pallet Town.mp3',
-    '1-03. Professor Oak.mp3',
-    "1-04. Oak's Laboratory.mp3",
-    '1-09. Theme Of Pewter City.mp3',
-    '1-24. St. Anne.mp3',
+    { file: '1-02. Theme Of Pallet Town.mp3', startAt: 0.85, endBefore: 5.35 },
+    { file: '1-03. Professor Oak.mp3', startAt: 0.87, endBefore: 5.33 },
+    { file: "1-04. Oak's Laboratory.mp3", startAt: 1.02, endBefore: 5.5 },
+    { file: '1-09. Theme Of Pewter City.mp3', startAt: 0.66, endBefore: 5.8 },
+    { file: '1-24. St. Anne.mp3', startAt: 0.83, endBefore: 6.36 },
   ];
   const MUSIC_BASE_PATH = document.documentElement.dataset.musicBase || 'assets/musics/';
+  const SOUND_BASE_PATH = document.documentElement.dataset.soundBase || 'assets/sounds/';
+  const SOUND_EFFECT_FILES = {
+    evolution: 'evolution.mp3',
+    food: 'comida.mp3',
+  };
   const backgroundMusic = new Audio();
+  const soundEffects = Object.fromEntries(
+    Object.entries(SOUND_EFFECT_FILES).map(([name, file]) => [name, new Audio(soundEffectUrl(file))]),
+  );
   let loadedMusicTrackIndex = -1;
   let musicResumeArmed = false;
+  let activeSoundEffect = null;
+  let queuedSoundEffect = null;
+  let pendingSoundEffect = null;
+  let announcedEvolutionOfferKey = null;
+  const embeddedInSite = (
+    window.parent !== window
+    && new URLSearchParams(window.location.search).get('embedded') === '1'
+  );
+  let initialBridgeState = null;
+
+  if (embeddedInSite) {
+    try {
+      const serializedState = window.location.hash.startsWith(BRIDGE_HASH_PREFIX)
+        ? decodeURIComponent(window.location.hash.slice(BRIDGE_HASH_PREFIX.length))
+        : window.name.slice(BRIDGE_NAME_PREFIX.length);
+      initialBridgeState = JSON.parse(serializedState);
+    } catch {
+      initialBridgeState = null;
+    }
+  }
+
+  function notifySite(type, detail = {}) {
+    if (!embeddedInSite) return;
+    window.parent.postMessage({ type: `superpokegochi:${type}`, ...detail }, window.location.origin);
+  }
 
   function readStoredState() {
+    if (initialBridgeState) {
+      const bridged = initialBridgeState;
+      initialBridgeState = null;
+      return bridged;
+    }
+
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEY));
     } catch {
@@ -51,7 +108,14 @@
   }
 
   function saveState() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (!embeddedInSite) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    if (embeddedInSite && state.needsCompanionChoice && state.roster.length === 0) {
+      return;
+    }
+    notifySite('state', { state });
   }
 
   function getMusicEnabled() {
@@ -74,15 +138,103 @@
   }
 
   function musicTrackUrl(index) {
-    return new URL(`${MUSIC_BASE_PATH}${encodeURIComponent(MUSIC_TRACKS[index])}`, document.baseURI).href;
+    return new URL(`${MUSIC_BASE_PATH}${encodeURIComponent(MUSIC_TRACKS[index].file)}`, document.baseURI).href;
+  }
+
+  function soundEffectUrl(file) {
+    return new URL(`${SOUND_BASE_PATH}${encodeURIComponent(file)}`, document.baseURI).href;
+  }
+
+  function finishSoundEffect(sound) {
+    if (activeSoundEffect !== sound) return;
+    activeSoundEffect = null;
+    if (queuedSoundEffect && getMusicEnabled()) {
+      const nextEffect = queuedSoundEffect;
+      queuedSoundEffect = null;
+      void playSoundEffect(nextEffect.name, nextEffect.retryOnInteraction);
+      return;
+    }
+    backgroundMusic.volume = MUSIC_VOLUME;
+  }
+
+  function stopSoundEffects() {
+    queuedSoundEffect = null;
+    pendingSoundEffect = null;
+    for (const sound of Object.values(soundEffects)) {
+      sound.pause();
+      try {
+        sound.currentTime = 0;
+      } catch {
+        // The browser may not have loaded the effect metadata yet.
+      }
+    }
+    activeSoundEffect = null;
+    backgroundMusic.volume = MUSIC_VOLUME;
+  }
+
+  async function playSoundEffect(name, retryOnInteraction = false) {
+    if (!getMusicEnabled()) return false;
+    const sound = soundEffects[name];
+    if (!sound) return false;
+
+    if (
+      activeSoundEffect
+      && activeSoundEffect !== sound
+      && !activeSoundEffect.paused
+      && !activeSoundEffect.ended
+    ) {
+      queuedSoundEffect = { name, retryOnInteraction };
+      return true;
+    }
+    try {
+      sound.currentTime = 0;
+    } catch {
+      // Playback can still start when the browser finishes loading the file.
+    }
+    sound.volume = SOUND_EFFECT_VOLUME;
+    activeSoundEffect = sound;
+    backgroundMusic.volume = DUCKED_MUSIC_VOLUME;
+
+    try {
+      await sound.play();
+      return true;
+    } catch {
+      finishSoundEffect(sound);
+      if (retryOnInteraction && getMusicEnabled()) {
+        pendingSoundEffect = name;
+        armMusicResume();
+      }
+      return false;
+    }
+  }
+
+  function seekMusicToLoopStart(force = false) {
+    const track = MUSIC_TRACKS[getMusicTrackIndex()];
+    if (!track || !Number.isFinite(backgroundMusic.duration)) return;
+    const startAt = Math.min(track.startAt, Math.max(0, backgroundMusic.duration - 0.25));
+    if (force || backgroundMusic.currentTime < startAt) backgroundMusic.currentTime = startAt;
+  }
+
+  function loopCurrentMusicTrack() {
+    if (!state || !getMusicEnabled()) return;
+    seekMusicToLoopStart(true);
+    void playBackgroundMusic();
+  }
+
+  function skipMusicOutroSilence() {
+    const track = MUSIC_TRACKS[getMusicTrackIndex()];
+    if (!track || !getMusicEnabled() || !Number.isFinite(backgroundMusic.duration)) return;
+    if (backgroundMusic.currentTime >= backgroundMusic.duration - track.endBefore) {
+      loopCurrentMusicTrack();
+    }
   }
 
   function loadBackgroundMusic(index = getMusicTrackIndex()) {
     if (loadedMusicTrackIndex === index && backgroundMusic.src) return;
     loadedMusicTrackIndex = index;
     backgroundMusic.src = musicTrackUrl(index);
-    backgroundMusic.volume = MUSIC_VOLUME;
-    backgroundMusic.preload = 'metadata';
+    backgroundMusic.volume = activeSoundEffect ? DUCKED_MUSIC_VOLUME : MUSIC_VOLUME;
+    backgroundMusic.preload = 'auto';
   }
 
   function armMusicResume() {
@@ -93,6 +245,11 @@
       document.removeEventListener('keydown', resume, true);
       musicResumeArmed = false;
       if (getMusicEnabled() && backgroundMusic.paused) void playBackgroundMusic();
+      if (pendingSoundEffect) {
+        const effectName = pendingSoundEffect;
+        pendingSoundEffect = null;
+        void playSoundEffect(effectName);
+      }
     };
     document.addEventListener('pointerdown', resume, true);
     document.addEventListener('keydown', resume, true);
@@ -101,7 +258,8 @@
   async function playBackgroundMusic(showFeedback = false) {
     if (!getMusicEnabled()) return false;
     loadBackgroundMusic();
-    backgroundMusic.volume = MUSIC_VOLUME;
+    backgroundMusic.volume = activeSoundEffect ? DUCKED_MUSIC_VOLUME : MUSIC_VOLUME;
+    if (backgroundMusic.readyState >= 1) seekMusicToLoopStart();
     try {
       await backgroundMusic.play();
       if (showFeedback) showToast('Música ligada.');
@@ -124,20 +282,40 @@
       void playBackgroundMusic(true);
     } else {
       backgroundMusic.pause();
+      stopSoundEffects();
       showToast('Música desligada.');
     }
   }
 
-  function playNextMusicTrack() {
-    if (!state || !getMusicEnabled()) return;
-    const nextIndex = (getMusicTrackIndex() + 1) % MUSIC_TRACKS.length;
-    state.settings = { ...(state.settings || {}), musicTrackIndex: nextIndex };
-    saveState();
-    loadBackgroundMusic(nextIndex);
-    void playBackgroundMusic();
+  backgroundMusic.addEventListener('loadedmetadata', () => seekMusicToLoopStart());
+  backgroundMusic.addEventListener('timeupdate', skipMusicOutroSilence);
+  backgroundMusic.addEventListener('ended', loopCurrentMusicTrack);
+  for (const sound of Object.values(soundEffects)) {
+    sound.preload = 'auto';
+    sound.volume = SOUND_EFFECT_VOLUME;
+    sound.addEventListener('ended', () => finishSoundEffect(sound));
+    sound.addEventListener('error', () => finishSoundEffect(sound));
   }
 
-  backgroundMusic.addEventListener('ended', playNextMusicTrack);
+  function getPokegochiNotificationPreference() {
+    return Boolean(state && state.settings && state.settings.pokegochiNotificationsEnabled);
+  }
+
+  function setPokegochiNotificationPreference(enabled) {
+    if (!embeddedInSite) {
+      showToast('Abra o SuperPokégochi pelo seu perfil para configurar notificações.');
+      return;
+    }
+
+    state.settings = {
+      ...(state.settings || {}),
+      pokegochiNotificationsEnabled: Boolean(enabled),
+    };
+    saveState();
+    render();
+    notifySite('notification-preference', { enabled: Boolean(enabled) });
+    showToast(enabled ? 'Ativando lembretes...' : 'Desativando lembretes...');
+  }
 
   function getDex(id) {
     const target = id || (state && state.selected) || 'bulbasaur';
@@ -241,6 +419,18 @@
     });
   }
 
+  function formatBattleDate(ts) {
+    const date = new Date(ts);
+    if (Number.isNaN(date.getTime())) return 'Data indisponível';
+    return new Intl.DateTimeFormat('pt-BR', {
+      timeZone: BRASILIA_TIME_ZONE,
+      day: '2-digit',
+      month: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+    }).format(date);
+  }
+
   function brasiliaClock() {
     const parts = new Intl.DateTimeFormat('pt-BR', {
       timeZone: BRASILIA_TIME_ZONE,
@@ -257,7 +447,12 @@
   }
 
   function goBack() {
-    showToast('Voltando...');
+    if (embeddedInSite) {
+      notifySite('back');
+      return;
+    }
+
+    showToast('Voltando para o perfil...');
     setTimeout(() => {
       if (history.length > 1) history.back();
     }, 380);
@@ -265,10 +460,10 @@
   const RULES = {
     maxOfflineHours: 24,
     decayPerHour: { hunger: 2.5, happiness: 1, energy: 1.25 },
-    play: { happiness: 12, energy: -6, hunger: -3, bond: 2, xp: 6 },
-    sleepTickMs: 30 * 60 * 1000,
-    sleepEnergyPerTick: 12,
-    sleepXpPerTick: 3,
+    play: { happiness: 9, energyCost: 30, hungerCost: 2, bond: 1 },
+    sleepTickMs: 60 * 60 * 1000,
+    sleepEnergyPerTick: 22,
+    sleepXpPerTick: 1,
     wakeEnergy: 88,
     trainDurationMs: 10 * 60 * 1000,
     trainCost: { energy: 12, hunger: 6 },
@@ -276,29 +471,77 @@
   };
 
   const FOOD_ITEMS = [
-    { id: 'apple', label: 'Maçã', asset: 'food-apple.png', historyIcon: '🍎', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, xp: 4 },
-    { id: 'strawberry', label: 'Morango', asset: 'food-strawberry.png', historyIcon: '🍓', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, xp: 4 },
-    { id: 'blackberry', label: 'Amora', asset: 'food-blackberry.png', historyIcon: '🫐', rarity: 'common', hunger: 18, happiness: 4, energy: 1, bond: 1, xp: 4 },
-    { id: 'pear', label: 'Pera', asset: 'food-pear.png', historyIcon: '🍐', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, xp: 4 },
-    { id: 'grape', label: 'Uva', asset: 'food-grape.png', historyIcon: '🍇', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, xp: 4 },
-    { id: 'orange', label: 'Laranja', asset: 'food-orange.png', historyIcon: '🍊', rarity: 'common', hunger: 22, happiness: 3, energy: 2, bond: 1, xp: 4 },
-    { id: 'banana', label: 'Banana', asset: 'food-banana.png', historyIcon: '🍌', rarity: 'common', hunger: 28, happiness: 2, energy: 3, bond: 1, xp: 5 },
-    { id: 'watermelon', label: 'Melancia', asset: 'food-watermelon.png', historyIcon: '🍉', rarity: 'uncommon', hunger: 32, happiness: 3, energy: 2, bond: 2, xp: 6 },
-    { id: 'pineapple', label: 'Abacaxi', asset: 'food-pineapple.png', historyIcon: '🍍', rarity: 'rare', hunger: 38, happiness: 5, energy: 3, bond: 2, xp: 8 },
+    { id: 'apple', label: 'Maçã', asset: 'food-apple.png', historyIcon: '🍎', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 5, xp: 1 },
+    { id: 'strawberry', label: 'Morango', asset: 'food-strawberry.png', historyIcon: '🍓', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 5, xp: 2 },
+    { id: 'blackberry', label: 'Amora', asset: 'food-blackberry.png', historyIcon: '🫐', rarity: 'common', hunger: 18, happiness: 4, energy: 1, bond: 1, hpPercent: 6, xp: 2 },
+    { id: 'pear', label: 'Pera', asset: 'food-pear.png', historyIcon: '🍐', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 5, xp: 1 },
+    { id: 'grape', label: 'Uva', asset: 'food-grape.png', historyIcon: '🍇', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 5, xp: 2 },
+    { id: 'orange', label: 'Laranja', asset: 'food-orange.png', historyIcon: '🍊', rarity: 'common', hunger: 22, happiness: 3, energy: 2, bond: 1, hpPercent: 7, xp: 2 },
+    { id: 'banana', label: 'Banana', asset: 'food-banana.png', historyIcon: '🍌', rarity: 'common', hunger: 28, happiness: 2, energy: 3, bond: 1, hpPercent: 8, xp: 2 },
+    { id: 'watermelon', label: 'Melancia', asset: 'food-watermelon.png', historyIcon: '🍉', rarity: 'uncommon', hunger: 32, happiness: 3, energy: 2, bond: 2, hpPercent: 15, xp: 4 },
+    { id: 'pineapple', label: 'Abacaxi Energia', asset: 'food-pineapple.png', historyIcon: '🍍', rarity: 'rare', hunger: 18, happiness: 4, energy: 30, bond: 2, hpPercent: 12, xp: 5 },
   ];
 
   const FOOD_BY_ID = Object.fromEntries(FOOD_ITEMS.map(food => [food.id, food]));
+  const FOOD_RARITY_LABELS = {
+    common: 'Comum',
+    uncommon: 'Incomum',
+    rare: 'Rara',
+  };
   let foodOpen = false;
   let dailyRewardMessage = null;
 
   function systemDefaultBag() {
-    return { apple: 2, strawberry: 1, blackberry: 1, pear: 1, grape: 1, orange: 1, banana: 1, watermelon: 0, pineapple: 0 };
+    return {
+      apple: 1,
+      strawberry: 0,
+      blackberry: 0,
+      pear: 0,
+      grape: 0,
+      orange: 0,
+      banana: 0,
+      watermelon: 0,
+      pineapple: 0,
+    };
+  }
+
+  function battleDexNumber(mon) {
+    const catalogMatch = mon && DEX.find(candidate => candidate.id === mon.id);
+    return Math.max(1, Number(catalogMatch?.dexNumber || mon?.dexNumber) || 1);
+  }
+
+  function battleSnapshot(pet, appearance = getAppearance(getDex(), pet)) {
+    const battle = window.SuperPokegochiBattle;
+    if (!battle) return null;
+    return battle.getSnapshot(pet, battleDexNumber(appearance), appearance.name);
+  }
+
+  function hydrateBattleProfile(pet, appearance) {
+    const battle = window.SuperPokegochiBattle;
+    const snapshot = battleSnapshot(pet, appearance);
+    if (!battle || !snapshot || snapshot.dataReady) return;
+    const hydrationKey = `${pet.dexId}:${battleDexNumber(appearance)}`;
+    if (battleHydrationKey === hydrationKey) return;
+
+    battleHydrationKey = hydrationKey;
+    void battle.hydrate(pet, battleDexNumber(appearance), appearance.name)
+      .then(() => {
+        saveState();
+        if (statusOpen && (statusTab === 'status' || statusTab === 'skills')) render();
+      })
+      .catch(() => {
+        // Os atributos continuam utilizáveis com os dados equilibrados de reserva.
+      })
+      .finally(() => {
+        if (battleHydrationKey === hydrationKey) battleHydrationKey = null;
+      });
   }
 
   function systemDefaultWorld() {
     const timestamp = now();
     return {
       foodDrops: [],
+      lastWorldUpdateAt: timestamp,
       leaves: [],
       nextFoodAt: timestamp + WORLD_RULES.firstFoodDelayMs,
       nextLeafAt: timestamp + WORLD_RULES.firstLeafDelayMs,
@@ -327,12 +570,14 @@
       activeSince: now(),
       activeAppearance: getForms(mon)[0].id,
       appearancePalette: 'normal',
+      battle: {},
       evolutionDecisions: {},
       sleeping: false,
       sleepStartedAt: null,
       lastSleepTick: null,
       sleepXpEarned: 0,
       training: null,
+      inactiveSince: null,
       lastUpdate: now(),
       lastCareAt: now(),
       dirtCycleAt: now(),
@@ -345,13 +590,22 @@
   function systemInitialState() {
     return {
       selected: 'bulbasaur',
+      roster: ['bulbasaur'],
+      favoriteTeam: [],
+      needsCompanionChoice: false,
       session: 21,
       bag: systemDefaultBag(),
       daily: { lastFoodGrant: null },
+      minigames: {
+        lastCompletedAt: null,
+        memoryLockedUntil: 0,
+        rewardReadyAt: 0,
+      },
       world: systemDefaultWorld(),
       settings: {
         musicEnabled: false,
         musicTrackIndex: 0,
+        pokegochiNotificationsEnabled: false,
       },
       pets: Object.fromEntries(DEX.slice(0, 1).map((mon, index) => [mon.id, systemDefaultPet(mon, index)])),
     };
@@ -387,15 +641,33 @@
     const fallback = systemDefaultWorld();
     const source = world && typeof world === 'object' ? world : {};
     const leaves = Array.isArray(source.leaves)
-      ? source.leaves.filter(item => item && typeof item.id === 'string' && Number.isFinite(Number(item.expiresAt))).slice(-WORLD_RULES.maxLeaves)
+      ? source.leaves.filter(item => (
+        item
+        && typeof item.id === 'string'
+        && Number.isFinite(Number(item.expiresAt))
+      )).slice(-WORLD_RULES.maxLeaves)
       : [];
     const foodDrops = Array.isArray(source.foodDrops)
-      ? source.foodDrops.filter(item => item && typeof item.id === 'string' && FOOD_BY_ID[item.foodId] && Number.isFinite(Number(item.expiresAt))).slice(-WORLD_RULES.maxFoodDrops)
+      ? source.foodDrops.filter(item => (
+        item
+        && typeof item.id === 'string'
+        && FOOD_BY_ID[item.foodId]
+        && Number.isFinite(Number(item.expiresAt))
+      )).slice(-WORLD_RULES.maxFoodDrops)
       : [];
+    const nextLeafAt = Number(source.nextLeafAt) || fallback.nextLeafAt;
+    const inferredLegacyWorldUpdateAt = Math.max(
+      0,
+      nextLeafAt - WORLD_RULES.leafSpawnMaxMs,
+    );
+
     return {
       leaves,
       foodDrops,
-      nextLeafAt: Number(source.nextLeafAt) || fallback.nextLeafAt,
+      lastWorldUpdateAt: Number.isFinite(Number(source.lastWorldUpdateAt))
+        ? Number(source.lastWorldUpdateAt)
+        : inferredLegacyWorldUpdateAt || fallback.lastWorldUpdateAt,
+      nextLeafAt,
       nextFoodAt: Number(source.nextFoodAt) || fallback.nextFoodAt,
     };
   }
@@ -418,12 +690,19 @@
     migrated.evolutionDecisions = migrated.evolutionDecisions && typeof migrated.evolutionDecisions === 'object'
       ? migrated.evolutionDecisions
       : {};
+    migrated.battle = migrated.battle && typeof migrated.battle === 'object'
+      ? migrated.battle
+      : {};
     migrated.sleeping = Boolean(migrated.sleeping);
     migrated.sleepStartedAt = migrated.sleepStartedAt || null;
     migrated.lastSleepTick = migrated.lastSleepTick || null;
     migrated.sleepXpEarned = Math.max(0, Number(migrated.sleepXpEarned) || 0);
     migrated.training = migrated.training && migrated.training.endsAt ? migrated.training : null;
     if (migrated.training && !migrated.training.startedAt) migrated.training.startedAt = now();
+    migrated.inactiveSince = migrated.inactiveSince != null
+      && Number.isFinite(Number(migrated.inactiveSince))
+      ? Number(migrated.inactiveSince)
+      : null;
     migrated.lastUpdate = migrated.lastUpdate || now();
     migrated.lastCareAt = Number(migrated.lastCareAt) || Number(migrated.lastUpdate) || now();
     migrated.dirtCycleAt = Number(migrated.dirtCycleAt) || migrated.lastCareAt;
@@ -452,15 +731,30 @@
       ...current,
       bag: migrateBag(current && current.bag),
       daily: { ...base.daily, ...(current && current.daily) },
+      minigames: { ...base.minigames, ...(current && current.minigames) },
       settings: { ...base.settings, ...(current && current.settings) },
       world: migrateWorld(current && current.world),
-      pets: { ...base.pets, ...((current && current.pets) || {}) },
+      pets: current && current.pets && Object.keys(current.pets).length
+        ? { ...current.pets }
+        : { ...base.pets },
     };
     delete migrated.settings.motionPreference;
     migrated.settings.musicEnabled = migrated.settings.musicEnabled === true;
     const musicTrackIndex = Number(migrated.settings.musicTrackIndex);
     migrated.settings.musicTrackIndex = Number.isInteger(musicTrackIndex) && musicTrackIndex >= 0
       ? musicTrackIndex % MUSIC_TRACKS.length
+      : 0;
+    migrated.settings.pokegochiNotificationsEnabled = (
+      migrated.settings.pokegochiNotificationsEnabled === true
+    );
+    migrated.minigames.lastCompletedAt = Number.isFinite(Number(migrated.minigames.lastCompletedAt))
+      ? Number(migrated.minigames.lastCompletedAt)
+      : null;
+    migrated.minigames.memoryLockedUntil = Number.isFinite(Number(migrated.minigames.memoryLockedUntil))
+      ? Math.max(0, Number(migrated.minigames.memoryLockedUntil))
+      : 0;
+    migrated.minigames.rewardReadyAt = Number.isFinite(Number(migrated.minigames.rewardReadyAt))
+      ? Math.max(0, Number(migrated.minigames.rewardReadyAt))
       : 0;
     migrated.pets = Object.fromEntries(
       Object.entries(migrated.pets).map(([id, pet], index) => [id, migratePet(pet, id, index)])
@@ -470,6 +764,42 @@
       const evolutionRoot = DEX.find(mon => mon.dexNumber === selectedSpecies.evolutionRootDexNumber);
       migrated.selected = evolutionRoot && evolutionRoot.selectable !== false ? evolutionRoot.id : DEX[0].id;
     }
+    migrated.needsCompanionChoice = current && current.needsCompanionChoice === true;
+    const rosterSource = Array.isArray(current && current.roster)
+      ? current.roster
+      : [migrated.selected, ...Object.keys(migrated.pets)];
+    migrated.roster = rosterSource.reduce((roster, id) => {
+      const species = DEX.find(mon => mon.id === id);
+      const root = species && species.selectable === false
+        ? DEX.find(mon => mon.dexNumber === species.evolutionRootDexNumber)
+        : species;
+      if (root && root.selectable !== false && !roster.includes(root.id) && roster.length < 6) {
+        roster.push(root.id);
+      }
+      return roster;
+    }, []);
+    if (migrated.needsCompanionChoice && migrated.roster.length === 0) {
+      migrated.roster = [];
+    } else if (!migrated.roster.includes(migrated.selected)) {
+      migrated.roster = [migrated.selected, ...migrated.roster].slice(0, 6);
+    } else if (migrated.roster[0] !== migrated.selected) {
+      const selectedIndex = migrated.roster.indexOf(migrated.selected);
+      [migrated.roster[0], migrated.roster[selectedIndex]] = [
+        migrated.roster[selectedIndex],
+        migrated.roster[0],
+      ];
+    }
+    migrated.favoriteTeam = Array.isArray(current && current.favoriteTeam)
+      ? current.favoriteTeam.filter(id => DEX.some(mon => mon.id === id)).slice(0, 5)
+      : [];
+    const migratedAt = now();
+    Object.values(migrated.pets).forEach(pet => {
+      if (pet.dexId === migrated.selected) {
+        pet.inactiveSince = null;
+      } else if (pet.inactiveSince == null || !Number.isFinite(Number(pet.inactiveSince))) {
+        pet.inactiveSince = Number(pet.lastUpdate) || migratedAt;
+      }
+    });
     return migrated;
   }
 
@@ -495,22 +825,15 @@
     appState.daily = appState.daily || {};
     if (appState.daily.lastFoodGrant === key) return null;
 
-    const drops = [];
-    for (let i = 0; i < 3; i += 1) {
-      const foodId = randomFoodDropId();
-      drops.push(foodId);
-      addFoodToBag(appState, foodId, 1);
-    }
+    const foodId = randomCommonFoodId();
+    addFoodToBag(appState, foodId, 1);
     appState.daily.lastFoodGrant = key;
 
-    const summary = drops
-      .map(id => FOOD_BY_ID[id].label)
-      .reduce((acc, label) => ({ ...acc, [label]: (acc[label] || 0) + 1 }), {});
-    return `Login diário: +${Object.entries(summary).map(([label, count]) => `${count} ${label}`).join(', ')}.`;
+    return `Login diário: +1 ${FOOD_BY_ID[foodId].label}.`;
   }
 
   function systemXpNeeded(pet) {
-    return 100 + pet.level * 10;
+    return 140 + pet.level * 14;
   }
 
   function systemAddHistory(pet, icon, text) {
@@ -544,57 +867,91 @@
     const dirtCycleAt = Number(pet.dirtCycleAt) || Number(pet.lastCareAt) || timestamp;
     const elapsedCycles = Math.floor(Math.max(0, timestamp - dirtCycleAt) / CARE_DAY_MS);
     if (elapsedCycles <= 0) return false;
+
     pet.dirtLevel = Math.min(3, Math.max(0, Number(pet.dirtLevel) || 0) + elapsedCycles);
     pet.dirtCycleAt = dirtCycleAt + elapsedCycles * CARE_DAY_MS;
     return true;
+  }
+
+  function createWorldLeaf(timestamp, settled = false) {
+    const fallDuration = Math.round(randomBetween(6200, 9000));
+    const settledAt = settled ? timestamp - 1000 : timestamp + fallDuration;
+    const spawnedAt = settled ? settledAt - fallDuration : timestamp;
+    return {
+      drift: Math.round(randomBetween(-54, 54)),
+      expiresAt: (settled ? timestamp : settledAt) + WORLD_RULES.leafLifetimeMs,
+      fallDuration,
+      id: `leaf-${timestamp}-${Math.random().toString(36).slice(2, 8)}`,
+      rotation: Math.round(randomBetween(-38, 38)),
+      settledAt,
+      spawnedAt,
+      variant: Math.random() < 0.5 ? 1 : 2,
+      x: Math.round(randomBetween(7, 93)),
+      y: Math.round(randomBetween(10, 84)),
+    };
   }
 
   function processWorld(appState, timestamp = now()) {
     appState.world = migrateWorld(appState.world);
     const world = appState.world;
     let changed = false;
+    const previousWorldUpdateAt = Math.min(
+      timestamp,
+      Math.max(0, Number(world.lastWorldUpdateAt) || timestamp),
+    );
+    const offlineElapsed = Math.max(0, timestamp - previousWorldUpdateAt);
+
     const activeLeaves = world.leaves.filter(item => Number(item.expiresAt) > timestamp);
     const activeFoodDrops = world.foodDrops.filter(item => Number(item.expiresAt) > timestamp);
-    if (activeLeaves.length !== world.leaves.length || activeFoodDrops.length !== world.foodDrops.length) changed = true;
+    if (activeLeaves.length !== world.leaves.length || activeFoodDrops.length !== world.foodDrops.length) {
+      changed = true;
+    }
     world.leaves = activeLeaves;
     world.foodDrops = activeFoodDrops;
 
+    if (offlineElapsed >= WORLD_RULES.offlineLeafIntervalMs) {
+      const availableLeafSlots = Math.max(0, WORLD_RULES.maxLeaves - world.leaves.length);
+      const offlineLeafCount = Math.min(
+        availableLeafSlots,
+        WORLD_RULES.maxOfflineLeaves,
+        Math.floor(offlineElapsed / WORLD_RULES.offlineLeafIntervalMs),
+      );
+      for (let index = 0; index < offlineLeafCount; index += 1) {
+        world.leaves.push(createWorldLeaf(timestamp + index, true));
+      }
+      if (offlineLeafCount > 0) changed = true;
+    }
+
     if (timestamp >= world.nextLeafAt) {
       if (world.leaves.length < WORLD_RULES.maxLeaves) {
-        const fallDuration = Math.round(randomBetween(6200, 9000));
-        const spawnedAt = timestamp;
-        const settledAt = spawnedAt + fallDuration;
-        world.leaves.push({
-          bottom: Math.round(randomBetween(18, 72)),
-          drift: Math.round(randomBetween(-54, 54)),
-          expiresAt: settledAt + WORLD_RULES.leafLifetimeMs,
-          fallDuration,
-          id: `leaf-${timestamp}-${Math.random().toString(36).slice(2, 8)}`,
-          rotation: Math.round(randomBetween(-38, 38)),
-          settledAt,
-          spawnedAt,
-          variant: Math.random() < 0.5 ? 1 : 2,
-          x: Math.round(randomBetween(9, 89)),
-        });
+        world.leaves.push(createWorldLeaf(timestamp));
         changed = true;
       }
-      world.nextLeafAt = timestamp + Math.round(randomBetween(WORLD_RULES.leafSpawnMinMs, WORLD_RULES.leafSpawnMaxMs));
+      world.nextLeafAt = timestamp + Math.round(randomBetween(
+        WORLD_RULES.leafSpawnMinMs,
+        WORLD_RULES.leafSpawnMaxMs,
+      ));
     }
 
     if (timestamp >= world.nextFoodAt) {
       if (world.foodDrops.length < WORLD_RULES.maxFoodDrops) {
         world.foodDrops.push({
-          bottom: Math.round(randomBetween(22, 76)),
           expiresAt: timestamp + WORLD_RULES.foodLifetimeMs,
           foodId: randomFoodDropId(),
           id: `food-${timestamp}-${Math.random().toString(36).slice(2, 8)}`,
           spawnedAt: timestamp,
           x: Math.round(randomBetween(10, 88)),
+          y: Math.round(randomBetween(14, 78)),
         });
         changed = true;
       }
-      world.nextFoodAt = timestamp + Math.round(randomBetween(WORLD_RULES.foodSpawnMinMs, WORLD_RULES.foodSpawnMaxMs));
+      world.nextFoodAt = timestamp + Math.round(randomBetween(
+        WORLD_RULES.foodSpawnMinMs,
+        WORLD_RULES.foodSpawnMaxMs,
+      ));
     }
+
+    world.lastWorldUpdateAt = timestamp;
     return changed;
   }
 
@@ -615,12 +972,12 @@
     const previousLength = state.world.leaves.length;
     state.world.leaves = state.world.leaves.filter(item => item.id !== itemId);
     if (state.world.leaves.length === previousLength) return;
-    systemAddXp(pet, 2);
-    pet.lastAction = `${pet.customName} encontrou uma folha brilhante. +2 XP.`;
+    systemAddXp(pet, 1);
+    pet.lastAction = `${pet.customName} encontrou uma folha brilhante. +1 XP.`;
     systemAddHistory(pet, '🍃', pet.lastAction);
     saveState();
     render();
-    showToast('Folha coletada: +2 XP.');
+    showToast('Folha coletada: +1 XP.');
   }
 
   function collectWorldFood(itemId) {
@@ -642,17 +999,34 @@
     return activeDaysFor(pet) >= SHINY_UNLOCK_DAYS;
   }
 
-  function isFormUnlocked(pet, form) {
+  function meetsEvolutionRequirement(pet, form) {
     return pet.level >= (form.unlockLevel || 1);
+  }
+
+  function isFormUnlocked(pet, form) {
+    return (form.unlockLevel || 1) <= 1 || pet.evolutionDecisions[form.id] === 'evolve';
   }
 
   function getEvolutionOffer(mon, pet) {
     return getForms(mon).find(form => (
       (form.unlockLevel || 1) > 1
-      && isFormUnlocked(pet, form)
+      && meetsEvolutionRequirement(pet, form)
       && isFormAssetReady(mon, form)
       && !pet.evolutionDecisions[form.id]
     )) || null;
+  }
+
+  function announceEvolutionOffer(mon, pet, form) {
+    if (!form) {
+      announcedEvolutionOfferKey = null;
+      if (pendingSoundEffect === 'evolution') pendingSoundEffect = null;
+      return;
+    }
+
+    const offerKey = `${mon.id}:${pet.dexId}:${form.id}`;
+    if (announcedEvolutionOfferKey === offerKey) return;
+    announcedEvolutionOfferKey = offerKey;
+    void playSoundEffect('evolution', true);
   }
 
   function applyAppearance(mon, pet, form) {
@@ -714,7 +1088,7 @@
     const pet = getPet();
     const mon = getDex();
     const form = getForm(mon, formId);
-    if (!isFormUnlocked(pet, form) || !isFormAssetReady(mon, form)) return;
+    if (!meetsEvolutionRequirement(pet, form) || !isFormAssetReady(mon, form)) return;
 
     pet.evolutionDecisions[form.id] = choice;
     if (choice === 'evolve') {
@@ -735,20 +1109,16 @@
 
   function rollTrainingReward(appState) {
     const roll = Math.random();
-    if (roll < 0.7) {
+    if (roll < 0.12) {
       const foodId = randomCommonFoodId();
       addFoodToBag(appState, foodId, 1);
       return `Ganhou 1 ${FOOD_BY_ID[foodId].label}.`;
     }
-    if (roll < 0.95) {
-      const first = randomCommonFoodId();
-      const second = randomCommonFoodId();
-      addFoodToBag(appState, first, 1);
-      addFoodToBag(appState, second, 1);
-      return 'Ganhou 2 comidas comuns.';
+    if (roll < 0.15) {
+      addFoodToBag(appState, 'watermelon', 1);
+      return 'Encontrou 1 Melancia.';
     }
-    addFoodToBag(appState, 'pineapple', 1);
-    return 'Ganhou 1 Abacaxi raro.';
+    return 'O treino foi focado apenas em experiência.';
   }
 
   function trainingTargetCenter(round) {
@@ -880,6 +1250,7 @@
     const ticks = Math.floor((timestamp - lastTick) / RULES.sleepTickMs);
     if (ticks > 0) {
       pet.energy = clamp(pet.energy + ticks * RULES.sleepEnergyPerTick);
+      window.SuperPokegochiBattle?.restoreHp(pet, Math.min(0.75, ticks * 0.25));
       const earnedXp = ticks * RULES.sleepXpPerTick;
       systemAddXp(pet, earnedXp);
       pet.sleepXpEarned = Math.max(0, Number(pet.sleepXpEarned) || 0) + earnedXp;
@@ -908,7 +1279,60 @@
     systemAddHistory(pet, '🏅', pet.lastAction);
   }
 
+  function isPetActive(pet, appState = state) {
+    return Boolean(pet && appState && pet.dexId === appState.selected);
+  }
+
+  function shiftPetTimestamp(pet, key, pausedFor) {
+    const value = Number(pet[key]);
+    if (Number.isFinite(value)) pet[key] = value + pausedFor;
+  }
+
+  function pausePet(pet, timestamp = now()) {
+    pet.inactiveSince = timestamp;
+    pet.lastUpdate = timestamp;
+  }
+
+  function resumePet(pet, timestamp = now()) {
+    const pausedAt = Number(pet.inactiveSince || pet.lastUpdate || timestamp);
+    const pausedFor = Math.max(0, timestamp - pausedAt);
+    const bondExpired = pausedFor > BOND_GRACE_PERIOD_MS;
+
+    if (pausedFor > 0) {
+      const pausedTimestamps = bondExpired
+        ? ['lastCareAt', 'dirtCycleAt']
+        : ['activeSince', 'lastCareAt', 'dirtCycleAt'];
+      pausedTimestamps.forEach(key => {
+        shiftPetTimestamp(pet, key, pausedFor);
+      });
+
+      if (pet.sleeping) {
+        shiftPetTimestamp(pet, 'sleepStartedAt', pausedFor);
+        shiftPetTimestamp(pet, 'lastSleepTick', pausedFor);
+      }
+
+      if (pet.training) {
+        shiftPetTimestamp(pet.training, 'startedAt', pausedFor);
+        shiftPetTimestamp(pet.training, 'endsAt', pausedFor);
+      }
+    }
+
+    if (bondExpired) {
+      pet.activeSince = timestamp;
+      pet.appearancePalette = 'normal';
+      pet.bond = BOND_RESET_VALUE;
+      pet.lastAction = `O vínculo com ${pet.customName} recomeçou após mais de 1 dia longe.`;
+      systemAddHistory(pet, '💚', pet.lastAction);
+    }
+
+    pet.inactiveSince = null;
+    pet.lastUpdate = timestamp;
+    return bondExpired;
+  }
+
   function systemApplyOfflineDecay(pet, appState = state) {
+    if (!isPetActive(pet, appState)) return;
+
     const timestamp = now();
     const elapsedHours = Math.min(
       RULES.maxOfflineHours,
@@ -948,6 +1372,9 @@
     const pet = getPet();
     const food = FOOD_BY_ID[foodId];
     systemApplyOfflineDecay(pet);
+    const appearance = getAppearance(getDex(), pet);
+    const combat = battleSnapshot(pet, appearance);
+    const canRecoverHp = Boolean(combat && combat.currentHp < combat.maxHp);
 
     const busy = busyMessage(pet);
     if (busy) {
@@ -958,7 +1385,7 @@
       showToast('A mochila está sem essa comida.');
       return;
     }
-    if (pet.hunger > 90) {
+    if (pet.hunger > 90 && food.energy < 20 && !canRecoverHp) {
       showToast(`${pet.customName} já está satisfeito.`);
       return;
     }
@@ -968,12 +1395,22 @@
     pet.happiness = clamp(pet.happiness + food.happiness);
     pet.energy = clamp(pet.energy + food.energy);
     pet.bond = clamp(pet.bond + food.bond);
+    const healedHp = window.SuperPokegochiBattle?.restoreHp(
+      pet,
+      Math.max(0, Number(food.hpPercent) || 0) / 100,
+    ) || 0;
     systemAddXp(pet, food.xp);
     markPetCaredFor(pet);
-    pet.lastAction = `${pet.customName} comeu ${food.label}. +${food.xp} XP.`;
+    const rewards = [
+      `+${food.xp} XP`,
+      healedHp > 0 ? `+${healedHp} HP` : '',
+      food.energy >= 20 ? `+${food.energy} energia` : '',
+    ].filter(Boolean);
+    pet.lastAction = `${pet.customName} comeu ${food.label}. ${rewards.join(' · ')}.`;
     systemAddHistory(pet, food.historyIcon, pet.lastAction);
     pet.lastUpdate = now();
     selectedAction = 'feed';
+    void playSoundEffect('food');
     saveState();
     render();
     showToast(pet.lastAction);
@@ -984,6 +1421,327 @@
     }, 600);
   }
 
+  function minigameFoodCatalog() {
+    return FOOD_ITEMS.map(food => ({
+      assetUrl: new URL(`${ITEM_BASE_PATH}${food.asset}`, document.baseURI).href,
+      id: food.id,
+      label: food.label,
+    }));
+  }
+
+  function randomMinigameFoodId() {
+    const roll = Math.random();
+    if (roll < 0.01) return 'pineapple';
+    if (roll < 0.1) return 'watermelon';
+    return randomCommonFoodId();
+  }
+
+  function awardMinigameResult(result) {
+    const rewardReadyAt = Math.max(0, Number(state.minigames.rewardReadyAt) || 0);
+    const timestamp = now();
+    const pet = getPet();
+    const gameLabel = GAME_LABELS[result?.gameId] || 'um minigame';
+
+    if (result?.gameId === 'memory' && Number(result.lockUntil) > timestamp) {
+      state.minigames.memoryLockedUntil = Number(result.lockUntil);
+      pet.lastAction = `${pet.customName} perdeu todas as vidas em ${gameLabel}.`;
+      systemAddHistory(pet, '🎮', pet.lastAction);
+      saveState();
+      return {
+        canPlayAgain: pet.energy >= RULES.play.energyCost,
+        earned: false,
+        memoryLockedUntil: state.minigames.memoryLockedUntil,
+        message: 'As seis vidas acabaram: a Memória de Frutas ficará disponível novamente em 1 hora.',
+        rewardReadyAt,
+      };
+    }
+    if (!result || result.success !== true) {
+      if (result?.gameId) {
+        pet.lastAction = `${pet.customName} não concluiu ${gameLabel}.`;
+        systemAddHistory(pet, '🎮', pet.lastAction);
+        saveState();
+      }
+      return {
+        canPlayAgain: pet.energy >= RULES.play.energyCost,
+        earned: false,
+        memoryLockedUntil: state.minigames.memoryLockedUntil,
+        message: 'Complete a meta do jogo para receber comida e XP.',
+        rewardReadyAt,
+      };
+    }
+
+    if (timestamp < rewardReadyAt) {
+      pet.lastAction = `${pet.customName} concluiu ${gameLabel}, mas a recompensa ainda está em recarga.`;
+      systemAddHistory(pet, '🎮', pet.lastAction);
+      saveState();
+      return {
+        canPlayAgain: pet.energy >= RULES.play.energyCost,
+        earned: false,
+        message: `A próxima recompensa estará disponível em ${formatDuration(rewardReadyAt - timestamp)}.`,
+        rewardReadyAt,
+      };
+    }
+
+    const foodId = randomMinigameFoodId();
+    const food = FOOD_BY_ID[foodId];
+    const xp = Math.max(3, Math.min(8, Math.round(Number(result.xp) || 3)));
+    addFoodToBag(state, foodId, 1);
+    pet.happiness = clamp(pet.happiness + RULES.play.happiness);
+    pet.bond = clamp(pet.bond + RULES.play.bond);
+    systemAddXp(pet, xp);
+    markPetCaredFor(pet, timestamp);
+    state.minigames.lastCompletedAt = timestamp;
+    state.minigames.rewardReadyAt = timestamp + MINIGAME_REWARD_COOLDOWN_MS;
+    pet.lastUpdate = timestamp;
+    pet.lastAction = `${pet.customName} venceu ${gameLabel}. +1 ${food.label} e +${xp} XP.`;
+    systemAddHistory(pet, '🎮', pet.lastAction);
+    selectedAction = 'play';
+    saveState();
+    render();
+    setTimeout(() => {
+      if (selectedAction !== 'play') return;
+      selectedAction = null;
+      render();
+    }, 600);
+
+    return {
+      canPlayAgain: pet.energy >= RULES.play.energyCost,
+      earned: true,
+      food: {
+        assetUrl: new URL(`${ITEM_BASE_PATH}${food.asset}`, document.baseURI).href,
+        id: food.id,
+        label: food.label,
+      },
+      rewardReadyAt: state.minigames.rewardReadyAt,
+      memoryLockedUntil: state.minigames.memoryLockedUntil,
+      xp,
+    };
+  }
+
+  const GAME_LABELS = {
+    catch: 'Chuva de Frutas',
+    memory: 'Memória de Frutas',
+  };
+
+  function startMinigameAttempt({ gameId } = {}) {
+    const pet = getPet();
+    const gameLabel = GAME_LABELS[gameId] || 'um minigame';
+    if (pet.energy < RULES.play.energyCost) {
+      return { started: false };
+    }
+    const timestamp = now();
+    pet.energy = clamp(pet.energy - RULES.play.energyCost);
+    pet.hunger = clamp(pet.hunger - RULES.play.hungerCost);
+    pet.lastUpdate = timestamp;
+    markPetCaredFor(pet, timestamp);
+    pet.lastAction = `${pet.customName} começou ${gameLabel}. -${RULES.play.energyCost} energia.`;
+    systemAddHistory(pet, '🎮', pet.lastAction);
+    saveState();
+    return {
+      canPlayAgain: pet.energy >= RULES.play.energyCost,
+      started: true,
+    };
+  }
+
+  function openPlayMinigames(pet) {
+    const minigames = window.SuperPokegochiMinigames;
+    if (!minigames || typeof minigames.open !== 'function') {
+      return 'Os minigames ainda não terminaram de carregar.';
+    }
+
+    statusOpen = false;
+    companionsOpen = false;
+    moreOpen = false;
+    foodOpen = false;
+    minigames.open({
+      backIconUrl: new URL('assets/arrow-ios-back.svg', document.baseURI).href,
+      companionName: pet.customName,
+      foods: minigameFoodCatalog(),
+      onComplete: awardMinigameResult,
+      onStart: startMinigameAttempt,
+      onExit: () => {
+        selectedAction = null;
+        render();
+      },
+      rewardReadyAt: state.minigames.rewardReadyAt,
+      memoryLockedUntil: state.minigames.memoryLockedUntil,
+    });
+    return false;
+  }
+
+  function openBattleTraining(pet) {
+    const battle = window.SuperPokegochiBattle;
+    if (!battle) return 'A batalha ainda está carregando. Tente novamente em instantes.';
+    const species = getDex();
+    const appearance = getAppearance(species, pet);
+    statusOpen = false;
+    moreOpen = false;
+    foodOpen = false;
+    battleMenuOpen = false;
+
+    const opened = battle.open({
+      pet,
+      dexNumber: battleDexNumber(appearance),
+      speciesName: appearance.name,
+      visual: appearance,
+      dexCatalog: DEX,
+      onStarted() {
+        pet.energy = clamp(pet.energy - 15);
+        pet.hunger = clamp(pet.hunger - 6);
+        markPetCaredFor(pet);
+        pet.lastUpdate = now();
+        saveState();
+      },
+      onProgress({ currentHp }) {
+        if (!pet.battle || typeof pet.battle !== 'object') pet.battle = {};
+        pet.battle.currentHp = Math.max(0, Math.round(Number(currentHp) || 0));
+        saveState();
+      },
+      onComplete(result) {
+        if (!pet.battle || typeof pet.battle !== 'object') pet.battle = {};
+        pet.battle.currentHp = Math.max(1, Math.round(Number(result.currentHp) || 1));
+        pet.battle.battleHistory = [
+          {
+            at: now(),
+            enemyLevel: result.enemyLevel,
+            enemyName: result.enemyName,
+            outcome: result.outcome,
+            xp: result.xp,
+          },
+          ...(Array.isArray(pet.battle.battleHistory) ? pet.battle.battleHistory : []),
+        ].slice(0, 12);
+
+        if (result.outcome === 'victory') {
+          pet.happiness = clamp(pet.happiness + 4);
+          pet.bond = clamp(pet.bond + 2);
+          pet.lastAction = `${pet.customName} venceu ${result.enemyName}. +${result.xp} XP.`;
+        } else if (result.outcome === 'defeat') {
+          pet.happiness = clamp(pet.happiness - 2);
+          pet.bond = clamp(pet.bond + 1);
+          pet.lastAction = `${pet.customName} perdeu para ${result.enemyName} e precisa descansar. +${result.xp} XP.`;
+        } else {
+          pet.lastAction = `${pet.customName} saiu da batalha contra ${result.enemyName}.`;
+        }
+        systemAddXp(pet, result.xp);
+        markPetCaredFor(pet);
+        pet.lastUpdate = now();
+        systemAddHistory(pet, '⚔️', pet.lastAction);
+        saveState();
+      },
+      onExit() {
+        selectedAction = null;
+        render();
+      },
+    });
+
+    return opened ? false : 'Não foi possível abrir a batalha agora.';
+  }
+
+  function battleTrainingBlocker(pet) {
+    const busy = busyMessage(pet);
+    if (busy) return busy;
+    if (pet.energy < 20) return 'Seu companheiro precisa de pelo menos 20 de energia para batalhar.';
+    if (pet.hunger <= 10) return 'Seu companheiro precisa comer antes de batalhar.';
+    const battle = battleSnapshot(pet);
+    if (battle && battle.currentHp <= battle.maxHp * 0.2) {
+      return 'Seu companheiro precisa recuperar mais de 20% do HP antes de batalhar.';
+    }
+    return '';
+  }
+
+  function openBattleMenu() {
+    statusOpen = false;
+    companionsOpen = false;
+    moreOpen = false;
+    foodOpen = false;
+    battleMenuOpen = true;
+    battleMenuTab = 'train';
+    battleHistoryVisibleCount = 5;
+    return false;
+  }
+
+  function battleHistoryResult(outcome) {
+    if (outcome === 'victory') return { label: 'Vitória', className: 'victory' };
+    if (outcome === 'defeat') return { label: 'Derrota', className: 'defeat' };
+    return { label: 'Fuga', className: 'fled' };
+  }
+
+  function renderBattleTrainingMenu(pet, appearance, combat) {
+    if (!battleMenuOpen) return '';
+    const history = Array.isArray(pet.battle?.battleHistory) ? pet.battle.battleHistory : [];
+    const visibleHistory = history.slice(0, battleHistoryVisibleCount);
+    const hasMoreHistory = history.length > visibleHistory.length;
+    const blocker = battleTrainingBlocker(pet);
+    const hpPercent = combat ? Math.max(0, Math.min(100, (combat.currentHp / combat.maxHp) * 100)) : 100;
+    const historyMarkup = visibleHistory.length
+      ? `<div class="battle-menu-history-list">${visibleHistory.map(item => {
+        const result = battleHistoryResult(item.outcome);
+        return `
+          <article class="battle-menu-history-row">
+            <span class="battle-history-result ${result.className}">${result.label}</span>
+            <div>
+              <b>${escapeHtml(item.enemyName || 'Pokémon selvagem')}</b>
+              <small>Nv. ${Math.max(1, Math.round(Number(item.enemyLevel) || 1))} · ${formatBattleDate(item.at)}</small>
+            </div>
+            <strong>+${Math.max(0, Math.round(Number(item.xp) || 0))} XP</strong>
+          </article>`;
+      }).join('')}</div>
+        ${hasMoreHistory
+          ? `<button class="battle-history-more" type="button" data-battle-history-more>Carregar mais</button>`
+          : '<p class="battle-history-end">Fim do histórico de batalhas</p>'}`
+      : `<div class="battle-history-empty">
+          <b>Nenhuma batalha ainda</b>
+          <p>Depois do primeiro treino, o resultado aparecerá aqui.</p>
+        </div>`;
+
+    return `
+      <div class="battle-menu-overlay" role="dialog" aria-modal="true" aria-labelledby="battle-menu-title">
+        <section class="battle-menu-panel">
+          <header class="battle-menu-header">
+            <div>
+              <small>Centro de treinamento</small>
+              <h2 id="battle-menu-title">Treino de batalha</h2>
+            </div>
+            <button type="button" data-battle-menu-close aria-label="Fechar centro de treinamento">×</button>
+          </header>
+
+          <div class="battle-menu-tabs" role="tablist" aria-label="Opções do treino">
+            <button type="button" role="tab" data-battle-menu-tab="train" aria-selected="${battleMenuTab === 'train'}" class="${battleMenuTab === 'train' ? 'active' : ''}">Treinar</button>
+            <button type="button" role="tab" data-battle-menu-tab="history" aria-selected="${battleMenuTab === 'history'}" class="${battleMenuTab === 'history' ? 'active' : ''}">
+              Histórico <span>${history.length}</span>
+            </button>
+          </div>
+
+          ${battleMenuTab === 'train'
+            ? `<div class="battle-menu-content" role="tabpanel">
+                <div class="battle-menu-companion">
+                  <span class="battle-menu-avatar">${renderPokemonVisual(appearance, 'battle-menu-sprite', appearance.name)}</span>
+                  <div>
+                    <b>${escapeHtml(pet.customName)}</b>
+                    <small>Nível ${pet.level} · adversário compatível</small>
+                  </div>
+                </div>
+                <div class="battle-menu-vitals" aria-label="Condição para o treino">
+                  <span><small>HP</small><b>${combat ? `${combat.currentHp}/${combat.maxHp}` : '—'}</b><i><em style="width:${hpPercent}%"></em></i></span>
+                  <span><small>Energia</small><b>${Math.round(pet.energy)}</b></span>
+                  <span><small>Fome</small><b>${Math.round(pet.hunger)}</b></span>
+                </div>
+                <p class="battle-menu-description">Enfrente um Pokémon próximo do seu nível. Entrar na batalha consome 15 de energia e 6 de fome.</p>
+                <button class="battle-menu-start" type="button" data-battle-start ${blocker ? 'disabled' : ''}>
+                  <img src="${ITEM_BASE_PATH}action-train.png" alt="">
+                  <b>Treinar</b>
+                </button>
+                ${blocker
+                  ? `<p class="battle-menu-blocker" role="status">${escapeHtml(blocker)}</p>`
+                  : '<p class="battle-menu-ready">Seu companheiro está pronto para batalhar.</p>'}
+              </div>`
+            : `<div class="battle-menu-content battle-menu-history" role="tabpanel">
+                ${historyMarkup}
+              </div>`}
+        </section>
+      </div>`;
+  }
+
   const SYSTEM_ACTIONS = {
     play: {
       label: 'Brincar',
@@ -992,17 +1750,8 @@
       run(pet) {
         const busy = busyMessage(pet);
         if (busy) return busy;
-        if (pet.energy < 8) return 'Seu companheiro está cansado demais para brincar.';
-
-        pet.happiness = clamp(pet.happiness + RULES.play.happiness);
-        pet.energy = clamp(pet.energy + RULES.play.energy);
-        pet.hunger = clamp(pet.hunger + RULES.play.hunger);
-        pet.bond = clamp(pet.bond + RULES.play.bond);
-        systemAddXp(pet, RULES.play.xp);
-        markPetCaredFor(pet);
-        pet.lastAction = `${pet.customName} brincou com você. +${RULES.play.xp} XP.`;
-        systemAddHistory(pet, '🎾', pet.lastAction);
-        return null;
+        if (pet.energy < RULES.play.energyCost) return `Seu companheiro precisa de pelo menos ${RULES.play.energyCost} de energia para brincar.`;
+        return openPlayMinigames(pet);
       },
     },
     sleep: {
@@ -1015,7 +1764,9 @@
           wakePet(pet);
           return null;
         }
-        if (pet.energy < 70) {
+        const battle = battleSnapshot(pet);
+        const needsHpRecovery = Boolean(battle && battle.currentHp < battle.maxHp);
+        if (pet.energy < 70 || needsHpRecovery) {
           startSleep(pet, false);
           return null;
         }
@@ -1030,14 +1781,8 @@
       label: 'Treinar',
       short: 'Treino',
       asset: 'action-train.png',
-      run(pet) {
-        const busy = busyMessage(pet);
-        if (busy) return busy;
-        if (pet.energy <= 18) return 'Seu companheiro está cansado demais para treinar.';
-        if (pet.hunger <= 15) return 'Seu companheiro precisa comer antes de treinar.';
-
-        startTrainingGame();
-        return false;
+      run() {
+        return openBattleMenu();
       },
     },
   };
@@ -1048,7 +1793,12 @@
     selectedAction = key === 'sleep' && pet.sleeping ? 'wake' : key;
     const message = SYSTEM_ACTIONS[key].run(pet);
     pet.lastUpdate = now();
-    const shouldAnimate = !trainingGame;
+    const shouldAnimate = (
+      !trainingGame
+      && !window.SuperPokegochiMinigames?.isOpen()
+      && !window.SuperPokegochiBattle?.isOpen()
+      && !battleMenuOpen
+    );
     if (trainingGame) selectedAction = null;
     saveState();
     render();
@@ -1066,6 +1816,13 @@
   function systemMoodFor(pet) {
     if (pet.training) return { label: 'Treinando', icon: '🏅', className: 'focused', note: `treina por mais ${formatDuration(pet.training.endsAt - now())}.` };
     if (pet.sleeping) return { label: 'Descansando', icon: '💤', className: 'sleepy', note: 'está recuperando energia.' };
+    if (
+      pet.battle
+      && Number(pet.battle.lastMaxHp) > 0
+      && Number(pet.battle.currentHp) <= Number(pet.battle.lastMaxHp) * 0.2
+    ) {
+      return { label: 'Machucado', icon: '❤️', className: 'danger', note: 'precisa descansar para recuperar HP.' };
+    }
     if (pet.hunger < 25) return { label: 'Com fome', icon: '🍎', className: 'danger', note: 'precisa comer antes de novas aventuras.' };
     if (pet.energy < 20) return { label: 'Cansado', icon: '💤', className: 'sleepy', note: 'quer descansar um pouco.' };
     if (pet.happiness < 35) return { label: 'Carente', icon: '💛', className: 'warning', note: 'quer atenção.' };
@@ -1159,37 +1916,250 @@
             return `
               <button class="food-item ${food.rarity}" type="button" data-feed-food="${food.id}" ${count <= 0 ? 'disabled' : ''}>
                 <span class="food-pixel-icon"><img src="${ITEM_BASE_PATH}${food.asset}" alt=""></span>
-                <b>${food.label}</b>
-                <small>+${food.hunger} fome · +${food.xp} XP · x${count}</small>
+                <span class="food-name-row">
+                  <b>${food.label}</b>
+                  <em class="food-tier ${food.rarity}">${FOOD_RARITY_LABELS[food.rarity]}</em>
+                </span>
+                <small>+${food.hpPercent}% HP · +${food.hunger} fome</small>
+                <small>${food.energy >= 20 ? `+${food.energy} energia · ` : ''}+${food.xp} XP · x${count}</small>
               </button>`;
           }).join('')}
         </div>
-        ${pet.hunger > 90 ? `<p class="tray-note">${pet.customName} já está satisfeito.</p>` : ''}
+        ${pet.hunger > 90 ? `<p class="tray-note">${pet.customName} já está satisfeito, mas ainda pode comer para recuperar HP ou usar o Abacaxi Energia.</p>` : ''}
       </div>`;
+  }
+
+  function battleHpRow(snapshot) {
+    if (!snapshot) return '';
+    const percent = Math.max(0, Math.min(100, snapshot.currentHp / Math.max(1, snapshot.maxHp) * 100));
+    const tone = percent <= 20 ? 'danger' : percent <= 45 ? 'warning' : '';
+    return `
+      <div class="stat-row hp-status-row">
+        <div class="stat-label"><span class="combat-stat-icon" aria-hidden="true">♥</span>HP</div>
+        <div class="stat-track hp-status-track ${tone}"><i style="width:${percent}%"></i></div>
+        <strong>${snapshot.currentHp}/${snapshot.maxHp}</strong>
+      </div>`;
+  }
+
+  function battleStatSummary(snapshot) {
+    if (!snapshot) return '';
+    return `
+      <div class="combat-summary" aria-label="Atributos de batalha">
+        <span><small>ATQ</small><b>${Math.max(snapshot.stats.attack, snapshot.stats.specialAttack)}</b></span>
+        <span><small>DEF</small><b>${Math.max(snapshot.stats.defense, snapshot.stats.specialDefense)}</b></span>
+        <span><small>VEL</small><b>${snapshot.stats.speed}</b></span>
+      </div>`;
+  }
+
+  function battleDisplayName(value) {
+    return String(value || '')
+      .split('-')
+      .filter(Boolean)
+      .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(' ');
+  }
+
+  function renderMoveLoadout(pet, appearance, snapshot) {
+    const battle = window.SuperPokegochiBattle;
+    if (!battle?.getLearnedMoves || !snapshot.dataReady) {
+      return `
+        <section class="move-loadout" aria-label="Golpes equipados">
+          <div class="move-loadout-head">
+            <span><b>Golpes equipados</b><small>Carregando golpes aprendidos...</small></span>
+            <button type="button" disabled>Trocar habilidades</button>
+          </div>
+        </section>`;
+    }
+
+    const dexNumber = battleDexNumber(appearance);
+    const learnedMoves = battle.getLearnedMoves(pet, dexNumber, appearance.name);
+    const learnedById = new Map(learnedMoves.map(move => [move.id, move]));
+    const equippedIds = snapshot.equippedMoves
+      .filter(moveId => learnedById.has(moveId))
+      .filter((moveId, index, moveIds) => moveIds.indexOf(moveId) === index)
+      .slice(0, 4);
+    const fallbackIds = learnedMoves.slice(-Math.min(4, learnedMoves.length)).map(move => move.id);
+    const visibleEquippedIds = equippedIds.length ? equippedIds : fallbackIds;
+    const requiredCount = Math.min(4, learnedMoves.length);
+
+    if (!moveEditorOpen) {
+      return `
+        <section class="move-loadout" aria-label="Golpes equipados">
+          <div class="move-loadout-head">
+            <span><b>Golpes equipados</b><small>Use até quatro golpes aprendidos</small></span>
+            <button type="button" data-open-move-editor>Trocar habilidades</button>
+          </div>
+          <div class="equipped-move-list">
+            ${visibleEquippedIds.map(moveId => `
+              <span>${escapeHtml(learnedById.get(moveId)?.name || battleDisplayName(moveId))}</span>
+            `).join('')}
+          </div>
+        </section>`;
+    }
+
+    const selectedIds = moveSelectionDraft.filter(moveId => learnedById.has(moveId)).slice(0, 4);
+    return `
+      <section class="move-loadout editing" aria-label="Trocar habilidades">
+        <div class="move-loadout-head">
+          <span>
+            <b>Escolha os golpes</b>
+            <small>${selectedIds.length}/${requiredCount} selecionados · apenas golpes já aprendidos</small>
+          </span>
+        </div>
+        <div class="learned-move-list">
+          ${learnedMoves.map(move => {
+            const selected = selectedIds.includes(move.id);
+            return `
+              <button
+                class="${selected ? 'selected' : ''}"
+                type="button"
+                data-toggle-learned-move="${escapeHtml(move.id)}"
+                aria-pressed="${selected}"
+              >
+                <b>${escapeHtml(move.name)}</b>
+                <small>Aprendido no Nv. ${move.level}</small>
+              </button>`;
+          }).join('')}
+        </div>
+        <div class="move-editor-actions">
+          <button type="button" data-cancel-move-editor>Cancelar</button>
+          <button
+            class="primary"
+            type="button"
+            data-save-move-selection
+            ${selectedIds.length !== requiredCount ? 'disabled' : ''}
+          >Salvar habilidades</button>
+        </div>
+      </section>`;
+  }
+
+  function renderSkillsPanel(pet, appearance, snapshot) {
+    if (!snapshot) {
+      return '<p class="skills-empty">Os atributos de batalha ainda estão carregando.</p>';
+    }
+    const battle = window.SuperPokegochiBattle;
+    const keys = battle?.attributeKeys || ['attack', 'defense', 'speed', 'vitality'];
+    const labels = battle?.attributeLabels || {
+      attack: 'Ataque',
+      defense: 'Defesa',
+      speed: 'Velocidade',
+      vitality: 'Vitalidade',
+    };
+    const typeText = snapshot.types.map(type => battle?.typeLabel(type) || battleDisplayName(type)).join(' / ');
+    const abilityText = snapshot.abilities.length
+      ? snapshot.abilities.map(ability => battleDisplayName(ability.name)).join(', ')
+      : 'Será carregada na primeira conexão';
+
+    return `
+      <div class="skills-panel">
+        <div class="skills-points">
+          <span><small>Pontos disponíveis</small><b>${snapshot.availablePoints}</b></span>
+          <p>Você ganha <strong>1 ponto</strong> sempre que sobe de nível.</p>
+        </div>
+        ${renderMoveLoadout(pet, appearance, snapshot)}
+        <div class="attribute-list">
+          ${keys.map(key => `
+            <div class="attribute-row">
+              <span>
+                <b>${labels[key] || battleDisplayName(key)}</b>
+                <small>${key === 'vitality' ? '+5 HP máximo' : '+2 no atributo'}</small>
+              </span>
+              <strong>${snapshot.attributes[key] || 0}</strong>
+              <button
+                type="button"
+                data-allocate-attribute="${key}"
+                aria-label="Adicionar um ponto em ${labels[key] || key}"
+                ${snapshot.availablePoints <= 0 ? 'disabled' : ''}
+              >+</button>
+            </div>`).join('')}
+        </div>
+        <div class="derived-stats">
+          <div class="derived-title"><b>Status calculados</b><small>${typeText}</small></div>
+          <dl>
+            <div><dt>HP</dt><dd>${snapshot.maxHp}</dd></div>
+            <div><dt>Ataque</dt><dd>${snapshot.stats.attack}</dd></div>
+            <div><dt>Atq. Esp.</dt><dd>${snapshot.stats.specialAttack}</dd></div>
+            <div><dt>Defesa</dt><dd>${snapshot.stats.defense}</dd></div>
+            <div><dt>Def. Esp.</dt><dd>${snapshot.stats.specialDefense}</dd></div>
+            <div><dt>Velocidade</dt><dd>${snapshot.stats.speed}</dd></div>
+          </dl>
+        </div>
+        <p class="battle-data-note">
+          <span>${snapshot.dataReady ? '✓' : '↻'}</span>
+          ${snapshot.dataReady && snapshot.dataSource === 'official'
+            ? `Dados oficiais carregados · Habilidades naturais: ${escapeHtml(abilityText)}`
+            : snapshot.dataReady
+              ? `Modo offline ativo · ${escapeHtml(appearance.name)} usa valores equilibrados de reserva.`
+              : `Usando valores equilibrados enquanto os dados de ${escapeHtml(appearance.name)} carregam.`}
+        </p>
+      </div>`;
+  }
+
+  function worldItemX(item, yPercent) {
+    const rawX = clamp(Number(item.x) || 50, 9, 91);
+    const hash = String(item.id || '').split('').reduce((total, character) => total + character.charCodeAt(0), 0);
+
+    if (yPercent >= 72 && (rawX < 28 || rawX > 72)) {
+      return 36 + (hash % 29);
+    }
+
+    if (yPercent >= 25 && yPercent < 72 && rawX >= 28 && rawX <= 72) {
+      return hash % 2 === 0 ? 16 + (hash % 11) : 74 + (hash % 11);
+    }
+
+    return rawX;
   }
 
   function renderWorldLayer(timestamp = now()) {
     const world = state.world || systemDefaultWorld();
+    const estimatedCampHeight = clamp(
+      window.innerHeight - (window.innerWidth <= 420 ? 262 : 284),
+      330,
+      612,
+    );
     const leaves = world.leaves.map(item => {
       const fallDuration = Math.max(1, Number(item.fallDuration) || 7000);
       const elapsed = Math.max(0, Math.min(fallDuration, timestamp - Number(item.spawnedAt || timestamp)));
       const falling = timestamp < Number(item.settledAt);
-      const itemBottom = Number(item.bottom) || 30;
-      const estimatedCampHeight = clamp(window.innerHeight - (window.innerWidth <= 420 ? 262 : 284), 330, 612);
-      const fallDistance = Math.round(estimatedCampHeight - itemBottom + 48);
+      const storedY = Number(item.y);
+      const legacyBottom = Number(item.bottom);
+      const itemY = Number.isFinite(storedY)
+        ? clamp(storedY, 8, 84)
+        : clamp(((Number.isFinite(legacyBottom) ? legacyBottom : 30) / estimatedCampHeight) * 100, 8, 84);
+      const itemX = worldItemX(item, itemY);
+      const fallDistance = Math.round(estimatedCampHeight * (1 - itemY / 100) + 58);
       return `
-        <button class="world-item world-leaf ${falling ? 'falling' : 'settled'}" type="button" data-collect-leaf="${item.id}" aria-label="Coletar folha e ganhar 2 XP" style="--item-x:${Number(item.x) || 50}%;--item-bottom:${itemBottom}px;--fall-start:-${fallDistance}px;--leaf-rotation:${Number(item.rotation) || 0}deg;--fall-duration:${fallDuration}ms;--fall-delay:-${elapsed}ms">
+        <button
+          class="world-item world-leaf ${falling ? 'falling' : 'settled'}"
+          type="button"
+          data-collect-leaf="${item.id}"
+          aria-label="Coletar folha e ganhar 1 XP"
+          style="--item-x:${itemX}%;--item-bottom:${itemY}%;--fall-start:-${fallDistance}px;--leaf-rotation:${Number(item.rotation) || 0}deg;--fall-duration:${fallDuration}ms;--fall-delay:-${elapsed}ms"
+        >
           <img src="${ITEM_BASE_PATH}leaf-${item.variant === 2 ? 2 : 1}.png" alt="">
         </button>`;
     }).join('');
     const foodDrops = world.foodDrops.map(item => {
       const food = FOOD_BY_ID[item.foodId];
       if (!food) return '';
+      const storedY = Number(item.y);
+      const legacyBottom = Number(item.bottom);
+      const itemY = Number.isFinite(storedY)
+        ? clamp(storedY, 10, 82)
+        : clamp(((Number.isFinite(legacyBottom) ? legacyBottom : 36) / estimatedCampHeight) * 100, 10, 82);
+      const itemX = worldItemX(item, itemY);
       return `
-        <button class="world-item world-food" type="button" data-collect-food="${item.id}" aria-label="Guardar ${food.label} na mochila" style="--item-x:${Number(item.x) || 50}%;--item-bottom:${Number(item.bottom) || 36}px">
+        <button
+          class="world-item world-food"
+          type="button"
+          data-collect-food="${item.id}"
+          aria-label="Guardar ${food.label} na mochila"
+          style="--item-x:${itemX}%;--item-bottom:${itemY}%"
+        >
           <img src="${ITEM_BASE_PATH}${food.asset}" alt="">
         </button>`;
     }).join('');
+
     return `<div class="world-layer" role="group" aria-label="Itens no gramado">${leaves}${foodDrops}</div>`;
   }
 
@@ -1198,8 +2168,12 @@
     if (dirtLevel <= 0) return '';
     return `
       <div class="dirt-layer" aria-label="Sujeira acumulada">
-        ${Array.from({ length: dirtLevel }, (_, index) => `
-          <button type="button" data-clean-dirt aria-label="Limpar a sujeira do gramado">
+        ${[
+          { x: 19, y: 24, rotation: -7 },
+          { x: 78, y: 62, rotation: 8 },
+          { x: 67, y: 18, rotation: -2 },
+        ].slice(0, dirtLevel).map((position, index) => `
+          <button type="button" data-clean-dirt aria-label="Limpar a sujeira do gramado" style="--dirt-x:${position.x}%;--dirt-y:${position.y}%;--dirt-rotation:${position.rotation}deg">
             <img src="${ITEM_BASE_PATH}dirt-${index + 1}.png" alt="">
           </button>`).join('')}
       </div>`;
@@ -1212,13 +2186,14 @@
     const palette = pet.appearancePalette === 'shiny' && shinyUnlocked ? 'shiny' : 'normal';
     const currentForm = getForm(mon, pet.activeAppearance);
     const currentShinyReady = isFormAssetReady(mon, currentForm, 'shiny');
+    const notificationsEnabled = getPokegochiNotificationPreference();
     return `
       <div class="appearance-panel">
         <button class="change-companion" type="button" data-companions-toggle aria-label="Alterar Pokémon companheiro">
           <span class="change-companion-icon" aria-hidden="true"><i></i></span>
           <span class="change-companion-copy">
             <b>Alterar Pokémon companheiro</b>
-            <small>Escolha qualquer Pokémon</small>
+            <small>${embeddedInSite ? 'Troque entre os 5 do Time ou pesquise outro' : 'Troque entre seus 6 cuidados ou pesquise outro'}</small>
           </span>
           <span class="change-companion-arrow" aria-hidden="true">›</span>
         </button>
@@ -1238,6 +2213,21 @@
             </button>
           </div>
         </div>
+        ${embeddedInSite ? `<div class="pokegochi-notification-block">
+          <span>
+            <b>Lembretes de cuidado</b>
+            <small>Receba um aviso quando seu companheiro precisar de atenção.</small>
+          </span>
+          <button
+            aria-pressed="${notificationsEnabled}"
+            class="${notificationsEnabled ? 'active' : ''}"
+            data-pokegochi-notification-toggle
+            type="button"
+          >
+            <i aria-hidden="true"></i>
+            <b>${notificationsEnabled ? 'Ativado' : 'Desativado'}</b>
+          </button>
+        </div>` : ''}
         <p class="appearance-note">O nível e os cuidados são compartilhados entre todas as formas do Pokémon.</p>
         <div class="appearance-list">
           ${forms.map(form => {
@@ -1250,8 +2240,11 @@
             let ariaLabel = `Usar aparência ${form.name}`;
             if (selected) stateLabel = 'Em uso';
             else if (!unlocked) {
-              stateLabel = 'Bloqueado';
-              ariaLabel = `${form.name} bloqueado até o nível ${form.unlockLevel}`;
+              const requirementReady = meetsEvolutionRequirement(pet, form);
+              stateLabel = requirementReady ? 'Evolua para liberar' : 'Bloqueado';
+              ariaLabel = requirementReady
+                ? `${form.name} pronto para evoluir`
+                : `${form.name} bloqueado até o nível ${form.unlockLevel}`;
             }
             else if (!assetReady) stateLabel = 'Sprite pendente';
             if (selected) ariaLabel = `${form.name} em uso`;
@@ -1349,7 +2342,7 @@
     if (pet.sleeping) {
       return `
         <div class="activity-card sleeping-card">
-          <div class="activity-copy"><span class="activity-pixel-icon"><img src="${ITEM_BASE_PATH}action-rest.png" alt=""></span><div><b>Descansando</b><small>+${RULES.sleepEnergyPerTick} energia e +${RULES.sleepXpPerTick} XP a cada 30 minutos.${pet.sleepXpEarned > 0 ? ` XP deste descanso: ${pet.sleepXpEarned}.` : ''}</small></div></div>
+          <div class="activity-copy"><span class="activity-pixel-icon"><img src="${ITEM_BASE_PATH}action-rest.png" alt=""></span><div><b>Descansando</b><small>+${RULES.sleepEnergyPerTick} energia e +${RULES.sleepXpPerTick} XP a cada hora.${pet.sleepXpEarned > 0 ? ` XP deste descanso: ${pet.sleepXpEarned}.` : ''}</small></div></div>
           <div class="activity-bar"><i style="width:${pet.energy}%"></i></div>
         </div>`;
     }
@@ -1391,6 +2384,23 @@
       .replace(/[^a-z0-9]/g, '');
   }
 
+  function companionRootSpecies(species) {
+    if (!species || species.selectable !== false) return species;
+    return DEX.find(mon => mon.dexNumber === species.evolutionRootDexNumber) || species;
+  }
+
+  function companionRequestedForm(species, rootSpecies) {
+    return getForms(rootSpecies).find(form => form.id === species.id) || getForms(rootSpecies)[0];
+  }
+
+  function canSearchCompanion(species) {
+    if (species.selectable !== false) return true;
+    const rootSpecies = companionRootSpecies(species);
+    const pet = state.pets[rootSpecies.id];
+    const requestedForm = companionRequestedForm(species, rootSpecies);
+    return Boolean(pet && isFormUnlocked(pet, requestedForm));
+  }
+
   function companionSearchData() {
     const rawQuery = companionQuery.trim();
     const numericMatch = rawQuery.match(/^#?0*(\d+)$/);
@@ -1411,9 +2421,7 @@
         return haystack.some(value => value.includes(query));
       });
     } else {
-      const selected = getDex();
-      const selectableSpecies = DEX.filter(mon => mon.selectable !== false);
-      matches = [selected, ...selectableSpecies.filter(mon => mon.id !== selected.id)];
+      matches = DEX;
     }
     return {
       total: matches.length,
@@ -1421,47 +2429,107 @@
     };
   }
 
-  function systemMiniCompanion(mon) {
-    const evolutionLocked = mon.selectable === false;
-    const evolvesFrom = evolutionLocked
-      ? DEX.find(candidate => candidate.dexNumber === mon.evolvesFromDexNumber)
-      : null;
-    const evolvesFromName = evolvesFrom ? evolvesFrom.name : `#${mon.evolvesFromDexNumber}`;
-    const pet = state.pets[mon.id] || systemDefaultPet(mon);
-    if (!evolutionLocked) systemApplyOfflineDecay(pet);
+  function companionRosterEntries() {
+    if (!embeddedInSite) {
+      return state.roster.slice(0, 6).map(rootId => {
+        const species = getDex(rootId);
+        const pet = state.pets[rootId] || systemDefaultPet(species);
+        const appearance = getAppearance(species, pet);
+        return {
+          displayId: appearance.id,
+          rootId: species.id,
+          source: 'roster',
+        };
+      });
+    }
+
+    const activeSpecies = getDex();
+    const activePet = getPet();
+    const activeAppearance = getAppearance(activeSpecies, activePet);
+    const active = {
+      displayId: activeAppearance.id,
+      rootId: activeSpecies.id,
+      source: 'roster',
+    };
+    const visualSlots = state.favoriteTeam.map(displayId => {
+      const species = getDex(displayId);
+      return {
+        displayId: species.id,
+        rootId: companionRootSpecies(species).id,
+        source: 'favorite',
+      };
+    });
+    return [active, ...visualSlots].slice(0, 5);
+  }
+
+  function systemMiniCompanion(entry) {
+    const species = getDex(entry.displayId);
+    const rootSpecies = companionRootSpecies(species);
+    const storedPet = state.pets[rootSpecies.id];
+    const requestedForm = companionRequestedForm(species, rootSpecies);
+    const isSearch = entry.source === 'search';
+    const evolutionLocked = species.selectable === false && !canSearchCompanion(species);
+    const hasProgressForForm = Boolean(
+      storedPet
+      && (species.selectable !== false || isFormUnlocked(storedPet, requestedForm))
+    );
+    const pet = storedPet || systemDefaultPet(rootSpecies);
+    if (storedPet) systemApplyOfflineDecay(pet);
     const mood = systemMoodFor(pet);
-    const low = !evolutionLocked && (pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30);
-    const appearance = getAppearance(mon, pet);
-    const dexLabel = mon.dexNumber ? `#${String(mon.dexNumber).padStart(3, '0')}` : mon.id;
-    const detail = evolutionLocked
-      ? `Evolução de ${evolvesFromName}`
-      : `${mood.icon} ${mood.label} · Nv. ${pet.level}`;
-    const selectionAttributes = evolutionLocked
-      ? `data-select="${mon.id}" aria-label="Selecionar a linha evolutiva de ${mon.name}"`
-      : `data-select="${mon.id}" aria-label="Selecionar ${mon.name}"`;
+    const low = hasProgressForForm && (pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30);
+    const visual = { ...rootSpecies, ...requestedForm, id: species.id, name: species.name };
+    const dexLabel = species.dexNumber ? `#${String(species.dexNumber).padStart(3, '0')}` : species.id;
+    let detail;
+    if (evolutionLocked) detail = 'Bloqueado · evolua no Tamagotchi';
+    else if (hasProgressForForm) detail = `${mood.icon} ${mood.label} · Nv. ${pet.level}`;
+    else if (entry.source === 'favorite') detail = 'Favorito visual · Sem progresso';
+    else detail = 'Novo cuidado · Nível 1';
+    const selectionAttributes = evolutionLocked && isSearch
+      ? 'disabled aria-disabled="true"'
+      : `data-select="${species.id}" data-select-source="${entry.source}" aria-label="Selecionar ${species.name}"`;
     return `
-      <button class="companion-row ${state.selected === mon.id ? 'active' : ''} ${evolutionLocked ? 'evolution-locked' : ''}" type="button" ${selectionAttributes}>
-        <span class="mini-orb ${low ? 'needs-care' : ''}">${renderPokemonVisual(appearance, 'mini-sprite', appearance.name)}</span>
-        <span class="companion-copy"><b>${mon.name}</b><small>${dexLabel} · ${detail}</small></span>
+      <button class="companion-row ${entry.source === 'roster' && state.selected === rootSpecies.id ? 'active' : ''} ${evolutionLocked ? 'evolution-locked' : ''} ${entry.source === 'favorite' ? 'visual-favorite' : ''}" type="button" ${selectionAttributes}>
+        <span class="mini-orb ${low ? 'needs-care' : ''}">${renderPokemonVisual(visual, 'mini-sprite', species.name)}</span>
+        <span class="companion-copy"><b>${species.name}</b><small>${dexLabel} · ${detail}</small></span>
         <span class="companion-chevron" aria-hidden="true">›</span>
       </button>`;
   }
 
   function companionResultsMarkup() {
+    if (!companionSearchOpen) {
+      const entries = companionRosterEntries();
+      const rosterLimit = embeddedInSite ? 5 : 6;
+      return {
+        summary: embeddedInSite
+          ? `${entries.length}/${rosterLimit} Pokémon no Time`
+          : `${entries.length}/${rosterLimit} Pokémon cuidados`,
+        html: entries.length
+          ? entries.map(systemMiniCompanion).join('')
+          : '<div class="companion-empty"><b>Nenhum Pokémon cuidado</b><small>Use a pesquisa para escolher o primeiro.</small></div>',
+      };
+    }
+
     const results = companionSearchData();
     return {
       summary: companionQuery.trim()
         ? `${results.total} ${results.total === 1 ? 'resultado' : 'resultados'}`
-        : `${DEX.length} Pokémon no catálogo`,
+        : 'Escolha uma forma inicial ou evolução já desbloqueada',
       html: results.visible.length
-        ? results.visible.map(systemMiniCompanion).join('')
+        ? results.visible.map(species => systemMiniCompanion({
+            displayId: species.id,
+            rootId: companionRootSpecies(species).id,
+            source: 'search',
+          })).join('')
         : '<div class="companion-empty"><b>Nenhum Pokémon encontrado</b><small>Tente outro nome ou número.</small></div>',
     };
   }
 
   function bindCompanionRows(scope = document) {
     scope.querySelectorAll('[data-select]').forEach(btn => {
-      btn.addEventListener('click', () => systemSelectPet(btn.dataset.select));
+      btn.addEventListener('click', () => requestCompanionSelection(
+        btn.dataset.select,
+        btn.dataset.selectSource || 'roster',
+      ));
     });
   }
 
@@ -1475,36 +2543,161 @@
     bindCompanionRows(list);
   }
 
-  function systemSelectPet(id) {
-    const requestedSpecies = getDex(id);
-    const rootSpecies = requestedSpecies.selectable === false
-      ? DEX.find(mon => mon.dexNumber === requestedSpecies.evolutionRootDexNumber) || requestedSpecies
-      : requestedSpecies;
+  function finishCompanionSelection(requestedSpecies, rootSpecies, source) {
+    const previousSpecies = getDex();
+    const previousPet = getPet();
+    const previousAppearance = getAppearance(previousSpecies, previousPet);
+    const previousAppearanceSpecies = DEX.find(mon => mon.id === previousAppearance.id);
+    const existingIndex = state.roster.indexOf(rootSpecies.id);
+    const favoriteIndex = state.favoriteTeam.findIndex(displayId => (
+      getDex(displayId).dexNumber === requestedSpecies.dexNumber
+    ));
+    const switchedAt = now();
+    const changedCompanion = previousPet.dexId !== rootSpecies.id;
+
+    if (changedCompanion) {
+      systemApplyOfflineDecay(previousPet, state);
+      pausePet(previousPet, switchedAt);
+    }
+
+    if (existingIndex > 0) {
+      [state.roster[0], state.roster[existingIndex]] = [
+        state.roster[existingIndex],
+        state.roster[0],
+      ];
+    } else if (existingIndex < 0) {
+      state.roster = !embeddedInSite && state.roster.length >= 6
+        ? [rootSpecies.id, ...state.roster.slice(1)].slice(0, 6)
+        : [rootSpecies.id, ...state.roster].slice(0, 6);
+    }
 
     if (!state.pets[rootSpecies.id]) {
       state.pets[rootSpecies.id] = systemDefaultPet(rootSpecies, Object.keys(state.pets).length);
     }
 
     const nextPet = state.pets[rootSpecies.id];
-    const requestedForm = getForms(rootSpecies).find(form => form.id === requestedSpecies.id);
-    const canUseRequestedForm = requestedForm && isFormUnlocked(nextPet, requestedForm);
+    let bondReset = false;
+    if (changedCompanion) {
+      bondReset = resumePet(nextPet, switchedAt);
+    } else {
+      nextPet.inactiveSince = null;
+    }
+    if (requestedSpecies.selectable === false) {
+      nextPet.activeAppearance = getForms(rootSpecies)[0].id;
+    }
 
-    if (canUseRequestedForm) {
-      applyAppearance(rootSpecies, nextPet, requestedForm);
+    if (favoriteIndex >= 0 && changedCompanion) {
+      state.favoriteTeam[favoriteIndex] = previousAppearanceSpecies?.id || previousSpecies.id;
+      state.favoriteTeam = state.favoriteTeam
+        .filter((displayId, index, team) => team.indexOf(displayId) === index)
+        .slice(0, 5);
     }
 
     state.selected = rootSpecies.id;
+    state.needsCompanionChoice = false;
+    notifySite('companion-request', {
+      previousAppearanceDex: previousAppearanceSpecies?.dexNumber || previousSpecies.dexNumber,
+      requestedDex: requestedSpecies.dexNumber,
+      rootDex: rootSpecies.dexNumber,
+      roster: state.roster,
+      source,
+    });
     companionQuery = '';
+    companionSearchOpen = false;
     companionsOpen = false;
     moreOpen = false;
     foodOpen = false;
+    pendingCompanionSelection = null;
+    pendingArchiveCompanion = null;
     saveState();
     render();
     showToast(
-      requestedSpecies.id !== rootSpecies.id && !canUseRequestedForm
-        ? `${requestedSpecies.name} pertence à linha de ${rootSpecies.name}; o cuidado começou pela forma inicial.`
+      bondReset
+        ? `O vínculo com ${nextPet.customName} recomeçou no Dia 1.`
+        : requestedSpecies.selectable === false
+        ? `${requestedSpecies.name} voltou para ${rootSpecies.name}, com todo o progresso preservado.`
         : `${requestedSpecies.name} agora está no gramado.`,
     );
+  }
+
+  function commitCompanionSelection(id, source) {
+    const requestedSpecies = getDex(id);
+    const rootSpecies = companionRootSpecies(requestedSpecies);
+    const isFavoriteSelection = state.favoriteTeam.some(displayId => (
+      getDex(displayId).dexNumber === requestedSpecies.dexNumber
+    ));
+    const needsArchiveConfirmation = (
+      rootSpecies.id !== state.selected
+      && !isFavoriteSelection
+      && companionRosterEntries().length >= (embeddedInSite ? 5 : 6)
+    );
+
+    if (needsArchiveConfirmation) {
+      pendingArchiveCompanion = { requestedId: requestedSpecies.id, source };
+      pendingCompanionSelection = null;
+      render();
+      return;
+    }
+
+    finishCompanionSelection(requestedSpecies, rootSpecies, source);
+  }
+
+  function requestCompanionSelection(id, source) {
+    const requestedSpecies = getDex(id);
+    if (source === 'search' && !canSearchCompanion(requestedSpecies)) {
+      showToast('Essa evolução precisa ser obtida primeiro no Tamagotchi.');
+      return;
+    }
+
+    if (requestedSpecies.selectable === false) {
+      pendingCompanionSelection = { requestedId: requestedSpecies.id, source };
+      pendingArchiveCompanion = null;
+      render();
+      return;
+    }
+
+    commitCompanionSelection(requestedSpecies.id, source);
+  }
+
+  function renderCompanionSelectionWarning() {
+    if (!pendingCompanionSelection) return '';
+    const requestedSpecies = getDex(pendingCompanionSelection.requestedId);
+    const rootSpecies = companionRootSpecies(requestedSpecies);
+    return `
+      <div class="evolution-overlay companion-confirmation" role="dialog" aria-modal="true" aria-labelledby="companion-confirmation-title">
+        <div class="evolution-panel">
+          <small>Forma evoluída</small>
+          <span class="evolution-preview">${renderPokemonVisual(requestedSpecies, 'evolution-sprite', requestedSpecies.name)}</span>
+          <h2 id="companion-confirmation-title">${requestedSpecies.name} voltará para ${rootSpecies.name}</h2>
+          <p>Nível, XP, formas desbloqueadas e histórico serão mantidos. O vínculo recomeça no Dia 1 caso esse Pokémon tenha ficado mais de 24 horas fora.</p>
+          <button class="evolution-primary" type="button" data-companion-confirm>
+            <b>Usar ${rootSpecies.name}</b>
+          </button>
+          <button class="evolution-secondary" type="button" data-companion-cancel>Cancelar</button>
+        </div>
+      </div>`;
+  }
+
+  function renderArchiveCompanionConfirmation() {
+    if (!pendingArchiveCompanion) return '';
+    const requestedSpecies = getDex(pendingArchiveCompanion.requestedId);
+    const rootSpecies = companionRootSpecies(requestedSpecies);
+    const currentSpecies = getDex();
+    const currentPet = getPet();
+    const currentAppearance = getAppearance(currentSpecies, currentPet);
+    return `
+      <div class="evolution-overlay archive-companion-overlay" role="dialog" aria-modal="true" aria-labelledby="archive-companion-title">
+        <div class="evolution-panel archive-companion-panel">
+          <small>${embeddedInSite ? 'Time Pokémon completo' : 'Seis cuidados ativos'}</small>
+          <span class="evolution-preview">${renderPokemonVisual(currentAppearance, 'evolution-sprite', currentAppearance.name)}</span>
+          <h2 id="archive-companion-title">${embeddedInSite ? 'Sem slots livres no Time.' : 'A lista de cuidados está cheia.'} Guardar ${currentAppearance.name}?</h2>
+          <p>${currentAppearance.name} sairá da lista rápida, mas nível, formas e histórico continuarão salvos. O vínculo será mantido se ele voltar em até 24 horas.</p>
+          <button class="evolution-primary" type="button" data-archive-companion-confirm>
+            <b>Guardar e usar ${rootSpecies.name}</b>
+          </button>
+          <button class="evolution-secondary" type="button" data-companion-cancel>Cancelar</button>
+        </div>
+      </div>`;
   }
 
   function systemRender() {
@@ -1514,10 +2707,12 @@
     saveState();
 
     const mon = getAppearance(species, pet);
+    const combat = battleSnapshot(pet, mon);
     const mood = systemMoodFor(pet);
     const xpPercent = Math.min(100, (pet.xp / systemXpNeeded(pet)) * 100);
     const dirty = Number(pet.dirtLevel) > 0;
-    const needsCare = pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30 || dirty;
+    const needsHealing = Boolean(combat && combat.currentHp <= combat.maxHp * 0.3);
+    const needsCare = pet.hunger < 30 || pet.energy < 18 || pet.happiness < 30 || dirty || needsHealing;
     const hungry = pet.hunger < 30;
     const restRequired = needsRest(pet);
     const careLocked = pet.sleeping || restRequired;
@@ -1562,21 +2757,26 @@
             <div class="status-tabs" role="tablist" aria-label="Seções do painel">
               <button type="button" role="tab" data-status-tab="status" class="${statusTab === 'status' ? 'active' : ''}" aria-selected="${statusTab === 'status'}">Status</button>
               <button type="button" role="tab" data-status-tab="appearance" class="${statusTab === 'appearance' ? 'active' : ''}" aria-selected="${statusTab === 'appearance'}">Pokémon</button>
+              <button type="button" role="tab" data-status-tab="skills" class="${statusTab === 'skills' ? 'active' : ''}" aria-selected="${statusTab === 'skills'}">Habilidades</button>
             </div>
             ${statusTab === 'status' ? `
-              ${needsCare ? `<div class="status-alert"><b>${hungry ? '🍎 Está com fome!' : dirty ? '🧼 Precisa de limpeza!' : '⚠ Precisa de atenção!'}</b></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
+              ${needsCare ? `<div class="status-alert"><b>${needsHealing ? '❤️ Precisa recuperar HP!' : hungry ? '🍎 Está com fome!' : dirty ? '🧼 Precisa de limpeza!' : '⚠ Precisa de atenção!'}</b></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
               <div class="status-grid">
+                ${battleHpRow(combat)}
                 ${systemStatBar('Fome', pet.hunger, 'action-food.png')}
                 ${systemStatBar('Felicidade', pet.happiness, 'status-happiness.png')}
                 ${systemStatBar('Energia', pet.energy, 'status-energy.png')}
                 ${systemBondDays(pet)}
               </div>
+              ${battleStatSummary(combat)}
               <div class="status-meta">
                 <span>XP ${pet.xp}/${systemXpNeeded(pet)}</span>
                 <span>Mochila ${bagCount()} itens</span>
               </div>
               <div class="last-action"><b>Última ação</b><p>${pet.lastAction}</p></div>
-            ` : renderAppearancePanel(species, pet)}
+            ` : statusTab === 'appearance'
+              ? renderAppearancePanel(species, pet)
+              : renderSkillsPanel(pet, mon, combat)}
           </div>
         </aside>
 
@@ -1618,9 +2818,9 @@
 
         <section class="care-sheet ${sheetExpanded ? 'expanded' : ''}" aria-label="Cuidar do Tamagotchi">
           <div class="sheet-toggle-row">
-            <button class="more-toggle" type="button" data-more-toggle aria-expanded="${moreOpen}">
-              <span>${moreOpen ? '⌄' : '⌃'}</span>
-              <b>${moreOpen ? 'Fechar' : 'Mais'}</b>
+            <button class="more-toggle" type="button" data-more-toggle aria-expanded="${sheetExpanded}" aria-label="${foodOpen ? 'Fechar mochila' : moreOpen ? 'Fechar detalhes' : 'Abrir mais detalhes'}">
+              <span>${sheetExpanded ? '⌄' : '⌃'}</span>
+              <b>${sheetExpanded ? 'Fechar' : 'Mais'}</b>
             </button>
             <button class="more-toggle back-toggle" type="button" data-go-back>
               <span aria-hidden="true"><img src="assets/arrow-ios-back.svg" alt=""></span>
@@ -1639,14 +2839,14 @@
           </div>
 
           <div class="action-dock">
-            <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="Abrir mochila de comidas" ${foodLocked ? 'disabled' : ''}>
+            <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="${foodOpen ? 'Fechar mochila de comidas' : 'Abrir mochila de comidas'}" ${foodLocked ? 'disabled' : ''}>
               <span><img src="${ITEM_BASE_PATH}action-food.png" alt=""></span><b>Comida</b>
             </button>
             ${Object.entries(SYSTEM_ACTIONS).map(([key, action]) => {
               const endingRest = key === 'sleep' && pet.sleeping;
               const label = endingRest ? 'Levantar' : action.short;
               const icon = endingRest ? 'action-wake.png' : action.asset;
-              const disabled = key !== 'sleep' && careLocked;
+              const disabled = key === 'play' && careLocked;
               return `
                 <button class="action-btn action-${key}-btn ${endingRest ? 'action-wake-btn' : ''} ${selectedAction === (endingRest ? 'wake' : key) ? 'active' : ''}" data-action="${key}" type="button" aria-label="${label}" ${disabled ? 'disabled' : ''}>
                   <span><img src="${ITEM_BASE_PATH}${icon}" alt=""></span><b>${label}</b>
@@ -1655,19 +2855,25 @@
           </div>
         </section>
 
-        ${renderTrainingGame(pet)}
         ${renderEvolutionOffer(species, pet, evolutionOffer)}
+        ${renderCompanionSelectionWarning()}
+        ${renderArchiveCompanionConfirmation()}
+        ${renderBattleTrainingMenu(pet, mon, combat)}
 
-        ${hasCompanions && companionsOpen ? `<aside class="companions-drawer open" aria-label="Lista de Pokémon">
+        ${hasCompanions && companionsOpen ? `<aside class="companions-drawer open" aria-label="Alterar Pokémon companheiro">
           <div class="drawer-card">
             <div class="drawer-head">
-              <div><small>Escolha seu companheiro</small><h2>Pokémon</h2></div>
-              <button type="button" class="close-panel" data-companions-toggle aria-label="Fechar lista de Pokémon">×</button>
+              <div><small>${companionSearchOpen ? 'Pokédex permitida' : 'Seus cuidados'}</small><h2>${companionSearchOpen ? 'Pesquisar Pokémon' : 'Alterar Companheiro'}</h2></div>
+              <button type="button" class="close-panel" data-companions-toggle aria-label="Fechar Alterar Companheiro">×</button>
             </div>
-            <label class="companion-search">
+            <button class="companion-search-toggle" type="button" data-companion-search-toggle>
+              <span aria-hidden="true">${companionSearchOpen ? '‹' : '⌕'}</span>
+              <b>${companionSearchOpen ? 'Voltar aos cuidados' : 'Pesquisar outro Pokémon'}</b>
+            </button>
+            ${companionSearchOpen ? `<label class="companion-search">
               <span aria-hidden="true">⌕</span>
               <input type="search" data-companion-search value="${escapeHtml(companionQuery)}" placeholder="Nome ou ID" autocomplete="off" spellcheck="false">
-            </label>
+            </label>` : ''}
             <div class="companion-results-meta" data-companion-summary>${companionResults.summary}</div>
             <div class="companions-list" data-companion-results>${companionResults.html}</div>
           </div>
@@ -1676,8 +2882,39 @@
     `;
 
     document.querySelectorAll('[data-action]').forEach(btn => btn.addEventListener('click', () => systemDoAction(btn.dataset.action)));
+    document.querySelectorAll('[data-battle-menu-close]').forEach(btn => btn.addEventListener('click', () => {
+      battleMenuOpen = false;
+      selectedAction = null;
+      render();
+    }));
+    document.querySelectorAll('[data-battle-menu-tab]').forEach(btn => btn.addEventListener('click', () => {
+      battleMenuTab = btn.dataset.battleMenuTab;
+      render();
+    }));
+    document.querySelectorAll('[data-battle-history-more]').forEach(btn => btn.addEventListener('click', () => {
+      battleHistoryVisibleCount += 5;
+      render();
+    }));
+    document.querySelectorAll('[data-battle-start]').forEach(btn => btn.addEventListener('click', () => {
+      const blocker = battleTrainingBlocker(pet);
+      if (blocker) {
+        showToast(blocker);
+        render();
+        return;
+      }
+      selectedAction = 'train';
+      const message = openBattleTraining(pet);
+      pet.lastUpdate = now();
+      saveState();
+      render();
+      if (message !== false) showToast(message);
+    }));
     document.querySelectorAll('[data-status-tab]').forEach(btn => btn.addEventListener('click', () => {
       statusTab = btn.dataset.statusTab;
+      if (statusTab !== 'skills') {
+        moveEditorOpen = false;
+        moveSelectionDraft = [];
+      }
       render();
     }));
     document.querySelectorAll('[data-appearance]').forEach(btn => btn.addEventListener('click', () => selectAppearance(btn.dataset.appearance)));
@@ -1685,9 +2922,103 @@
     document.querySelectorAll('[data-music-toggle]').forEach(btn => btn.addEventListener('click', () => {
       setMusicEnabled(!getMusicEnabled());
     }));
+    document.querySelectorAll('[data-pokegochi-notification-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      setPokegochiNotificationPreference(!getPokegochiNotificationPreference());
+    }));
     document.querySelectorAll('[data-evolution-choice]').forEach(btn => btn.addEventListener('click', () => chooseEvolution(btn.dataset.evolutionForm, btn.dataset.evolutionChoice)));
-    document.querySelectorAll('[data-training-hit]').forEach(btn => btn.addEventListener('click', hitTrainingTarget));
-    document.querySelectorAll('[data-training-cancel]').forEach(btn => btn.addEventListener('click', cancelTrainingGame));
+    document.querySelectorAll('[data-allocate-attribute]').forEach(btn => btn.addEventListener('click', () => {
+      const result = window.SuperPokegochiBattle?.allocateAttribute(
+        pet,
+        battleDexNumber(mon),
+        btn.dataset.allocateAttribute,
+        mon.name,
+      );
+      if (!result) {
+        showToast('Você não possui pontos de atributo disponíveis.');
+        return;
+      }
+      pet.lastAction = `${pet.customName} ficou mais forte em ${window.SuperPokegochiBattle.attributeLabels[btn.dataset.allocateAttribute]}.`;
+      saveState();
+      render();
+    }));
+    document.querySelectorAll('[data-open-move-editor]').forEach(btn => btn.addEventListener('click', () => {
+      const battle = window.SuperPokegochiBattle;
+      const learnedMoves = battle?.getLearnedMoves?.(pet, battleDexNumber(mon), mon.name) || [];
+      const allowedIds = new Set(learnedMoves.map(move => move.id));
+      const requiredCount = Math.min(4, learnedMoves.length);
+      const equippedIds = (combat?.equippedMoves || [])
+        .filter(moveId => allowedIds.has(moveId))
+        .slice(0, requiredCount);
+      const fillIds = learnedMoves
+        .map(move => move.id)
+        .filter(moveId => !equippedIds.includes(moveId));
+      moveSelectionDraft = [...equippedIds, ...fillIds].slice(0, requiredCount);
+      moveEditorOpen = true;
+      render();
+    }));
+    document.querySelectorAll('[data-toggle-learned-move]').forEach(btn => btn.addEventListener('click', () => {
+      const moveId = btn.dataset.toggleLearnedMove;
+      if (moveSelectionDraft.includes(moveId)) {
+        moveSelectionDraft = moveSelectionDraft.filter(selectedMove => selectedMove !== moveId);
+      } else if (moveSelectionDraft.length < 4) {
+        moveSelectionDraft = [...moveSelectionDraft, moveId];
+      } else {
+        showToast('Você pode equipar até quatro golpes.');
+      }
+      render();
+    }));
+    document.querySelectorAll('[data-cancel-move-editor]').forEach(btn => btn.addEventListener('click', () => {
+      moveEditorOpen = false;
+      moveSelectionDraft = [];
+      render();
+    }));
+    document.querySelectorAll('[data-save-move-selection]').forEach(btn => btn.addEventListener('click', () => {
+      const battle = window.SuperPokegochiBattle;
+      const saved = battle?.setEquippedMoves?.(
+        pet,
+        battleDexNumber(mon),
+        moveSelectionDraft,
+        mon.name,
+      );
+      if (!saved) {
+        showToast('Selecione todos os golpes necessários antes de salvar.');
+        return;
+      }
+      const learnedById = new Map(
+        battle.getLearnedMoves(pet, battleDexNumber(mon), mon.name)
+          .map(move => [move.id, move.name]),
+      );
+      const selectedNames = moveSelectionDraft
+        .map(moveId => learnedById.get(moveId))
+        .filter(Boolean);
+      pet.lastAction = `${pet.customName} equipou ${selectedNames.join(', ')}.`;
+      systemAddHistory(pet, '⚔️', pet.lastAction);
+      moveEditorOpen = false;
+      moveSelectionDraft = [];
+      saveState();
+      render();
+      showToast('Habilidades de batalha atualizadas.');
+    }));
+    document.querySelectorAll('[data-companion-confirm]').forEach(btn => btn.addEventListener('click', () => {
+      if (!pendingCompanionSelection) return;
+      commitCompanionSelection(
+        pendingCompanionSelection.requestedId,
+        pendingCompanionSelection.source,
+      );
+    }));
+    document.querySelectorAll('[data-companion-cancel]').forEach(btn => btn.addEventListener('click', () => {
+      pendingCompanionSelection = null;
+      pendingArchiveCompanion = null;
+      render();
+    }));
+    document.querySelectorAll('[data-archive-companion-confirm]').forEach(btn => btn.addEventListener('click', () => {
+      if (!pendingArchiveCompanion) return;
+      const requestedSpecies = getDex(pendingArchiveCompanion.requestedId);
+      const rootSpecies = companionRootSpecies(requestedSpecies);
+      const source = pendingArchiveCompanion.source;
+      pendingArchiveCompanion = null;
+      finishCompanionSelection(requestedSpecies, rootSpecies, source);
+    }));
     document.querySelectorAll('[data-feed-food]').forEach(btn => btn.addEventListener('click', () => feedPet(btn.dataset.feedFood)));
     document.querySelectorAll('[data-collect-leaf]').forEach(btn => btn.addEventListener('click', () => collectWorldLeaf(btn.dataset.collectLeaf)));
     document.querySelectorAll('[data-collect-food]').forEach(btn => btn.addEventListener('click', () => collectWorldFood(btn.dataset.collectFood)));
@@ -1707,21 +3038,50 @@
         updateCompanionResults();
       });
     }
+    document.querySelectorAll('[data-companion-search-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      companionSearchOpen = !companionSearchOpen;
+      companionQuery = '';
+      render();
+      if (companionSearchOpen) {
+        requestAnimationFrame(() => document.querySelector('[data-companion-search]')?.focus());
+      }
+    }));
     document.querySelectorAll('[data-history-more]').forEach(btn => btn.addEventListener('click', () => { historyVisibleCount += 3; render(); }));
     document.querySelectorAll('[data-status-toggle]').forEach(btn => btn.addEventListener('click', () => { statusOpen = !statusOpen; companionsOpen = false; render(); }));
-    document.querySelectorAll('[data-more-toggle]').forEach(btn => btn.addEventListener('click', () => { moreOpen = !moreOpen; foodOpen = false; statusOpen = false; render(); }));
-    document.querySelectorAll('[data-companions-toggle]').forEach(btn => btn.addEventListener('click', () => {
-      companionsOpen = !companionsOpen;
+    document.querySelectorAll('[data-more-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      if (sheetExpanded) {
+        moreOpen = false;
+        foodOpen = false;
+      } else {
+        moreOpen = true;
+      }
       statusOpen = false;
       render();
-      if (companionsOpen) requestAnimationFrame(() => document.querySelector('[data-companion-search]')?.focus());
+    }));
+    document.querySelectorAll('[data-companions-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      companionsOpen = !companionsOpen;
+      if (!companionsOpen) {
+        companionSearchOpen = false;
+        companionQuery = '';
+      }
+      statusOpen = false;
+      render();
     }));
     document.querySelectorAll('[data-go-back]').forEach(btn => btn.addEventListener('click', goBack));
+    if (statusOpen && (statusTab === 'status' || statusTab === 'skills')) {
+      hydrateBattleProfile(pet, mon);
+    }
+    announceEvolutionOffer(species, pet, evolutionOffer);
   }
 
   const render = systemRender;
   initializeFormAssetStatus();
   state = systemMigrateState(readStoredState());
+  if (state.needsCompanionChoice && state.roster.length === 0) {
+    companionsOpen = true;
+    companionSearchOpen = true;
+  }
+  state.settings = { ...(state.settings || {}), musicEnabled: true };
   chooseRandomStartingMusicTrack();
   dailyRewardMessage = claimDailyLoginReward(state);
   syncAllPets(state);
@@ -1731,6 +3091,36 @@
   if (getMusicEnabled()) void playBackgroundMusic();
   checkFormAssets();
   if (dailyRewardMessage) setTimeout(() => showToast(dailyRewardMessage), 300);
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape' || !battleMenuOpen) return;
+    battleMenuOpen = false;
+    selectedAction = null;
+    render();
+  });
+  window.addEventListener('message', (event) => {
+    if (
+      !embeddedInSite
+      || event.origin !== window.location.origin
+      || !event.data
+      || event.data.type !== 'superpokegochi:notification-result'
+    ) {
+      return;
+    }
+
+    state.settings = {
+      ...(state.settings || {}),
+      pokegochiNotificationsEnabled: Boolean(event.data.enabled),
+    };
+    saveState();
+    render();
+    showToast(
+      typeof event.data.message === 'string'
+        ? event.data.message
+        : event.data.ok
+          ? 'Preferência de notificações salva.'
+          : 'Não foi possível alterar as notificações.',
+    );
+  });
   setInterval(() => {
     syncAllPets(state);
     saveState();

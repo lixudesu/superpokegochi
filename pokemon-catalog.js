@@ -5866,7 +5866,7 @@ const POKEMON_CATALOG_DATA = [
     64,
     4544,
     null,
-    490
+    489
   ],
   [
     490,
