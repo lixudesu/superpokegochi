@@ -19,6 +19,13 @@
   let battleHydrationKey = null;
   let moveEditorOpen = false;
   let moveSelectionDraft = [];
+  let attributeResetOpen = false;
+  let attributeResetPending = false;
+  let verificationGateOpen = false;
+  let socialHistoryVisibleCount = 5;
+  let socialGiftSending = false;
+  let socialBattleSaving = false;
+  const pendingSocialGiftClaims = new Set();
   const formAssetStatus = new Map();
 
   const BRASILIA_TIME_ZONE = 'America/Sao_Paulo';
@@ -57,6 +64,7 @@
   ];
   const MUSIC_BASE_PATH = document.documentElement.dataset.musicBase || 'assets/musics/';
   const SOUND_BASE_PATH = document.documentElement.dataset.soundBase || 'assets/sounds/';
+  const SOUND_ASSET_VERSION = '20260730-battle-audio-v23';
   const SOUND_EFFECT_FILES = {
     evolution: 'evolution.mp3',
     food: 'comida.mp3',
@@ -93,6 +101,24 @@
     window.parent.postMessage({ type: `superpokegochi:${type}`, ...detail }, window.location.origin);
   }
 
+  function isSocialVisitorMode() {
+    return embeddedInSite && state && state.social && state.social.mode === 'visitor';
+  }
+
+  function canChooseCompanion() {
+    return !embeddedInSite || Boolean(
+      state
+      && state.social
+      && state.social.mode === 'owner'
+      && state.social.canChooseCompanion !== false
+    );
+  }
+
+  function requestVerification() {
+    if (!embeddedInSite) return;
+    notifySite('verification-request');
+  }
+
   function readStoredState() {
     if (initialBridgeState) {
       const bridged = initialBridgeState;
@@ -110,6 +136,10 @@
   function saveState() {
     if (!embeddedInSite) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    if (isSocialVisitorMode()) {
+      return;
     }
 
     if (embeddedInSite && state.needsCompanionChoice && state.roster.length === 0) {
@@ -142,7 +172,10 @@
   }
 
   function soundEffectUrl(file) {
-    return new URL(`${SOUND_BASE_PATH}${encodeURIComponent(file)}`, document.baseURI).href;
+    return new URL(
+      `${SOUND_BASE_PATH}${encodeURIComponent(file)}?v=${SOUND_ASSET_VERSION}`,
+      document.baseURI,
+    ).href;
   }
 
   function finishSoundEffect(sound) {
@@ -319,7 +352,8 @@
 
   function getDex(id) {
     const target = id || (state && state.selected) || 'bulbasaur';
-    return DEX.find(mon => mon.id === target) || DEX[0];
+    const petDexId = state && state.pets && state.pets[target] && state.pets[target].dexId;
+    return DEX.find(mon => mon.id === (petDexId || target)) || DEX[0];
   }
 
   function getForms(mon) {
@@ -396,18 +430,26 @@
 
   function getPet() {
     if (!state.pets[state.selected]) {
-      state.pets[state.selected] = systemDefaultPet(getDex(), Object.keys(state.pets).length);
+      const species = getDex();
+      const journeyKey = createJourneyKey();
+      state.selected = journeyKey;
+      state.pets[journeyKey] = systemDefaultPet(
+        species,
+        Object.keys(state.pets).length,
+        journeyKey,
+      );
     }
     return state.pets[state.selected];
   }
 
-  function showToast(message) {
+  function showToast(message, durationMs = 2600) {
     const toast = document.querySelector('[data-toast]');
     if (!toast) return;
     toast.textContent = message;
     toast.classList.add('show');
     clearTimeout(showToast.timer);
-    showToast.timer = setTimeout(() => toast.classList.remove('show'), 2600);
+    const duration = Math.max(1600, Math.min(7000, Number(durationMs) || 2600));
+    showToast.timer = setTimeout(() => toast.classList.remove('show'), duration);
   }
 
   function formatTime(ts) {
@@ -460,11 +502,11 @@
   const RULES = {
     maxOfflineHours: 24,
     decayPerHour: { hunger: 2.5, happiness: 1, energy: 1.25 },
-    play: { happiness: 9, energyCost: 30, hungerCost: 2, bond: 1 },
-    sleepTickMs: 60 * 60 * 1000,
-    sleepEnergyPerTick: 22,
+    play: { happiness: 9, energyCost: { catch: 8, memory: 6 }, hungerCost: 2, bond: 1 },
+    sleepTickMs: 6 * 60 * 1000,
+    sleepEnergyPerTick: 10,
     sleepXpPerTick: 1,
-    wakeEnergy: 88,
+    wakeEnergy: 100,
     trainDurationMs: 10 * 60 * 1000,
     trainCost: { energy: 12, hunger: 6 },
     trainXp: 30,
@@ -491,17 +533,25 @@
   let foodOpen = false;
   let dailyRewardMessage = null;
 
+  function minigameEnergyCost(gameId) {
+    return RULES.play.energyCost[gameId] || Math.min(...Object.values(RULES.play.energyCost));
+  }
+
+  function canStartAnyMinigame(pet) {
+    return pet.energy >= Math.min(...Object.values(RULES.play.energyCost));
+  }
+
   function systemDefaultBag() {
     return {
-      apple: 1,
-      strawberry: 0,
-      blackberry: 0,
-      pear: 0,
-      grape: 0,
-      orange: 0,
-      banana: 0,
-      watermelon: 0,
-      pineapple: 0,
+      apple: 3,
+      strawberry: 2,
+      blackberry: 2,
+      pear: 1,
+      grape: 2,
+      orange: 1,
+      banana: 2,
+      watermelon: 1,
+      pineapple: 1,
     };
   }
 
@@ -516,15 +566,57 @@
     return battle.getSnapshot(pet, battleDexNumber(appearance), appearance.name);
   }
 
+  function battleNeedsHpRecovery(pet, snapshot = null) {
+    const currentHp = Number(snapshot?.currentHp ?? pet.battle?.currentHp);
+    const maxHp = Number(snapshot?.maxHp ?? pet.battle?.lastMaxHp);
+    return Number.isFinite(currentHp)
+      && Number.isFinite(maxHp)
+      && maxHp > 0
+      && currentHp < maxHp;
+  }
+
   function hydrateBattleProfile(pet, appearance) {
     const battle = window.SuperPokegochiBattle;
     const snapshot = battleSnapshot(pet, appearance);
-    if (!battle || !snapshot || snapshot.dataReady) return;
-    const hydrationKey = `${pet.dexId}:${battleDexNumber(appearance)}`;
+    if (!battle || !snapshot) return;
+    const species = getDex(pet.journeyKey);
+    const unlockedDexNumbers = getForms(species)
+      .filter(form => isFormUnlocked(pet, form))
+      .map(form => Number(form.dexNumber || species.dexNumber))
+      .filter(Number.isInteger);
+    const journeyLearnsets = pet.battle?.journeyMoveLearnsets || {};
+    const moveDetails = pet.battle?.moveDetails || {};
+    const relevantMoveIds = [...new Set(
+      unlockedDexNumbers
+        .flatMap(dexNumber => (
+          Array.isArray(journeyLearnsets[String(dexNumber)])
+            ? journeyLearnsets[String(dexNumber)]
+            : []
+        ))
+        .filter(move => move && move.name && Number(move.level || 1) <= pet.level + 20)
+        .sort((first, second) => Number(first.level || 1) - Number(second.level || 1))
+        .slice(0, 36)
+        .map(move => move.name),
+    )];
+    const hasJourneyLearnsets = unlockedDexNumbers.every(dexNumber => (
+      Array.isArray(journeyLearnsets[String(dexNumber)])
+    ));
+    const hasMoveDetails = relevantMoveIds.length > 0
+      && relevantMoveIds.every(moveId => moveDetails[moveId]);
+    if (snapshot.dataReady && hasJourneyLearnsets && hasMoveDetails) return;
+    const hydrationKey = `${pet.journeyKey}:${battleDexNumber(appearance)}:${unlockedDexNumbers.join(',')}`;
     if (battleHydrationKey === hydrationKey) return;
 
     battleHydrationKey = hydrationKey;
-    void battle.hydrate(pet, battleDexNumber(appearance), appearance.name)
+    const hydration = battle.hydrateJourney
+      ? battle.hydrateJourney(
+          pet,
+          unlockedDexNumbers,
+          battleDexNumber(appearance),
+          appearance.name,
+        )
+      : battle.hydrate(pet, battleDexNumber(appearance), appearance.name);
+    void hydration
       .then(() => {
         saveState();
         if (statusOpen && (statusTab === 'status' || statusTab === 'skills')) render();
@@ -548,6 +640,20 @@
     };
   }
 
+  function systemDefaultSocial() {
+    return {
+      canChooseCompanion: true,
+      canInteract: false,
+      giftSent: false,
+      gifts: [],
+      history: [],
+      mode: 'owner',
+      ownerName: 'Treinador',
+      verificationRequired: false,
+      viewerCompanion: null,
+    };
+  }
+
   function todayKey() {
     const date = new Date();
     return [
@@ -557,9 +663,17 @@
     ].join('-');
   }
 
-  function systemDefaultPet(mon, index = 0) {
+  function createJourneyKey() {
+    if (typeof crypto?.randomUUID === 'function') return crypto.randomUUID();
+    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, character => (
+      (Number(character) ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> Number(character) / 4).toString(16)
+    ));
+  }
+
+  function systemDefaultPet(mon, index = 0, journeyKey = createJourneyKey()) {
     return {
       dexId: mon.id,
+      journeyKey,
       customName: mon.name,
       level: 1,
       xp: 0,
@@ -588,9 +702,11 @@
   }
 
   function systemInitialState() {
+    const initialSpecies = DEX[0];
+    const initialPet = systemDefaultPet(initialSpecies, 0);
     return {
-      selected: 'bulbasaur',
-      roster: ['bulbasaur'],
+      selected: initialPet.journeyKey,
+      roster: [initialPet.journeyKey],
       favoriteTeam: [],
       needsCompanionChoice: false,
       session: 21,
@@ -607,7 +723,8 @@
         musicTrackIndex: 0,
         pokegochiNotificationsEnabled: false,
       },
-      pets: Object.fromEntries(DEX.slice(0, 1).map((mon, index) => [mon.id, systemDefaultPet(mon, index)])),
+      social: systemDefaultSocial(),
+      pets: { [initialPet.journeyKey]: initialPet },
     };
   }
 
@@ -672,11 +789,64 @@
     };
   }
 
+  function migrateSocial(social) {
+    const fallback = systemDefaultSocial();
+    const source = social && typeof social === 'object' ? social : {};
+    const mode = source.mode === 'visitor' ? 'visitor' : 'owner';
+    const gifts = Array.isArray(source.gifts)
+      ? source.gifts.filter(gift => (
+        gift
+        && Number.isInteger(Number(gift.id))
+        && FOOD_BY_ID[gift.foodId]
+      )).slice(0, 20).map(gift => ({
+        createdAt: Number(gift.createdAt) || now(),
+        foodId: gift.foodId,
+        fromName: typeof gift.fromName === 'string' ? gift.fromName.slice(0, 80) : 'Um treinador',
+        id: Number(gift.id),
+        x: clamp(Number(gift.x) || 50, 8, 92),
+        y: clamp(Number(gift.y) || 34, 12, 82),
+      }))
+      : [];
+    const socialHistory = Array.isArray(source.history)
+      ? source.history.filter(item => (
+        item
+        && ['battle', 'gift', 'visit'].includes(item.type)
+        && Number.isFinite(Number(item.at))
+      )).slice(0, 40).map(item => ({
+        actorName: typeof item.actorName === 'string' ? item.actorName.slice(0, 80) : 'Um treinador',
+        at: Number(item.at),
+        foodId: FOOD_BY_ID[item.foodId] ? item.foodId : undefined,
+        outcome: ['victory', 'defeat', 'fled'].includes(item.outcome) ? item.outcome : undefined,
+        type: item.type,
+      }))
+      : [];
+
+    return {
+      ...fallback,
+      canChooseCompanion: mode === 'owner' && source.canChooseCompanion !== false,
+      canInteract: mode === 'visitor' && source.canInteract === true,
+      giftSent: source.giftSent === true,
+      gifts,
+      history: socialHistory,
+      mode,
+      ownerName: typeof source.ownerName === 'string' && source.ownerName.trim()
+        ? source.ownerName.trim().slice(0, 80)
+        : fallback.ownerName,
+      verificationRequired: source.verificationRequired === true,
+      viewerCompanion: source.viewerCompanion && typeof source.viewerCompanion === 'object'
+        ? source.viewerCompanion
+        : null,
+    };
+  }
+
   function migratePet(pet, id, index = 0) {
-    const mon = getDex(id);
+    const mon = DEX.find(candidate => candidate.id === (pet && pet.dexId))
+      || DEX.find(candidate => candidate.id === id)
+      || DEX[0];
     const fresh = systemDefaultPet(mon, index);
     const migrated = { ...fresh, ...pet };
-    migrated.dexId = id;
+    migrated.dexId = mon.id;
+    migrated.journeyKey = String(pet && pet.journeyKey || id || fresh.journeyKey);
     migrated.customName = migrated.customName || mon.name;
     migrated.level = Math.max(1, Number(migrated.level) || 1);
     migrated.xp = Math.max(0, Number(migrated.xp) || 0);
@@ -733,6 +903,7 @@
       daily: { ...base.daily, ...(current && current.daily) },
       minigames: { ...base.minigames, ...(current && current.minigames) },
       settings: { ...base.settings, ...(current && current.settings) },
+      social: migrateSocial(current && current.social),
       world: migrateWorld(current && current.world),
       pets: current && current.pets && Object.keys(current.pets).length
         ? { ...current.pets }
@@ -757,24 +928,25 @@
       ? Math.max(0, Number(migrated.minigames.rewardReadyAt))
       : 0;
     migrated.pets = Object.fromEntries(
-      Object.entries(migrated.pets).map(([id, pet], index) => [id, migratePet(pet, id, index)])
+      Object.entries(migrated.pets).map(([id, pet], index) => {
+        const migratedPet = migratePet(pet, id, index);
+        return [migratedPet.journeyKey, migratedPet];
+      })
     );
-    const selectedSpecies = DEX.find(mon => mon.id === migrated.selected);
-    if (selectedSpecies && selectedSpecies.selectable === false) {
-      const evolutionRoot = DEX.find(mon => mon.dexNumber === selectedSpecies.evolutionRootDexNumber);
-      migrated.selected = evolutionRoot && evolutionRoot.selectable !== false ? evolutionRoot.id : DEX[0].id;
+    if (!migrated.pets[migrated.selected]) {
+      const legacySelected = Object.values(migrated.pets).find(pet => pet.dexId === migrated.selected);
+      migrated.selected = legacySelected?.journeyKey || Object.keys(migrated.pets)[0] || base.selected;
     }
     migrated.needsCompanionChoice = current && current.needsCompanionChoice === true;
     const rosterSource = Array.isArray(current && current.roster)
       ? current.roster
       : [migrated.selected, ...Object.keys(migrated.pets)];
     migrated.roster = rosterSource.reduce((roster, id) => {
-      const species = DEX.find(mon => mon.id === id);
-      const root = species && species.selectable === false
-        ? DEX.find(mon => mon.dexNumber === species.evolutionRootDexNumber)
-        : species;
-      if (root && root.selectable !== false && !roster.includes(root.id) && roster.length < 6) {
-        roster.push(root.id);
+      const journeyKey = migrated.pets[id]
+        ? id
+        : Object.keys(migrated.pets).find(key => migrated.pets[key].dexId === id);
+      if (journeyKey && !roster.includes(journeyKey) && roster.length < 6) {
+        roster.push(journeyKey);
       }
       return roster;
     }, []);
@@ -790,11 +962,18 @@
       ];
     }
     migrated.favoriteTeam = Array.isArray(current && current.favoriteTeam)
-      ? current.favoriteTeam.filter(id => DEX.some(mon => mon.id === id)).slice(0, 5)
+      ? current.favoriteTeam.flatMap(entry => {
+          const displayId = typeof entry === 'string' ? entry : entry && entry.displayId;
+          if (!DEX.some(mon => mon.id === displayId)) return [];
+          const journeyKey = typeof entry === 'object' && entry && migrated.pets[entry.journeyKey]
+            ? entry.journeyKey
+            : null;
+          return [{ displayId, journeyKey }];
+        }).slice(0, 5)
       : [];
     const migratedAt = now();
     Object.values(migrated.pets).forEach(pet => {
-      if (pet.dexId === migrated.selected) {
+      if (pet.journeyKey === migrated.selected) {
         pet.inactiveSince = null;
       } else if (pet.inactiveSince == null || !Number.isFinite(Number(pet.inactiveSince))) {
         pet.inactiveSince = Number(pet.lastUpdate) || migratedAt;
@@ -833,7 +1012,7 @@
   }
 
   function systemXpNeeded(pet) {
-    return 140 + pet.level * 14;
+    return 180 + pet.level * 22;
   }
 
   function systemAddHistory(pet, icon, text) {
@@ -972,12 +1151,21 @@
     const previousLength = state.world.leaves.length;
     state.world.leaves = state.world.leaves.filter(item => item.id !== itemId);
     if (state.world.leaves.length === previousLength) return;
-    systemAddXp(pet, 1);
-    pet.lastAction = `${pet.customName} encontrou uma folha brilhante. +1 XP.`;
+    const roll = Math.random();
+    const [minimum, maximum] = roll < 0.65
+      ? [1, 2]
+      : roll < 0.9
+        ? [3, 5]
+        : roll < 0.98
+          ? [6, 8]
+          : [9, 12];
+    const xp = minimum + Math.floor(Math.random() * (maximum - minimum + 1));
+    systemAddXp(pet, xp);
+    pet.lastAction = `${pet.customName} encontrou uma folha brilhante. +${xp} XP.`;
     systemAddHistory(pet, '🍃', pet.lastAction);
     saveState();
     render();
-    showToast('Folha coletada: +1 XP.');
+    showToast(`Folha coletada: +${xp} XP.`);
   }
 
   function collectWorldFood(itemId) {
@@ -988,6 +1176,40 @@
     saveState();
     render();
     showToast(`${FOOD_BY_ID[item.foodId].label} guardada na mochila.`);
+  }
+
+  function collectSocialGift(giftId) {
+    const numericGiftId = Number(giftId);
+    const gift = state.social?.gifts?.find(item => item.id === numericGiftId);
+    if (!gift || pendingSocialGiftClaims.has(numericGiftId)) return;
+    pendingSocialGiftClaims.add(numericGiftId);
+    notifySite('gift-claim', { giftId: numericGiftId });
+    showToast('Recolhendo presente...');
+  }
+
+  function socialGiftFoodPhrase(foodId) {
+    const food = FOOD_BY_ID[foodId];
+    if (!food) return 'uma fruta';
+    const masculine = foodId === 'strawberry' || foodId === 'pineapple';
+    return `${masculine ? 'um' : 'uma'} ${food.label.toLocaleLowerCase('pt-BR')}`;
+  }
+
+  function sendSocialGift() {
+    const social = state.social || systemDefaultSocial();
+    if (social.verificationRequired) {
+      verificationGateOpen = true;
+      render();
+      return;
+    }
+    if (!social.canInteract) {
+      showToast('Escolha um Pokémon Companheiro antes de enviar presentes.');
+      return;
+    }
+    if (socialGiftSending) return;
+    socialGiftSending = true;
+    render();
+    notifySite('social-gift-request');
+    showToast('Escolhendo uma fruta para o presente...');
   }
 
   function activeDaysFor(pet) {
@@ -1007,23 +1229,72 @@
     return (form.unlockLevel || 1) <= 1 || pet.evolutionDecisions[form.id] === 'evolve';
   }
 
-  function getEvolutionOffer(mon, pet) {
-    return getForms(mon).find(form => (
+  function formIsAncestor(mon, ancestor, descendant) {
+    if (ancestor.id === descendant.id) return true;
+    if (!ancestor.dexNumber || !descendant.dexNumber) {
+      return Number(ancestor.unlockLevel || 1) <= Number(descendant.unlockLevel || 1);
+    }
+    const formsByDex = new Map(getForms(mon).map(form => [form.dexNumber, form]));
+    let current = descendant;
+    const visited = new Set();
+
+    while (current?.evolvesFromDexNumber && !visited.has(current.dexNumber)) {
+      visited.add(current.dexNumber);
+      if (current.evolvesFromDexNumber === ancestor.dexNumber) return true;
+      current = formsByDex.get(current.evolvesFromDexNumber);
+    }
+
+    return false;
+  }
+
+  function isEvolutionBranchCompatible(mon, pet, form) {
+    const evolvedForms = getForms(mon).filter(candidate => (
+      (candidate.unlockLevel || 1) > 1
+      && pet.evolutionDecisions[candidate.id] === 'evolve'
+    ));
+
+    return evolvedForms.every(unlocked => (
+      formIsAncestor(mon, unlocked, form)
+      || formIsAncestor(mon, form, unlocked)
+    ));
+  }
+
+  function isEvolutionParentUnlocked(mon, pet, form) {
+    const forms = getForms(mon);
+    if ((form.unlockLevel || 1) <= 1) return true;
+
+    if (form.evolvesFromDexNumber) {
+      const parent = forms.find(candidate => (
+        candidate.dexNumber === form.evolvesFromDexNumber
+      ));
+      return Boolean(parent && isFormUnlocked(pet, parent));
+    }
+
+    const previous = forms
+      .filter(candidate => (candidate.unlockLevel || 1) < (form.unlockLevel || 1))
+      .sort((first, second) => (second.unlockLevel || 1) - (first.unlockLevel || 1))[0];
+    return !previous || isFormUnlocked(pet, previous);
+  }
+
+  function getEvolutionOffers(mon, pet) {
+    return getForms(mon).filter(form => (
       (form.unlockLevel || 1) > 1
       && meetsEvolutionRequirement(pet, form)
       && isFormAssetReady(mon, form)
       && !pet.evolutionDecisions[form.id]
-    )) || null;
+      && isEvolutionBranchCompatible(mon, pet, form)
+      && isEvolutionParentUnlocked(mon, pet, form)
+    ));
   }
 
-  function announceEvolutionOffer(mon, pet, form) {
-    if (!form) {
+  function announceEvolutionOffer(mon, pet, forms) {
+    if (!forms?.length) {
       announcedEvolutionOfferKey = null;
       if (pendingSoundEffect === 'evolution') pendingSoundEffect = null;
       return;
     }
 
-    const offerKey = `${mon.id}:${pet.dexId}:${form.id}`;
+    const offerKey = `${mon.id}:${pet.journeyKey}:${forms.map(form => form.id).join(',')}`;
     if (announcedEvolutionOfferKey === offerKey) return;
     announcedEvolutionOfferKey = offerKey;
     void playSoundEffect('evolution', true);
@@ -1088,23 +1359,34 @@
     const pet = getPet();
     const mon = getDex();
     const form = getForm(mon, formId);
-    if (!meetsEvolutionRequirement(pet, form) || !isFormAssetReady(mon, form)) return;
+    if (
+      !meetsEvolutionRequirement(pet, form)
+      || !isFormAssetReady(mon, form)
+      || !isEvolutionParentUnlocked(mon, pet, form)
+    ) return;
 
-    pet.evolutionDecisions[form.id] = choice;
     if (choice === 'evolve') {
+      if (!isEvolutionBranchCompatible(mon, pet, form)) {
+        showToast('Este Pokémon já escolheu outra rota evolutiva.');
+        return;
+      }
+      pet.evolutionDecisions[form.id] = choice;
       const previousName = pet.customName;
       applyAppearance(mon, pet, form);
       pet.lastAction = `${previousName} escolheu evoluir para ${form.name}.`;
       systemAddHistory(pet, '✨', pet.lastAction);
     } else {
-      pet.lastAction = `${form.name} foi liberado, mas ${pet.customName} continuará com a forma atual.`;
+      getEvolutionOffers(mon, pet).forEach(candidate => {
+        pet.evolutionDecisions[candidate.id] = 'later';
+      });
+      pet.lastAction = `${pet.customName} decidiu evoluir mais tarde. As rotas disponíveis continuam na aba Pokémon.`;
       systemAddHistory(pet, '🌱', pet.lastAction);
     }
     saveState();
     render();
     showToast(choice === 'evolve'
       ? `${form.name} agora está em uso.`
-      : `${form.name} ficou disponível em Aparência.`);
+      : 'As evoluções disponíveis ficaram guardadas na aba Pokémon.');
   }
 
   function rollTrainingReward(appState) {
@@ -1250,13 +1532,14 @@
     const ticks = Math.floor((timestamp - lastTick) / RULES.sleepTickMs);
     if (ticks > 0) {
       pet.energy = clamp(pet.energy + ticks * RULES.sleepEnergyPerTick);
-      window.SuperPokegochiBattle?.restoreHp(pet, Math.min(0.75, ticks * 0.25));
+      window.SuperPokegochiBattle?.restoreHp(pet, Math.min(1, ticks * 0.05));
       const earnedXp = ticks * RULES.sleepXpPerTick;
       systemAddXp(pet, earnedXp);
       pet.sleepXpEarned = Math.max(0, Number(pet.sleepXpEarned) || 0) + earnedXp;
       pet.lastSleepTick = lastTick + ticks * RULES.sleepTickMs;
     }
-    if (pet.energy >= RULES.wakeEnergy) {
+    const hpRecovered = !battleNeedsHpRecovery(pet, battleSnapshot(pet));
+    if (pet.energy >= RULES.wakeEnergy && hpRecovered) {
       const earnedXp = Math.max(0, Number(pet.sleepXpEarned) || 0);
       pet.energy = clamp(Math.max(pet.energy, RULES.wakeEnergy));
       pet.sleeping = false;
@@ -1280,7 +1563,7 @@
   }
 
   function isPetActive(pet, appState = state) {
-    return Boolean(pet && appState && pet.dexId === appState.selected);
+    return Boolean(pet && appState && pet.journeyKey === appState.selected);
   }
 
   function shiftPetTimestamp(pet, key, pausedFor) {
@@ -1448,7 +1731,7 @@
       systemAddHistory(pet, '🎮', pet.lastAction);
       saveState();
       return {
-        canPlayAgain: pet.energy >= RULES.play.energyCost,
+        canPlayAgain: canStartAnyMinigame(pet),
         earned: false,
         memoryLockedUntil: state.minigames.memoryLockedUntil,
         message: 'As seis vidas acabaram: a Memória de Frutas ficará disponível novamente em 1 hora.',
@@ -1462,7 +1745,7 @@
         saveState();
       }
       return {
-        canPlayAgain: pet.energy >= RULES.play.energyCost,
+        canPlayAgain: canStartAnyMinigame(pet),
         earned: false,
         memoryLockedUntil: state.minigames.memoryLockedUntil,
         message: 'Complete a meta do jogo para receber comida e XP.',
@@ -1475,7 +1758,7 @@
       systemAddHistory(pet, '🎮', pet.lastAction);
       saveState();
       return {
-        canPlayAgain: pet.energy >= RULES.play.energyCost,
+        canPlayAgain: canStartAnyMinigame(pet),
         earned: false,
         message: `A próxima recompensa estará disponível em ${formatDuration(rewardReadyAt - timestamp)}.`,
         rewardReadyAt,
@@ -1484,7 +1767,7 @@
 
     const foodId = randomMinigameFoodId();
     const food = FOOD_BY_ID[foodId];
-    const xp = Math.max(3, Math.min(8, Math.round(Number(result.xp) || 3)));
+    const xp = Math.max(12, Math.min(30, Math.round(Number(result.xp) || 12)));
     addFoodToBag(state, foodId, 1);
     pet.happiness = clamp(pet.happiness + RULES.play.happiness);
     pet.bond = clamp(pet.bond + RULES.play.bond);
@@ -1505,7 +1788,7 @@
     }, 600);
 
     return {
-      canPlayAgain: pet.energy >= RULES.play.energyCost,
+      canPlayAgain: canStartAnyMinigame(pet),
       earned: true,
       food: {
         assetUrl: new URL(`${ITEM_BASE_PATH}${food.asset}`, document.baseURI).href,
@@ -1526,19 +1809,20 @@
   function startMinigameAttempt({ gameId } = {}) {
     const pet = getPet();
     const gameLabel = GAME_LABELS[gameId] || 'um minigame';
-    if (pet.energy < RULES.play.energyCost) {
+    const energyCost = minigameEnergyCost(gameId);
+    if (pet.energy < energyCost) {
       return { started: false };
     }
     const timestamp = now();
-    pet.energy = clamp(pet.energy - RULES.play.energyCost);
+    pet.energy = clamp(pet.energy - energyCost);
     pet.hunger = clamp(pet.hunger - RULES.play.hungerCost);
     pet.lastUpdate = timestamp;
     markPetCaredFor(pet, timestamp);
-    pet.lastAction = `${pet.customName} começou ${gameLabel}. -${RULES.play.energyCost} energia.`;
+    pet.lastAction = `${pet.customName} começou ${gameLabel}. -${energyCost} energia.`;
     systemAddHistory(pet, '🎮', pet.lastAction);
     saveState();
     return {
-      canPlayAgain: pet.energy >= RULES.play.energyCost,
+      canPlayAgain: canStartAnyMinigame(pet),
       started: true,
     };
   }
@@ -1585,6 +1869,7 @@
       speciesName: appearance.name,
       visual: appearance,
       dexCatalog: DEX,
+      soundEnabled: getMusicEnabled(),
       onStarted() {
         pet.energy = clamp(pet.energy - 15);
         pet.hunger = clamp(pet.hunger - 6);
@@ -1635,6 +1920,71 @@
     });
 
     return opened ? false : 'Não foi possível abrir a batalha agora.';
+  }
+
+  function openSocialBattle() {
+    const social = state.social || systemDefaultSocial();
+    if (social.verificationRequired) {
+      verificationGateOpen = true;
+      render();
+      return;
+    }
+    if (!social.canInteract || !social.viewerCompanion) {
+      showToast('Escolha um Pokémon Companheiro para batalhar durante visitas.');
+      return;
+    }
+    const battle = window.SuperPokegochiBattle;
+    if (!battle) {
+      showToast('A batalha ainda está carregando. Tente novamente em instantes.');
+      return;
+    }
+
+    const viewerSpecies = getDex(social.viewerCompanion.dexId);
+    const visitorPet = migratePet(
+      structuredClone(social.viewerCompanion.pet),
+      viewerSpecies.id,
+    );
+    visitorPet.activeAppearance = social.viewerCompanion.appearanceId;
+    const visitorAppearance = getAppearance(viewerSpecies, visitorPet);
+    const ownerSpecies = getDex();
+    const ownerPet = getPet();
+    const ownerAppearance = getAppearance(ownerSpecies, ownerPet);
+
+    statusOpen = false;
+    moreOpen = false;
+    foodOpen = false;
+
+    const opened = battle.open({
+      pet: visitorPet,
+      dexNumber: battleDexNumber(visitorAppearance),
+      speciesName: visitorAppearance.name,
+      visual: visitorAppearance,
+      dexCatalog: DEX,
+      soundEnabled: getMusicEnabled(),
+      opponent: {
+        dexNumber: battleDexNumber(ownerAppearance),
+        level: ownerPet.level,
+        visual: ownerAppearance,
+      },
+      onComplete(result) {
+        socialBattleSaving = true;
+        notifySite('social-battle-result', {
+          actorLevel: visitorPet.level,
+          actorPokemonDex: battleDexNumber(visitorAppearance),
+          outcome: result.outcome,
+          ownerLevel: ownerPet.level,
+          ownerPokemonDex: battleDexNumber(ownerAppearance),
+        });
+      },
+      onExit() {
+        selectedAction = null;
+        render();
+      },
+    });
+
+    if (!opened) {
+      showToast('Não foi possível abrir a batalha agora.');
+    }
   }
 
   function battleTrainingBlocker(pet) {
@@ -1750,7 +2100,7 @@
       run(pet) {
         const busy = busyMessage(pet);
         if (busy) return busy;
-        if (pet.energy < RULES.play.energyCost) return `Seu companheiro precisa de pelo menos ${RULES.play.energyCost} de energia para brincar.`;
+        if (!canStartAnyMinigame(pet)) return 'Seu companheiro precisa de pelo menos 6 de energia para brincar.';
         return openPlayMinigames(pet);
       },
     },
@@ -1764,8 +2114,7 @@
           wakePet(pet);
           return null;
         }
-        const battle = battleSnapshot(pet);
-        const needsHpRecovery = Boolean(battle && battle.currentHp < battle.maxHp);
+        const needsHpRecovery = battleNeedsHpRecovery(pet, battleSnapshot(pet));
         if (pet.energy < 70 || needsHpRecovery) {
           startSleep(pet, false);
           return null;
@@ -1815,7 +2164,16 @@
 
   function systemMoodFor(pet) {
     if (pet.training) return { label: 'Treinando', icon: '🏅', className: 'focused', note: `treina por mais ${formatDuration(pet.training.endsAt - now())}.` };
-    if (pet.sleeping) return { label: 'Descansando', icon: '💤', className: 'sleepy', note: 'está recuperando energia.' };
+    if (pet.sleeping) {
+      const recoveringEnergy = pet.energy < RULES.wakeEnergy;
+      const recoveringHp = battleNeedsHpRecovery(pet);
+      const note = recoveringEnergy && recoveringHp
+        ? 'está recuperando energia e HP.'
+        : recoveringHp
+          ? 'está recuperando HP.'
+          : 'está recuperando energia.';
+      return { label: 'Descansando', icon: '💤', className: 'sleepy', note };
+    }
     if (
       pet.battle
       && Number(pet.battle.lastMaxHp) > 0
@@ -1961,7 +2319,7 @@
 
   function renderMoveLoadout(pet, appearance, snapshot) {
     const battle = window.SuperPokegochiBattle;
-    if (!battle?.getLearnedMoves || !snapshot.dataReady) {
+    if (!battle?.getLearnedMoves || !battle?.getMoveCatalog || !snapshot.dataReady) {
       return `
         <section class="move-loadout" aria-label="Golpes equipados">
           <div class="move-loadout-head">
@@ -1972,7 +2330,8 @@
     }
 
     const dexNumber = battleDexNumber(appearance);
-    const learnedMoves = battle.getLearnedMoves(pet, dexNumber, appearance.name);
+    const moveCatalog = battle.getMoveCatalog(pet, dexNumber, appearance.name);
+    const learnedMoves = moveCatalog.filter(move => move.learned);
     const learnedById = new Map(learnedMoves.map(move => [move.id, move]));
     const equippedIds = snapshot.equippedMoves
       .filter(moveId => learnedById.has(moveId))
@@ -1991,7 +2350,10 @@
           </div>
           <div class="equipped-move-list">
             ${visibleEquippedIds.map(moveId => `
-              <span>${escapeHtml(learnedById.get(moveId)?.name || battleDisplayName(moveId))}</span>
+              <span>
+                <b>${escapeHtml(learnedById.get(moveId)?.name || battleDisplayName(moveId))}</b>
+                <small>Equipada</small>
+              </span>
             `).join('')}
           </div>
         </section>`;
@@ -2006,18 +2368,32 @@
             <small>${selectedIds.length}/${requiredCount} selecionados · apenas golpes já aprendidos</small>
           </span>
         </div>
+        <div class="move-editor-section-title">
+          <b>Habilidades disponíveis</b>
+          <small>As futuras aparecem em cinza</small>
+        </div>
         <div class="learned-move-list">
-          ${learnedMoves.map(move => {
+          ${moveCatalog.map(move => {
             const selected = selectedIds.includes(move.id);
+            const category = move.category === 'special'
+              ? 'Especial'
+              : move.category === 'status'
+                ? 'Status'
+                : 'Físico';
+            const type = battle.typeLabel(move.type) || battleDisplayName(move.type);
             return `
               <button
-                class="${selected ? 'selected' : ''}"
+                class="${selected ? 'selected' : ''} ${move.learned ? '' : 'future'}"
                 type="button"
-                data-toggle-learned-move="${escapeHtml(move.id)}"
+                ${move.learned ? `data-toggle-learned-move="${escapeHtml(move.id)}"` : 'disabled'}
                 aria-pressed="${selected}"
               >
-                <b>${escapeHtml(move.name)}</b>
-                <small>Aprendido no Nv. ${move.level}</small>
+                <span>
+                  <b>${escapeHtml(move.name)}</b>
+                  <small>${move.learned ? `Aprendida no Nv. ${move.level}` : `Aprende no Nv. ${move.level}`}</small>
+                </span>
+                <em>${escapeHtml(type)} · ${category}</em>
+                <small>Poder ${move.power || '—'} · Precisão ${move.accuracy || '—'}</small>
               </button>`;
           }).join('')}
         </div>
@@ -2049,6 +2425,8 @@
     const abilityText = snapshot.abilities.length
       ? snapshot.abilities.map(ability => battleDisplayName(ability.name)).join(', ')
       : 'Será carregada na primeira conexão';
+    const spentAttributePoints = Object.values(snapshot.attributes)
+      .reduce((total, value) => total + Number(value || 0), 0);
 
     return `
       <div class="skills-panel">
@@ -2072,6 +2450,30 @@
                 ${snapshot.availablePoints <= 0 ? 'disabled' : ''}
               >+</button>
             </div>`).join('')}
+        </div>
+        <div class="attribute-reset">
+          ${attributeResetOpen ? `
+            <div class="attribute-reset-confirm" role="alert">
+              <b>Resetar ${spentAttributePoints} pontos?</b>
+              <small>${embeddedInSite
+                ? 'O custo é de 20 BPoints. Nível, XP e golpes não mudam.'
+                : 'No modo independente o reset é gratuito. Nível, XP e golpes não mudam.'}</small>
+              <span>
+                <button type="button" data-cancel-attribute-reset ${attributeResetPending ? 'disabled' : ''}>Cancelar</button>
+                <button class="danger" type="button" data-confirm-attribute-reset ${attributeResetPending ? 'disabled' : ''}>
+                  ${attributeResetPending
+                    ? 'Processando...'
+                    : embeddedInSite
+                      ? 'Confirmar por 20 BPoints'
+                      : 'Confirmar reset'}
+                </button>
+              </span>
+            </div>
+          ` : `
+            <button type="button" data-open-attribute-reset ${spentAttributePoints <= 0 ? 'disabled' : ''}>
+              ${embeddedInSite ? 'Resetar atributos — 20 BPoints' : 'Resetar atributos'}
+            </button>
+          `}
         </div>
         <div class="derived-stats">
           <div class="derived-title"><b>Status calculados</b><small>${typeText}</small></div>
@@ -2112,12 +2514,13 @@
 
   function renderWorldLayer(timestamp = now()) {
     const world = state.world || systemDefaultWorld();
+    const visitorMode = isSocialVisitorMode();
     const estimatedCampHeight = clamp(
       window.innerHeight - (window.innerWidth <= 420 ? 262 : 284),
       330,
       612,
     );
-    const leaves = world.leaves.map(item => {
+    const leaves = visitorMode ? '' : world.leaves.map(item => {
       const fallDuration = Math.max(1, Number(item.fallDuration) || 7000);
       const elapsed = Math.max(0, Math.min(fallDuration, timestamp - Number(item.spawnedAt || timestamp)));
       const falling = timestamp < Number(item.settledAt);
@@ -2133,13 +2536,13 @@
           class="world-item world-leaf ${falling ? 'falling' : 'settled'}"
           type="button"
           data-collect-leaf="${item.id}"
-          aria-label="Coletar folha e ganhar 1 XP"
+          aria-label="Coletar folha e ganhar XP"
           style="--item-x:${itemX}%;--item-bottom:${itemY}%;--fall-start:-${fallDistance}px;--leaf-rotation:${Number(item.rotation) || 0}deg;--fall-duration:${fallDuration}ms;--fall-delay:-${elapsed}ms"
         >
           <img src="${ITEM_BASE_PATH}leaf-${item.variant === 2 ? 2 : 1}.png" alt="">
         </button>`;
     }).join('');
-    const foodDrops = world.foodDrops.map(item => {
+    const foodDrops = visitorMode ? '' : world.foodDrops.map(item => {
       const food = FOOD_BY_ID[item.foodId];
       if (!food) return '';
       const storedY = Number(item.y);
@@ -2160,7 +2563,26 @@
         </button>`;
     }).join('');
 
-    return `<div class="world-layer" role="group" aria-label="Itens no gramado">${leaves}${foodDrops}</div>`;
+    const socialGifts = !visitorMode && Array.isArray(state.social?.gifts)
+      ? state.social.gifts.map(gift => {
+        const food = FOOD_BY_ID[gift.foodId];
+        if (!food) return '';
+        const itemY = clamp(Number(gift.y) || 24, 12, 78);
+        const itemX = worldItemX(gift, itemY);
+        return `
+          <button
+            class="world-item world-food social-gift"
+            type="button"
+            data-collect-gift="${gift.id}"
+            aria-label="Recolher ${food.label}, presente de ${escapeHtml(gift.fromName)}"
+            style="--item-x:${itemX}%;--item-bottom:${itemY}%"
+          >
+            <img class="social-gift-icon" src="${ITEM_BASE_PATH}social-gift.webp" alt="">
+          </button>`;
+      }).join('')
+      : '';
+
+    return `<div class="world-layer" role="group" aria-label="Itens no gramado">${leaves}${foodDrops}${socialGifts}</div>`;
   }
 
   function renderDirtLayer(pet) {
@@ -2180,40 +2602,44 @@
   }
 
   function renderAppearancePanel(mon, pet) {
-    const forms = getForms(mon);
+    const forms = getForms(mon).filter(form => (
+      isFormUnlocked(pet, form)
+      || isEvolutionBranchCompatible(mon, pet, form)
+    ));
     const days = activeDaysFor(pet);
     const shinyUnlocked = isShinyUnlocked(pet);
     const palette = pet.appearancePalette === 'shiny' && shinyUnlocked ? 'shiny' : 'normal';
     const currentForm = getForm(mon, pet.activeAppearance);
     const currentShinyReady = isFormAssetReady(mon, currentForm, 'shiny');
     const notificationsEnabled = getPokegochiNotificationPreference();
+    const visitorMode = isSocialVisitorMode();
     return `
       <div class="appearance-panel">
-        <button class="change-companion" type="button" data-companions-toggle aria-label="Alterar Pokémon companheiro">
+        ${visitorMode ? '' : `<button class="change-companion" type="button" data-companions-toggle aria-label="Alterar Pokémon companheiro">
           <span class="change-companion-icon" aria-hidden="true"><i></i></span>
           <span class="change-companion-copy">
             <b>Alterar Pokémon companheiro</b>
             <small>${embeddedInSite ? 'Troque entre os 5 do Time ou pesquise outro' : 'Troque entre seus 6 cuidados ou pesquise outro'}</small>
           </span>
           <span class="change-companion-arrow" aria-hidden="true">›</span>
-        </button>
+        </button>`}
         <div class="palette-block">
           <div class="palette-heading">
             <small>${shinyUnlocked ? 'Shiny liberado' : `${Math.min(days, SHINY_UNLOCK_DAYS)}/${SHINY_UNLOCK_DAYS} dias de vínculo`}</small>
           </div>
           <div class="palette-segment" role="group" aria-label="Versão do Pokémon">
             <button type="button" data-palette="normal" class="${palette === 'normal' ? 'active' : ''}"
-              aria-pressed="${palette === 'normal'}">
+              aria-pressed="${palette === 'normal'}" ${visitorMode ? 'disabled' : ''}>
               <span class="palette-dot normal"></span><b>Normal</b>
             </button>
             <button type="button" data-palette="shiny" class="${palette === 'shiny' ? 'active' : ''}"
-              aria-pressed="${palette === 'shiny'}" ${(!shinyUnlocked || !currentShinyReady) ? 'disabled' : ''}>
+              aria-pressed="${palette === 'shiny'}" ${(!shinyUnlocked || !currentShinyReady || visitorMode) ? 'disabled' : ''}>
               <span class="palette-dot shiny"></span><b>Shiny</b>
               ${!shinyUnlocked ? '<i aria-hidden="true">30</i>' : ''}
             </button>
           </div>
         </div>
-        ${embeddedInSite ? `<div class="pokegochi-notification-block">
+        ${embeddedInSite && !visitorMode ? `<div class="pokegochi-notification-block">
           <span>
             <b>Lembretes de cuidado</b>
             <small>Receba um aviso quando seu companheiro precisar de atenção.</small>
@@ -2228,20 +2654,35 @@
             <b>${notificationsEnabled ? 'Ativado' : 'Desativado'}</b>
           </button>
         </div>` : ''}
-        <p class="appearance-note">O nível e os cuidados são compartilhados entre todas as formas do Pokémon.</p>
+        <p class="appearance-note">${visitorMode
+          ? `Você está vendo o companheiro de ${state.social.ownerName}.`
+          : 'O nível e os cuidados são compartilhados entre todas as formas do Pokémon.'}</p>
         <div class="appearance-list">
           ${forms.map(form => {
             const unlocked = isFormUnlocked(pet, form);
             const assetReady = isFormAssetReady(mon, form, palette);
             const selected = pet.activeAppearance === form.id;
+            const canEvolveLater = (
+              !unlocked
+              && pet.evolutionDecisions[form.id] === 'later'
+              && meetsEvolutionRequirement(pet, form)
+              && isEvolutionBranchCompatible(mon, pet, form)
+            );
             const visual = formVisual(form, palette);
             const appearance = { ...mon, ...form, ...visual, id: form.id, name: form.name, palette };
             let stateLabel = 'Disponível';
             let ariaLabel = `Usar aparência ${form.name}`;
             if (selected) stateLabel = 'Em uso';
             else if (!unlocked) {
-              const requirementReady = meetsEvolutionRequirement(pet, form);
-              stateLabel = requirementReady ? 'Evolua para liberar' : 'Bloqueado';
+              const requirementReady = (
+                meetsEvolutionRequirement(pet, form)
+                && isEvolutionParentUnlocked(mon, pet, form)
+              );
+              stateLabel = canEvolveLater
+                ? 'Evoluir agora'
+                : requirementReady
+                  ? 'Evolua para liberar'
+                  : 'Bloqueado';
               ariaLabel = requirementReady
                 ? `${form.name} pronto para evoluir`
                 : `${form.name} bloqueado até o nível ${form.unlockLevel}`;
@@ -2251,7 +2692,8 @@
 
             return `
               <button class="appearance-option ${selected ? 'selected' : ''} ${!unlocked ? 'locked' : ''} ${!assetReady ? 'missing' : ''}" type="button"
-                data-appearance="${form.id}" ${(!unlocked || !assetReady || selected) ? 'disabled' : ''}
+                ${canEvolveLater ? `data-later-evolution="${form.id}"` : `data-appearance="${form.id}"`}
+                ${((!unlocked && !canEvolveLater) || !assetReady || selected || visitorMode) ? 'disabled' : ''}
                 aria-label="${ariaLabel}">
                 <span class="appearance-preview">
                   ${assetReady ? renderPokemonVisual(appearance, 'form-sprite', form.name) : '<b>?</b>'}
@@ -2267,23 +2709,29 @@
       </div>`;
   }
 
-  function renderEvolutionOffer(mon, pet, form) {
-    if (!form) return '';
-    const appearance = { ...mon, ...form, id: form.id, name: form.name };
+  function renderEvolutionOffer(mon, pet, forms) {
+    if (!forms?.length) return '';
     return `
       <div class="evolution-overlay" role="dialog" aria-modal="true" aria-labelledby="evolution-title">
         <div class="evolution-panel">
           <small>Evolução disponível</small>
-          <span class="evolution-preview">${renderPokemonVisual(appearance, 'evolution-sprite', form.name)}</span>
           <h2 id="evolution-title">${pet.customName} pode evoluir</h2>
-          <p>${form.name} foi liberado no nível ${form.unlockLevel}. Seu nível ${pet.level} e todos os cuidados continuarão iguais.</p>
-          <button class="evolution-primary" type="button" data-evolution-choice="evolve" data-evolution-form="${form.id}">
-            <span>✨</span><b>Evoluir para ${form.name}</b>
-          </button>
-          <button class="evolution-secondary" type="button" data-evolution-choice="later" data-evolution-form="${form.id}">
+          <p>Escolha uma rota. Depois da evolução, as outras rotas somem somente para este Pokémon.</p>
+          <div class="evolution-route-list">
+            ${forms.map(form => {
+              const appearance = { ...mon, ...form, id: form.id, name: form.name };
+              return `
+                <button class="evolution-primary evolution-route" type="button" data-evolution-choice="evolve" data-evolution-form="${form.id}">
+                  <span class="evolution-preview">${renderPokemonVisual(appearance, 'evolution-sprite', form.name)}</span>
+                  <b>Evoluir para ${form.name}</b>
+                  <small>Nv. ${form.unlockLevel}</small>
+                </button>`;
+            }).join('')}
+          </div>
+          <button class="evolution-secondary" type="button" data-evolution-choice="later" data-evolution-form="${forms[0].id}">
             Continuar como ${pet.customName}
           </button>
-          <small class="evolution-hint">A aparência de ${form.name} continuará disponível na Pokébola.</small>
+          <small class="evolution-hint">Se escolher depois, todas as rotas disponíveis continuarão na aba Pokémon.</small>
         </div>
       </div>`;
   }
@@ -2342,7 +2790,7 @@
     if (pet.sleeping) {
       return `
         <div class="activity-card sleeping-card">
-          <div class="activity-copy"><span class="activity-pixel-icon"><img src="${ITEM_BASE_PATH}action-rest.png" alt=""></span><div><b>Descansando</b><small>+${RULES.sleepEnergyPerTick} energia e +${RULES.sleepXpPerTick} XP a cada hora.${pet.sleepXpEarned > 0 ? ` XP deste descanso: ${pet.sleepXpEarned}.` : ''}</small></div></div>
+          <div class="activity-copy"><span class="activity-pixel-icon"><img src="${ITEM_BASE_PATH}action-rest.png" alt=""></span><div><b>Descansando</b><small>+${RULES.sleepEnergyPerTick} energia e +${RULES.sleepXpPerTick} XP a cada 6 min. HP recupera 50% por hora.${pet.sleepXpEarned > 0 ? ` XP deste descanso: ${pet.sleepXpEarned}.` : ''}</small></div></div>
           <div class="activity-bar"><i style="width:${pet.energy}%"></i></div>
         </div>`;
     }
@@ -2376,6 +2824,84 @@
       .replaceAll("'", '&#039;');
   }
 
+  function socialHistoryCopy(item, pet) {
+    const actorName = escapeHtml(item.actorName || 'Um treinador');
+    if (item.type === 'gift') {
+      const food = FOOD_BY_ID[item.foodId];
+      return `${actorName} deixou ${food ? food.label : 'uma fruta'} de presente.`;
+    }
+    if (item.type === 'battle') {
+      if (item.outcome === 'victory') {
+        return `${actorName} venceu uma batalha contra ${escapeHtml(pet.customName)}.`;
+      }
+      if (item.outcome === 'defeat') {
+        return `${escapeHtml(pet.customName)} venceu uma batalha contra ${actorName}.`;
+      }
+      return `${actorName} visitou o gramado e saiu da batalha.`;
+    }
+    return `${actorName} visitou o gramado.`;
+  }
+
+  function renderSocialHistory(pet) {
+    const history = Array.isArray(state.social?.history) ? state.social.history : [];
+    const visible = history.slice(0, socialHistoryVisibleCount);
+    if (!visible.length) {
+      return '<p class="empty-history">Nenhuma visita registrada ainda.</p>';
+    }
+
+    return `
+      <div class="history-list compact-history social-history-list">${visible.map(item => `
+        <div class="history-item">
+          <span>${item.type === 'gift' ? '🎁' : item.type === 'battle' ? '⚔️' : '👋'}</span>
+          <p>${socialHistoryCopy(item, pet)}<small>${new Date(item.at).toLocaleString('pt-BR', {
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            month: '2-digit',
+          })}</small></p>
+        </div>`).join('')}</div>
+      ${history.length > visible.length
+        ? `<button class="history-more" type="button" data-social-history-more>Ver mais ${Math.min(5, history.length - visible.length)}</button>`
+        : '<p class="history-end">Fim do histórico de visitas</p>'}`;
+  }
+
+  function renderVerificationGate() {
+    if (!verificationGateOpen) return '';
+    return `
+      <div class="evolution-overlay verification-gate" role="dialog" aria-modal="true" aria-labelledby="verification-gate-title">
+        <div class="evolution-panel verification-gate-panel">
+          <small>Recurso para treinadores</small>
+          <span class="verification-gate-icon" aria-hidden="true">✓</span>
+          <h2 id="verification-gate-title">Você precisa ser Verificado</h2>
+          <p>Conclua a verificação do perfil para escolher ou trocar seu Pokémon Companheiro e usar os recursos sociais.</p>
+          <button class="evolution-primary" type="button" data-verification-info>
+            <b>Como verificar</b>
+          </button>
+          <button class="evolution-secondary" type="button" data-verification-close>
+            Voltar ao Pokégochi
+          </button>
+        </div>
+      </div>`;
+  }
+
+  function renderVisitorMorePanel(pet) {
+    const social = state.social || systemDefaultSocial();
+    return `
+      <div class="activity-card social-visit-card">
+        <div class="activity-copy">
+          <span>👋</span>
+          <div>
+            <b>Visita ao companheiro</b>
+            <small>Você está visitando o Pokégochi de ${escapeHtml(social.ownerName)}.</small>
+          </div>
+        </div>
+      </div>
+      <div class="more-card social-visit-note">
+        <div class="more-title"><span>🌿</span><b>Modo de visita</b></div>
+        <p>Os cuidados e o progresso pertencem ao dono. Presentes aparecem no gramado quando ele voltar.</p>
+      </div>`;
+  }
+
   function normalizeCompanionSearch(value) {
     return String(value)
       .normalize('NFD')
@@ -2396,9 +2922,56 @@
   function canSearchCompanion(species) {
     if (species.selectable !== false) return true;
     const rootSpecies = companionRootSpecies(species);
-    const pet = state.pets[rootSpecies.id];
     const requestedForm = companionRequestedForm(species, rootSpecies);
-    return Boolean(pet && isFormUnlocked(pet, requestedForm));
+    return Object.values(state.pets).some(pet => (
+      pet.dexId === rootSpecies.id
+      && isFormUnlocked(pet, requestedForm)
+    ));
+  }
+
+  function journeysForRoot(rootId) {
+    return Object.entries(state.pets)
+      .filter(([, pet]) => pet.dexId === rootId)
+      .map(([journeyKey, pet]) => ({ journeyKey, pet }));
+  }
+
+  function companionSearchEntries(species) {
+    const rootSpecies = companionRootSpecies(species);
+    const requestedForm = companionRequestedForm(species, rootSpecies);
+    const existing = journeysForRoot(rootSpecies.id)
+      .filter(({ pet }) => (
+        species.selectable !== false || isFormUnlocked(pet, requestedForm)
+      ))
+      .map(({ journeyKey }) => ({
+        createNew: false,
+        displayId: species.id,
+        journeyKey,
+        rootId: rootSpecies.id,
+        source: 'search',
+      }));
+    const canStartNew = rootSpecies.selectable !== false;
+
+    if (canStartNew) {
+      existing.push({
+        createNew: true,
+        displayId: species.id,
+        journeyKey: null,
+        rootId: rootSpecies.id,
+        source: 'search',
+      });
+    }
+
+    if (!existing.length) {
+      existing.push({
+        createNew: false,
+        displayId: species.id,
+        journeyKey: null,
+        rootId: rootSpecies.id,
+        source: 'search',
+      });
+    }
+
+    return existing;
   }
 
   function companionSearchData() {
@@ -2431,12 +3004,14 @@
 
   function companionRosterEntries() {
     if (!embeddedInSite) {
-      return state.roster.slice(0, 6).map(rootId => {
-        const species = getDex(rootId);
-        const pet = state.pets[rootId] || systemDefaultPet(species);
+      return state.roster.slice(0, 6).map(journeyKey => {
+        const species = getDex(journeyKey);
+        const pet = state.pets[journeyKey] || systemDefaultPet(species);
         const appearance = getAppearance(species, pet);
         return {
+          createNew: false,
           displayId: appearance.id,
+          journeyKey,
           rootId: species.id,
           source: 'roster',
         };
@@ -2447,14 +3022,18 @@
     const activePet = getPet();
     const activeAppearance = getAppearance(activeSpecies, activePet);
     const active = {
+      createNew: false,
       displayId: activeAppearance.id,
+      journeyKey: state.selected,
       rootId: activeSpecies.id,
       source: 'roster',
     };
-    const visualSlots = state.favoriteTeam.map(displayId => {
-      const species = getDex(displayId);
+    const visualSlots = state.favoriteTeam.map(entry => {
+      const species = getDex(entry.displayId);
       return {
+        createNew: !entry.journeyKey,
         displayId: species.id,
+        journeyKey: entry.journeyKey,
         rootId: companionRootSpecies(species).id,
         source: 'favorite',
       };
@@ -2465,10 +3044,10 @@
   function systemMiniCompanion(entry) {
     const species = getDex(entry.displayId);
     const rootSpecies = companionRootSpecies(species);
-    const storedPet = state.pets[rootSpecies.id];
+    const storedPet = entry.journeyKey ? state.pets[entry.journeyKey] : null;
     const requestedForm = companionRequestedForm(species, rootSpecies);
     const isSearch = entry.source === 'search';
-    const evolutionLocked = species.selectable === false && !canSearchCompanion(species);
+    const evolutionLocked = species.selectable === false && !storedPet && !entry.createNew;
     const hasProgressForForm = Boolean(
       storedPet
       && (species.selectable !== false || isFormUnlocked(storedPet, requestedForm))
@@ -2481,14 +3060,17 @@
     const dexLabel = species.dexNumber ? `#${String(species.dexNumber).padStart(3, '0')}` : species.id;
     let detail;
     if (evolutionLocked) detail = 'Bloqueado · evolua no Tamagotchi';
-    else if (hasProgressForForm) detail = `${mood.icon} ${mood.label} · Nv. ${pet.level}`;
+    else if (hasProgressForForm) {
+      const journeyName = pet.customName !== rootSpecies.name ? `${pet.customName} · ` : '';
+      detail = `${journeyName}${mood.icon} ${mood.label} · Nv. ${pet.level}`;
+    }
     else if (entry.source === 'favorite') detail = 'Favorito visual · Sem progresso';
-    else detail = 'Novo cuidado · Nível 1';
+    else detail = `Cuidar de um novo ${rootSpecies.name} · Nv. 1`;
     const selectionAttributes = evolutionLocked && isSearch
       ? 'disabled aria-disabled="true"'
-      : `data-select="${species.id}" data-select-source="${entry.source}" aria-label="Selecionar ${species.name}"`;
+      : `data-select="${species.id}" data-select-source="${entry.source}" data-select-journey="${entry.journeyKey || ''}" data-select-new="${entry.createNew ? 'true' : 'false'}" aria-label="Selecionar ${species.name}"`;
     return `
-      <button class="companion-row ${entry.source === 'roster' && state.selected === rootSpecies.id ? 'active' : ''} ${evolutionLocked ? 'evolution-locked' : ''} ${entry.source === 'favorite' ? 'visual-favorite' : ''}" type="button" ${selectionAttributes}>
+      <button class="companion-row ${entry.journeyKey && state.selected === entry.journeyKey ? 'active' : ''} ${evolutionLocked ? 'evolution-locked' : ''} ${entry.source === 'favorite' ? 'visual-favorite' : ''} ${entry.createNew ? 'new-journey' : ''}" type="button" ${selectionAttributes}>
         <span class="mini-orb ${low ? 'needs-care' : ''}">${renderPokemonVisual(visual, 'mini-sprite', species.name)}</span>
         <span class="companion-copy"><b>${species.name}</b><small>${dexLabel} · ${detail}</small></span>
         <span class="companion-chevron" aria-hidden="true">›</span>
@@ -2515,11 +3097,7 @@
         ? `${results.total} ${results.total === 1 ? 'resultado' : 'resultados'}`
         : 'Escolha uma forma inicial ou evolução já desbloqueada',
       html: results.visible.length
-        ? results.visible.map(species => systemMiniCompanion({
-            displayId: species.id,
-            rootId: companionRootSpecies(species).id,
-            source: 'search',
-          })).join('')
+        ? results.visible.flatMap(companionSearchEntries).map(systemMiniCompanion).join('')
         : '<div class="companion-empty"><b>Nenhum Pokémon encontrado</b><small>Tente outro nome ou número.</small></div>',
     };
   }
@@ -2529,6 +3107,8 @@
       btn.addEventListener('click', () => requestCompanionSelection(
         btn.dataset.select,
         btn.dataset.selectSource || 'roster',
+        btn.dataset.selectJourney || null,
+        btn.dataset.selectNew === 'true',
       ));
     });
   }
@@ -2543,17 +3123,32 @@
     bindCompanionRows(list);
   }
 
-  function finishCompanionSelection(requestedSpecies, rootSpecies, source) {
+  function finishCompanionSelection(
+    requestedSpecies,
+    rootSpecies,
+    source,
+    requestedJourneyKey = null,
+    createNew = false,
+  ) {
+    if (!canChooseCompanion()) {
+      verificationGateOpen = true;
+      render();
+      return;
+    }
     const previousSpecies = getDex();
     const previousPet = getPet();
     const previousAppearance = getAppearance(previousSpecies, previousPet);
     const previousAppearanceSpecies = DEX.find(mon => mon.id === previousAppearance.id);
-    const existingIndex = state.roster.indexOf(rootSpecies.id);
-    const favoriteIndex = state.favoriteTeam.findIndex(displayId => (
-      getDex(displayId).dexNumber === requestedSpecies.dexNumber
+    const targetJourneyKey = createNew || !requestedJourneyKey
+      ? createJourneyKey()
+      : requestedJourneyKey;
+    const existingIndex = state.roster.indexOf(targetJourneyKey);
+    const favoriteIndex = state.favoriteTeam.findIndex(entry => (
+      entry.journeyKey === targetJourneyKey
+      || (!entry.journeyKey && getDex(entry.displayId).dexNumber === requestedSpecies.dexNumber)
     ));
     const switchedAt = now();
-    const changedCompanion = previousPet.dexId !== rootSpecies.id;
+    const changedCompanion = previousPet.journeyKey !== targetJourneyKey;
 
     if (changedCompanion) {
       systemApplyOfflineDecay(previousPet, state);
@@ -2562,20 +3157,24 @@
 
     if (existingIndex > 0) {
       [state.roster[0], state.roster[existingIndex]] = [
-        state.roster[existingIndex],
+        targetJourneyKey,
         state.roster[0],
       ];
     } else if (existingIndex < 0) {
       state.roster = !embeddedInSite && state.roster.length >= 6
-        ? [rootSpecies.id, ...state.roster.slice(1)].slice(0, 6)
-        : [rootSpecies.id, ...state.roster].slice(0, 6);
+        ? [targetJourneyKey, ...state.roster.slice(1)].slice(0, 6)
+        : [targetJourneyKey, ...state.roster].slice(0, 6);
     }
 
-    if (!state.pets[rootSpecies.id]) {
-      state.pets[rootSpecies.id] = systemDefaultPet(rootSpecies, Object.keys(state.pets).length);
+    if (!state.pets[targetJourneyKey]) {
+      state.pets[targetJourneyKey] = systemDefaultPet(
+        rootSpecies,
+        Object.keys(state.pets).length,
+        targetJourneyKey,
+      );
     }
 
-    const nextPet = state.pets[rootSpecies.id];
+    const nextPet = state.pets[targetJourneyKey];
     let bondReset = false;
     if (changedCompanion) {
       bondReset = resumePet(nextPet, switchedAt);
@@ -2583,21 +3182,32 @@
       nextPet.inactiveSince = null;
     }
     if (requestedSpecies.selectable === false) {
-      nextPet.activeAppearance = getForms(rootSpecies)[0].id;
+      const requestedForm = companionRequestedForm(requestedSpecies, rootSpecies);
+      nextPet.activeAppearance = !createNew && isFormUnlocked(nextPet, requestedForm)
+        ? requestedForm.id
+        : getForms(rootSpecies)[0].id;
     }
 
     if (favoriteIndex >= 0 && changedCompanion) {
-      state.favoriteTeam[favoriteIndex] = previousAppearanceSpecies?.id || previousSpecies.id;
+      state.favoriteTeam[favoriteIndex] = {
+        displayId: previousAppearanceSpecies?.id || previousSpecies.id,
+        journeyKey: previousPet.journeyKey,
+      };
       state.favoriteTeam = state.favoriteTeam
-        .filter((displayId, index, team) => team.indexOf(displayId) === index)
+        .filter((entry, index, team) => team.findIndex(candidate => (
+          candidate.displayId === entry.displayId
+          && candidate.journeyKey === entry.journeyKey
+        )) === index)
         .slice(0, 5);
     }
 
-    state.selected = rootSpecies.id;
+    state.selected = targetJourneyKey;
     state.needsCompanionChoice = false;
     notifySite('companion-request', {
       previousAppearanceDex: previousAppearanceSpecies?.dexNumber || previousSpecies.dexNumber,
+      previousJourneyKey: previousPet.journeyKey,
       requestedDex: requestedSpecies.dexNumber,
+      requestedJourneyKey: targetJourneyKey,
       rootDex: rootSpecies.dexNumber,
       roster: state.roster,
       source,
@@ -2615,63 +3225,93 @@
       bondReset
         ? `O vínculo com ${nextPet.customName} recomeçou no Dia 1.`
         : requestedSpecies.selectable === false
-        ? `${requestedSpecies.name} voltou para ${rootSpecies.name}, com todo o progresso preservado.`
+        ? createNew
+          ? `${requestedSpecies.name} começou uma nova jornada como ${rootSpecies.name}.`
+          : `${requestedSpecies.name} agora está no gramado, com todo o progresso preservado.`
         : `${requestedSpecies.name} agora está no gramado.`,
     );
   }
 
-  function commitCompanionSelection(id, source) {
+  function commitCompanionSelection(id, source, journeyKey = null, createNew = false) {
     const requestedSpecies = getDex(id);
     const rootSpecies = companionRootSpecies(requestedSpecies);
-    const isFavoriteSelection = state.favoriteTeam.some(displayId => (
-      getDex(displayId).dexNumber === requestedSpecies.dexNumber
+    const isFavoriteSelection = state.favoriteTeam.some(entry => (
+      entry.journeyKey === journeyKey
+      || (!entry.journeyKey && getDex(entry.displayId).dexNumber === requestedSpecies.dexNumber)
     ));
     const needsArchiveConfirmation = (
-      rootSpecies.id !== state.selected
+      journeyKey !== state.selected
       && !isFavoriteSelection
       && companionRosterEntries().length >= (embeddedInSite ? 5 : 6)
     );
 
     if (needsArchiveConfirmation) {
-      pendingArchiveCompanion = { requestedId: requestedSpecies.id, source };
+      pendingArchiveCompanion = {
+        createNew,
+        journeyKey,
+        requestedId: requestedSpecies.id,
+        source,
+      };
       pendingCompanionSelection = null;
       render();
       return;
     }
 
-    finishCompanionSelection(requestedSpecies, rootSpecies, source);
+    finishCompanionSelection(requestedSpecies, rootSpecies, source, journeyKey, createNew);
   }
 
-  function requestCompanionSelection(id, source) {
+  function requestCompanionSelection(id, source, journeyKey = null, createNew = false) {
+    if (!canChooseCompanion()) {
+      verificationGateOpen = true;
+      render();
+      return;
+    }
     const requestedSpecies = getDex(id);
-    if (source === 'search' && !canSearchCompanion(requestedSpecies)) {
+    if (source === 'search' && !createNew && !canSearchCompanion(requestedSpecies)) {
       showToast('Essa evolução precisa ser obtida primeiro no Tamagotchi.');
       return;
     }
 
     if (requestedSpecies.selectable === false) {
-      pendingCompanionSelection = { requestedId: requestedSpecies.id, source };
+      pendingCompanionSelection = {
+        createNew,
+        journeyKey,
+        requestedId: requestedSpecies.id,
+        source,
+      };
       pendingArchiveCompanion = null;
       render();
       return;
     }
 
-    commitCompanionSelection(requestedSpecies.id, source);
+    commitCompanionSelection(requestedSpecies.id, source, journeyKey, createNew);
   }
 
   function renderCompanionSelectionWarning() {
     if (!pendingCompanionSelection) return '';
     const requestedSpecies = getDex(pendingCompanionSelection.requestedId);
     const rootSpecies = companionRootSpecies(requestedSpecies);
+    const existingPet = pendingCompanionSelection.journeyKey
+      ? state.pets[pendingCompanionSelection.journeyKey]
+      : null;
+    const requestedForm = companionRequestedForm(requestedSpecies, rootSpecies);
+    const returnsUnlockedForm = Boolean(
+      existingPet
+      && isFormUnlocked(existingPet, requestedForm)
+    );
     return `
       <div class="evolution-overlay companion-confirmation" role="dialog" aria-modal="true" aria-labelledby="companion-confirmation-title">
         <div class="evolution-panel">
           <small>Forma evoluída</small>
           <span class="evolution-preview">${renderPokemonVisual(requestedSpecies, 'evolution-sprite', requestedSpecies.name)}</span>
-          <h2 id="companion-confirmation-title">${requestedSpecies.name} voltará para ${rootSpecies.name}</h2>
-          <p>Nível, XP, formas desbloqueadas e histórico serão mantidos. O vínculo recomeça no Dia 1 caso esse Pokémon tenha ficado mais de 24 horas fora.</p>
+          <h2 id="companion-confirmation-title">${returnsUnlockedForm
+            ? `Usar ${requestedSpecies.name} nesta jornada?`
+            : `${requestedSpecies.name} começará como ${rootSpecies.name}`}</h2>
+          <p>${returnsUnlockedForm
+            ? 'Essa forma já foi desbloqueada e poderá entrar em uso sem alterar nível, XP ou histórico.'
+            : 'Uma nova jornada sempre começa pela forma inicial. A evolução poderá ser conquistada depois.'} O vínculo recomeça no Dia 1 caso esse Pokémon tenha ficado mais de 24 horas fora.</p>
           <button class="evolution-primary" type="button" data-companion-confirm>
-            <b>Usar ${rootSpecies.name}</b>
+            <b>Usar ${returnsUnlockedForm ? requestedSpecies.name : rootSpecies.name}</b>
           </button>
           <button class="evolution-secondary" type="button" data-companion-cancel>Cancelar</button>
         </div>
@@ -2703,7 +3343,8 @@
   function systemRender() {
     const pet = getPet();
     const species = getDex();
-    systemApplyOfflineDecay(pet);
+    const visitorMode = isSocialVisitorMode();
+    if (!visitorMode) systemApplyOfflineDecay(pet);
     saveState();
 
     const mon = getAppearance(species, pet);
@@ -2719,10 +3360,10 @@
     const foodLocked = pet.sleeping;
     const selectedImgStyle = selectedAction ? ` action-${selectedAction}` : '';
     const sheetExpanded = moreOpen || foodOpen;
-    const hasCompanions = DEX.length > 1;
+    const hasCompanions = DEX.length > 1 && !visitorMode;
     const companionResults = hasCompanions && companionsOpen ? companionResultsMarkup() : null;
     const clock = brasiliaClock();
-    const evolutionOffer = getEvolutionOffer(species, pet);
+    const evolutionOffer = visitorMode ? [] : getEvolutionOffers(species, pet);
     const musicEnabled = getMusicEnabled();
 
     root.innerHTML = `
@@ -2757,9 +3398,21 @@
             <div class="status-tabs" role="tablist" aria-label="Seções do painel">
               <button type="button" role="tab" data-status-tab="status" class="${statusTab === 'status' ? 'active' : ''}" aria-selected="${statusTab === 'status'}">Status</button>
               <button type="button" role="tab" data-status-tab="appearance" class="${statusTab === 'appearance' ? 'active' : ''}" aria-selected="${statusTab === 'appearance'}">Pokémon</button>
-              <button type="button" role="tab" data-status-tab="skills" class="${statusTab === 'skills' ? 'active' : ''}" aria-selected="${statusTab === 'skills'}">Habilidades</button>
+              ${visitorMode ? '' : `<button type="button" role="tab" data-status-tab="skills" class="${statusTab === 'skills' ? 'active' : ''}" aria-selected="${statusTab === 'skills'}">Habilidades</button>`}
             </div>
-            ${statusTab === 'status' ? `
+            ${statusTab === 'status' ? visitorMode ? `
+              <div class="status-alert good visitor-public-alert">
+                <b>👋 Perfil público</b>
+                <span>Os cuidados e a mochila pertencem ao dono.</span>
+              </div>
+              <div class="status-grid visitor-public-status">
+                ${systemBondDays(pet)}
+              </div>
+              <div class="status-meta visitor-public-meta">
+                <span>Nível ${pet.level}</span>
+                <span>Companheiro ativo</span>
+              </div>
+            ` : `
               ${needsCare ? `<div class="status-alert"><b>${needsHealing ? '❤️ Precisa recuperar HP!' : hungry ? '🍎 Está com fome!' : dirty ? '🧼 Precisa de limpeza!' : '⚠ Precisa de atenção!'}</b></div>` : `<div class="status-alert good"><b>✨ Tudo certo!</b><span>${pet.customName} está bem cuidado.</span></div>`}
               <div class="status-grid">
                 ${battleHpRow(combat)}
@@ -2783,7 +3436,7 @@
         <main class="camp-area ${mood.className} phase-${clock.phase}" data-brasilia-time="${clock.label}">
           <div class="time-light" aria-hidden="true"></div>
           ${renderWorldLayer()}
-          ${renderDirtLayer(pet)}
+          ${visitorMode ? '' : renderDirtLayer(pet)}
           <button
             class="music-toggle ${musicEnabled ? 'active' : ''}"
             type="button"
@@ -2831,14 +3484,27 @@
           ${foodOpen && !foodLocked ? renderFoodTray(pet) : ''}
 
           <div class="more-panel" ${moreOpen ? '' : 'inert'}>
-            ${renderActivityCard(pet)}
-            <div class="more-card history-card">
-              <div class="more-title"><span>📜</span><b>Histórico</b></div>
-              ${systemRecentHistory(pet)}
-            </div>
+            ${visitorMode ? renderVisitorMorePanel(pet) : `
+              ${renderActivityCard(pet)}
+              <div class="more-card history-card">
+                <div class="more-title"><span>📜</span><b>Histórico</b></div>
+                ${systemRecentHistory(pet)}
+              </div>
+              ${embeddedInSite ? `<div class="more-card history-card social-history-card">
+                <div class="more-title"><span>👋</span><b>Histórico de visitas</b></div>
+                ${renderSocialHistory(pet)}
+              </div>` : ''}
+            `}
           </div>
 
-          <div class="action-dock">
+          ${visitorMode ? `<div class="action-dock social-action-dock">
+            <button class="action-btn social-gift-action ${socialGiftSending ? 'active' : ''}" data-social-gift type="button" ${(socialGiftSending || state.social?.giftSent) ? 'disabled' : ''}>
+              <span aria-hidden="true"><img src="${ITEM_BASE_PATH}social-gift.webp" alt=""></span><b>${state.social?.giftSent ? 'Enviado' : socialGiftSending ? 'Enviando' : 'Presentear'}</b>
+            </button>
+            <button class="action-btn social-battle-action ${socialBattleSaving ? 'active' : ''}" data-social-battle type="button">
+              <span><img src="${ITEM_BASE_PATH}action-train.png" alt=""></span><b>Batalhar</b>
+            </button>
+          </div>` : `<div class="action-dock">
             <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="${foodOpen ? 'Fechar mochila de comidas' : 'Abrir mochila de comidas'}" ${foodLocked ? 'disabled' : ''}>
               <span><img src="${ITEM_BASE_PATH}action-food.png" alt=""></span><b>Comida</b>
             </button>
@@ -2852,15 +3518,16 @@
                   <span><img src="${ITEM_BASE_PATH}${icon}" alt=""></span><b>${label}</b>
                 </button>`;
             }).join('')}
-          </div>
+          </div>`}
         </section>
 
         ${renderEvolutionOffer(species, pet, evolutionOffer)}
-        ${renderCompanionSelectionWarning()}
-        ${renderArchiveCompanionConfirmation()}
-        ${renderBattleTrainingMenu(pet, mon, combat)}
+        ${visitorMode ? '' : renderCompanionSelectionWarning()}
+        ${visitorMode ? '' : renderArchiveCompanionConfirmation()}
+        ${visitorMode ? '' : renderBattleTrainingMenu(pet, mon, combat)}
+        ${renderVerificationGate()}
 
-        ${hasCompanions && companionsOpen ? `<aside class="companions-drawer open" aria-label="Alterar Pokémon companheiro">
+        ${hasCompanions && companionsOpen && canChooseCompanion() ? `<aside class="companions-drawer open" aria-label="Alterar Pokémon companheiro">
           <div class="drawer-card">
             <div class="drawer-head">
               <div><small>${companionSearchOpen ? 'Pokédex permitida' : 'Seus cuidados'}</small><h2>${companionSearchOpen ? 'Pesquisar Pokémon' : 'Alterar Companheiro'}</h2></div>
@@ -2918,6 +3585,9 @@
       render();
     }));
     document.querySelectorAll('[data-appearance]').forEach(btn => btn.addEventListener('click', () => selectAppearance(btn.dataset.appearance)));
+    document.querySelectorAll('[data-later-evolution]').forEach(btn => btn.addEventListener('click', () => {
+      chooseEvolution(btn.dataset.laterEvolution, 'evolve');
+    }));
     document.querySelectorAll('[data-palette]').forEach(btn => btn.addEventListener('click', () => selectPalette(btn.dataset.palette)));
     document.querySelectorAll('[data-music-toggle]').forEach(btn => btn.addEventListener('click', () => {
       setMusicEnabled(!getMusicEnabled());
@@ -2940,6 +3610,35 @@
       pet.lastAction = `${pet.customName} ficou mais forte em ${window.SuperPokegochiBattle.attributeLabels[btn.dataset.allocateAttribute]}.`;
       saveState();
       render();
+    }));
+    document.querySelectorAll('[data-open-attribute-reset]').forEach(btn => btn.addEventListener('click', () => {
+      attributeResetOpen = true;
+      render();
+    }));
+    document.querySelectorAll('[data-cancel-attribute-reset]').forEach(btn => btn.addEventListener('click', () => {
+      attributeResetOpen = false;
+      render();
+    }));
+    document.querySelectorAll('[data-confirm-attribute-reset]').forEach(btn => btn.addEventListener('click', () => {
+      if (attributeResetPending) return;
+      if (!embeddedInSite) {
+        const appearance = getAppearance(getDex(), pet);
+        window.SuperPokegochiBattle?.resetAttributes(
+          pet,
+          battleDexNumber(appearance),
+          appearance.name,
+        );
+        attributeResetOpen = false;
+        pet.lastAction = `${pet.customName} recuperou seus pontos de atributo.`;
+        systemAddHistory(pet, '↺', pet.lastAction);
+        saveState();
+        render();
+        showToast('Atributos resetados.');
+        return;
+      }
+      attributeResetPending = true;
+      render();
+      notifySite('attribute-reset-request', { state });
     }));
     document.querySelectorAll('[data-open-move-editor]').forEach(btn => btn.addEventListener('click', () => {
       const battle = window.SuperPokegochiBattle;
@@ -3004,6 +3703,8 @@
       commitCompanionSelection(
         pendingCompanionSelection.requestedId,
         pendingCompanionSelection.source,
+        pendingCompanionSelection.journeyKey,
+        pendingCompanionSelection.createNew,
       );
     }));
     document.querySelectorAll('[data-companion-cancel]').forEach(btn => btn.addEventListener('click', () => {
@@ -3016,13 +3717,33 @@
       const requestedSpecies = getDex(pendingArchiveCompanion.requestedId);
       const rootSpecies = companionRootSpecies(requestedSpecies);
       const source = pendingArchiveCompanion.source;
+      const journeyKey = pendingArchiveCompanion.journeyKey;
+      const createNew = pendingArchiveCompanion.createNew;
       pendingArchiveCompanion = null;
-      finishCompanionSelection(requestedSpecies, rootSpecies, source);
+      finishCompanionSelection(
+        requestedSpecies,
+        rootSpecies,
+        source,
+        journeyKey,
+        createNew,
+      );
     }));
     document.querySelectorAll('[data-feed-food]').forEach(btn => btn.addEventListener('click', () => feedPet(btn.dataset.feedFood)));
     document.querySelectorAll('[data-collect-leaf]').forEach(btn => btn.addEventListener('click', () => collectWorldLeaf(btn.dataset.collectLeaf)));
     document.querySelectorAll('[data-collect-food]').forEach(btn => btn.addEventListener('click', () => collectWorldFood(btn.dataset.collectFood)));
+    document.querySelectorAll('[data-collect-gift]').forEach(btn => btn.addEventListener('click', () => collectSocialGift(btn.dataset.collectGift)));
     document.querySelectorAll('[data-clean-dirt]').forEach(btn => btn.addEventListener('click', cleanDirt));
+    document.querySelectorAll('[data-social-gift]').forEach(btn => btn.addEventListener('click', sendSocialGift));
+    document.querySelectorAll('[data-social-battle]').forEach(btn => btn.addEventListener('click', openSocialBattle));
+    document.querySelectorAll('[data-verification-info]').forEach(btn => btn.addEventListener('click', requestVerification));
+    document.querySelectorAll('[data-verification-close]').forEach(btn => btn.addEventListener('click', () => {
+      verificationGateOpen = false;
+      if (state.needsCompanionChoice && state.roster.length === 0) {
+        goBack();
+        return;
+      }
+      render();
+    }));
     document.querySelectorAll('[data-food-toggle]').forEach(btn => btn.addEventListener('click', () => {
       foodOpen = !foodOpen;
       moreOpen = false;
@@ -3047,6 +3768,10 @@
       }
     }));
     document.querySelectorAll('[data-history-more]').forEach(btn => btn.addEventListener('click', () => { historyVisibleCount += 3; render(); }));
+    document.querySelectorAll('[data-social-history-more]').forEach(btn => btn.addEventListener('click', () => {
+      socialHistoryVisibleCount += 5;
+      render();
+    }));
     document.querySelectorAll('[data-status-toggle]').forEach(btn => btn.addEventListener('click', () => { statusOpen = !statusOpen; companionsOpen = false; render(); }));
     document.querySelectorAll('[data-more-toggle]').forEach(btn => btn.addEventListener('click', () => {
       if (sheetExpanded) {
@@ -3059,6 +3784,14 @@
       render();
     }));
     document.querySelectorAll('[data-companions-toggle]').forEach(btn => btn.addEventListener('click', () => {
+      if (!canChooseCompanion()) {
+        companionsOpen = false;
+        companionSearchOpen = false;
+        verificationGateOpen = true;
+        statusOpen = false;
+        render();
+        return;
+      }
       companionsOpen = !companionsOpen;
       if (!companionsOpen) {
         companionSearchOpen = false;
@@ -3078,13 +3811,17 @@
   initializeFormAssetStatus();
   state = systemMigrateState(readStoredState());
   if (state.needsCompanionChoice && state.roster.length === 0) {
-    companionsOpen = true;
-    companionSearchOpen = true;
+    if (canChooseCompanion()) {
+      companionsOpen = true;
+      companionSearchOpen = true;
+    } else {
+      verificationGateOpen = true;
+    }
   }
   state.settings = { ...(state.settings || {}), musicEnabled: true };
   chooseRandomStartingMusicTrack();
-  dailyRewardMessage = claimDailyLoginReward(state);
-  syncAllPets(state);
+  dailyRewardMessage = isSocialVisitorMode() ? null : claimDailyLoginReward(state);
+  if (!isSocialVisitorMode()) syncAllPets(state);
   saveState();
   render();
   loadBackgroundMusic();
@@ -3102,27 +3839,106 @@
       !embeddedInSite
       || event.origin !== window.location.origin
       || !event.data
-      || event.data.type !== 'superpokegochi:notification-result'
     ) {
       return;
     }
 
-    state.settings = {
-      ...(state.settings || {}),
-      pokegochiNotificationsEnabled: Boolean(event.data.enabled),
-    };
-    saveState();
-    render();
-    showToast(
-      typeof event.data.message === 'string'
-        ? event.data.message
-        : event.data.ok
-          ? 'Preferência de notificações salva.'
-          : 'Não foi possível alterar as notificações.',
-    );
+    if (event.data.type === 'superpokegochi:notification-result') {
+      state.settings = {
+        ...(state.settings || {}),
+        pokegochiNotificationsEnabled: Boolean(event.data.enabled),
+      };
+      saveState();
+      render();
+      showToast(
+        typeof event.data.message === 'string'
+          ? event.data.message
+          : event.data.ok
+            ? 'Preferência de notificações salva.'
+            : 'Não foi possível alterar as notificações.',
+      );
+      return;
+    }
+
+    if (event.data.type === 'superpokegochi:attribute-reset-result') {
+      attributeResetPending = false;
+      if (event.data.ok) {
+        const pet = getPet();
+        const species = getDex();
+        const appearance = getAppearance(species, pet);
+        window.SuperPokegochiBattle?.resetAttributes(
+          pet,
+          battleDexNumber(appearance),
+          appearance.name,
+        );
+        attributeResetOpen = false;
+        pet.lastAction = `${pet.customName} recuperou seus pontos de atributo. 20 BPoints foram consumidos.`;
+        systemAddHistory(pet, '↺', pet.lastAction);
+        saveState();
+      }
+      render();
+      showToast(
+        typeof event.data.message === 'string'
+          ? event.data.message
+          : event.data.ok
+            ? 'Atributos resetados.'
+            : 'Não foi possível resetar os atributos.',
+      );
+      return;
+    }
+
+    if (event.data.type === 'superpokegochi:social-gift-result') {
+      socialGiftSending = false;
+      if (event.data.ok) {
+        state.social.giftSent = true;
+      }
+      render();
+      showToast(
+        typeof event.data.message === 'string'
+          ? event.data.message
+          : event.data.ok
+            ? 'Presente enviado.'
+            : 'Não foi possível enviar o presente.',
+      );
+      return;
+    }
+
+    if (event.data.type === 'superpokegochi:gift-claim-result') {
+      const giftId = Number(event.data.giftId);
+      const collectedGift = state.social?.gifts?.find(gift => gift.id === giftId);
+      pendingSocialGiftClaims.delete(giftId);
+      if (event.data.ok && FOOD_BY_ID[event.data.foodId]) {
+        state.social.gifts = state.social.gifts.filter(gift => gift.id !== giftId);
+        state.bag[event.data.foodId] = Math.max(
+          0,
+          Math.round(Number(event.data.newCount) || 0),
+        );
+        saveState();
+      }
+      render();
+      const successMessage = `${collectedGift?.fromName || 'Um treinador'} deixou ${socialGiftFoodPhrase(event.data.foodId)} de presente.`;
+      const message = event.data.ok
+        ? successMessage
+        : typeof event.data.message === 'string'
+          ? event.data.message
+          : 'Não foi possível recolher o presente.';
+      showToast(message, event.data.ok ? 4800 : 2600);
+      return;
+    }
+
+    if (event.data.type === 'superpokegochi:social-battle-save-result') {
+      socialBattleSaving = false;
+      showToast(
+        typeof event.data.message === 'string'
+          ? event.data.message
+          : event.data.ok
+            ? 'Batalha registrada no histórico.'
+            : 'Não foi possível registrar a batalha.',
+      );
+    }
   });
   setInterval(() => {
-    syncAllPets(state);
+    if (!isSocialVisitorMode()) syncAllPets(state);
     saveState();
     render();
   }, 10000);

@@ -16,10 +16,20 @@
     speed: 'Velocidade',
     vitality: 'Vitalidade',
   };
-  const ACTION_MESSAGE_MS = 480;
-  const ATTACK_CALLOUT_MS = 1100;
-  const ENEMY_ATTACK_CALLOUT_MS = 1300;
-  const TURN_NOTICE_MS = 460;
+  const PLAYER_ATTACK_CALLOUT_MS = 1650;
+  const ENEMY_ATTACK_CALLOUT_MS = 2800;
+  const BETWEEN_ATTACKS_MS = 700;
+  const YOUR_TURN_NOTICE_MS = 1350;
+  const BATTLE_SOUND_VOLUME = {
+    hit: 0.2,
+    victory: 0.15,
+  };
+  const BATTLE_SOUND_BASE_PATH = document.documentElement.dataset.soundBase || 'assets/sounds/';
+  const BATTLE_SOUND_VERSION = '20260730-battle-audio-v23';
+  const battleSounds = {
+    hit: new Audio(new URL(`${BATTLE_SOUND_BASE_PATH}battle-hit.mp3?v=${BATTLE_SOUND_VERSION}`, document.baseURI).href),
+    victory: new Audio(new URL(`${BATTLE_SOUND_BASE_PATH}battle-victory.mp3?v=${BATTLE_SOUND_VERSION}`, document.baseURI).href),
+  };
   const TYPE_TEXTBOXES = {
     bug: 16,
     dark: 48,
@@ -108,6 +118,42 @@
 
   function clamp(value, minimum = 0, maximum = 100) {
     return Math.max(minimum, Math.min(maximum, Math.round(Number(value) || 0)));
+  }
+
+  function stopBattleSounds() {
+    Object.values(battleSounds).forEach(sound => {
+      sound.pause();
+      try {
+        sound.currentTime = 0;
+      } catch {
+        // O áudio ainda pode estar carregando.
+      }
+    });
+  }
+
+  function playBattleSound(name) {
+    if (session?.config?.soundEnabled === false) return;
+    const sound = battleSounds[name];
+    if (!sound) return;
+    Object.entries(battleSounds).forEach(([soundName, candidate]) => {
+      if (soundName === name) return;
+      candidate.pause();
+      try {
+        candidate.currentTime = 0;
+      } catch {
+        // O outro efeito ainda pode estar carregando.
+      }
+    });
+    sound.pause();
+    try {
+      sound.currentTime = 0;
+    } catch {
+      // A reprodução começa quando os metadados terminarem de carregar.
+    }
+    sound.volume = BATTLE_SOUND_VOLUME[name] || 0.16;
+    void sound.play().catch(() => {
+      // Alguns navegadores só liberam áudio depois da primeira interação.
+    });
   }
 
   function escapeHtml(value) {
@@ -418,11 +464,17 @@
       equippedMoves: Array.isArray(source.equippedMoves)
         ? source.equippedMoves.map(move => String(move)).filter(Boolean).slice(0, 4)
         : [],
+      journeyMoveLearnsets: source.journeyMoveLearnsets && typeof source.journeyMoveLearnsets === 'object'
+        ? source.journeyMoveLearnsets
+        : {},
       lastMaxHp: source.lastMaxHp == null
         ? null
         : Number.isFinite(Number(source.lastMaxHp))
           ? Math.max(1, Math.round(Number(source.lastMaxHp)))
           : null,
+      moveDetails: source.moveDetails && typeof source.moveDetails === 'object'
+        ? source.moveDetails
+        : {},
       speciesData: source.speciesData && typeof source.speciesData === 'object'
         ? source.speciesData
         : null,
@@ -487,7 +539,89 @@
     }
     const battle = ensureBattleProgress(pet);
     battle.speciesData = data;
+    battle.journeyMoveLearnsets[String(dexNumber)] = data.moveLearnset;
     return getSnapshot(pet, dexNumber, speciesName);
+  }
+
+  function getMoveCatalog(pet, dexNumber, speciesName = pet.customName) {
+    const snapshot = getSnapshot(pet, dexNumber, speciesName);
+    const battle = ensureBattleProgress(pet);
+    const learnsets = [
+      snapshot.speciesData.moveLearnset,
+      ...Object.values(battle.journeyMoveLearnsets),
+    ].filter(Array.isArray);
+    const levelsByMove = new Map();
+
+    learnsets.flat().forEach(move => {
+      if (!move?.name) return;
+      const level = Math.max(1, Number(move.level) || 1);
+      const previous = levelsByMove.get(move.name);
+      if (previous == null || level < previous) levelsByMove.set(move.name, level);
+    });
+
+    if (!levelsByMove.size) levelsByMove.set('tackle', 1);
+
+    return [...levelsByMove.entries()]
+      .map(([id, level]) => {
+        const detail = normalizeMoveData(battle.moveDetails[id], id);
+        return {
+          ...detail,
+          id,
+          learned: level <= pet.level,
+          level,
+          name: prettyName(id),
+        };
+      })
+      .sort((first, second) => (
+        Number(second.learned) - Number(first.learned)
+        || first.level - second.level
+        || first.name.localeCompare(second.name)
+      ));
+  }
+
+  async function hydrateJourney(
+    pet,
+    dexNumbers,
+    activeDexNumber,
+    speciesName = pet.customName,
+  ) {
+    const uniqueDexNumbers = [...new Set(
+      (Array.isArray(dexNumbers) ? dexNumbers : [activeDexNumber])
+        .map(Number)
+        .filter(Number.isInteger),
+    )];
+    const battle = ensureBattleProgress(pet);
+    const loaded = await Promise.all(uniqueDexNumbers.map(async dexNumber => {
+      try {
+        return await loadPokemonData(dexNumber);
+      } catch {
+        return normalizeSpeciesData(null, dexNumber, speciesName);
+      }
+    }));
+
+    loaded.forEach(data => {
+      battle.journeyMoveLearnsets[String(data.dexNumber)] = data.moveLearnset;
+      if (Number(data.dexNumber) === Number(activeDexNumber)) {
+        battle.speciesData = data;
+      }
+    });
+
+    const moveIds = getMoveCatalog(pet, activeDexNumber, speciesName)
+      .filter(move => move.learned || move.level <= pet.level + 20)
+      .slice(0, 36)
+      .map(move => move.id);
+    const moveDetails = await Promise.all(moveIds.map(async moveId => {
+      try {
+        return await loadMoveData(moveId);
+      } catch {
+        return normalizeMoveData(null, moveId);
+      }
+    }));
+    moveDetails.forEach(detail => {
+      battle.moveDetails[detail.id] = detail;
+    });
+
+    return getSnapshot(pet, activeDexNumber, speciesName);
   }
 
   function allocateAttribute(pet, dexNumber, attribute, speciesName = pet.customName) {
@@ -496,6 +630,19 @@
     if (before.availablePoints <= 0) return null;
     pet.battle.attributes[attribute] += 1;
     return getSnapshot(pet, dexNumber, speciesName);
+  }
+
+  function resetAttributes(pet, dexNumber, speciesName = pet.customName) {
+    const battle = ensureBattleProgress(pet);
+    const refundedPoints = ATTRIBUTE_KEYS.reduce(
+      (total, key) => total + battle.attributes[key],
+      0,
+    );
+    battle.attributes = { attack: 0, defense: 0, speed: 0, vitality: 0 };
+    return {
+      refundedPoints,
+      snapshot: getSnapshot(pet, dexNumber, speciesName),
+    };
   }
 
   function restoreHp(pet, ratio = 0.25) {
@@ -576,12 +723,6 @@
     return Math.max(0.55, 1 + clamp(stage, -3, 3) * 0.15);
   }
 
-  function effectiveSpeed(participant) {
-    return participant.speed
-      * stageMultiplier(participant.buffs.speed)
-      * energyMultiplier(participant.energy);
-  }
-
   function moveCandidates(data, level) {
     return data.moveLearnset
       .filter(move => move.level <= level)
@@ -627,16 +768,8 @@
   }
 
   function getLearnedMoves(pet, dexNumber, speciesName = pet.customName) {
-    const snapshot = getSnapshot(pet, dexNumber, speciesName);
-    const learned = snapshot.speciesData.moveLearnset
-      .filter(move => move.level <= pet.level)
-      .sort((first, second) => first.level - second.level || first.name.localeCompare(second.name))
-      .filter((move, index, moves) => moves.findIndex(candidate => candidate.name === move.name) === index)
-      .map(move => ({
-        id: move.name,
-        level: Math.max(1, move.level),
-        name: prettyName(move.name),
-      }));
+    const learned = getMoveCatalog(pet, dexNumber, speciesName)
+      .filter(move => move.learned);
     return learned.length
       ? learned
       : [{ id: 'tackle', level: 1, name: 'Investida' }];
@@ -734,6 +867,32 @@
   }
 
   async function chooseOpponent(config, player) {
+    if (
+      config.opponent
+      && Number.isInteger(Number(config.opponent.dexNumber))
+      && Number.isInteger(Number(config.opponent.level))
+    ) {
+      const dexNumber = clamp(Number(config.opponent.dexNumber), 1, 1025);
+      const level = clamp(Number(config.opponent.level), 1, 100);
+      const visual = config.opponent.visual || findVisualForDex(config.dexCatalog, dexNumber);
+      const data = await loadPokemonData(dexNumber);
+      const attributes = enemyAttributes(level, data);
+      const participant = participantFrom(data, level, attributes, {
+        energy: 100,
+        happiness: 50,
+        name: visual?.name || data.name,
+        visual,
+      });
+      return {
+        attributes,
+        data,
+        level,
+        participant,
+        ratio: combatPower(participant) / Math.max(1, combatPower(player)),
+        visual,
+      };
+    }
+
     const candidates = sampleCatalog(config.dexCatalog, player.speciesData.dexNumber, 5);
     const loaded = await Promise.allSettled(candidates.map(async visual => ({
       data: await loadPokemonData(visual.dexNumber),
@@ -811,12 +970,14 @@
   function moveButton(move, index) {
     const power = move.power > 0 ? `Poder ${move.power}` : 'Efeito';
     const textbox = TYPE_TEXTBOXES[move.type] ?? TYPE_TEXTBOXES.normal;
+    const disabled = session?.phase !== 'choice';
     return `
       <button
         class="battle-move type-${escapeHtml(move.type)}"
         style="--battle-move-box:url('assets/textboxes/${textbox}.png')"
         type="button"
         data-battle-move="${index}"
+        ${disabled ? 'disabled aria-disabled="true"' : ''}
       >
         <b>${escapeHtml(move.name)}</b>
         <span>${escapeHtml(typeLabel(move.type))} · ${power}</span>
@@ -888,6 +1049,7 @@
     const player = session.player;
     const enemy = session.enemy;
     const resolving = session.phase === 'resolving';
+    const returningControl = session.fieldMessageKind === 'ready';
     const fieldStyle = battlefieldStyle(session.scene);
     const latestLog = session.log.at(-1) || `Um ${enemy.name} selvagem apareceu!`;
     const previousLog = session.log.at(-2);
@@ -926,8 +1088,16 @@
           </section>
           <section class="battle-command" aria-label="Escolha um golpe">
             <div class="battle-command-copy">
-              <b>${resolving ? 'Executando o turno...' : `O que ${escapeHtml(player.name)} fará?`}</b>
-              <span>${resolving ? 'Aguarde o resultado dos golpes.' : 'Escolha uma das quatro habilidades.'}</span>
+              <b>${resolving
+                ? returningControl
+                  ? 'Prepare seu próximo golpe'
+                  : 'A batalha está respondendo...'
+                : `O que ${escapeHtml(player.name)} fará?`}</b>
+              <span>${resolving
+                ? returningControl
+                  ? 'As habilidades serão liberadas em instantes.'
+                  : 'As habilidades ficam bloqueadas durante os ataques.'
+                : 'Escolha uma das quatro habilidades.'}</span>
             </div>
             <div class="battle-moves">
               ${player.moves.map(moveButton).join('')}
@@ -1027,6 +1197,7 @@
     }
     const result = calculateDamage(actor, target, move);
     target.hp = Math.max(0, target.hp - result.damage);
+    if (result.damage > 0) playBattleSound('hit');
     session.animation = actorSide === 'player' ? 'enemy-hit' : 'player-hit';
     const notes = [];
     if (result.critical) notes.push('Acerto crítico!');
@@ -1046,31 +1217,25 @@
     })[0] || fallbackMove();
   }
 
-  function actionOrder(playerMove, enemyMove) {
-    if (playerMove.priority !== enemyMove.priority) {
-      return playerMove.priority > enemyMove.priority ? ['player', 'enemy'] : ['enemy', 'player'];
-    }
-    const playerInitiative = effectiveSpeed(session.player) + Math.random() * 5;
-    const enemyInitiative = effectiveSpeed(session.enemy) + Math.random() * 5;
-    return playerInitiative >= enemyInitiative ? ['player', 'enemy'] : ['enemy', 'player'];
-  }
-
   function rewardXp(outcome) {
     const enemy = session.enemy;
     const ratio = combatPower(enemy) / Math.max(1, combatPower(session.player));
-    const difficulty = ratio > 1.05 ? 1.25 : ratio < 0.95 ? 0.8 : 1;
+    const powerDifficulty = clamp(ratio, 0.75, 1.35);
+    const speciesDifficulty = clamp(enemy.baseExperience / 150, 0.65, 1.6);
+    const levelReward = 8 + enemy.level * 0.9;
     const bondBonus = session.player.bond >= 25 ? 1.025 : 1;
-    const victoryXp = clamp(
-      enemy.baseExperience * enemy.level / 20 * difficulty * bondBonus,
+    const victoryXp = Math.round(clamp(
+      levelReward * speciesDifficulty * powerDifficulty * bondBonus,
       8,
-      60,
-    );
+      100,
+    ));
     return outcome === 'victory' ? victoryXp : outcome === 'defeat' ? Math.max(2, Math.round(victoryXp * 0.25)) : 0;
   }
 
   function finishBattle(outcome) {
     if (!session || session.phase === 'result') return;
     if (outcome === 'defeat') session.player.hp = 1;
+    if (outcome === 'victory') playBattleSound('victory');
     const xp = rewardXp(outcome);
     const summary = outcome === 'victory'
       ? `${session.player.name} venceu ${session.enemy.name}!`
@@ -1101,10 +1266,14 @@
     if (!playerMove) return;
     session.phase = 'resolving';
     session.animation = null;
+    session.attackingSide = null;
+    session.fieldMessage = null;
+    session.fieldMessageKind = null;
+    session.fieldMessageSide = null;
     render();
 
     const enemyMove = chooseEnemyMove(session.enemy, session.player);
-    const order = actionOrder(playerMove, enemyMove);
+    const order = ['player', 'enemy'];
     for (let actionIndex = 0; actionIndex < order.length; actionIndex += 1) {
       if (!session || session.phase !== 'resolving') return;
       const side = order[actionIndex];
@@ -1113,22 +1282,10 @@
       if (actor.hp <= 0 || target.hp <= 0) break;
       const move = side === 'player' ? playerMove : enemyMove;
 
-      if (actionIndex > 0 || side === 'enemy') {
-        session.animation = null;
-        session.attackingSide = null;
-        session.turnNotice = side === 'enemy'
-          ? 'Turno do adversário'
-          : `Turno de ${session.player.name}`;
-        session.fieldMessage = session.turnNotice;
-        session.fieldMessageKind = 'turn';
-        session.fieldMessageSide = side;
-        render();
-        await new Promise(resolve => setTimeout(resolve, TURN_NOTICE_MS));
-        if (!session || session.phase !== 'resolving') return;
-      }
-
       session.turnNotice = null;
-      session.fieldMessage = `${actor.name} usou ${move.name}!`;
+      session.fieldMessage = side === 'enemy'
+        ? `${actor.name} atacou! Usou ${move.name}.`
+        : `${actor.name} usou ${move.name}!`;
       session.fieldMessageKind = 'move';
       session.fieldMessageSide = side;
       session.attackingSide = side;
@@ -1138,7 +1295,7 @@
       render();
       const calloutDuration = side === 'enemy'
         ? ENEMY_ATTACK_CALLOUT_MS
-        : ATTACK_CALLOUT_MS;
+        : PLAYER_ATTACK_CALLOUT_MS;
       await new Promise(resolve => setTimeout(resolve, calloutDuration));
       if (!session || session.phase !== 'resolving') return;
       session.fieldMessage = null;
@@ -1147,7 +1304,10 @@
       session.attackingSide = null;
       session.animation = null;
       render();
-      await new Promise(resolve => setTimeout(resolve, ACTION_MESSAGE_MS));
+      if (target.hp <= 0) break;
+      if (side === 'player') {
+        await new Promise(resolve => setTimeout(resolve, BETWEEN_ATTACKS_MS));
+      }
     }
 
     if (!session) return;
@@ -1166,6 +1326,15 @@
       return;
     }
     session.turn += 1;
+    session.fieldMessage = 'SUA VEZ';
+    session.fieldMessageKind = 'ready';
+    session.fieldMessageSide = 'player';
+    render();
+    await new Promise(resolve => setTimeout(resolve, YOUR_TURN_NOTICE_MS));
+    if (!session || session.phase !== 'resolving') return;
+    session.fieldMessage = null;
+    session.fieldMessageKind = null;
+    session.fieldMessageSide = null;
     session.phase = 'choice';
     render();
   }
@@ -1269,6 +1438,7 @@
 
   function open(config) {
     if (!host || !config || !config.pet) return false;
+    stopBattleSounds();
     loadSequence += 1;
     session = {
       attackingSide: null,
@@ -1293,6 +1463,7 @@
 
   function close() {
     if (!session) return;
+    stopBattleSounds();
     const onExit = session.config.onExit;
     session = null;
     loadSequence += 1;
@@ -1306,10 +1477,13 @@
     attributeLabels: { ...ATTRIBUTE_LABELS },
     close,
     getLearnedMoves,
+    getMoveCatalog,
     getSnapshot,
     hydrate,
+    hydrateJourney,
     isOpen: () => Boolean(session),
     open,
+    resetAttributes,
     restoreHp,
     setEquippedMoves,
     typeLabel,

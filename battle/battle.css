@@ -259,16 +259,21 @@
   pointer-events:none;
   animation:battle-field-notice-in 1100ms cubic-bezier(.22,1,.36,1) both;
 }
-.battle-field-notice.turn{
+.battle-field-notice.turn,
+.battle-field-notice.ready{
   background:#eaf8ef;
   color:#17643d;
-  animation-duration:460ms;
+}
+.battle-field-notice.ready{
+  border-color:#17643d;
+  font-size:1rem;
+  animation-duration:1350ms;
 }
 .battle-field-notice.move.side-enemy{
   border-color:#6b3934;
   background:#fff2ee;
   color:#61302c;
-  animation-duration:1300ms;
+  animation-duration:1600ms;
 }
 .battle-pokemon.is-attacking.player-pokemon{animation:battle-player-attack 420ms cubic-bezier(.22,1,.36,1)}
 .battle-pokemon.is-attacking.player-pokemon.uses-front-sprite{animation-name:battle-player-front-attack}
@@ -322,6 +327,14 @@
 .battle-move:hover{filter:brightness(1.04);transform:translateY(-1px)}
 .battle-move:active{transform:translateY(2px);filter:brightness(.97)}
 .battle-move:focus-visible{outline:3px solid #183f2c;outline-offset:2px}
+.battle-move:disabled,
+.battle-move:disabled:hover,
+.battle-move:disabled:active{
+  filter:grayscale(.45) brightness(.94);
+  opacity:.62;
+  cursor:not-allowed;
+  transform:none;
+}
 .battle-move b{
   max-width:100%;
   overflow:hidden;

@@ -9,9 +9,10 @@ progresso fica salvo no navegador com `localStorage`.
 ## O que está disponível
 
 - Catálogo pesquisável com 1.025 espécies.
-- Até seis Pokémon cuidados, com troca rápida do companheiro ativo.
-- Nível, XP, vínculo e necessidades compartilhados pela linha evolutiva.
-- Evolução opcional e troca entre todas as formas já desbloqueadas.
+- Até seis jornadas individuais, com troca rápida do companheiro ativo.
+- É possível cuidar de dois Pokémon da mesma espécie com níveis e rotas diferentes.
+- Nível, XP, vínculo e necessidades compartilhados apenas dentro da mesma jornada.
+- Evolução opcional, ramificações permanentes e troca entre as formas desbloqueadas.
 - Sprites normais, Shiny e sprites de costas nas batalhas.
 - Fome, felicidade, energia, HP, vínculo e dias juntos.
 - Folhas, frutas e sujeira espalhadas pelo gramado.
@@ -56,17 +57,29 @@ Os dados de tipos, golpes e status são consultados na PokéAPI e mantidos em ca
 por 30 dias. Se a API estiver indisponível, o jogo usa dados equilibrados de
 reserva.
 
+A lista também mostra golpes futuros em cinza, com tipo, categoria, poder,
+precisão e nível necessário. Golpes aprendidos por uma forma desbloqueada
+permanecem disponíveis na mesma jornada. Os atributos podem ser resetados
+gratuitamente nesta versão independente, sem alterar nível, XP ou golpes.
+
 ### Minigames
 
-O botão **Brincar** abre os minigames em tela cheia e consome 30 de energia:
+O botão **Brincar** abre os minigames em tela cheia:
 
-- **Chuva de Frutas:** sobreviva por 50 segundos, colete frutas e evite os itens
-  perigosos;
+- **Chuva de Frutas:** consome 8 de energia; sobreviva por 50 segundos, colete
+  frutas e evite os itens perigosos;
 - **Jogo da Memória:** encontre os pares de frutas. O jogador possui seis
-  tentativas e, depois de perder, precisa aguardar uma hora.
+  tentativas, consome 6 de energia e, depois de perder, precisa aguardar uma
+  hora.
 
 As recompensas principais de fruta e XP respeitam o intervalo configurado pelo
 jogo para evitar ganho excessivo.
+
+Descansar recupera toda a energia em aproximadamente uma hora. Durante o mesmo
+período, o Pokémon recupera cerca de 50% do HP máximo.
+
+As folhas coletadas no gramado concedem de 1 a 15 XP. Valores entre 1 e 3 são
+comuns; recompensas maiores ficam progressivamente mais raras.
 
 ### Frutas
 
@@ -85,18 +98,31 @@ jogo para evitar ganho excessivo.
 O Abacaxi Energia também recupera 30 de energia. Um Pokémon ferido pode comer
 para recuperar HP mesmo quando já está satisfeito.
 
-## Evolução e progresso compartilhado
+## Jornadas, evolução e progresso
 
-O progresso pertence à linha evolutiva inteira, não a cada aparência:
+Cada Pokémon cuidado possui uma jornada própria. Dentro dela, o progresso é
+compartilhado entre as formas desbloqueadas:
 
 ```text
 Ralts → Kirlia → Gardevoir
-Nível compartilhado: 100
+Jornada A · nível compartilhado: 100
 ```
 
-Ao alcançar o requisito, o treinador decide se deseja evoluir. Depois de
-desbloqueada, qualquer forma da linha pode ser usada novamente sem perder nível,
-XP, vínculo, HP ou histórico.
+Ao alcançar o requisito, o treinador pode evoluir ou escolher **Evoluir depois**.
+Nas linhas ramificadas, como Eevee, todas as rotas compatíveis continuam
+disponíveis até uma delas ser escolhida. Depois da escolha, as rotas incompatíveis
+somem somente daquela jornada, mas o treinador ainda pode alternar entre Eevee e
+a evolução escolhida.
+
+Também é possível começar outra jornada com a mesma espécie:
+
+```text
+Eevee A · Nv. 42 → Jolteon
+Eevee B · Nv. 18 → ainda sem evolução
+```
+
+Essas jornadas mantêm níveis, atributos, golpes, vínculo, HP e históricos
+independentes.
 
 ## Executar
 

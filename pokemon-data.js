@@ -8,9 +8,9 @@ const FEATURED_DEX = [
     name: 'Bulbasaur',
     type: 'Grass',
     typeClass: 'grass-type',
-    img: 'assets/pokemons/Front/BULBASAUR.webp',
+    img: '/pokemons_ani/Front/BULBASAUR.webp',
     sprite: {
-      src: 'assets/pokemons/Front/BULBASAUR.webp',
+      src: '/pokemons_ani/Front/BULBASAUR.webp',
       frameWidth: 38,
       frameHeight: 38,
       frames: 49,
@@ -22,18 +22,18 @@ const FEATURED_DEX = [
         name: 'Bulbasaur',
         unlockLevel: 1,
         assetReady: true,
-        img: 'assets/pokemons/Front/BULBASAUR.webp',
+        img: '/pokemons_ani/Front/BULBASAUR.webp',
         sprite: {
-          src: 'assets/pokemons/Front/BULBASAUR.webp',
+          src: '/pokemons_ani/Front/BULBASAUR.webp',
           frameWidth: 38,
           frameHeight: 38,
           frames: 49,
           sheetWidth: 1862,
         },
         shiny: {
-          img: 'assets/pokemons/Front%20shiny/BULBASAUR.webp',
+          img: '/pokemons_ani/Front%20shiny/BULBASAUR.webp',
           sprite: {
-            src: 'assets/pokemons/Front%20shiny/BULBASAUR.webp',
+            src: '/pokemons_ani/Front%20shiny/BULBASAUR.webp',
             frameWidth: 38,
             frameHeight: 38,
             frames: 49,
@@ -46,18 +46,18 @@ const FEATURED_DEX = [
         name: 'Ivysaur',
         unlockLevel: 16,
         assetReady: true,
-        img: 'assets/pokemons/Front/IVYSAUR.webp',
+        img: '/pokemons_ani/Front/IVYSAUR.webp',
         sprite: {
-          src: 'assets/pokemons/Front/IVYSAUR.webp',
+          src: '/pokemons_ani/Front/IVYSAUR.webp',
           frameWidth: 58,
           frameHeight: 58,
           frames: 55,
           sheetWidth: 3190,
         },
         shiny: {
-          img: 'assets/pokemons/Front%20shiny/IVYSAUR.webp',
+          img: '/pokemons_ani/Front%20shiny/IVYSAUR.webp',
           sprite: {
-            src: 'assets/pokemons/Front%20shiny/IVYSAUR.webp',
+            src: '/pokemons_ani/Front%20shiny/IVYSAUR.webp',
             frameWidth: 58,
             frameHeight: 58,
             frames: 55,
@@ -70,18 +70,18 @@ const FEATURED_DEX = [
         name: 'Venusaur',
         unlockLevel: 32,
         assetReady: true,
-        img: 'assets/pokemons/Front/VENUSAUR.webp',
+        img: '/pokemons_ani/Front/VENUSAUR.webp',
         sprite: {
-          src: 'assets/pokemons/Front/VENUSAUR.webp',
+          src: '/pokemons_ani/Front/VENUSAUR.webp',
           frameWidth: 86,
           frameHeight: 86,
           frames: 83,
           sheetWidth: 7138,
         },
         shiny: {
-          img: 'assets/pokemons/Front%20shiny/VENUSAUR.webp',
+          img: '/pokemons_ani/Front%20shiny/VENUSAUR.webp',
           sprite: {
-            src: 'assets/pokemons/Front%20shiny/VENUSAUR.webp',
+            src: '/pokemons_ani/Front%20shiny/VENUSAUR.webp',
             frameWidth: 86,
             frameHeight: 86,
             frames: 83,
@@ -108,8 +108,8 @@ function catalogPokemonFromRow(row) {
     evolvesFromDexNumber,
     evolutionRootDexNumber,
   ] = row;
-  const normalSrc = `assets/pokemons/Front/${file}`;
-  const shinySrc = `assets/pokemons/Front%20shiny/${file}`;
+  const normalSrc = `/pokemons_ani/Front/${file}`;
+  const shinySrc = `/pokemons_ani/Front%20shiny/${file}`;
   const sprite = { src: normalSrc, frameWidth, frameHeight, frames, sheetWidth };
   const shinySprite = { src: shinySrc, frameWidth, frameHeight, frames, sheetWidth };
   return {
@@ -163,6 +163,8 @@ DEX.filter(mon => mon.selectable !== false && !featuredIds.has(mon.id)).forEach(
     .map(mon => ({
       ...mon.forms[0],
       dexNumber: mon.dexNumber,
+      evolvesFromDexNumber: mon.evolvesFromDexNumber,
+      evolutionRootDexNumber: mon.evolutionRootDexNumber,
       unlockLevel: catalogEvolutionDepth(mon) === 0 ? 1 : catalogEvolutionDepth(mon) * 16,
     }));
 });

@@ -833,6 +833,37 @@ html,body{overflow-x:hidden}
 @media (max-width:420px){.battle-menu-overlay{padding:10px}.battle-menu-panel{max-height:calc(100% - 14px);padding:16px}.battle-menu-content,.battle-menu-history{min-height:300px}.battle-menu-vitals{grid-template-columns:minmax(0,1.45fr) repeat(2,minmax(0,1fr))}}
 @media (max-width:350px){.battle-menu-panel{padding:14px}.battle-menu-history-row{grid-template-columns:52px minmax(0,1fr)}.battle-menu-history-row>strong{grid-column:2}.battle-menu-vitals>span{padding:8px 6px}}
 
+/* v20 profile visits, gifts and verified companion access */
+.social-gift{width:92px;height:92px;filter:drop-shadow(0 5px 3px rgba(30,77,43,.24))}
+.social-gift .social-gift-icon{width:78px;height:78px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.social-gift:focus-visible{outline-color:#f6c846}
+.social-history-card{margin-top:8px}
+.social-history-list .history-item p{-webkit-line-clamp:3}
+.social-visit-card{margin-bottom:8px}
+.social-visit-note{border-radius:14px;background:rgba(250,253,251,.84)}
+.social-visit-note p{margin:0;color:#68786f;font-size:11px;line-height:1.45}
+.visitor-public-alert{align-items:flex-start;flex-direction:column}
+.visitor-public-alert span{text-align:left}
+.visitor-public-status .bond-days-row{min-height:54px;background:#f1f8f4}
+.visitor-public-meta{padding:0 4px}
+.social-action-dock{grid-template-columns:repeat(2,minmax(0,1fr))!important;max-width:210px!important;gap:14px!important}
+.social-action-dock .action-btn{--dock-y:0px!important;max-width:92px!important}
+.social-action-dock .social-gift-action span{background:#fff4d9}
+.social-action-dock .social-gift-action span img{width:34px;height:34px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
+.social-action-dock .social-battle-action span{background:#e9f5ff}
+.social-action-dock .action-btn:disabled{cursor:not-allowed;filter:grayscale(.55);opacity:.68}
+.verification-gate-panel{border-radius:16px}
+.verification-gate-icon{width:64px;height:64px;margin:14px auto 10px;display:grid;place-items:center;border-radius:50%;background:#dcf5e6;color:#23814d;font-size:30px;font-weight:950}
+.verification-gate-panel .evolution-primary:focus-visible,
+.verification-gate-panel .evolution-secondary:focus-visible,
+.social-action-dock .action-btn:focus-visible{outline:3px solid rgba(45,153,93,.34);outline-offset:2px}
+@media (max-width:420px){
+  .social-action-dock{max-width:196px!important;gap:10px!important}
+  .social-action-dock .action-btn{max-width:86px!important}
+  .social-gift{width:84px;height:84px}
+  .social-gift .social-gift-icon{width:70px;height:70px}
+}
+
 /*
  * Keep Tamagochi sprite motion active when the operating system asks for
  * reduced motion. Sleeping and companion thumbnails are deliberate game
@@ -860,4 +891,34 @@ html,body{overflow-x:hidden}
     animation:none!important;
     background-position:0 0!important;
   }
+}
+
+/* v22 individual journeys, branching evolutions and attribute reset */
+.companion-row.new-journey{border:1px dashed #83cda1;background:#f4fcf7}
+.companion-row.new-journey .companion-copy small{color:#287c4e;font-weight:850}
+.evolution-route-list{max-height:310px;margin:12px 0 4px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;overflow:auto;overscroll-behavior:contain}
+.evolution-route-list .evolution-route{min-height:138px;padding:8px;display:grid;place-items:center;align-content:center;gap:4px;box-shadow:0 3px 0 #24834d}
+.evolution-route .evolution-preview{width:70px;height:70px;margin:0;background:#eff8f3}
+.evolution-route .evolution-preview .pokemon-sprite{transform:scale(1.55)}
+.evolution-route>b{font-size:10px;line-height:1.25}
+.evolution-route>small{color:#dff7e8;font-size:8px}
+.attribute-reset>button{width:100%;min-height:38px;border:1px solid #d9b8b8;border-radius:11px;background:#fff6f6;color:#9c4148;font-size:10px;font-weight:950;cursor:pointer}
+.attribute-reset>button:disabled{border-color:#dfe5e1;background:#f3f5f4;color:#9ba49f;cursor:not-allowed}
+.attribute-reset-confirm{padding:10px;border:1px solid #e3c3c3;border-radius:12px;background:#fff8f8;display:grid;gap:5px;text-align:left}
+.attribute-reset-confirm>b{color:#8f373f;font-size:11px}.attribute-reset-confirm>small{color:#786566;font-size:9px;line-height:1.4}
+.attribute-reset-confirm>span{display:flex;justify-content:flex-end;gap:6px;margin-top:4px}
+.attribute-reset-confirm button{min-height:32px;padding:6px 9px;border:1px solid #d9dedb;border-radius:9px;background:#fff;color:#536158;font-size:9px;font-weight:900;cursor:pointer}
+.attribute-reset-confirm button.danger{border-color:#b84d55;background:#c5535b;color:#fff}
+.attribute-reset-confirm button:disabled{opacity:.6;cursor:wait}
+.move-editor-section-title{margin-top:10px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}
+.move-editor-section-title b{color:#3d5146;font-size:11px}.move-editor-section-title small{color:#7d8982;font-size:8px}
+.equipped-move-list span{display:grid;gap:1px}.equipped-move-list span b{font-size:9px}.equipped-move-list span small{color:#62806f;font-size:7px}
+.learned-move-list button{min-height:78px}
+.learned-move-list button>span{min-width:0}.learned-move-list button>span b,.learned-move-list button>span small{display:block}
+.learned-move-list button em{color:#47725a;font-size:8px;font-style:normal;font-weight:900}
+.learned-move-list button.future{border-color:#d9dfdc;background:#edf0ee;color:#7d8681;filter:grayscale(.65);cursor:not-allowed}
+.learned-move-list button.future em,.learned-move-list button.future small{color:#89918c}
+@media (max-width:420px){
+  .evolution-route-list{max-height:360px}
+  .learned-move-list{grid-template-columns:1fr}
 }

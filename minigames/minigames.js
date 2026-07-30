@@ -146,7 +146,7 @@
     const content = `
       <section class="minigame-hub">
         <p class="minigame-hub-copy">
-          Cada tentativa iniciada custa 30 de energia. Vença para encontrar uma fruta e ganhar um pouco de XP.
+          Chuva de Frutas custa 8 de energia e Memória de Frutas custa 6. A energia é cobrada ao iniciar.
           O treino continua sendo a atividade que mais fortalece seu companheiro.
         </p>
         <div class="minigame-list">
@@ -381,11 +381,14 @@
     function endCatchGame(survivedFullTime) {
       cancelAnimationFrame(animationFrame);
       const success = survivedFullTime && lives > 0;
+      const performanceXp = 12
+        + Math.min(12, Math.floor(score / 2))
+        + Math.max(0, lives - 1) * 3;
       void finishGame({
         gameId: 'catch',
         score,
         success,
-        xp: success ? Math.min(6, 3 + Math.floor(score / 5)) : 0,
+        xp: success ? Math.min(30, performanceXp) : 0,
         summary: success
           ? `Você sobreviveu aos 50 segundos e pegou ${score} frutas.`
           : `Você pegou ${score} frutas, mas perdeu as três vidas antes dos 50 segundos.`,
@@ -495,7 +498,8 @@
 
     function completeMemoryGame() {
       const seconds = Math.floor((Date.now() - startedAt) / 1000);
-      const xp = moves <= 13 ? 8 : moves <= 17 ? 6 : 5;
+      const moveBonus = moves <= 10 ? 6 : moves <= 13 ? 4 : moves <= 17 ? 2 : 0;
+      const xp = Math.min(30, 12 + lives * 2 + moveBonus);
       void finishGame({
         gameId: 'memory',
         score: Math.max(1, 32 - moves),
