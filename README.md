@@ -29,12 +29,16 @@ progresso fica salvo no navegador com `localStorage`.
 O antigo treino foi substituído por batalhas em turnos. O adversário é escolhido
 de acordo com o nível e o poder do companheiro.
 
-- Cada batalha consome 15 de energia e 6 de fome.
-- É necessário possuir pelo menos 20 de energia, mais de 10 de fome e mais de
+- Cada batalha consome 25 de energia e 6 de fome.
+- É necessário possuir pelo menos 25 de energia, mais de 10 de fome e mais de
   20% do HP.
-- Vitória concede mais XP; derrota concede uma parte; fugir não concede XP.
+- Uma luta neutra costuma durar de quatro a seis turnos. Críticos e vantagens de
+  tipo encurtam o confronto.
+- O treino busca adversários de poder compatível, não apenas de nível parecido.
+- Vitória concede mais XP. Na derrota, o XP varia conforme o dano causado e pode
+  chegar a cerca de metade da recompensa de vitória; fugir não concede XP.
 - O HP restante continua salvo depois da batalha.
-- Descansar e comer frutas recuperam HP.
+- Descansar e comer frutas recuperam HP. Uma fruta cura de 20% a 35%.
 - Veneno, queimadura, paralisia, sono, congelamento e confusão afetam os turnos
   e aparecem ao lado do nome do Pokémon.
 - Nas batalhas de visita, XP, energia, fome e HP restante dos dois perfis são
@@ -73,35 +77,49 @@ O botão **Brincar** abre os minigames em tela cheia:
 - **Chuva de Frutas:** consome 8 de energia; sobreviva por 50 segundos, colete
   frutas e evite os itens perigosos;
 - **Jogo da Memória:** encontre os pares de frutas. O jogador possui seis
-  tentativas, consome 6 de energia e, depois de perder, precisa aguardar uma
-  hora.
+  tentativas e consome 6 de energia.
 
-As recompensas principais de fruta e XP respeitam o intervalo configurado pelo
-jogo para evitar ganho excessivo. Mesmo ao perder, a pontuação concede entre 2
-e 12 XP, sem fruta, quando a recarga de recompensa estiver disponível.
+Cada jornada possui duas missões diárias, reiniciadas à meia-noite no horário de
+Brasília:
+
+- somar 30 pontos na Chuva de Frutas;
+- vencer uma partida da Memória de Frutas.
+
+É possível tentar novamente enquanto houver energia. Cada missão concede uma
+fruta e 35 XP uma vez por dia. Depois de concluída, novas partidas ainda aumentam
+a felicidade, mas não repetem a recompensa. Derrotas com pontuação concedem um
+pequeno XP de esforço, limitado a 10 XP por minigame a cada dia.
 
 Descansar recupera toda a energia em aproximadamente uma hora. Durante o mesmo
 período, o Pokémon recupera cerca de 50% do HP máximo.
 
-As folhas coletadas no gramado concedem de 1 a 15 XP. Valores entre 1 e 3 são
+As folhas coletadas no gramado concedem de 1 a 12 XP. Valores entre 1 e 2 são
 comuns; recompensas maiores ficam progressivamente mais raras.
 
 ### Frutas
 
 | Fruta | Tier | Cura de HP | XP |
 | --- | --- | ---: | ---: |
-| Maçã | Comum | 5% | 1 |
-| Morango | Comum | 5% | 2 |
-| Amora | Comum | 6% | 2 |
-| Pera | Comum | 5% | 1 |
-| Uva | Comum | 5% | 2 |
-| Laranja | Comum | 7% | 2 |
-| Banana | Comum | 8% | 2 |
-| Melancia | Incomum | 15% | 4 |
-| Abacaxi Energia | Rara | 12% | 5 |
+| Maçã | Comum | 20% | 2 |
+| Morango | Comum | 20% | 3 |
+| Amora | Comum | 22% | 4 |
+| Pera | Comum | 20% | 2 |
+| Uva | Comum | 20% | 3 |
+| Laranja | Comum | 22% | 4 |
+| Banana | Comum | 25% | 4 |
+| Melancia | Incomum | 35% | 7 |
+| Abacaxi Energia | Rara | 30% | 8 |
 
 O Abacaxi Energia também recupera 30 de energia. Um Pokémon ferido pode comer
 para recuperar HP mesmo quando já está satisfeito.
+
+### Ritmo de progresso
+
+A curva de XP foi feita para valorizar a convivência com o companheiro. Com as
+duas missões diárias, cerca de três batalhas e os itens do gramado, a referência
+é chegar perto do nível 40 em um mês de atividade. O nível 100 continua sendo
+uma meta de aproximadamente 7 a 10 meses para a maioria dos jogadores, e o
+Shiny permanece ligado aos 30 dias de vínculo.
 
 ## Jornadas, evolução e progresso
 

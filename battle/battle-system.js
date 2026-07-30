@@ -689,6 +689,28 @@
     );
   }
 
+  function balanceTrainingOpponent(participant, player) {
+    const originalMaxHp = participant.maxHp;
+    participant.maxHp = clamp(
+      participant.maxHp,
+      Math.round(player.maxHp * 0.95),
+      Math.round(player.maxHp * 1.05),
+    );
+    participant.hp = participant.maxHp;
+    const statScale = clamp(
+      combatPower(player) / Math.max(1, combatPower(participant)),
+      0.9,
+      1.1,
+    );
+    ['attack', 'specialAttack', 'defense', 'specialDefense', 'speed'].forEach(stat => {
+      participant[stat] = Math.max(1, Math.round(participant[stat] * statScale));
+    });
+    if (originalMaxHp !== participant.maxHp) {
+      participant.hp = participant.maxHp;
+    }
+    return participant;
+  }
+
   function enemyAttributes(level, data) {
     let points = totalAttributePoints(level);
     const attributes = { attack: 0, defense: 0, speed: 0, vitality: 0 };
@@ -935,12 +957,15 @@
       const ratio = combatPower(participant) / Math.max(1, playerPower);
       return { ...candidate, attributes, participant, ratio };
     }).sort((first, second) => {
-      const firstInRange = first.ratio >= 0.85 && first.ratio <= 1.15;
-      const secondInRange = second.ratio >= 0.85 && second.ratio <= 1.15;
+      const firstInRange = first.ratio >= 0.95 && first.ratio <= 1.05;
+      const secondInRange = second.ratio >= 0.95 && second.ratio <= 1.05;
       if (firstInRange !== secondInRange) return firstInRange ? -1 : 1;
       return Math.abs(first.ratio - 1) - Math.abs(second.ratio - 1);
     });
-    return ranked[0];
+    const chosen = ranked[0];
+    balanceTrainingOpponent(chosen.participant, player);
+    chosen.ratio = combatPower(chosen.participant) / Math.max(1, playerPower);
+    return chosen;
   }
 
   function spriteMarkup(visual, className, label) {
@@ -1230,7 +1255,11 @@
     if (!participant.status || !['burn', 'poison'].includes(participant.status.id)) return '';
     const divisor = participant.status.id === 'poison' ? 8 : 16;
     const damage = Math.max(1, Math.round(participant.maxHp / divisor));
+    const previousHp = participant.hp;
     participant.hp = Math.max(0, participant.hp - damage);
+    if (session && participant === session.enemy) {
+      session.damageDealt += previousHp - participant.hp;
+    }
     return participant.status.id === 'poison'
       ? `O veneno causou ${damage} de dano em ${participant.name}.`
       : `A queimadura causou ${damage} de dano em ${participant.name}.`;
@@ -1238,7 +1267,7 @@
 
   function resolveStatusMove(actor, target, move) {
     if (move.healing > 0) {
-      const healed = Math.max(1, Math.round(actor.maxHp * move.healing / 100));
+      const healed = Math.max(1, Math.round(actor.maxHp * Math.min(20, move.healing) / 100));
       const previous = actor.hp;
       actor.hp = Math.min(actor.maxHp, actor.hp + healed);
       return `${actor.name} recuperou ${actor.hp - previous} HP.`;
@@ -1264,28 +1293,50 @@
     const defense = category === 'special' ? target.specialDefense : target.defense;
     const attackBuff = stageMultiplier(actor.buffs.attack);
     const defenseBuff = stageMultiplier(target.buffs.defense);
-    const base = (
-      (((2 * actor.level / 5) + 2) * Math.max(1, move.power) * attack * attackBuff / Math.max(1, defense * defenseBuff)) / 50
-    ) + 2;
-    const stab = actor.types.includes(move.type) ? 1.2 : 1;
+    const statRatio = (attack * attackBuff) / Math.max(1, defense * defenseBuff);
+    const powerFactor = clamp(Math.max(1, move.power) / 60, 0.75, 1.25);
+    const levelFactor = clamp((actor.level + 10) / Math.max(1, target.level + 10), 0.9, 1.1);
+    const stab = actor.types.includes(move.type) ? 1.12 : 1;
     const effectiveness = typeMultiplier(move.type, target.types);
     const criticalChance = 0.05 + actor.happiness / 2000;
     const critical = Math.random() < criticalChance;
     const criticalMultiplier = critical ? 1.5 : 1;
     const bond = 1 + actor.bond / 1000;
-    const variation = 0.9 + Math.random() * 0.1;
+    const variation = 0.9 + Math.random() * 0.15;
     const guard = target.guard ? 0.72 : 1;
     target.guard = false;
+    const neutralRatio = clamp(
+      0.19
+      * powerFactor
+      * Math.sqrt(Math.max(0.25, statRatio))
+      * levelFactor
+      * stab
+      * energyMultiplier(actor.energy)
+      * bond
+      * variation,
+      0.17,
+      0.24,
+    );
+    const matchupMultiplier = effectiveness === 0
+      ? 0
+      : effectiveness > 1
+        ? Math.min(1.8, effectiveness)
+        : effectiveness < 1
+          ? 0.7
+          : 1;
+    const trainingIncomingDamage = session
+      && actor === session.enemy
+      && !session.config.opponent
+      ? 0.42
+      : 1;
     const damage = effectiveness === 0
       ? 0
       : Math.max(1, Math.round(
-          base
-          * stab
-          * effectiveness
+          target.maxHp
+          * neutralRatio
+          * matchupMultiplier
           * criticalMultiplier
-          * energyMultiplier(actor.energy)
-          * bond
-          * variation
+          * trainingIncomingDamage
           * guard,
         ));
     return { critical, damage, effectiveness };
@@ -1300,7 +1351,10 @@
       return `${actor.name} usou ${move.name}. ${effect}`;
     }
     const result = calculateDamage(actor, target, move);
+    const previousHp = target.hp;
     target.hp = Math.max(0, target.hp - result.damage);
+    const damageDealt = previousHp - target.hp;
+    if (actorSide === 'player') session.damageDealt += damageDealt;
     if (result.damage > 0) playBattleSound('hit');
     session.animation = actorSide === 'player' ? 'enemy-hit' : 'player-hit';
     const notes = [];
@@ -1315,7 +1369,7 @@
 
   function chooseEnemyMove(enemy, player) {
     const healing = enemy.moves.find(move => move.healing > 0);
-    if (enemy.hp / enemy.maxHp < 0.35 && healing) return healing;
+    if (enemy.hp / enemy.maxHp < 0.3 && healing && Math.random() < 0.25) return healing;
     return [...enemy.moves].sort((first, second) => {
       const firstScore = Math.max(1, first.power) * typeMultiplier(first.type, player.types);
       const secondScore = Math.max(1, second.power) * typeMultiplier(second.type, player.types);
@@ -1327,15 +1381,18 @@
     const enemy = session.enemy;
     const ratio = combatPower(enemy) / Math.max(1, combatPower(session.player));
     const powerDifficulty = clamp(ratio, 0.75, 1.35);
-    const speciesDifficulty = clamp(enemy.baseExperience / 150, 0.65, 1.6);
-    const levelReward = 8 + enemy.level * 0.9;
+    const speciesDifficulty = clamp(enemy.baseExperience / 150, 0.85, 1.25);
+    const levelReward = 20 + enemy.level * 0.8;
     const bondBonus = session.player.bond >= 25 ? 1.025 : 1;
     const victoryXp = Math.round(clamp(
       levelReward * speciesDifficulty * powerDifficulty * bondBonus,
-      8,
-      100,
+      18,
+      140,
     ));
-    return outcome === 'victory' ? victoryXp : outcome === 'defeat' ? Math.max(2, Math.round(victoryXp * 0.25)) : 0;
+    if (outcome === 'victory') return victoryXp;
+    if (outcome !== 'defeat') return 0;
+    const damageRatio = clamp(session.damageDealt / Math.max(1, enemy.maxHp), 0, 1);
+    return Math.max(3, Math.round(victoryXp * (0.2 + damageRatio * 0.3)));
   }
 
   function finishBattle(outcome) {
@@ -1343,6 +1400,11 @@
     if (outcome === 'defeat') session.player.hp = 1;
     if (outcome === 'victory') playBattleSound('victory');
     const xp = rewardXp(outcome);
+    const damagePercent = Math.round(clamp(
+      session.damageDealt / Math.max(1, session.enemy.maxHp),
+      0,
+      1,
+    ) * 100);
     const summary = outcome === 'victory'
       ? `${session.player.name} venceu ${session.enemy.name}!`
       : outcome === 'defeat'
@@ -1351,7 +1413,7 @@
     const note = outcome === 'victory'
       ? 'O HP restante foi preservado e o vínculo ficou mais forte.'
       : outcome === 'defeat'
-        ? 'O companheiro ficou com 1 HP e precisa recuperar forças antes da próxima batalha.'
+        ? `Você retirou ${damagePercent}% do HP adversário e recebeu XP pelo esforço.`
         : 'O HP atual foi preservado. A energia usada para entrar na batalha não é devolvida.';
     session.result = { note, outcome, summary, xp };
     session.phase = 'result';
@@ -1365,6 +1427,7 @@
       maxHp: session.player.maxHp,
       outcome,
       xp,
+      damagePercent,
     });
     render();
   }
@@ -1479,12 +1542,13 @@
   async function prepareBattle(config, sequence) {
     try {
       const pet = config.pet;
+      const energyCost = Math.max(1, Math.round(Number(config.energyCost) || 25));
       const playerVisualPromise = playerBattleVisual(config.visual);
       const playerData = await hydrate(pet, config.dexNumber, config.speciesName);
       if (!session || sequence !== loadSequence) return;
-      if (pet.energy < 20) {
+      if (pet.energy < energyCost) {
         session.phase = 'error';
-        session.error = `${pet.customName} precisa de pelo menos 20 de energia para batalhar.`;
+        session.error = `${pet.customName} precisa de pelo menos ${energyCost} de energia para batalhar.`;
         render();
         return;
       }
@@ -1522,14 +1586,10 @@
       const opponent = await chooseOpponent(config, player);
       const enemyMoves = await prepareMoves(opponent.data, opponent.level);
       if (!session || sequence !== loadSequence) return;
-      const enemy = participantFrom(opponent.data, opponent.level, opponent.attributes, {
-        bond: 0,
-        energy: 100,
-        happiness: 50,
-        moves: enemyMoves,
-        name: opponent.visual?.name || opponent.data.name,
-        visual: opponent.visual,
-      });
+      const enemy = opponent.participant;
+      enemy.moves = enemyMoves;
+      enemy.name = opponent.visual?.name || opponent.data.name;
+      enemy.visual = opponent.visual;
 
       config.onStarted?.();
       player.energy = clamp(pet.energy);
@@ -1562,6 +1622,7 @@
     session = {
       attackingSide: null,
       config,
+      damageDealt: 0,
       enemy: null,
       error: '',
       fieldMessage: null,

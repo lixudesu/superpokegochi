@@ -40,7 +40,12 @@
   const CARE_DAY_MS = 24 * 60 * 60 * 1000;
   const BOND_GRACE_PERIOD_MS = CARE_DAY_MS;
   const BOND_RESET_VALUE = 10;
-  const MINIGAME_REWARD_COOLDOWN_MS = 15 * 60 * 1000;
+  const BATTLE_ENERGY_COST = 25;
+  const BATTLE_HUNGER_COST = 6;
+  const MINIGAME_DAILY_GOALS = {
+    catch: { label: 'Chuva de Frutas', target: 30, xp: 35 },
+    memory: { label: 'Memória de Frutas', target: 1, xp: 35 },
+  };
   const WORLD_RULES = {
     firstFoodDelayMs: 20 * 60 * 1000,
     firstLeafDelayMs: 75 * 1000,
@@ -513,15 +518,15 @@
   };
 
   const FOOD_ITEMS = [
-    { id: 'apple', label: 'Maçã', asset: 'food-apple.png', historyIcon: '🍎', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 5, xp: 1 },
-    { id: 'strawberry', label: 'Morango', asset: 'food-strawberry.png', historyIcon: '🍓', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 5, xp: 2 },
-    { id: 'blackberry', label: 'Amora', asset: 'food-blackberry.png', historyIcon: '🫐', rarity: 'common', hunger: 18, happiness: 4, energy: 1, bond: 1, hpPercent: 6, xp: 2 },
-    { id: 'pear', label: 'Pera', asset: 'food-pear.png', historyIcon: '🍐', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 5, xp: 1 },
-    { id: 'grape', label: 'Uva', asset: 'food-grape.png', historyIcon: '🍇', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 5, xp: 2 },
-    { id: 'orange', label: 'Laranja', asset: 'food-orange.png', historyIcon: '🍊', rarity: 'common', hunger: 22, happiness: 3, energy: 2, bond: 1, hpPercent: 7, xp: 2 },
-    { id: 'banana', label: 'Banana', asset: 'food-banana.png', historyIcon: '🍌', rarity: 'common', hunger: 28, happiness: 2, energy: 3, bond: 1, hpPercent: 8, xp: 2 },
-    { id: 'watermelon', label: 'Melancia', asset: 'food-watermelon.png', historyIcon: '🍉', rarity: 'uncommon', hunger: 32, happiness: 3, energy: 2, bond: 2, hpPercent: 15, xp: 4 },
-    { id: 'pineapple', label: 'Abacaxi Energia', asset: 'food-pineapple.png', historyIcon: '🍍', rarity: 'rare', hunger: 18, happiness: 4, energy: 30, bond: 2, hpPercent: 12, xp: 5 },
+    { id: 'apple', label: 'Maçã', asset: 'food-apple.png', historyIcon: '🍎', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 20, xp: 2 },
+    { id: 'strawberry', label: 'Morango', asset: 'food-strawberry.png', historyIcon: '🍓', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 20, xp: 3 },
+    { id: 'blackberry', label: 'Amora', asset: 'food-blackberry.png', historyIcon: '🫐', rarity: 'common', hunger: 18, happiness: 4, energy: 1, bond: 1, hpPercent: 22, xp: 4 },
+    { id: 'pear', label: 'Pera', asset: 'food-pear.png', historyIcon: '🍐', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 20, xp: 2 },
+    { id: 'grape', label: 'Uva', asset: 'food-grape.png', historyIcon: '🍇', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 20, xp: 3 },
+    { id: 'orange', label: 'Laranja', asset: 'food-orange.png', historyIcon: '🍊', rarity: 'common', hunger: 22, happiness: 3, energy: 2, bond: 1, hpPercent: 22, xp: 4 },
+    { id: 'banana', label: 'Banana', asset: 'food-banana.png', historyIcon: '🍌', rarity: 'common', hunger: 28, happiness: 2, energy: 3, bond: 1, hpPercent: 25, xp: 4 },
+    { id: 'watermelon', label: 'Melancia', asset: 'food-watermelon.png', historyIcon: '🍉', rarity: 'uncommon', hunger: 32, happiness: 3, energy: 2, bond: 2, hpPercent: 35, xp: 7 },
+    { id: 'pineapple', label: 'Abacaxi Energia', asset: 'food-pineapple.png', historyIcon: '🍍', rarity: 'rare', hunger: 18, happiness: 4, energy: 30, bond: 2, hpPercent: 30, xp: 8 },
   ];
 
   const FOOD_BY_ID = Object.fromEntries(FOOD_ITEMS.map(food => [food.id, food]));
@@ -655,12 +660,62 @@
   }
 
   function todayKey() {
-    const date = new Date();
-    return [
-      date.getFullYear(),
-      String(date.getMonth() + 1).padStart(2, '0'),
-      String(date.getDate()).padStart(2, '0'),
-    ].join('-');
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      day: '2-digit',
+      month: '2-digit',
+      timeZone: BRASILIA_TIME_ZONE,
+      year: 'numeric',
+    }).formatToParts(new Date());
+    const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+    return `${values.year}-${values.month}-${values.day}`;
+  }
+
+  function defaultPetMinigames() {
+    return {
+      dateKey: todayKey(),
+      catch: { completed: false, effortXp: 0, progress: 0, rewardClaimed: false },
+      memory: { completed: false, effortXp: 0, progress: 0, rewardClaimed: false },
+    };
+  }
+
+  function migratePetMinigames(value) {
+    const source = value && typeof value === 'object' ? value : {};
+    if (source.dateKey !== todayKey()) return defaultPetMinigames();
+    return {
+      dateKey: source.dateKey,
+      catch: {
+        completed: source.catch?.completed === true,
+        effortXp: clamp(Math.round(Number(source.catch?.effortXp) || 0), 0, 10),
+        progress: clamp(Math.round(Number(source.catch?.progress) || 0), 0, MINIGAME_DAILY_GOALS.catch.target),
+        rewardClaimed: source.catch?.rewardClaimed === true,
+      },
+      memory: {
+        completed: source.memory?.completed === true,
+        effortXp: clamp(Math.round(Number(source.memory?.effortXp) || 0), 0, 10),
+        progress: clamp(Math.round(Number(source.memory?.progress) || 0), 0, MINIGAME_DAILY_GOALS.memory.target),
+        rewardClaimed: source.memory?.rewardClaimed === true,
+      },
+    };
+  }
+
+  function petMinigames(pet) {
+    pet.minigames = migratePetMinigames(pet.minigames);
+    return pet.minigames;
+  }
+
+  function minigameDailyGoals(pet) {
+    const progress = petMinigames(pet);
+    return Object.fromEntries(Object.entries(MINIGAME_DAILY_GOALS).map(([gameId, goal]) => [
+      gameId,
+      {
+        completed: progress[gameId].completed,
+        current: progress[gameId].progress,
+        label: gameId === 'catch'
+          ? `Faça ${goal.target} pontos no total`
+          : 'Vença uma partida',
+        target: goal.target,
+      },
+    ]));
   }
 
   function createJourneyKey() {
@@ -679,12 +734,13 @@
       xp: 0,
       hunger: clamp(78 - index * 3),
       happiness: clamp(72 + index * 2),
-      energy: 82,
+      energy: 100,
       bond: clamp(10 + index * 4),
       activeSince: now(),
       activeAppearance: getForms(mon)[0].id,
       appearancePalette: 'normal',
       battle: {},
+      minigames: defaultPetMinigames(),
       evolutionDecisions: {},
       sleeping: false,
       sleepStartedAt: null,
@@ -712,11 +768,6 @@
       session: 21,
       bag: systemDefaultBag(),
       daily: { lastFoodGrant: null },
-      minigames: {
-        lastCompletedAt: null,
-        memoryLockedUntil: 0,
-        rewardReadyAt: 0,
-      },
       world: systemDefaultWorld(),
       settings: {
         musicEnabled: false,
@@ -850,6 +901,14 @@
     migrated.customName = migrated.customName || mon.name;
     migrated.level = Math.max(1, Number(migrated.level) || 1);
     migrated.xp = Math.max(0, Number(migrated.xp) || 0);
+    while (migrated.level < 100 && migrated.xp >= systemXpNeeded(migrated)) {
+      migrated.xp -= systemXpNeeded(migrated);
+      migrated.level += 1;
+    }
+    if (migrated.level >= 100) {
+      migrated.level = 100;
+      migrated.xp = 0;
+    }
     migrated.hunger = clamp(migrated.hunger ?? fresh.hunger);
     migrated.happiness = clamp(migrated.happiness ?? fresh.happiness);
     migrated.energy = clamp(migrated.energy ?? fresh.energy);
@@ -863,6 +922,7 @@
     migrated.battle = migrated.battle && typeof migrated.battle === 'object'
       ? migrated.battle
       : {};
+    migrated.minigames = migratePetMinigames(migrated.minigames);
     migrated.sleeping = Boolean(migrated.sleeping);
     migrated.sleepStartedAt = migrated.sleepStartedAt || null;
     migrated.lastSleepTick = migrated.lastSleepTick || null;
@@ -901,7 +961,6 @@
       ...current,
       bag: migrateBag(current && current.bag),
       daily: { ...base.daily, ...(current && current.daily) },
-      minigames: { ...base.minigames, ...(current && current.minigames) },
       settings: { ...base.settings, ...(current && current.settings) },
       social: migrateSocial(current && current.social),
       world: migrateWorld(current && current.world),
@@ -909,6 +968,7 @@
         ? { ...current.pets }
         : { ...base.pets },
     };
+    delete migrated.minigames;
     delete migrated.settings.motionPreference;
     migrated.settings.musicEnabled = migrated.settings.musicEnabled === true;
     const musicTrackIndex = Number(migrated.settings.musicTrackIndex);
@@ -918,15 +978,6 @@
     migrated.settings.pokegochiNotificationsEnabled = (
       migrated.settings.pokegochiNotificationsEnabled === true
     );
-    migrated.minigames.lastCompletedAt = Number.isFinite(Number(migrated.minigames.lastCompletedAt))
-      ? Number(migrated.minigames.lastCompletedAt)
-      : null;
-    migrated.minigames.memoryLockedUntil = Number.isFinite(Number(migrated.minigames.memoryLockedUntil))
-      ? Math.max(0, Number(migrated.minigames.memoryLockedUntil))
-      : 0;
-    migrated.minigames.rewardReadyAt = Number.isFinite(Number(migrated.minigames.rewardReadyAt))
-      ? Math.max(0, Number(migrated.minigames.rewardReadyAt))
-      : 0;
     migrated.pets = Object.fromEntries(
       Object.entries(migrated.pets).map(([id, pet], index) => {
         const migratedPet = migratePet(pet, id, index);
@@ -1012,7 +1063,12 @@
   }
 
   function systemXpNeeded(pet) {
-    return 180 + pet.level * 22;
+    const level = Math.max(1, Math.min(100, Math.round(Number(pet.level) || 1)));
+    if (level < 10) return 50 + level * 3;
+    if (level < 40) return 80 + (level - 10) * 5;
+    if (level < 70) return 250 + (level - 40) * 12;
+    if (level < 100) return 650 + (level - 70) * 30;
+    return 0;
   }
 
   function systemAddHistory(pet, icon, text) {
@@ -1020,13 +1076,19 @@
   }
 
   function systemAddXp(pet, amount) {
-    pet.xp += amount;
+    if (pet.level >= 100) {
+      pet.level = 100;
+      pet.xp = 0;
+      return;
+    }
+    pet.xp += Math.max(0, Math.round(Number(amount) || 0));
     let leveled = false;
-    while (pet.xp >= systemXpNeeded(pet)) {
+    while (pet.level < 100 && pet.xp >= systemXpNeeded(pet)) {
       pet.xp -= systemXpNeeded(pet);
       pet.level += 1;
       leveled = true;
     }
+    if (pet.level >= 100) pet.xp = 0;
     if (leveled) {
       systemAddHistory(pet, '⭐', `${pet.customName} subiu para o nível ${pet.level}.`);
       showToast(`${pet.customName} subiu para o nível ${pet.level}!`);
@@ -1720,83 +1782,86 @@
   }
 
   function awardMinigameResult(result) {
-    const rewardReadyAt = Math.max(0, Number(state.minigames.rewardReadyAt) || 0);
     const timestamp = now();
     const pet = getPet();
     const gameLabel = GAME_LABELS[result?.gameId] || 'um minigame';
-    const memoryDefeat = result?.gameId === 'memory' && Number(result.lockUntil) > timestamp;
-
-    if (memoryDefeat) {
-      state.minigames.memoryLockedUntil = Number(result.lockUntil);
-    }
-    if (!result || result.success !== true) {
-      if (result?.gameId) {
-        if (timestamp < rewardReadyAt) {
-          pet.lastAction = `${pet.customName} não concluiu ${gameLabel}; o XP parcial ainda está em recarga.`;
-          systemAddHistory(pet, '🎮', pet.lastAction);
-          saveState();
-          return {
-            canPlayAgain: canStartAnyMinigame(pet),
-            earned: false,
-            memoryLockedUntil: state.minigames.memoryLockedUntil,
-            message: `${memoryDefeat ? 'As seis vidas acabaram. ' : ''}O próximo XP estará disponível em ${formatDuration(rewardReadyAt - timestamp)}.`,
-            rewardReadyAt,
-          };
-        }
-        const partialXp = Math.max(2, Math.min(12, Math.round(Number(result.xp) || 2)));
-        systemAddXp(pet, partialXp);
-        pet.happiness = clamp(pet.happiness + 3);
-        pet.bond = clamp(pet.bond + RULES.play.bond);
-        markPetCaredFor(pet, timestamp);
-        state.minigames.lastCompletedAt = timestamp;
-        state.minigames.rewardReadyAt = timestamp + MINIGAME_REWARD_COOLDOWN_MS;
-        pet.lastUpdate = timestamp;
-        pet.lastAction = `${pet.customName} não concluiu ${gameLabel}, mas ganhou +${partialXp} XP pela pontuação.`;
-        systemAddHistory(pet, '🎮', pet.lastAction);
-        saveState();
-        render();
-        return {
-          canPlayAgain: canStartAnyMinigame(pet),
-          earned: true,
-          memoryLockedUntil: state.minigames.memoryLockedUntil,
-          message: memoryDefeat ? 'A Memória de Frutas ficará disponível novamente em 1 hora.' : '',
-          rewardReadyAt: state.minigames.rewardReadyAt,
-          xp: partialXp,
-        };
-      }
+    const gameId = result?.gameId;
+    const goal = MINIGAME_DAILY_GOALS[gameId];
+    if (!result || !goal) {
       return {
         canPlayAgain: canStartAnyMinigame(pet),
+        dailyGoals: minigameDailyGoals(pet),
+        energy: pet.energy,
         earned: false,
-        memoryLockedUntil: state.minigames.memoryLockedUntil,
-        message: 'Complete a meta do jogo para receber comida e XP.',
-        rewardReadyAt,
+        message: 'Não foi possível atualizar a missão diária.',
       };
     }
 
-    if (timestamp < rewardReadyAt) {
-      pet.lastAction = `${pet.customName} concluiu ${gameLabel}, mas a recompensa ainda está em recarga.`;
+    const missions = petMinigames(pet);
+    const mission = missions[gameId];
+    pet.happiness = clamp(pet.happiness + (result.success ? RULES.play.happiness : 3));
+    pet.bond = clamp(pet.bond + RULES.play.bond);
+    markPetCaredFor(pet, timestamp);
+    pet.lastUpdate = timestamp;
+
+    if (!mission.completed) {
+      if (gameId === 'catch') {
+        mission.progress = Math.min(goal.target, mission.progress + Math.max(0, Math.round(Number(result.score) || 0)));
+      } else if (gameId === 'memory' && result.success === true) {
+        mission.progress = goal.target;
+      }
+      mission.completed = mission.progress >= goal.target;
+    }
+
+    if (!mission.completed) {
+      const effortXp = result.success === true || Number(result.score) <= 0
+        ? 0
+        : Math.min(
+            10 - mission.effortXp,
+            Math.max(1, Math.min(5, Math.ceil(Number(result.score) / 5))),
+          );
+      if (effortXp > 0) {
+        mission.effortXp += effortXp;
+        systemAddXp(pet, effortXp);
+      }
+      const progressCopy = gameId === 'catch'
+        ? `${mission.progress}/${goal.target} pontos na missão diária`
+        : 'ainda falta vencer uma partida';
+      const effortCopy = effortXp > 0 ? ` +${effortXp} XP pelo esforço.` : '';
+      pet.lastAction = `${pet.customName} jogou ${gameLabel}; ${progressCopy}.${effortCopy}`;
       systemAddHistory(pet, '🎮', pet.lastAction);
       saveState();
+      render();
       return {
         canPlayAgain: canStartAnyMinigame(pet),
-        earned: false,
-        message: `A próxima recompensa estará disponível em ${formatDuration(rewardReadyAt - timestamp)}.`,
-        rewardReadyAt,
+        dailyGoals: minigameDailyGoals(pet),
+        energy: pet.energy,
+        earned: effortXp > 0,
+        message: effortXp > 0 ? '' : `Progresso salvo: ${progressCopy}.`,
+        xp: effortXp,
       };
     }
 
+    if (mission.rewardClaimed) {
+      pet.lastAction = `${pet.customName} jogou ${gameLabel} novamente e ficou mais feliz.`;
+      systemAddHistory(pet, '🎮', pet.lastAction);
+      saveState();
+      render();
+      return {
+        canPlayAgain: canStartAnyMinigame(pet),
+        dailyGoals: minigameDailyGoals(pet),
+        energy: pet.energy,
+        earned: false,
+        message: 'Missão diária concluída. Esta partida aumentou a felicidade.',
+      };
+    }
+
+    mission.rewardClaimed = true;
     const foodId = randomMinigameFoodId();
     const food = FOOD_BY_ID[foodId];
-    const xp = Math.max(12, Math.min(30, Math.round(Number(result.xp) || 12)));
     addFoodToBag(state, foodId, 1);
-    pet.happiness = clamp(pet.happiness + RULES.play.happiness);
-    pet.bond = clamp(pet.bond + RULES.play.bond);
-    systemAddXp(pet, xp);
-    markPetCaredFor(pet, timestamp);
-    state.minigames.lastCompletedAt = timestamp;
-    state.minigames.rewardReadyAt = timestamp + MINIGAME_REWARD_COOLDOWN_MS;
-    pet.lastUpdate = timestamp;
-    pet.lastAction = `${pet.customName} venceu ${gameLabel}. +1 ${food.label} e +${xp} XP.`;
+    systemAddXp(pet, goal.xp);
+    pet.lastAction = `${pet.customName} concluiu a missão de ${gameLabel}. +1 ${food.label} e +${goal.xp} XP.`;
     systemAddHistory(pet, '🎮', pet.lastAction);
     selectedAction = 'play';
     saveState();
@@ -1809,15 +1874,15 @@
 
     return {
       canPlayAgain: canStartAnyMinigame(pet),
+      dailyGoals: minigameDailyGoals(pet),
+      energy: pet.energy,
       earned: true,
       food: {
         assetUrl: new URL(`${ITEM_BASE_PATH}${food.asset}`, document.baseURI).href,
         id: food.id,
         label: food.label,
       },
-      rewardReadyAt: state.minigames.rewardReadyAt,
-      memoryLockedUntil: state.minigames.memoryLockedUntil,
-      xp,
+      xp: goal.xp,
     };
   }
 
@@ -1831,7 +1896,11 @@
     const gameLabel = GAME_LABELS[gameId] || 'um minigame';
     const energyCost = minigameEnergyCost(gameId);
     if (pet.energy < energyCost) {
-      return { started: false };
+      return {
+        canPlayAgain: canStartAnyMinigame(pet),
+        energy: pet.energy,
+        started: false,
+      };
     }
     const timestamp = now();
     pet.energy = clamp(pet.energy - energyCost);
@@ -1843,6 +1912,7 @@
     saveState();
     return {
       canPlayAgain: canStartAnyMinigame(pet),
+      energy: pet.energy,
       started: true,
     };
   }
@@ -1860,6 +1930,8 @@
     minigames.open({
       backIconUrl: new URL('assets/arrow-ios-back.svg', document.baseURI).href,
       companionName: pet.customName,
+      energy: pet.energy,
+      energyCosts: { ...RULES.play.energyCost },
       foods: minigameFoodCatalog(),
       onComplete: awardMinigameResult,
       onStart: startMinigameAttempt,
@@ -1867,8 +1939,7 @@
         selectedAction = null;
         render();
       },
-      rewardReadyAt: state.minigames.rewardReadyAt,
-      memoryLockedUntil: state.minigames.memoryLockedUntil,
+      dailyGoals: minigameDailyGoals(pet),
     });
     return false;
   }
@@ -1885,14 +1956,15 @@
 
     const opened = battle.open({
       pet,
+      energyCost: BATTLE_ENERGY_COST,
       dexNumber: battleDexNumber(appearance),
       speciesName: appearance.name,
       visual: appearance,
       dexCatalog: DEX,
       soundEnabled: getMusicEnabled(),
       onStarted() {
-        pet.energy = clamp(pet.energy - 15);
-        pet.hunger = clamp(pet.hunger - 6);
+        pet.energy = clamp(pet.energy - BATTLE_ENERGY_COST);
+        pet.hunger = clamp(pet.hunger - BATTLE_HUNGER_COST);
         markPetCaredFor(pet);
         pet.lastUpdate = now();
         saveState();
@@ -1977,6 +2049,7 @@
 
     const opened = battle.open({
       pet: visitorPet,
+      energyCost: BATTLE_ENERGY_COST,
       dexNumber: battleDexNumber(visitorAppearance),
       speciesName: visitorAppearance.name,
       visual: visitorAppearance,
@@ -1989,8 +2062,8 @@
         visual: ownerAppearance,
       },
       onStarted() {
-        visitorPet.energy = clamp(visitorPet.energy - 15);
-        visitorPet.hunger = clamp(visitorPet.hunger - 6);
+        visitorPet.energy = clamp(visitorPet.energy - BATTLE_ENERGY_COST);
+        visitorPet.hunger = clamp(visitorPet.hunger - BATTLE_HUNGER_COST);
         visitorPet.lastUpdate = now();
       },
       onProgress({ currentHp }) {
@@ -2055,7 +2128,9 @@
   function battleTrainingBlocker(pet) {
     const busy = busyMessage(pet);
     if (busy) return busy;
-    if (pet.energy < 20) return 'Seu companheiro precisa de pelo menos 20 de energia para batalhar.';
+    if (pet.energy < BATTLE_ENERGY_COST) {
+      return `Seu companheiro precisa de pelo menos ${BATTLE_ENERGY_COST} de energia para batalhar.`;
+    }
     if (pet.hunger <= 10) return 'Seu companheiro precisa comer antes de batalhar.';
     const battle = battleSnapshot(pet);
     if (battle && battle.currentHp <= battle.maxHp * 0.2) {
@@ -2141,7 +2216,7 @@
                   <span><small>Energia</small><b>${Math.round(pet.energy)}</b></span>
                   <span><small>Fome</small><b>${Math.round(pet.hunger)}</b></span>
                 </div>
-                <p class="battle-menu-description">Enfrente um Pokémon próximo do seu nível. Entrar na batalha consome 15 de energia e 6 de fome.</p>
+                <p class="battle-menu-description">Enfrente um Pokémon de poder compatível. Entrar na batalha consome ${BATTLE_ENERGY_COST} de energia e ${BATTLE_HUNGER_COST} de fome.</p>
                 <button class="battle-menu-start" type="button" data-battle-start ${blocker ? 'disabled' : ''}>
                   <img src="${ITEM_BASE_PATH}action-train.png" alt="">
                   <b>Treinar</b>

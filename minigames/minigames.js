@@ -55,25 +55,36 @@
     });
   }
 
-  function rewardStatusText() {
-    if (!session) return 'Recompensa disponível';
-    const remaining = Math.max(0, Number(session.config.rewardReadyAt) - Date.now());
-    if (remaining <= 0) return 'Fruta disponível';
-    const minutes = Math.max(1, Math.ceil(remaining / 60000));
-    return `Nova fruta em ${minutes} min`;
+  function missionFor(gameId) {
+    return session?.config.dailyGoals?.[gameId] || {
+      completed: false,
+      current: 0,
+      label: 'Complete a missão diária',
+      target: 1,
+    };
   }
 
-  function memoryLockText() {
-    if (!session) return GAME_INFO.memory.description;
-    const remaining = Math.max(0, Number(session.config.memoryLockedUntil) - Date.now());
-    if (remaining <= 0) return GAME_INFO.memory.description;
-    const minutes = Math.max(1, Math.ceil(remaining / 60000));
-    if (minutes >= 60) return 'Bloqueado por 1 hora após perder as seis vidas.';
-    return `Disponível novamente em ${minutes} min.`;
+  function dailyStatusText() {
+    if (!session) return 'Missões diárias';
+    const missions = Object.values(session.config.dailyGoals || {});
+    const completed = missions.filter(mission => mission.completed).length;
+    return `Diárias ${completed}/${Math.max(2, missions.length)}`;
+  }
+
+  function missionStatusText(gameId) {
+    const mission = missionFor(gameId);
+    if (mission.completed) return 'Missão diária concluída';
+    if (gameId === 'catch') return `${mission.current}/${mission.target} pontos na missão diária`;
+    return mission.label;
+  }
+
+  function canPlayGame(gameId) {
+    if (!session || session.config.canPlay === false) return false;
+    const cost = Math.max(0, Number(session.config.energyCosts?.[gameId]) || 0);
+    return Number(session.config.energy) >= cost;
   }
 
   function shellMarkup(title, content, contentClass = '') {
-    const cooldown = session && Number(session.config.rewardReadyAt) > Date.now();
     return `
       <section class="minigame-app" role="dialog" aria-modal="true" aria-label="${escapeHtml(title)}">
         <header class="minigame-topbar">
@@ -81,8 +92,8 @@
             <small>Brincar com ${escapeHtml(session.config.companionName)}</small>
             <h1>${escapeHtml(title)}</h1>
           </div>
-          <div class="minigame-reward-state ${cooldown ? 'cooldown' : ''}" data-minigame-reward-status>
-            ${rewardStatusText()}
+          <div class="minigame-reward-state" data-minigame-reward-status>
+            ${dailyStatusText()}
           </div>
         </header>
         <main class="minigame-content ${contentClass}">${content}</main>
@@ -98,30 +109,6 @@
   function bindShell() {
     const exitButton = host.querySelector('[data-minigame-exit]');
     if (exitButton) exitButton.addEventListener('click', close);
-  }
-
-  function startRewardClock() {
-    const interval = setInterval(() => {
-      const status = host.querySelector('[data-minigame-reward-status]');
-      if (!status || !session) return;
-      const cooldown = Number(session.config.rewardReadyAt) > Date.now();
-      status.textContent = rewardStatusText();
-      status.classList.toggle('cooldown', cooldown);
-      const memoryButton = host.querySelector('[data-minigame-start="memory"]');
-      const memoryCopy = host.querySelector('[data-memory-lock-copy]');
-      if (memoryButton && memoryCopy) {
-        const memoryLocked = Number(session.config.memoryLockedUntil) > Date.now();
-        const unavailable = memoryLocked || session.config.canPlay === false;
-        memoryButton.disabled = unavailable;
-        memoryButton.classList.toggle('locked', memoryLocked);
-        memoryCopy.textContent = memoryLocked
-          ? memoryLockText()
-          : session.config.canPlay === false
-            ? 'Seu companheiro precisa descansar.'
-            : GAME_INFO.memory.description;
-      }
-    }, 1000);
-    addCleanup(() => clearInterval(interval));
   }
 
   function hubArt(gameId) {
@@ -147,19 +134,19 @@
       <section class="minigame-hub">
         <p class="minigame-hub-copy">
           Chuva de Frutas custa 8 de energia e Memória de Frutas custa 6. A energia é cobrada ao iniciar.
-          O treino continua sendo a atividade que mais fortalece seu companheiro.
+          Tente quantas vezes quiser e conclua as duas missões diárias para ganhar XP e frutas.
         </p>
         <div class="minigame-list">
           ${Object.entries(GAME_INFO).map(([gameId, info]) => {
-            const memoryLocked = gameId === 'memory' && Number(session.config.memoryLockedUntil) > Date.now();
-            const noEnergy = session.config.canPlay === false;
-            const disabled = memoryLocked || noEnergy;
+            const noEnergy = !canPlayGame(gameId);
+            const mission = missionFor(gameId);
             return `
-            <button class="minigame-choice ${memoryLocked ? 'locked' : ''}" type="button" data-minigame-start="${gameId}" ${disabled ? 'disabled' : ''}>
+            <button class="minigame-choice" type="button" data-minigame-start="${gameId}" ${noEnergy ? 'disabled' : ''}>
               ${hubArt(gameId)}
               <span class="minigame-choice-copy">
                 <b>${info.title}</b>
-                <span ${gameId === 'memory' ? 'data-memory-lock-copy' : ''}>${memoryLocked ? memoryLockText() : noEnergy ? 'Seu companheiro precisa descansar.' : info.description}</span>
+                <span>${noEnergy ? 'Seu companheiro precisa descansar.' : info.description}</span>
+                <small class="minigame-choice-mission ${mission.completed ? 'completed' : ''}">${missionStatusText(gameId)}</small>
               </span>
               <span class="minigame-choice-arrow" aria-hidden="true">›</span>
             </button>
@@ -171,17 +158,20 @@
     host.querySelectorAll('[data-minigame-start]').forEach(button => {
       button.addEventListener('click', () => startGame(button.dataset.minigameStart));
     });
-    startRewardClock();
   }
 
   function startGame(gameId) {
     if (!session || !GAME_INFO[gameId]) return;
-    if (session.config.canPlay === false) return;
-    if (gameId === 'memory' && Number(session.config.memoryLockedUntil) > Date.now()) return;
+    if (!canPlayGame(gameId)) return;
     if (typeof session.config.onStart === 'function') {
       const startState = session.config.onStart({ gameId });
+      if (Number.isFinite(Number(startState?.energy))) {
+        session.config.energy = Number(startState.energy);
+      }
       if (!startState || startState.started === false) {
-        session.config.canPlay = false;
+        if (typeof startState?.canPlayAgain === 'boolean') {
+          session.config.canPlay = startState.canPlayAgain;
+        }
         renderHub();
         return;
       }
@@ -226,26 +216,23 @@
     }
 
     if (!session) return;
-    if (reward && Number.isFinite(Number(reward.rewardReadyAt))) {
-      session.config.rewardReadyAt = Number(reward.rewardReadyAt);
+    if (reward?.dailyGoals && typeof reward.dailyGoals === 'object') {
+      session.config.dailyGoals = reward.dailyGoals;
     }
-    if (reward && Number.isFinite(Number(reward.memoryLockedUntil))) {
-      session.config.memoryLockedUntil = Math.max(0, Number(reward.memoryLockedUntil));
+    if (Number.isFinite(Number(reward?.energy))) {
+      session.config.energy = Number(reward.energy);
     }
     if (reward && typeof reward.canPlayAgain === 'boolean') {
       session.config.canPlay = reward.canPlayAgain;
     }
     const rewardStatus = host.querySelector('[data-minigame-reward-status]');
     if (rewardStatus) {
-      const cooldown = Number(session.config.rewardReadyAt) > Date.now();
-      rewardStatus.textContent = rewardStatusText();
-      rewardStatus.classList.toggle('cooldown', cooldown);
+      rewardStatus.textContent = dailyStatusText();
     }
 
     const stage = host.querySelector('[data-minigame-stage]');
     if (!stage) return;
-    const retryLocked = result.gameId === 'memory' && Number(session.config.memoryLockedUntil) > Date.now();
-    const retryUnavailable = retryLocked || session.config.canPlay === false;
+    const retryUnavailable = !canPlayGame(result.gameId);
     stage.insertAdjacentHTML('beforeend', `
       <div class="minigame-result">
         <div class="minigame-result-card">
@@ -254,7 +241,7 @@
           ${resultRewardMarkup(reward)}
           <div class="minigame-result-actions">
             <button class="secondary" type="button" data-minigame-games>Outros jogos</button>
-            <button class="primary" type="button" data-minigame-retry ${retryUnavailable ? 'disabled' : ''}>${retryLocked ? 'Tente em 1 hora' : session.config.canPlay === false ? 'Sem energia' : 'Jogar novamente'}</button>
+            <button class="primary" type="button" data-minigame-retry ${retryUnavailable ? 'disabled' : ''}>${retryUnavailable ? 'Sem energia' : 'Jogar novamente'}</button>
           </div>
         </div>
       </div>`);
@@ -275,7 +262,6 @@
       </section>`;
     host.innerHTML = shellMarkup(GAME_INFO.catch.title, content);
     bindShell();
-    startRewardClock();
 
     const stage = host.querySelector('[data-minigame-stage]');
     const scoreNode = host.querySelector('[data-catch-score]');
@@ -481,7 +467,6 @@
       </section>`;
     host.innerHTML = shellMarkup(GAME_INFO.memory.title, content);
     bindShell();
-    startRewardClock();
 
     const cards = [...host.querySelectorAll('[data-memory-card]')];
     const movesNode = host.querySelector('[data-memory-moves]');
@@ -492,6 +477,7 @@
     let openCards = [];
     let moves = 0;
     let pairs = 0;
+    let bestPairs = 0;
     let lives = 6;
     let locked = false;
 
@@ -534,6 +520,7 @@
         second.disabled = true;
         openCards = [];
         pairs += 1;
+        bestPairs = Math.max(bestPairs, pairs);
         pairsNode.textContent = `${pairs}/${pairTarget}`;
         if (pairs === pairTarget) setTimeout(completeMemoryGame, 350);
         return;
@@ -560,16 +547,14 @@
       }
 
       if (lives <= 0) {
-        const lockUntil = Date.now() + 60 * 60 * 1000;
         const lockTimer = setTimeout(() => {
           coverBoard();
           void finishGame({
             gameId: 'memory',
-            lockUntil,
-            score: pairs,
+            score: bestPairs,
             success: false,
-            xp: Math.min(12, 2 + pairs * 2),
-            summary: 'Você perdeu as seis vidas. O jogo ficará disponível novamente em 1 hora.',
+            xp: Math.min(12, 2 + bestPairs * 2),
+            summary: `Você perdeu as seis vidas e chegou a ${bestPairs}/${pairTarget} pares. Pode tentar novamente enquanto tiver energia.`,
           });
         }, 720);
         addCleanup(() => clearTimeout(lockTimer));
@@ -591,9 +576,14 @@
       config: {
         ...config,
         canPlay: config.canPlay !== false,
+        energy: Math.max(0, Number(config.energy) || 0),
+        energyCosts: config.energyCosts && typeof config.energyCosts === 'object'
+          ? config.energyCosts
+          : {},
+        dailyGoals: config.dailyGoals && typeof config.dailyGoals === 'object'
+          ? config.dailyGoals
+          : {},
         foods: Array.isArray(config.foods) ? config.foods.filter(Boolean) : [],
-        memoryLockedUntil: Number(config.memoryLockedUntil) || 0,
-        rewardReadyAt: Number(config.rewardReadyAt) || 0,
       },
       currentGame: null,
       finished: false,
