@@ -431,6 +431,7 @@
 }
 .minigame-result-reward img{width:34px;height:34px;object-fit:contain;image-rendering:pixelated}
 .minigame-result-reward.no-reward{background:#eef3f5;color:#687783}
+.minigame-result-reward.partial-reward{background:#eef7ff;color:#315d82}
 .minigame-result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .minigame-result-actions button{
   min-height:46px;

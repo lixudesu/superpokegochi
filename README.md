@@ -35,6 +35,10 @@ de acordo com o nível e o poder do companheiro.
 - Vitória concede mais XP; derrota concede uma parte; fugir não concede XP.
 - O HP restante continua salvo depois da batalha.
 - Descansar e comer frutas recuperam HP.
+- Veneno, queimadura, paralisia, sono, congelamento e confusão afetam os turnos
+  e aparecem ao lado do nome do Pokémon.
+- Nas batalhas de visita, XP, energia, fome e HP restante dos dois perfis são
+  enviados para persistência.
 
 Ao tocar em **Treino**, abre uma central com:
 
@@ -73,7 +77,8 @@ O botão **Brincar** abre os minigames em tela cheia:
   hora.
 
 As recompensas principais de fruta e XP respeitam o intervalo configurado pelo
-jogo para evitar ganho excessivo.
+jogo para evitar ganho excessivo. Mesmo ao perder, a pontuação concede entre 2
+e 12 XP, sem fruta, quando a recarga de recompensa estiver disponível.
 
 Descansar recupera toda a energia em aproximadamente uma hora. Durante o mesmo
 período, o Pokémon recupera cerca de 50% do HP máximo.

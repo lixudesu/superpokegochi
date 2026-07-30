@@ -200,6 +200,12 @@
     if (!reward || !reward.earned) {
       return `<div class="minigame-result-reward no-reward">${escapeHtml(reward?.message || 'Jogue novamente para conquistar a recompensa.')}</div>`;
     }
+    if (!reward.food) {
+      return `
+        <div class="minigame-result-reward partial-reward">
+          <span>+${reward.xp} XP pela pontuação</span>
+        </div>`;
+    }
     return `
       <div class="minigame-result-reward">
         <img src="${escapeHtml(reward.food.assetUrl)}" alt="">
@@ -388,7 +394,7 @@
         gameId: 'catch',
         score,
         success,
-        xp: success ? Math.min(30, performanceXp) : 0,
+        xp: success ? Math.min(30, performanceXp) : Math.min(12, 2 + Math.floor(score / 3)),
         summary: success
           ? `Você sobreviveu aos 50 segundos e pegou ${score} frutas.`
           : `Você pegou ${score} frutas, mas perdeu as três vidas antes dos 50 segundos.`,
@@ -562,7 +568,7 @@
             lockUntil,
             score: pairs,
             success: false,
-            xp: 0,
+            xp: Math.min(12, 2 + pairs * 2),
             summary: 'Você perdeu as seis vidas. O jogo ficará disponível novamente em 1 hora.',
           });
         }, 720);

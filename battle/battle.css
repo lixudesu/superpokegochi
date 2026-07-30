@@ -170,6 +170,24 @@
   font-size:.72rem;
   font-weight:400;
 }
+.battle-condition{
+  flex:0 0 auto;
+  min-width:28px;
+  padding:2px 4px;
+  border:1px solid #263247;
+  border-radius:4px;
+  color:#fff;
+  font-size:.54rem;
+  font-style:normal;
+  line-height:1;
+  text-align:center;
+}
+.battle-condition.poison{background:#9150b5}
+.battle-condition.burn{background:#d85b42}
+.battle-condition.paralysis{background:#c99e21}
+.battle-condition.sleep{background:#6e7990}
+.battle-condition.freeze{background:#4f9bbd}
+.battle-condition.confusion{background:#c26494}
 .battle-hp-row{
   margin-top:5px;
   display:flex;

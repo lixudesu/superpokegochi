@@ -1724,25 +1724,45 @@
     const timestamp = now();
     const pet = getPet();
     const gameLabel = GAME_LABELS[result?.gameId] || 'um minigame';
+    const memoryDefeat = result?.gameId === 'memory' && Number(result.lockUntil) > timestamp;
 
-    if (result?.gameId === 'memory' && Number(result.lockUntil) > timestamp) {
+    if (memoryDefeat) {
       state.minigames.memoryLockedUntil = Number(result.lockUntil);
-      pet.lastAction = `${pet.customName} perdeu todas as vidas em ${gameLabel}.`;
-      systemAddHistory(pet, '🎮', pet.lastAction);
-      saveState();
-      return {
-        canPlayAgain: canStartAnyMinigame(pet),
-        earned: false,
-        memoryLockedUntil: state.minigames.memoryLockedUntil,
-        message: 'As seis vidas acabaram: a Memória de Frutas ficará disponível novamente em 1 hora.',
-        rewardReadyAt,
-      };
     }
     if (!result || result.success !== true) {
       if (result?.gameId) {
-        pet.lastAction = `${pet.customName} não concluiu ${gameLabel}.`;
+        if (timestamp < rewardReadyAt) {
+          pet.lastAction = `${pet.customName} não concluiu ${gameLabel}; o XP parcial ainda está em recarga.`;
+          systemAddHistory(pet, '🎮', pet.lastAction);
+          saveState();
+          return {
+            canPlayAgain: canStartAnyMinigame(pet),
+            earned: false,
+            memoryLockedUntil: state.minigames.memoryLockedUntil,
+            message: `${memoryDefeat ? 'As seis vidas acabaram. ' : ''}O próximo XP estará disponível em ${formatDuration(rewardReadyAt - timestamp)}.`,
+            rewardReadyAt,
+          };
+        }
+        const partialXp = Math.max(2, Math.min(12, Math.round(Number(result.xp) || 2)));
+        systemAddXp(pet, partialXp);
+        pet.happiness = clamp(pet.happiness + 3);
+        pet.bond = clamp(pet.bond + RULES.play.bond);
+        markPetCaredFor(pet, timestamp);
+        state.minigames.lastCompletedAt = timestamp;
+        state.minigames.rewardReadyAt = timestamp + MINIGAME_REWARD_COOLDOWN_MS;
+        pet.lastUpdate = timestamp;
+        pet.lastAction = `${pet.customName} não concluiu ${gameLabel}, mas ganhou +${partialXp} XP pela pontuação.`;
         systemAddHistory(pet, '🎮', pet.lastAction);
         saveState();
+        render();
+        return {
+          canPlayAgain: canStartAnyMinigame(pet),
+          earned: true,
+          memoryLockedUntil: state.minigames.memoryLockedUntil,
+          message: memoryDefeat ? 'A Memória de Frutas ficará disponível novamente em 1 hora.' : '',
+          rewardReadyAt: state.minigames.rewardReadyAt,
+          xp: partialXp,
+        };
       }
       return {
         canPlayAgain: canStartAnyMinigame(pet),
@@ -1949,6 +1969,7 @@
     const ownerSpecies = getDex();
     const ownerPet = getPet();
     const ownerAppearance = getAppearance(ownerSpecies, ownerPet);
+    const ownerCombat = battleSnapshot(ownerPet, ownerAppearance);
 
     statusOpen = false;
     moreOpen = false;
@@ -1962,18 +1983,62 @@
       dexCatalog: DEX,
       soundEnabled: getMusicEnabled(),
       opponent: {
+        currentHp: ownerCombat?.currentHp,
         dexNumber: battleDexNumber(ownerAppearance),
         level: ownerPet.level,
         visual: ownerAppearance,
       },
+      onStarted() {
+        visitorPet.energy = clamp(visitorPet.energy - 15);
+        visitorPet.hunger = clamp(visitorPet.hunger - 6);
+        visitorPet.lastUpdate = now();
+      },
+      onProgress({ currentHp }) {
+        if (!visitorPet.battle || typeof visitorPet.battle !== 'object') visitorPet.battle = {};
+        visitorPet.battle.currentHp = Math.max(0, Math.round(Number(currentHp) || 0));
+      },
       onComplete(result) {
+        const timestamp = now();
+        if (!visitorPet.battle || typeof visitorPet.battle !== 'object') visitorPet.battle = {};
+        if (!ownerPet.battle || typeof ownerPet.battle !== 'object') ownerPet.battle = {};
+        visitorPet.battle.currentHp = Math.max(1, Math.round(Number(result.currentHp) || 1));
+        visitorPet.battle.lastMaxHp = Math.max(1, Math.round(Number(result.maxHp) || visitorPet.battle.lastMaxHp || 1));
+        ownerPet.battle.currentHp = Math.max(1, Math.round(Number(result.enemyCurrentHp) || 1));
+        ownerPet.battle.lastMaxHp = Math.max(1, Math.round(Number(result.enemyMaxHp) || ownerPet.battle.lastMaxHp || 1));
+
+        if (result.outcome === 'victory') {
+          visitorPet.happiness = clamp(visitorPet.happiness + 4);
+          visitorPet.bond = clamp(visitorPet.bond + 2);
+        } else if (result.outcome === 'defeat') {
+          visitorPet.happiness = clamp(visitorPet.happiness - 2);
+          visitorPet.bond = clamp(visitorPet.bond + 1);
+        }
+        systemAddXp(visitorPet, result.xp);
+        visitorPet.lastUpdate = timestamp;
+        visitorPet.lastAction = result.outcome === 'victory'
+          ? `${visitorPet.customName} venceu uma batalha de visita. +${result.xp} XP.`
+          : result.outcome === 'defeat'
+            ? `${visitorPet.customName} perdeu uma batalha de visita. +${result.xp} XP.`
+            : `${visitorPet.customName} saiu de uma batalha de visita.`;
+        systemAddHistory(visitorPet, '⚔️', visitorPet.lastAction);
+        social.viewerCompanion.pet = structuredClone(visitorPet);
         socialBattleSaving = true;
         notifySite('social-battle-result', {
+          actorCurrentHp: visitorPet.battle.currentHp,
+          actorEnergy: visitorPet.energy,
+          actorHunger: visitorPet.hunger,
+          actorJourneyKey: visitorPet.journeyKey,
           actorLevel: visitorPet.level,
+          actorMaxHp: visitorPet.battle.lastMaxHp,
+          actorPet: structuredClone(visitorPet),
           actorPokemonDex: battleDexNumber(visitorAppearance),
           outcome: result.outcome,
+          ownerCurrentHp: ownerPet.battle.currentHp,
+          ownerJourneyKey: ownerPet.journeyKey,
           ownerLevel: ownerPet.level,
+          ownerMaxHp: ownerPet.battle.lastMaxHp,
           ownerPokemonDex: battleDexNumber(ownerAppearance),
+          xp: result.xp,
         });
       },
       onExit() {

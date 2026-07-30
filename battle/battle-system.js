@@ -1,7 +1,7 @@
 (() => {
   const host = document.querySelector('[data-battle-root]');
   const API_BASE = 'https://pokeapi.co/api/v2';
-  const API_CACHE_KEY = 'superpokegochi_battle_catalog_v1';
+  const API_CACHE_KEY = 'superpokegochi_battle_catalog_v2';
   const CACHE_LIFETIME_MS = 30 * 24 * 60 * 60 * 1000;
   const VERSION_GROUPS = [
     'scarlet-violet',
@@ -91,6 +91,14 @@
     rock: 'Pedra',
     steel: 'Aço',
     water: 'Água',
+  };
+  const STATUS_CONDITIONS = {
+    burn: { className: 'burn', label: 'QUE', name: 'queimadura' },
+    confusion: { className: 'confusion', label: 'CON', name: 'confusão' },
+    freeze: { className: 'freeze', label: 'GEL', name: 'congelamento' },
+    paralysis: { className: 'paralysis', label: 'PAR', name: 'paralisia' },
+    poison: { className: 'poison', label: 'ENV', name: 'veneno' },
+    sleep: { className: 'sleep', label: 'SON', name: 'sono' },
   };
   const TYPE_EFFECTIVENESS = {
     bug: { dark: 2, fairy: 0.5, fighting: 0.5, fire: 0.5, flying: 0.5, ghost: 0.5, grass: 2, poison: 0.5, psychic: 2, steel: 0.5 },
@@ -373,6 +381,7 @@
     return {
       accuracy: source.accuracy == null ? 100 : clamp(source.accuracy, 1, 100),
       ailment: String(source.ailment || 'none'),
+      ailmentChance: clamp(source.ailmentChance, 0, 100),
       category: ['physical', 'special', 'status'].includes(source.category)
         ? source.category
         : 'physical',
@@ -403,6 +412,7 @@
     const compact = normalizeMoveData({
       accuracy: raw.accuracy,
       ailment: raw.meta?.ailment?.name,
+      ailmentChance: raw.meta?.ailment_chance,
       category: raw.damage_class?.name,
       drain: raw.meta?.drain,
       healing: raw.meta?.healing,
@@ -714,6 +724,7 @@
       moves: options.moves || [],
       name: options.name || data.name,
       speciesData: data,
+      status: null,
       types: data.types,
       visual: options.visual,
     };
@@ -878,6 +889,7 @@
       const data = await loadPokemonData(dexNumber);
       const attributes = enemyAttributes(level, data);
       const participant = participantFrom(data, level, attributes, {
+        currentHp: config.opponent.currentHp,
         energy: 100,
         happiness: 50,
         name: visual?.name || data.name,
@@ -957,6 +969,7 @@
       <section class="battle-nameplate ${side}" aria-label="${escapeHtml(participant.name)}, nível ${participant.level}, ${participant.hp} de ${participant.maxHp} pontos de vida">
         <div class="battle-name-row">
           <b>${escapeHtml(participant.name)}</b>
+          ${participant.status ? `<em class="battle-condition ${STATUS_CONDITIONS[participant.status.id]?.className || ''}">${STATUS_CONDITIONS[participant.status.id]?.label || 'STA'}</em>` : ''}
           <span>Nv. ${participant.level}</span>
         </div>
         <div class="battle-hp-row">
@@ -1135,12 +1148,103 @@
     return `${ATTRIBUTE_LABELS[key] || prettyName(key)} ${change > 0 ? 'aumentou' : 'diminuiu'}`;
   }
 
+  function statusImmunity(participant, ailment) {
+    if (ailment === 'burn') return participant.types.includes('fire');
+    if (ailment === 'freeze') return participant.types.includes('ice');
+    if (ailment === 'paralysis') return participant.types.includes('electric');
+    if (ailment === 'poison') {
+      return participant.types.includes('poison') || participant.types.includes('steel');
+    }
+    return false;
+  }
+
+  function applyAilment(target, move, guaranteed = false) {
+    const ailment = String(move.ailment || 'none');
+    if (!STATUS_CONDITIONS[ailment] || target.status) return '';
+    const chance = guaranteed
+      ? (move.ailmentChance > 0 ? move.ailmentChance : 100)
+      : move.ailmentChance;
+    if (chance <= 0 || Math.random() * 100 >= chance) return '';
+    if (statusImmunity(target, ailment)) {
+      return `${target.name} é imune a ${STATUS_CONDITIONS[ailment].name}.`;
+    }
+    target.status = {
+      id: ailment,
+      turns: ailment === 'sleep'
+        ? 2 + Math.floor(Math.random() * 2)
+        : ailment === 'confusion'
+          ? 2 + Math.floor(Math.random() * 3)
+          : 0,
+    };
+    const messages = {
+      burn: `${target.name} sofreu uma queimadura!`,
+      confusion: `${target.name} ficou confuso!`,
+      freeze: `${target.name} foi congelado!`,
+      paralysis: `${target.name} ficou paralisado!`,
+      poison: `${target.name} foi envenenado!`,
+      sleep: `${target.name} adormeceu!`,
+    };
+    return messages[ailment];
+  }
+
+  function statusActionCheck(participant) {
+    const status = participant.status;
+    if (!status) return { canAct: true, message: '' };
+    if (status.id === 'sleep') {
+      status.turns -= 1;
+      if (status.turns <= 0) {
+        participant.status = null;
+        return { canAct: true, message: `${participant.name} acordou!` };
+      }
+      return { canAct: false, message: `${participant.name} está dormindo.` };
+    }
+    if (status.id === 'freeze') {
+      if (Math.random() < 0.2) {
+        participant.status = null;
+        return { canAct: true, message: `${participant.name} descongelou!` };
+      }
+      return { canAct: false, message: `${participant.name} está congelado.` };
+    }
+    if (status.id === 'paralysis' && Math.random() < 0.25) {
+      return { canAct: false, message: `${participant.name} está paralisado e não conseguiu agir.` };
+    }
+    if (status.id === 'confusion') {
+      status.turns -= 1;
+      if (status.turns <= 0) {
+        participant.status = null;
+        return { canAct: true, message: `${participant.name} recuperou os sentidos.` };
+      }
+      if (Math.random() < 1 / 3) {
+        const damage = Math.max(1, Math.round(participant.maxHp / 12));
+        participant.hp = Math.max(0, participant.hp - damage);
+        return {
+          canAct: false,
+          message: `${participant.name} se machucou na confusão e perdeu ${damage} HP.`,
+        };
+      }
+    }
+    return { canAct: true, message: '' };
+  }
+
+  function residualStatusDamage(participant) {
+    if (!participant.status || !['burn', 'poison'].includes(participant.status.id)) return '';
+    const divisor = participant.status.id === 'poison' ? 8 : 16;
+    const damage = Math.max(1, Math.round(participant.maxHp / divisor));
+    participant.hp = Math.max(0, participant.hp - damage);
+    return participant.status.id === 'poison'
+      ? `O veneno causou ${damage} de dano em ${participant.name}.`
+      : `A queimadura causou ${damage} de dano em ${participant.name}.`;
+  }
+
   function resolveStatusMove(actor, target, move) {
     if (move.healing > 0) {
       const healed = Math.max(1, Math.round(actor.maxHp * move.healing / 100));
       const previous = actor.hp;
       actor.hp = Math.min(actor.maxHp, actor.hp + healed);
       return `${actor.name} recuperou ${actor.hp - previous} HP.`;
+    }
+    if (STATUS_CONDITIONS[move.ailment]) {
+      return applyAilment(target, move, true) || `${target.name} não foi afetado.`;
     }
     if (move.statChanges.length) {
       const messages = move.statChanges.map(change => (
@@ -1204,6 +1308,8 @@
     if (result.effectiveness >= 2) notes.push('Foi super efetivo!');
     if (result.effectiveness > 0 && result.effectiveness < 1) notes.push('Não foi muito efetivo.');
     if (result.effectiveness === 0) notes.push('Não teve efeito.');
+    const ailmentMessage = result.damage > 0 ? applyAilment(target, move) : '';
+    if (ailmentMessage) notes.push(ailmentMessage);
     return `${actor.name} usou ${move.name} e causou ${result.damage} de dano. ${notes.join(' ')}`.trim();
   }
 
@@ -1252,8 +1358,11 @@
     session.config.onProgress?.({ currentHp: session.player.hp });
     session.config.onComplete?.({
       currentHp: session.player.hp,
+      enemyCurrentHp: Math.max(1, session.enemy.hp),
       enemyLevel: session.enemy.level,
+      enemyMaxHp: session.enemy.maxHp,
       enemyName: session.enemy.name,
+      maxHp: session.player.maxHp,
       outcome,
       xp,
     });
@@ -1281,15 +1390,25 @@
       const target = side === 'player' ? session.enemy : session.player;
       if (actor.hp <= 0 || target.hp <= 0) break;
       const move = side === 'player' ? playerMove : enemyMove;
+      const statusCheck = statusActionCheck(actor);
+      const actionMessages = [];
+      if (statusCheck.message) actionMessages.push(statusCheck.message);
 
       session.turnNotice = null;
-      session.fieldMessage = side === 'enemy'
-        ? `${actor.name} atacou! Usou ${move.name}.`
-        : `${actor.name} usou ${move.name}!`;
+      session.fieldMessage = statusCheck.canAct
+        ? side === 'enemy'
+          ? `${actor.name} atacou! Usou ${move.name}.`
+          : `${actor.name} usou ${move.name}!`
+        : statusCheck.message;
       session.fieldMessageKind = 'move';
       session.fieldMessageSide = side;
       session.attackingSide = side;
-      session.log.push(useMove(actor, target, move, side));
+      if (statusCheck.canAct && actor.hp > 0) {
+        actionMessages.push(useMove(actor, target, move, side));
+      }
+      const residualMessage = residualStatusDamage(actor);
+      if (residualMessage) actionMessages.push(residualMessage);
+      session.log.push(actionMessages.join(' '));
       session.log = session.log.slice(-4);
       session.config.onProgress?.({ currentHp: session.player.hp });
       render();
