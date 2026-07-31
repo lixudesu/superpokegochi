@@ -128,6 +128,11 @@
     return Math.max(minimum, Math.min(maximum, Math.round(Number(value) || 0)));
   }
 
+  function clampFloat(value, minimum = 0, maximum = 100) {
+    const numeric = Number(value);
+    return Math.max(minimum, Math.min(maximum, Number.isFinite(numeric) ? numeric : 0));
+  }
+
   function stopBattleSounds() {
     Object.values(battleSounds).forEach(sound => {
       sound.pause();
@@ -689,25 +694,23 @@
     );
   }
 
-  function balanceTrainingOpponent(participant, player) {
-    const originalMaxHp = participant.maxHp;
-    participant.maxHp = clamp(
-      participant.maxHp,
-      Math.round(player.maxHp * 0.95),
-      Math.round(player.maxHp * 1.05),
+  function balanceTrainingOpponent(participant, player, region) {
+    const levelGap = Math.max(0, player.level - Math.max(1, Number(region?.levelMax) || player.level));
+    const targetRatio = clampFloat(
+      (Number(region?.powerRatio) || 0.9) - levelGap * 0.012,
+      0.35,
+      1.05,
     );
+    participant.maxHp = Math.max(10, Math.round(player.maxHp * targetRatio));
     participant.hp = participant.maxHp;
-    const statScale = clamp(
-      combatPower(player) / Math.max(1, combatPower(participant)),
-      0.9,
-      1.1,
+    const statScale = clampFloat(
+      (combatPower(player) * targetRatio) / Math.max(1, combatPower(participant)),
+      0.55,
+      1.55,
     );
     ['attack', 'specialAttack', 'defense', 'specialDefense', 'speed'].forEach(stat => {
       participant[stat] = Math.max(1, Math.round(participant[stat] * statScale));
     });
-    if (originalMaxHp !== participant.maxHp) {
-      participant.hp = participant.maxHp;
-    }
     return participant;
   }
 
@@ -927,10 +930,22 @@
       };
     }
 
-    const candidates = sampleCatalog(config.dexCatalog, player.speciesData.dexNumber, 5);
+    const regionalCatalog = Array.isArray(config.region?.dexIds)
+      ? config.region.dexIds
+          .map(dexNumber => findVisualForDex(config.dexCatalog, dexNumber))
+          .filter(Boolean)
+      : [];
+    const candidates = sampleCatalog(
+      regionalCatalog.length ? regionalCatalog : config.dexCatalog,
+      player.speciesData.dexNumber,
+      7,
+    );
+    const levelMin = clamp(Number(config.region?.levelMin) || 1, 1, 100);
+    const levelMax = clamp(Number(config.region?.levelMax) || 100, levelMin, 100);
+    const targetLevel = clamp(player.level, levelMin, levelMax);
     const loaded = await Promise.allSettled(candidates.map(async visual => ({
       data: await loadPokemonData(visual.dexNumber),
-      level: clamp(player.level + Math.floor(Math.random() * 5) - 2, 1, 100),
+      level: clamp(targetLevel + Math.floor(Math.random() * 3) - 1, levelMin, levelMax),
       visual,
     })));
     const prepared = loaded
@@ -941,7 +956,7 @@
       const dexNumber = visual?.dexNumber || 1;
       prepared.push({
         data: normalizeSpeciesData(null, dexNumber, visual?.name || 'Pokémon selvagem'),
-        level: player.level,
+        level: targetLevel,
         visual,
       });
     }
@@ -963,7 +978,7 @@
       return Math.abs(first.ratio - 1) - Math.abs(second.ratio - 1);
     });
     const chosen = ranked[0];
-    balanceTrainingOpponent(chosen.participant, player);
+    balanceTrainingOpponent(chosen.participant, player, config.region);
     chosen.ratio = combatPower(chosen.participant) / Math.max(1, playerPower);
     return chosen;
   }
@@ -1023,15 +1038,16 @@
   }
 
   function loadingMarkup() {
+    const regionName = session.config.region?.name || 'Treino de batalha';
     return `
       <section class="battle-app" role="dialog" aria-modal="true" aria-label="Preparando batalha">
         <header class="battle-topbar">
-          <div><small>Treino de batalha</small><h1>Procurando adversário</h1></div>
+          <div><small>${escapeHtml(regionName)}</small><h1>Procurando adversário</h1></div>
           <span class="battle-source">PokéAPI</span>
         </header>
         <main class="battle-loading">
           <span class="battle-loading-ball" aria-hidden="true"><i></i></span>
-          <b>Comparando força e nível...</b>
+          <b>Procurando um adversário da região...</b>
           <p>Os dados oficiais ficam salvos em cache para as próximas batalhas.</p>
         </main>
         <footer class="battle-footer">
@@ -1065,7 +1081,7 @@
     return `
       <section class="battle-app" role="dialog" aria-modal="true" aria-label="Resultado da batalha">
         <header class="battle-topbar">
-          <div><small>Resultado do treino</small><h1>${title}</h1></div>
+          <div><small>${escapeHtml(session.config.region?.name || 'Resultado do treino')}</small><h1>${title}</h1></div>
           <span class="battle-source">${escapeHtml(session.enemy.name)}</span>
         </header>
         <main class="battle-result ${result.outcome}">
@@ -1094,7 +1110,7 @@
     return `
       <section class="battle-app" role="dialog" aria-modal="true" aria-label="Batalha entre ${escapeHtml(player.name)} e ${escapeHtml(enemy.name)}">
         <header class="battle-topbar compact">
-          <div><small>Treino de batalha</small><h1>${escapeHtml(player.name)} × ${escapeHtml(enemy.name)}</h1></div>
+          <div><small>${escapeHtml(session.config.region?.name || 'Treino de batalha')}</small><h1>${escapeHtml(player.name)} × ${escapeHtml(enemy.name)}</h1></div>
           <span class="battle-turn">Turno ${session.turn}</span>
         </header>
         <main class="battle-main">
@@ -1294,8 +1310,8 @@
     const attackBuff = stageMultiplier(actor.buffs.attack);
     const defenseBuff = stageMultiplier(target.buffs.defense);
     const statRatio = (attack * attackBuff) / Math.max(1, defense * defenseBuff);
-    const powerFactor = clamp(Math.max(1, move.power) / 60, 0.75, 1.25);
-    const levelFactor = clamp((actor.level + 10) / Math.max(1, target.level + 10), 0.9, 1.1);
+    const powerFactor = clampFloat(Math.max(1, move.power) / 60, 0.75, 1.25);
+    const levelFactor = clampFloat((actor.level + 10) / Math.max(1, target.level + 10), 0.9, 1.1);
     const stab = actor.types.includes(move.type) ? 1.12 : 1;
     const effectiveness = typeMultiplier(move.type, target.types);
     const criticalChance = 0.05 + actor.happiness / 2000;
@@ -1305,7 +1321,7 @@
     const variation = 0.9 + Math.random() * 0.15;
     const guard = target.guard ? 0.72 : 1;
     target.guard = false;
-    const neutralRatio = clamp(
+    const neutralRatio = clampFloat(
       0.19
       * powerFactor
       * Math.sqrt(Math.max(0.25, statRatio))
@@ -1327,7 +1343,17 @@
     const trainingIncomingDamage = session
       && actor === session.enemy
       && !session.config.opponent
-      ? 0.42
+      ? clampFloat((Number(session.config.region?.powerRatio) || 0.9) * 0.45, 0.34, 0.48)
+      : 1;
+    const regionalDamageBoost = session
+      && actor === session.player
+      && !session.config.opponent
+      ? clampFloat(
+          (Number(session.config.region?.damageBoost) || 1)
+          + Math.max(0, actor.level - (Number(session.config.region?.levelMax) || actor.level)) * 0.025,
+          1,
+          3,
+        )
       : 1;
     const damage = effectiveness === 0
       ? 0
@@ -1336,6 +1362,7 @@
           * neutralRatio
           * matchupMultiplier
           * criticalMultiplier
+          * regionalDamageBoost
           * trainingIncomingDamage
           * guard,
         ));
@@ -1380,18 +1407,21 @@
   function rewardXp(outcome) {
     const enemy = session.enemy;
     const ratio = combatPower(enemy) / Math.max(1, combatPower(session.player));
-    const powerDifficulty = clamp(ratio, 0.75, 1.35);
-    const speciesDifficulty = clamp(enemy.baseExperience / 150, 0.85, 1.25);
+    const powerDifficulty = clampFloat(ratio, 0.75, 1.35);
+    const speciesDifficulty = clampFloat(enemy.baseExperience / 150, 0.85, 1.25);
     const levelReward = 20 + enemy.level * 0.8;
     const bondBonus = session.player.bond >= 25 ? 1.025 : 1;
-    const victoryXp = Math.round(clamp(
+    const baseVictoryXp = Math.round(clampFloat(
       levelReward * speciesDifficulty * powerDifficulty * bondBonus,
       18,
       140,
     ));
+    const victoryXp = Math.max(8, Math.round(
+      baseVictoryXp * clampFloat(Number(session.config.region?.xpMultiplier) || 1, 0.5, 1.25),
+    ));
     if (outcome === 'victory') return victoryXp;
     if (outcome !== 'defeat') return 0;
-    const damageRatio = clamp(session.damageDealt / Math.max(1, enemy.maxHp), 0, 1);
+    const damageRatio = clampFloat(session.damageDealt / Math.max(1, enemy.maxHp), 0, 1);
     return Math.max(3, Math.round(victoryXp * (0.2 + damageRatio * 0.3)));
   }
 
@@ -1400,7 +1430,7 @@
     if (outcome === 'defeat') session.player.hp = 1;
     if (outcome === 'victory') playBattleSound('victory');
     const xp = rewardXp(outcome);
-    const damagePercent = Math.round(clamp(
+    const damagePercent = Math.round(clampFloat(
       session.damageDealt / Math.max(1, session.enemy.maxHp),
       0,
       1,
@@ -1426,6 +1456,8 @@
       enemyName: session.enemy.name,
       maxHp: session.player.maxHp,
       outcome,
+      regionId: session.config.region?.id || null,
+      regionName: session.config.region?.name || null,
       xp,
       damagePercent,
     });
@@ -1595,7 +1627,7 @@
       player.energy = clamp(pet.energy);
       session.player = player;
       session.enemy = enemy;
-      session.log = [`Um ${enemy.name} de nível ${enemy.level} apareceu!`];
+      session.log = [`Um ${enemy.name} de nível ${enemy.level} apareceu em ${config.region?.name || 'uma área selvagem'}!`];
       session.phase = 'choice';
       session.turn = 1;
       session.attackingSide = null;

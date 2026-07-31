@@ -12,6 +12,7 @@
   let statusTab = 'status';
   let battleMenuOpen = false;
   let battleMenuTab = 'train';
+  let battleMenuView = 'overview';
   let battleHistoryVisibleCount = 5;
   let trainingGame = null;
   let trainingGameId = 0;
@@ -42,6 +43,92 @@
   const BOND_RESET_VALUE = 10;
   const BATTLE_ENERGY_COST = 25;
   const BATTLE_HUNGER_COST = 6;
+  const BATTLE_REGIONS = [
+    {
+      id: 'bosque-inicial',
+      name: 'Bosque Inicial',
+      levelMin: 1,
+      levelMax: 5,
+      difficulty: 'Tranquilo',
+      powerRatio: 0.78,
+      damageBoost: 1.2,
+      xpMultiplier: 0.75,
+      theme: 'meadow',
+      dexIds: [10, 13, 16, 19, 21, 29, 32, 43, 46, 48, 69, 161, 163, 187, 263, 265, 270, 273, 300, 403, 406, 504, 540, 548, 664, 731, 819],
+    },
+    {
+      id: 'floresta-verde',
+      name: 'Floresta Verde',
+      levelMin: 6,
+      levelMax: 15,
+      difficulty: 'Fácil',
+      powerRatio: 0.84,
+      damageBoost: 1.15,
+      xpMultiplier: 0.85,
+      theme: 'greenwood',
+      dexIds: [1, 11, 12, 14, 15, 17, 18, 44, 70, 102, 114, 123, 127, 152, 165, 167, 191, 204, 252, 285, 387, 511, 546, 588, 650, 753],
+    },
+    {
+      id: 'floresta-densa',
+      name: 'Floresta Densa',
+      levelMin: 16,
+      levelMax: 30,
+      difficulty: 'Moderado',
+      powerRatio: 0.89,
+      damageBoost: 1.1,
+      xpMultiplier: 0.95,
+      theme: 'deepwood',
+      dexIds: [2, 45, 47, 71, 103, 115, 214, 253, 254, 286, 315, 357, 407, 414, 416, 455, 469, 470, 497, 542, 549, 586, 709, 723, 724],
+    },
+    {
+      id: 'montanha-rocosa',
+      name: 'Montanha Rochosa',
+      levelMin: 31,
+      levelMax: 50,
+      difficulty: 'Equilibrado',
+      powerRatio: 0.93,
+      damageBoost: 1.05,
+      xpMultiplier: 1,
+      theme: 'mountain',
+      dexIds: [27, 28, 50, 51, 66, 67, 74, 75, 95, 111, 207, 213, 231, 232, 246, 247, 304, 305, 322, 323, 328, 329, 410, 443, 525, 557, 558, 619, 622, 744, 745],
+    },
+    {
+      id: 'caverna-cristal',
+      name: 'Caverna Cristal',
+      levelMin: 51,
+      levelMax: 70,
+      difficulty: 'Desafiador',
+      powerRatio: 0.97,
+      damageBoost: 1.02,
+      xpMultiplier: 1.05,
+      theme: 'crystal',
+      dexIds: [41, 42, 92, 93, 169, 200, 202, 302, 303, 337, 338, 343, 344, 433, 436, 437, 527, 528, 703, 714, 715, 757, 758, 859, 860],
+    },
+    {
+      id: 'ruinas-antigas',
+      name: 'Ruínas Antigas',
+      levelMin: 71,
+      levelMax: 90,
+      difficulty: 'Difícil',
+      powerRatio: 1,
+      damageBoost: 1,
+      xpMultiplier: 1.1,
+      theme: 'ruins',
+      dexIds: [201, 355, 356, 425, 426, 442, 477, 479, 562, 563, 605, 606, 623, 679, 680, 681, 710, 711, 769, 770, 854, 855, 867],
+    },
+    {
+      id: 'pico-lendario',
+      name: 'Pico Lendário',
+      levelMin: 91,
+      levelMax: 100,
+      difficulty: 'Extremo',
+      powerRatio: 1.03,
+      damageBoost: 1,
+      xpMultiplier: 1.15,
+      theme: 'summit',
+      dexIds: [142, 149, 248, 373, 376, 445, 448, 461, 464, 466, 467, 472, 473, 475, 612, 614, 635, 637, 663, 706, 784, 887, 998],
+    },
+  ];
   const MINIGAME_DAILY_GOALS = {
     catch: { label: 'Chuva de Frutas', target: 30, xp: 35 },
     memory: { label: 'Memória de Frutas', target: 1, xp: 35 },
@@ -1944,9 +2031,20 @@
     return false;
   }
 
-  function openBattleTraining(pet) {
+  function battleRegionById(regionId) {
+    return BATTLE_REGIONS.find(region => region.id === regionId) || BATTLE_REGIONS[0];
+  }
+
+  function recommendedBattleRegion(level) {
+    return BATTLE_REGIONS.find(region => level >= region.levelMin && level <= region.levelMax)
+      || BATTLE_REGIONS[BATTLE_REGIONS.length - 1];
+  }
+
+  function openBattleTraining(pet, regionId) {
     const battle = window.SuperPokegochiBattle;
     if (!battle) return 'A batalha ainda está carregando. Tente novamente em instantes.';
+    const region = battleRegionById(regionId);
+    if (pet.level < region.levelMin) return `${region.name} será liberada no nível ${region.levelMin}.`;
     const species = getDex();
     const appearance = getAppearance(species, pet);
     statusOpen = false;
@@ -1961,6 +2059,7 @@
       speciesName: appearance.name,
       visual: appearance,
       dexCatalog: DEX,
+      region,
       soundEnabled: getMusicEnabled(),
       onStarted() {
         pet.energy = clamp(pet.energy - BATTLE_ENERGY_COST);
@@ -1983,6 +2082,8 @@
             enemyLevel: result.enemyLevel,
             enemyName: result.enemyName,
             outcome: result.outcome,
+            regionId: result.regionId,
+            regionName: result.regionName,
             xp: result.xp,
           },
           ...(Array.isArray(pet.battle.battleHistory) ? pet.battle.battleHistory : []),
@@ -1991,11 +2092,11 @@
         if (result.outcome === 'victory') {
           pet.happiness = clamp(pet.happiness + 4);
           pet.bond = clamp(pet.bond + 2);
-          pet.lastAction = `${pet.customName} venceu ${result.enemyName}. +${result.xp} XP.`;
+          pet.lastAction = `${pet.customName} venceu ${result.enemyName} em ${region.name}. +${result.xp} XP.`;
         } else if (result.outcome === 'defeat') {
           pet.happiness = clamp(pet.happiness - 2);
           pet.bond = clamp(pet.bond + 1);
-          pet.lastAction = `${pet.customName} perdeu para ${result.enemyName} e precisa descansar. +${result.xp} XP.`;
+          pet.lastAction = `${pet.customName} perdeu para ${result.enemyName} em ${region.name}. +${result.xp} XP.`;
         } else {
           pet.lastAction = `${pet.customName} saiu da batalha contra ${result.enemyName}.`;
         }
@@ -2146,6 +2247,7 @@
     foodOpen = false;
     battleMenuOpen = true;
     battleMenuTab = 'train';
+    battleMenuView = 'overview';
     battleHistoryVisibleCount = 5;
     return false;
   }
@@ -2162,6 +2264,7 @@
     const visibleHistory = history.slice(0, battleHistoryVisibleCount);
     const hasMoreHistory = history.length > visibleHistory.length;
     const blocker = battleTrainingBlocker(pet);
+    const recommendedRegion = recommendedBattleRegion(pet.level);
     const hpPercent = combat ? Math.max(0, Math.min(100, (combat.currentHp / combat.maxHp) * 100)) : 100;
     const historyMarkup = visibleHistory.length
       ? `<div class="battle-menu-history-list">${visibleHistory.map(item => {
@@ -2171,7 +2274,7 @@
             <span class="battle-history-result ${result.className}">${result.label}</span>
             <div>
               <b>${escapeHtml(item.enemyName || 'Pokémon selvagem')}</b>
-              <small>Nv. ${Math.max(1, Math.round(Number(item.enemyLevel) || 1))} · ${formatBattleDate(item.at)}</small>
+              <small>Nv. ${Math.max(1, Math.round(Number(item.enemyLevel) || 1))} · ${escapeHtml(item.regionName || 'Treino livre')} · ${formatBattleDate(item.at)}</small>
             </div>
             <strong>+${Math.max(0, Math.round(Number(item.xp) || 0))} XP</strong>
           </article>`;
@@ -2190,7 +2293,7 @@
           <header class="battle-menu-header">
             <div>
               <small>Centro de treinamento</small>
-              <h2 id="battle-menu-title">Treino de batalha</h2>
+              <h2 id="battle-menu-title">${battleMenuView === 'regions' && battleMenuTab === 'train' ? 'Escolha a região' : 'Treino de batalha'}</h2>
             </div>
             <button type="button" data-battle-menu-close aria-label="Fechar centro de treinamento">×</button>
           </header>
@@ -2203,12 +2306,37 @@
           </div>
 
           ${battleMenuTab === 'train'
-            ? `<div class="battle-menu-content" role="tabpanel">
+            ? battleMenuView === 'regions'
+              ? `<div class="battle-menu-content battle-region-content" role="tabpanel">
+                  <div class="battle-region-summary">
+                    <button type="button" data-battle-regions-back aria-label="Voltar à preparação">‹</button>
+                    <span>${escapeHtml(pet.customName)} · Nv. ${pet.level}</span>
+                    <small>25 energia</small>
+                  </div>
+                  <div class="battle-region-list">
+                    ${BATTLE_REGIONS.map((region, index) => {
+                      const locked = pet.level < region.levelMin;
+                      const recommended = region.id === recommendedRegion.id;
+                      const disabled = locked || Boolean(blocker);
+                      return `
+                        <button class="battle-region-row ${recommended ? 'recommended' : ''} ${locked ? 'locked' : ''}" type="button" data-battle-region="${region.id}" ${disabled ? 'disabled' : ''}>
+                          <span class="battle-region-art ${region.theme}" aria-hidden="true"><i></i></span>
+                          <span class="battle-region-copy">
+                            <b>${escapeHtml(region.name)}</b>
+                            <small>Níveis ${region.levelMin}–${region.levelMax} · ${escapeHtml(region.difficulty)}</small>
+                          </span>
+                          <span class="battle-region-state">${locked ? `Nv. ${region.levelMin}` : recommended ? 'Recomendada' : index < BATTLE_REGIONS.indexOf(recommendedRegion) ? 'Revisitar' : 'Entrar'}</span>
+                        </button>`;
+                    }).join('')}
+                  </div>
+                  ${blocker ? `<p class="battle-menu-blocker" role="status">${escapeHtml(blocker)}</p>` : ''}
+                </div>`
+              : `<div class="battle-menu-content" role="tabpanel">
                 <div class="battle-menu-companion">
                   <span class="battle-menu-avatar">${renderPokemonVisual(appearance, 'battle-menu-sprite', appearance.name)}</span>
                   <div>
                     <b>${escapeHtml(pet.customName)}</b>
-                    <small>Nível ${pet.level} · adversário compatível</small>
+                    <small>Nível ${pet.level} · ${escapeHtml(recommendedRegion.name)} recomendada</small>
                   </div>
                 </div>
                 <div class="battle-menu-vitals" aria-label="Condição para o treino">
@@ -2216,14 +2344,14 @@
                   <span><small>Energia</small><b>${Math.round(pet.energy)}</b></span>
                   <span><small>Fome</small><b>${Math.round(pet.hunger)}</b></span>
                 </div>
-                <p class="battle-menu-description">Enfrente um Pokémon de poder compatível. Entrar na batalha consome ${BATTLE_ENERGY_COST} de energia e ${BATTLE_HUNGER_COST} de fome.</p>
-                <button class="battle-menu-start" type="button" data-battle-start ${blocker ? 'disabled' : ''}>
+                <p class="battle-menu-description">Escolha uma região para encontrar adversários da faixa desejada. Cada batalha consome ${BATTLE_ENERGY_COST} de energia e ${BATTLE_HUNGER_COST} de fome.</p>
+                <button class="battle-menu-start" type="button" data-battle-show-regions>
                   <img src="${ITEM_BASE_PATH}action-train.png" alt="">
-                  <b>Treinar</b>
+                  <b>Escolher região</b>
                 </button>
                 ${blocker
-                  ? `<p class="battle-menu-blocker" role="status">${escapeHtml(blocker)}</p>`
-                  : '<p class="battle-menu-ready">Seu companheiro está pronto para batalhar.</p>'}
+                  ? `<p class="battle-menu-blocker">${escapeHtml(blocker)}</p>`
+                  : `<p class="battle-menu-ready">Região recomendada: ${escapeHtml(recommendedRegion.name)}.</p>`}
               </div>`
             : `<div class="battle-menu-content battle-menu-history" role="tabpanel">
                 ${historyMarkup}
@@ -3696,13 +3824,22 @@
     }));
     document.querySelectorAll('[data-battle-menu-tab]').forEach(btn => btn.addEventListener('click', () => {
       battleMenuTab = btn.dataset.battleMenuTab;
+      if (battleMenuTab === 'train') battleMenuView = 'overview';
+      render();
+    }));
+    document.querySelectorAll('[data-battle-show-regions]').forEach(btn => btn.addEventListener('click', () => {
+      battleMenuView = 'regions';
+      render();
+    }));
+    document.querySelectorAll('[data-battle-regions-back]').forEach(btn => btn.addEventListener('click', () => {
+      battleMenuView = 'overview';
       render();
     }));
     document.querySelectorAll('[data-battle-history-more]').forEach(btn => btn.addEventListener('click', () => {
       battleHistoryVisibleCount += 5;
       render();
     }));
-    document.querySelectorAll('[data-battle-start]').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-battle-region]').forEach(btn => btn.addEventListener('click', () => {
       const blocker = battleTrainingBlocker(pet);
       if (blocker) {
         showToast(blocker);
@@ -3710,7 +3847,7 @@
         return;
       }
       selectedAction = 'train';
-      const message = openBattleTraining(pet);
+      const message = openBattleTraining(pet, btn.dataset.battleRegion);
       pet.lastUpdate = now();
       saveState();
       render();

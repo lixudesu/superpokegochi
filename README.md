@@ -46,10 +46,26 @@ de acordo com o nível e o poder do companheiro.
 
 Ao tocar em **Treino**, abre uma central com:
 
-- **Treinar:** mostra HP, energia e fome antes de começar;
+- **Treinar:** mostra HP, energia e fome antes de escolher uma região;
+- **Regiões:** define a faixa de nível, espécies selvagens e dificuldade;
 - **Histórico:** mostra cinco batalhas por vez, com resultado, adversário, nível,
-  horário e XP;
+  região, horário e XP;
 - **Carregar mais:** adiciona mais cinco resultados à lista.
+
+| Região | Níveis | Dificuldade |
+| --- | ---: | --- |
+| Bosque Inicial | 1–5 | Tranquilo |
+| Floresta Verde | 6–15 | Fácil |
+| Floresta Densa | 16–30 | Moderado |
+| Montanha Rochosa | 31–50 | Equilibrado |
+| Caverna Cristal | 51–70 | Desafiador |
+| Ruínas Antigas | 71–90 | Difícil |
+| Pico Lendário | 91–100 | Extremo |
+
+Regiões são liberadas ao alcançar seu nível mínimo e continuam disponíveis para
+serem revisitadas. As áreas iniciais possuem inimigos menos poderosos e bônus de
+dano para tornar o começo mais confortável. Golpes de maior poder agora usam
+multiplicadores decimais sem perder força por arredondamento.
 
 ### Atributos e habilidades
 
