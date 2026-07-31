@@ -109,17 +109,6 @@
     radial-gradient(circle at 16% 12%,rgba(255,255,255,.85),transparent 22%),
     linear-gradient(180deg,#bfe8fb 0 40%,#8bd47d 40% 100%);
 }
-.minigame-hub-copy{
-  max-width:390px;
-  margin:0 auto 14px;
-  padding:12px 14px;
-  border-radius:14px;
-  background:rgba(249,255,251,.94);
-  color:#526278;
-  font-size:12px;
-  font-weight:750;
-  line-height:1.45;
-}
 .minigame-list{
   width:min(100%,390px);
   margin:0 auto;

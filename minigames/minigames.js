@@ -132,10 +132,6 @@
     session.currentGame = null;
     const content = `
       <section class="minigame-hub">
-        <p class="minigame-hub-copy">
-          Chuva de Frutas custa 8 de energia e Memória de Frutas custa 6. A energia é cobrada ao iniciar.
-          Tente quantas vezes quiser e conclua as duas missões diárias para ganhar XP e frutas.
-        </p>
         <div class="minigame-list">
           ${Object.entries(GAME_INFO).map(([gameId, info]) => {
             const noEnergy = !canPlayGame(gameId);
