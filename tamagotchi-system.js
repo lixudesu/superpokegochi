@@ -43,6 +43,9 @@
   const BOND_RESET_VALUE = 10;
   const BATTLE_ENERGY_COST = 25;
   const BATTLE_HUNGER_COST = 6;
+  const BATTLE_FULL_XP_LIMIT = 8;
+  const BATTLE_HALF_XP_LIMIT = 16;
+  const XP_CURVE_VERSION = 3;
   const BATTLE_REGIONS = [
     {
       id: 'bosque-inicial',
@@ -54,6 +57,7 @@
       damageBoost: 1.2,
       xpMultiplier: 0.75,
       theme: 'meadow',
+      preview: '0/0.png',
       dexIds: [10, 13, 16, 19, 21, 29, 32, 43, 46, 48, 69, 161, 163, 187, 263, 265, 270, 273, 300, 403, 406, 504, 540, 548, 664, 731, 819],
     },
     {
@@ -66,6 +70,7 @@
       damageBoost: 1.15,
       xpMultiplier: 0.85,
       theme: 'greenwood',
+      preview: '1/1.png',
       dexIds: [1, 11, 12, 14, 15, 17, 18, 44, 70, 102, 114, 123, 127, 152, 165, 167, 191, 204, 252, 285, 387, 511, 546, 588, 650, 753],
     },
     {
@@ -78,6 +83,7 @@
       damageBoost: 1.1,
       xpMultiplier: 0.95,
       theme: 'deepwood',
+      preview: '1/2.png',
       dexIds: [2, 45, 47, 71, 103, 115, 214, 253, 254, 286, 315, 357, 407, 414, 416, 455, 469, 470, 497, 542, 549, 586, 709, 723, 724],
     },
     {
@@ -90,6 +96,7 @@
       damageBoost: 1.05,
       xpMultiplier: 1,
       theme: 'mountain',
+      preview: '2/0.png',
       dexIds: [27, 28, 50, 51, 66, 67, 74, 75, 95, 111, 207, 213, 231, 232, 246, 247, 304, 305, 322, 323, 328, 329, 410, 443, 525, 557, 558, 619, 622, 744, 745],
     },
     {
@@ -102,6 +109,7 @@
       damageBoost: 1.02,
       xpMultiplier: 1.05,
       theme: 'crystal',
+      preview: '3/2.png',
       dexIds: [41, 42, 92, 93, 169, 200, 202, 302, 303, 337, 338, 343, 344, 433, 436, 437, 527, 528, 703, 714, 715, 757, 758, 859, 860],
     },
     {
@@ -114,24 +122,51 @@
       damageBoost: 1,
       xpMultiplier: 1.1,
       theme: 'ruins',
+      preview: '5/1.png',
       dexIds: [201, 355, 356, 425, 426, 442, 477, 479, 562, 563, 605, 606, 623, 679, 680, 681, 710, 711, 769, 770, 854, 855, 867],
     },
     {
       id: 'pico-lendario',
       name: 'Pico Lendário',
       levelMin: 91,
-      levelMax: 100,
+      levelMax: 120,
       difficulty: 'Extremo',
       powerRatio: 1.03,
       damageBoost: 1,
       xpMultiplier: 1.15,
       theme: 'summit',
+      preview: '4/0.png',
       dexIds: [142, 149, 248, 373, 376, 445, 448, 461, 464, 466, 467, 472, 473, 475, 612, 614, 635, 637, 663, 706, 784, 887, 998],
+    },
+    {
+      id: 'desconhecido',
+      name: 'Desconhecido',
+      levelMin: 1,
+      levelMax: null,
+      dynamic: true,
+      difficulty: 'Imprevisível',
+      levelSpread: 10,
+      powerRatio: 1,
+      damageBoost: 1,
+      xpMultiplier: 1,
+      rareChance: 0.05,
+      rareDexIds: [
+        144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 251,
+        377, 378, 379, 380, 381, 382, 383, 384, 385, 386,
+        480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493,
+        494, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649,
+        716, 717, 718, 719, 720, 721, 772, 773, 785, 786, 787, 788,
+        789, 790, 791, 792, 800, 801, 802, 807, 808, 809,
+        888, 889, 890, 891, 892, 893, 894, 895, 896, 897, 898, 905,
+        1001, 1002, 1003, 1004, 1007, 1008, 1014, 1015, 1016, 1017, 1024, 1025,
+      ],
+      theme: 'unknown',
+      preview: '6/1.png',
     },
   ];
   const MINIGAME_DAILY_GOALS = {
-    catch: { label: 'Chuva de Frutas', target: 30, xp: 35 },
-    memory: { label: 'Memória de Frutas', target: 1, xp: 35 },
+    catch: { label: 'Chuva de Berries', target: 30, xp: 30 },
+    memory: { label: 'Memória de Berries', target: 1, xp: 30 },
   };
   const WORLD_RULES = {
     firstFoodDelayMs: 20 * 60 * 1000,
@@ -605,15 +640,35 @@
   };
 
   const FOOD_ITEMS = [
-    { id: 'apple', label: 'Maçã', asset: 'food-apple.png', historyIcon: '🍎', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 20, xp: 2 },
-    { id: 'strawberry', label: 'Morango', asset: 'food-strawberry.png', historyIcon: '🍓', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 20, xp: 3 },
-    { id: 'blackberry', label: 'Amora', asset: 'food-blackberry.png', historyIcon: '🫐', rarity: 'common', hunger: 18, happiness: 4, energy: 1, bond: 1, hpPercent: 22, xp: 4 },
-    { id: 'pear', label: 'Pera', asset: 'food-pear.png', historyIcon: '🍐', rarity: 'common', hunger: 24, happiness: 2, energy: 1, bond: 1, hpPercent: 20, xp: 2 },
-    { id: 'grape', label: 'Uva', asset: 'food-grape.png', historyIcon: '🍇', rarity: 'common', hunger: 20, happiness: 3, energy: 1, bond: 1, hpPercent: 20, xp: 3 },
-    { id: 'orange', label: 'Laranja', asset: 'food-orange.png', historyIcon: '🍊', rarity: 'common', hunger: 22, happiness: 3, energy: 2, bond: 1, hpPercent: 22, xp: 4 },
-    { id: 'banana', label: 'Banana', asset: 'food-banana.png', historyIcon: '🍌', rarity: 'common', hunger: 28, happiness: 2, energy: 3, bond: 1, hpPercent: 25, xp: 4 },
-    { id: 'watermelon', label: 'Melancia', asset: 'food-watermelon.png', historyIcon: '🍉', rarity: 'uncommon', hunger: 32, happiness: 3, energy: 2, bond: 2, hpPercent: 35, xp: 7 },
-    { id: 'pineapple', label: 'Abacaxi Energia', asset: 'food-pineapple.png', historyIcon: '🍍', rarity: 'rare', hunger: 18, happiness: 4, energy: 30, bond: 2, hpPercent: 30, xp: 8 },
+    { id: 'oran-berry', label: 'Baga Oran', article: 'uma', asset: 'berries/oran.png', category: 'berry', historyIcon: '🫐', rarity: 'common', hunger: 12, happiness: 1, energy: 0, bond: 1, hpPercent: 10, xp: 1 },
+    { id: 'aspear-berry', label: 'Baga Aspear', article: 'uma', asset: 'berries/aspear.png', category: 'berry', historyIcon: '🫐', rarity: 'common', hunger: 12, happiness: 2, energy: 0, bond: 1, hpPercent: 10, xp: 2 },
+    { id: 'bluk-berry', label: 'Baga Bluk', article: 'uma', asset: 'berries/bluk.png', category: 'berry', historyIcon: '🫐', rarity: 'common', hunger: 14, happiness: 3, energy: 0, bond: 1, hpPercent: 8, xp: 2 },
+    { id: 'cornn-berry', label: 'Baga Cornn', article: 'uma', asset: 'berries/cornn.png', category: 'berry', historyIcon: '🫐', rarity: 'common', hunger: 15, happiness: 2, energy: 2, bond: 1, hpPercent: 10, xp: 3 },
+    { id: 'aguav-berry', label: 'Baga Aguav', article: 'uma', asset: 'berries/aguav.png', category: 'berry', historyIcon: '🫐', rarity: 'common', hunger: 16, happiness: 2, energy: 0, bond: 1, hpPercent: 18, xp: 3 },
+    { id: 'grepa-berry', label: 'Baga Grepa', article: 'uma', asset: 'berries/grepa.png', category: 'berry', historyIcon: '🫐', rarity: 'uncommon', hunger: 12, happiness: 4, energy: 0, bond: 1, hpPercent: 15, xp: 4 },
+    { id: 'iapapa-berry', label: 'Baga Iapapa', article: 'uma', asset: 'berries/iapapa.png', category: 'berry', historyIcon: '🫐', rarity: 'uncommon', hunger: 20, happiness: 2, energy: 0, bond: 1, hpPercent: 22, xp: 4 },
+    { id: 'kelpsy-berry', label: 'Baga Kelpsy', article: 'uma', asset: 'berries/kelpsy.png', category: 'berry', historyIcon: '🫐', rarity: 'uncommon', hunger: 12, happiness: 4, energy: 0, bond: 1, hpPercent: 14, xp: 4 },
+    { id: 'occa-berry', label: 'Baga Occa', article: 'uma', asset: 'berries/occa.png', category: 'berry', historyIcon: '🫐', rarity: 'uncommon', hunger: 14, happiness: 3, energy: 4, bond: 1, hpPercent: 18, xp: 5 },
+    { id: 'yache-berry', label: 'Baga Yache', article: 'uma', asset: 'berries/yache.png', category: 'berry', historyIcon: '🫐', rarity: 'uncommon', hunger: 14, happiness: 3, energy: 4, bond: 1, hpPercent: 18, xp: 5 },
+    { id: 'sitrus-berry', label: 'Baga Sitrus', article: 'uma', asset: 'berries/sitrus.png', category: 'berry', historyIcon: '🫐', rarity: 'uncommon', hunger: 18, happiness: 2, energy: 2, bond: 2, hpPercent: 25, xp: 5 },
+    { id: 'apicot-berry', label: 'Baga Apicot', article: 'uma', asset: 'berries/apicot.png', category: 'berry', historyIcon: '🫐', rarity: 'rare', hunger: 16, happiness: 4, energy: 6, bond: 2, hpPercent: 20, xp: 8 },
+    { id: 'kee-berry', label: 'Baga Kee', article: 'uma', asset: 'berries/kee.png', category: 'berry', historyIcon: '🫐', rarity: 'rare', hunger: 16, happiness: 4, energy: 5, bond: 2, hpPercent: 20, xp: 8 },
+    { id: 'liechi-berry', label: 'Baga Liechi', article: 'uma', asset: 'berries/liechi.png', category: 'berry', historyIcon: '🫐', rarity: 'rare', hunger: 16, happiness: 4, energy: 12, bond: 2, hpPercent: 18, xp: 9 },
+    { id: 'silver-razz-berry', label: 'Fruta Frambo Prateada', article: 'uma', asset: 'berries/silver-razz.png', category: 'berry', historyIcon: '🫐', rarity: 'rare', hunger: 18, happiness: 6, energy: 8, bond: 2, hpPercent: 28, xp: 8 },
+    { id: 'golden-nanab-berry', label: 'Fruta Anaba Dourada', article: 'uma', asset: 'berries/golden-nanab.png', category: 'berry', historyIcon: '🫐', rarity: 'rare', hunger: 18, happiness: 8, energy: 10, bond: 2, hpPercent: 30, xp: 10 },
+    { id: 'golden-pinap-berry', label: 'Fruta Caxi Dourada', article: 'uma', asset: 'berries/golden-pinap.png', category: 'berry', historyIcon: '🫐', rarity: 'rare', hunger: 24, happiness: 5, energy: 30, bond: 2, hpPercent: 25, xp: 10 },
+    { id: 'golden-razz-berry', label: 'Fruta Frambo Dourada', article: 'uma', asset: 'berries/golden-razz.png', category: 'berry', historyIcon: '🫐', rarity: 'rare', hunger: 20, happiness: 8, energy: 8, bond: 3, hpPercent: 35, xp: 12 },
+    { id: 'sausages', label: 'Salsichas', article: 'algumas', asset: 'curry/sausages.png', category: 'curry', historyIcon: '🍛', rarity: 'common', hunger: 34, happiness: 3, energy: 1, bond: 1, hpPercent: 5, xp: 2 },
+    { id: 'boiled-egg', label: 'Ovo Cozido', article: 'um', asset: 'curry/boiled-egg.png', category: 'curry', historyIcon: '🍛', rarity: 'common', hunger: 30, happiness: 3, energy: 1, bond: 1, hpPercent: 6, xp: 2 },
+    { id: 'fried-food', label: 'Frituras', article: 'algumas', asset: 'curry/fried-food.png', category: 'curry', historyIcon: '🍛', rarity: 'common', hunger: 38, happiness: 2, energy: 2, bond: 1, hpPercent: 4, xp: 2 },
+    { id: 'coconut-milk', label: 'Leite de Coco', article: 'um', asset: 'curry/coconut-milk.png', category: 'curry', historyIcon: '🍛', rarity: 'uncommon', hunger: 32, happiness: 5, energy: 2, bond: 1, hpPercent: 10, xp: 4 },
+    { id: 'precooked-burger', label: 'Hambúrguer Pré-cozido', article: 'um', asset: 'curry/precooked-burger.png', category: 'curry', historyIcon: '🍛', rarity: 'uncommon', hunger: 40, happiness: 4, energy: 3, bond: 1, hpPercent: 8, xp: 4 },
+    { id: 'bachs-food-tin', label: 'Lata de Comida do Bach', article: 'uma', asset: 'curry/bachs-food-tin.png', category: 'curry', historyIcon: '🍛', rarity: 'uncommon', hunger: 36, happiness: 4, energy: 2, bond: 1, hpPercent: 10, xp: 4 },
+    { id: 'balm-mushroom', label: 'Cogumelo Aromático', article: 'um', asset: 'curry/balm-mushroom.png', category: 'curry', historyIcon: '🍛', rarity: 'rare', hunger: 28, happiness: 8, energy: 4, bond: 2, hpPercent: 18, xp: 7 },
+    { id: 'burn-heal', label: 'Cura-Queimadura', article: 'uma', asset: 'medicine/burn-heal.png', category: 'medicine', historyIcon: '💊', rarity: 'common', hunger: 0, happiness: 0, energy: 0, bond: 0, hpPercent: 10, xp: 0 },
+    { id: 'casteliacone', label: 'Sorvete Castelia', article: 'um', asset: 'medicine/casteliacone.png', category: 'medicine', historyIcon: '💊', rarity: 'uncommon', hunger: 6, happiness: 5, energy: 0, bond: 1, hpPercent: 30, xp: 0 },
+    { id: 'super-potion', label: 'Superpoção', article: 'uma', asset: 'medicine/super-potion.png', category: 'medicine', historyIcon: '💊', rarity: 'uncommon', hunger: 0, happiness: 0, energy: 0, bond: 0, hpFlat: 120, hpPercent: 0, xp: 0 },
+    { id: 'rare-candy', label: 'Doce Raro', article: 'um', asset: 'medicine/rare-candy.png', category: 'medicine', historyIcon: '🍬', rarity: 'rare', hunger: 0, happiness: 2, energy: 0, bond: 0, hpPercent: 0, xp: 0, levelGain: 1 },
   ];
 
   const FOOD_BY_ID = Object.fromEntries(FOOD_ITEMS.map(food => [food.id, food]));
@@ -621,6 +676,26 @@
     common: 'Comum',
     uncommon: 'Incomum',
     rare: 'Rara',
+  };
+  const ITEM_CATEGORY_LABELS = {
+    berry: 'Berries',
+    curry: 'Ingredientes de curry',
+    medicine: 'Medicamentos',
+  };
+  const LEGACY_ITEM_MAPPINGS = {
+    apple: 'oran-berry',
+    strawberry: 'bluk-berry',
+    blackberry: 'cornn-berry',
+    pear: 'aguav-berry',
+    grape: 'grepa-berry',
+    orange: 'iapapa-berry',
+    banana: 'kelpsy-berry',
+    watermelon: 'sitrus-berry',
+    pineapple: 'golden-pinap-berry',
+    berry: 'oran-berry',
+    biscuit: 'sausages',
+    candy: 'rare-candy',
+    rareFruit: 'golden-razz-berry',
   };
   let foodOpen = false;
   let dailyRewardMessage = null;
@@ -635,15 +710,15 @@
 
   function systemDefaultBag() {
     return {
-      apple: 3,
-      strawberry: 2,
-      blackberry: 2,
-      pear: 1,
-      grape: 2,
-      orange: 1,
-      banana: 2,
-      watermelon: 1,
-      pineapple: 1,
+      'oran-berry': 3,
+      'aspear-berry': 2,
+      'bluk-berry': 2,
+      'aguav-berry': 1,
+      'grepa-berry': 2,
+      'iapapa-berry': 1,
+      'kelpsy-berry': 2,
+      'sitrus-berry': 1,
+      'golden-pinap-berry': 1,
     };
   }
 
@@ -819,6 +894,7 @@
       customName: mon.name,
       level: 1,
       xp: 0,
+      xpCurveVersion: XP_CURVE_VERSION,
       hunger: clamp(78 - index * 3),
       happiness: clamp(72 + index * 2),
       energy: 100,
@@ -867,19 +943,22 @@
   }
 
   function migrateBag(bag = {}) {
-    const migrated = { ...systemDefaultBag() };
     const legacy = bag && typeof bag === 'object' ? bag : {};
-    if (Object.keys(legacy).length === 0) return migrated;
+    if (Object.keys(legacy).length === 0) return systemDefaultBag();
+    const migrated = Object.fromEntries(FOOD_ITEMS.map(item => [item.id, 0]));
     for (const food of FOOD_ITEMS) {
       migrated[food.id] = Object.prototype.hasOwnProperty.call(legacy, food.id)
         ? Math.max(0, Number(legacy[food.id]) || 0)
         : 0;
     }
-    migrated.blackberry += Math.max(0, Number(legacy.berry) || 0);
-    migrated.banana += Math.max(0, Number(legacy.biscuit) || 0);
-    migrated.strawberry += Math.max(0, Number(legacy.candy) || 0);
-    migrated.pineapple += Math.max(0, Number(legacy.rareFruit) || 0);
+    Object.entries(LEGACY_ITEM_MAPPINGS).forEach(([legacyId, itemId]) => {
+      migrated[itemId] += Math.max(0, Number(legacy[legacyId]) || 0);
+    });
     return migrated;
+  }
+
+  function normalizedItemId(itemId) {
+    return FOOD_BY_ID[itemId] ? itemId : LEGACY_ITEM_MAPPINGS[itemId] || null;
   }
 
   function migrateRestCopy(text, name) {
@@ -903,7 +982,10 @@
       )).slice(-WORLD_RULES.maxLeaves)
       : [];
     const foodDrops = Array.isArray(source.foodDrops)
-      ? source.foodDrops.filter(item => (
+      ? source.foodDrops.map(item => ({
+        ...item,
+        foodId: normalizedItemId(item?.foodId),
+      })).filter(item => (
         item
         && typeof item.id === 'string'
         && FOOD_BY_ID[item.foodId]
@@ -932,7 +1014,10 @@
     const source = social && typeof social === 'object' ? social : {};
     const mode = source.mode === 'visitor' ? 'visitor' : 'owner';
     const gifts = Array.isArray(source.gifts)
-      ? source.gifts.filter(gift => (
+      ? source.gifts.map(gift => ({
+        ...gift,
+        foodId: normalizedItemId(gift?.foodId),
+      })).filter(gift => (
         gift
         && Number.isInteger(Number(gift.id))
         && FOOD_BY_ID[gift.foodId]
@@ -953,7 +1038,7 @@
       )).slice(0, 40).map(item => ({
         actorName: typeof item.actorName === 'string' ? item.actorName.slice(0, 80) : 'Um treinador',
         at: Number(item.at),
-        foodId: FOOD_BY_ID[item.foodId] ? item.foodId : undefined,
+        foodId: normalizedItemId(item.foodId) || undefined,
         outcome: ['victory', 'defeat', 'fled'].includes(item.outcome) ? item.outcome : undefined,
         type: item.type,
       }))
@@ -986,16 +1071,33 @@
     migrated.dexId = mon.id;
     migrated.journeyKey = String(pet && pet.journeyKey || id || fresh.journeyKey);
     migrated.customName = migrated.customName || mon.name;
-    migrated.level = Math.max(1, Number(migrated.level) || 1);
-    migrated.xp = Math.max(0, Number(migrated.xp) || 0);
-    while (migrated.level < 100 && migrated.xp >= systemXpNeeded(migrated)) {
-      migrated.xp -= systemXpNeeded(migrated);
-      migrated.level += 1;
+    migrated.level = normalizedXpLevel(migrated.level);
+    migrated.xp = normalizedProgressValue(migrated.xp);
+    const hasStoredPet = Boolean(pet && typeof pet === 'object');
+    const sourceCurveVersion = hasStoredPet
+      ? Math.max(1, Math.round(Number(pet.xpCurveVersion) || 1))
+      : XP_CURVE_VERSION;
+    if (sourceCurveVersion < XP_CURVE_VERSION) {
+      const previousNeed = previousSystemXpNeeded(migrated.level);
+      const sourceNeed = sourceCurveVersion === 2
+        ? finiteCurveV2XpNeeded(migrated.level)
+        : migrated.xp >= previousNeed
+          ? originalSystemXpNeeded(migrated.level)
+          : previousNeed;
+      const targetNeed = systemXpNeeded(migrated);
+      const progressRatio = sourceNeed > 0
+        ? Math.min(0.999, migrated.xp / sourceNeed)
+        : 0;
+      migrated.xp = targetNeed > 0
+        ? Math.min(targetNeed - 1, Math.max(0, Math.round(targetNeed * progressRatio)))
+        : 0;
+    } else {
+      while (migrated.xp >= systemXpNeeded(migrated)) {
+        migrated.xp -= systemXpNeeded(migrated);
+        migrated.level += 1;
+      }
     }
-    if (migrated.level >= 100) {
-      migrated.level = 100;
-      migrated.xp = 0;
-    }
+    migrated.xpCurveVersion = XP_CURVE_VERSION;
     migrated.hunger = clamp(migrated.hunger ?? fresh.hunger);
     migrated.happiness = clamp(migrated.happiness ?? fresh.happiness);
     migrated.energy = clamp(migrated.energy ?? fresh.energy);
@@ -1125,16 +1227,47 @@
     appState.bag[foodId] = Math.max(0, (appState.bag[foodId] || 0) + count);
   }
 
+  function randomItemId(items) {
+    if (!Array.isArray(items) || !items.length) return FOOD_ITEMS[0].id;
+    const rarityWeights = { common: 10, uncommon: 4, rare: 1 };
+    const totalWeight = items.reduce((total, item) => total + (rarityWeights[item.rarity] || 1), 0);
+    let roll = Math.random() * totalWeight;
+    for (const item of items) {
+      roll -= rarityWeights[item.rarity] || 1;
+      if (roll <= 0) return item.id;
+    }
+    return items[items.length - 1].id;
+  }
+
   function randomCommonFoodId() {
-    const common = FOOD_ITEMS.filter(food => food.rarity === 'common');
+    const common = FOOD_ITEMS.filter(food => food.category === 'berry' && food.rarity === 'common');
     return common[Math.floor(Math.random() * common.length)].id;
   }
 
   function randomFoodDropId() {
     const roll = Math.random();
-    if (roll < 0.08) return 'pineapple';
-    if (roll < 0.22) return 'watermelon';
+    if (roll < 0.02) return 'golden-pinap-berry';
+    if (roll < 0.15) return 'sitrus-berry';
     return randomCommonFoodId();
+  }
+
+  function randomMinigameItemId() {
+    const category = Math.random() < 0.18 ? 'curry' : 'berry';
+    return randomItemId(FOOD_ITEMS.filter(item => item.category === category));
+  }
+
+  function randomBattleItemId() {
+    const roll = Math.random();
+    const category = roll < 0.12 ? 'medicine' : roll < 0.36 ? 'curry' : 'berry';
+    return randomItemId(FOOD_ITEMS.filter(item => item.category === category));
+  }
+
+  function rollBattleItemReward(appState, outcome) {
+    const chance = outcome === 'victory' ? 0.42 : outcome === 'defeat' ? 0.14 : 0;
+    if (Math.random() >= chance) return null;
+    const itemId = randomBattleItemId();
+    addFoodToBag(appState, itemId, 1);
+    return FOOD_BY_ID[itemId];
   }
 
   function claimDailyLoginReward(appState) {
@@ -1149,8 +1282,29 @@
     return `Login diário: +1 ${FOOD_BY_ID[foodId].label}.`;
   }
 
-  function systemXpNeeded(pet) {
-    const level = Math.max(1, Math.min(100, Math.round(Number(pet.level) || 1)));
+  function normalizedXpLevel(value) {
+    const numeric = Number(value);
+    return Math.max(
+      1,
+      Math.min(Number.MAX_SAFE_INTEGER, Math.round(Number.isFinite(numeric) ? numeric : 1)),
+    );
+  }
+
+  function normalizedProgressValue(value) {
+    const numeric = Number(value);
+    return Math.max(
+      0,
+      Math.min(Number.MAX_SAFE_INTEGER, Math.round(Number.isFinite(numeric) ? numeric : 0)),
+    );
+  }
+
+  function originalSystemXpNeeded(levelValue) {
+    const level = Math.min(100, normalizedXpLevel(levelValue));
+    return level < 100 ? 180 + level * 22 : 0;
+  }
+
+  function previousSystemXpNeeded(levelValue) {
+    const level = Math.min(100, normalizedXpLevel(levelValue));
     if (level < 10) return 50 + level * 3;
     if (level < 40) return 80 + (level - 10) * 5;
     if (level < 70) return 250 + (level - 40) * 12;
@@ -1158,24 +1312,36 @@
     return 0;
   }
 
+  function finiteCurveV2XpNeeded(levelValue) {
+    const level = Math.min(100, normalizedXpLevel(levelValue));
+    if (level <= 4) return level * 50;
+    if (level < 40) return 200 + (level - 4) * 5;
+    if (level < 70) return 400 + (level - 40) * 15;
+    if (level < 100) return 875 + (level - 70) * 30;
+    return 0;
+  }
+
+  function systemXpNeeded(pet) {
+    const level = normalizedXpLevel(pet.level);
+    const scaled = 75 * Math.pow(level, 1.18);
+    return Math.max(75, Math.round(scaled / 5) * 5);
+  }
+
   function systemAddHistory(pet, icon, text) {
     pet.history = [{ at: now(), icon, text }, ...(pet.history || [])].slice(0, 12);
   }
 
   function systemAddXp(pet, amount) {
-    if (pet.level >= 100) {
-      pet.level = 100;
-      pet.xp = 0;
-      return;
-    }
-    pet.xp += Math.max(0, Math.round(Number(amount) || 0));
+    pet.level = normalizedXpLevel(pet.level);
+    pet.xp = normalizedProgressValue(
+      normalizedProgressValue(pet.xp) + Math.max(0, Math.round(Number(amount) || 0)),
+    );
     let leveled = false;
-    while (pet.level < 100 && pet.xp >= systemXpNeeded(pet)) {
+    while (pet.xp >= systemXpNeeded(pet)) {
       pet.xp -= systemXpNeeded(pet);
       pet.level += 1;
       leveled = true;
     }
-    if (pet.level >= 100) pet.xp = 0;
     if (leveled) {
       systemAddHistory(pet, '⭐', `${pet.customName} subiu para o nível ${pet.level}.`);
       showToast(`${pet.customName} subiu para o nível ${pet.level}!`);
@@ -1338,9 +1504,8 @@
 
   function socialGiftFoodPhrase(foodId) {
     const food = FOOD_BY_ID[foodId];
-    if (!food) return 'uma fruta';
-    const masculine = foodId === 'strawberry' || foodId === 'pineapple';
-    return `${masculine ? 'um' : 'uma'} ${food.label.toLocaleLowerCase('pt-BR')}`;
+    if (!food) return 'um item';
+    return `${food.article || 'um'} ${food.label.toLocaleLowerCase('pt-BR')}`;
   }
 
   function sendSocialGift() {
@@ -1357,8 +1522,10 @@
     if (socialGiftSending) return;
     socialGiftSending = true;
     render();
-    notifySite('social-gift-request');
-    showToast('Escolhendo uma fruta para o presente...');
+    notifySite('social-gift-request', {
+      eligibleItemIds: FOOD_ITEMS.map(item => item.id),
+    });
+    showToast('Escolhendo um item para o presente...');
   }
 
   function activeDaysFor(pet) {
@@ -1540,14 +1707,10 @@
 
   function rollTrainingReward(appState) {
     const roll = Math.random();
-    if (roll < 0.12) {
-      const foodId = randomCommonFoodId();
+    if (roll < 0.15) {
+      const foodId = randomBattleItemId();
       addFoodToBag(appState, foodId, 1);
       return `Ganhou 1 ${FOOD_BY_ID[foodId].label}.`;
-    }
-    if (roll < 0.15) {
-      addFoodToBag(appState, 'watermelon', 1);
-      return 'Encontrou 1 Melancia.';
     }
     return 'O treino foi focado apenas em experiência.';
   }
@@ -1814,10 +1977,14 @@
       return;
     }
     if (!food || !state.bag || (state.bag[foodId] || 0) <= 0) {
-      showToast('A mochila está sem essa comida.');
+      showToast('A mochila está sem esse item.');
       return;
     }
-    if (pet.hunger > 90 && food.energy < 20 && !canRecoverHp) {
+    if (food.category === 'medicine' && !food.levelGain && !canRecoverHp && food.happiness <= 0) {
+      showToast(`${pet.customName} está com o HP cheio.`);
+      return;
+    }
+    if (food.category !== 'medicine' && pet.hunger > 90 && food.energy < 20 && !canRecoverHp) {
       showToast(`${pet.customName} já está satisfeito.`);
       return;
     }
@@ -1827,18 +1994,27 @@
     pet.happiness = clamp(pet.happiness + food.happiness);
     pet.energy = clamp(pet.energy + food.energy);
     pet.bond = clamp(pet.bond + food.bond);
-    const healedHp = window.SuperPokegochiBattle?.restoreHp(
-      pet,
-      Math.max(0, Number(food.hpPercent) || 0) / 100,
-    ) || 0;
-    systemAddXp(pet, food.xp);
+    const healValue = Number(food.hpFlat) > 0
+      ? Number(food.hpFlat)
+      : Math.max(0, Number(food.hpPercent) || 0) / 100;
+    const healedHp = healValue > 0
+      ? window.SuperPokegochiBattle?.restoreHp(pet, healValue) || 0
+      : 0;
+    const levelXp = food.levelGain
+      ? Math.max(1, systemXpNeeded(pet) - normalizedProgressValue(pet.xp))
+      : 0;
+    systemAddXp(pet, levelXp || food.xp);
     markPetCaredFor(pet);
     const rewards = [
-      `+${food.xp} XP`,
+      food.levelGain ? '+1 nível' : '',
+      food.xp > 0 ? `+${food.xp} XP` : '',
       healedHp > 0 ? `+${healedHp} HP` : '',
+      food.hunger > 0 ? `+${food.hunger} fome` : '',
+      food.happiness > 0 ? `+${food.happiness} felicidade` : '',
       food.energy >= 20 ? `+${food.energy} energia` : '',
     ].filter(Boolean);
-    pet.lastAction = `${pet.customName} comeu ${food.label}. ${rewards.join(' · ')}.`;
+    const actionVerb = food.category === 'medicine' ? 'usou' : 'comeu';
+    pet.lastAction = `${pet.customName} ${actionVerb} ${food.label}. ${rewards.join(' · ')}.`;
     systemAddHistory(pet, food.historyIcon, pet.lastAction);
     pet.lastUpdate = now();
     selectedAction = 'feed';
@@ -1854,7 +2030,7 @@
   }
 
   function minigameFoodCatalog() {
-    return FOOD_ITEMS.map(food => ({
+    return FOOD_ITEMS.filter(food => food.category === 'berry').map(food => ({
       assetUrl: new URL(`${ITEM_BASE_PATH}${food.asset}`, document.baseURI).href,
       id: food.id,
       label: food.label,
@@ -1862,10 +2038,7 @@
   }
 
   function randomMinigameFoodId() {
-    const roll = Math.random();
-    if (roll < 0.01) return 'pineapple';
-    if (roll < 0.1) return 'watermelon';
-    return randomCommonFoodId();
+    return randomMinigameItemId();
   }
 
   function awardMinigameResult(result) {
@@ -1974,8 +2147,8 @@
   }
 
   const GAME_LABELS = {
-    catch: 'Chuva de Frutas',
-    memory: 'Memória de Frutas',
+    catch: 'Chuva de Berries',
+    memory: 'Memória de Berries',
   };
 
   function startMinigameAttempt({ gameId } = {}) {
@@ -2031,26 +2204,87 @@
     return false;
   }
 
+  function localDayKey(timestamp = now()) {
+    const date = new Date(timestamp);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  function battleRewardStatus(pet, timestamp = now()) {
+    if (!pet.battle || typeof pet.battle !== 'object') pet.battle = {};
+    const day = localDayKey(timestamp);
+    const source = pet.battle.rewardCycle && typeof pet.battle.rewardCycle === 'object'
+      ? pet.battle.rewardCycle
+      : {};
+    const battles = source.day === day
+      ? Math.max(0, Math.round(Number(source.battles) || 0))
+      : 0;
+    pet.battle.rewardCycle = { battles, day };
+
+    if (battles < BATTLE_FULL_XP_LIMIT) {
+      return {
+        battles,
+        label: '',
+        multiplier: 1,
+        shortLabel: `XP 100% · ${battles}/${BATTLE_FULL_XP_LIMIT}`,
+      };
+    }
+    if (battles < BATTLE_HALF_XP_LIMIT) {
+      return {
+        battles,
+        label: 'O rendimento diário está reduzido após 8 batalhas.',
+        multiplier: 0.5,
+        shortLabel: 'XP em 50%',
+      };
+    }
+    return {
+      battles,
+      label: 'O rendimento diário mínimo foi alcançado após 16 batalhas.',
+      multiplier: 0.1,
+      shortLabel: 'XP em 10%',
+    };
+  }
+
+  function recordBattleReward(pet, outcome, timestamp = now()) {
+    if (outcome !== 'victory' && outcome !== 'defeat') return;
+    const status = battleRewardStatus(pet, timestamp);
+    pet.battle.rewardCycle = {
+      battles: status.battles + 1,
+      day: localDayKey(timestamp),
+    };
+  }
+
   function battleRegionById(regionId) {
     return BATTLE_REGIONS.find(region => region.id === regionId) || BATTLE_REGIONS[0];
   }
 
   function recommendedBattleRegion(level) {
-    return BATTLE_REGIONS.find(region => level >= region.levelMin && level <= region.levelMax)
-      || BATTLE_REGIONS[BATTLE_REGIONS.length - 1];
+    return BATTLE_REGIONS.find(region => (
+      !region.dynamic
+      && level >= region.levelMin
+      && level <= region.levelMax
+    )) || BATTLE_REGIONS.find(region => region.dynamic) || BATTLE_REGIONS[0];
+  }
+
+  function battleRegionLevelLabel(region) {
+    if (region.dynamic) return 'seu nível';
+    return `${region.levelMin}–${region.levelMax}`;
   }
 
   function openBattleTraining(pet, regionId) {
     const battle = window.SuperPokegochiBattle;
     if (!battle) return 'A batalha ainda está carregando. Tente novamente em instantes.';
     const region = battleRegionById(regionId);
-    if (pet.level < region.levelMin) return `${region.name} será liberada no nível ${region.levelMin}.`;
+    const rewardStatus = battleRewardStatus(pet);
     const species = getDex();
     const appearance = getAppearance(species, pet);
     statusOpen = false;
     moreOpen = false;
     foodOpen = false;
     battleMenuOpen = false;
+    let battleRewardToast = '';
 
     const opened = battle.open({
       pet,
@@ -2060,6 +2294,9 @@
       visual: appearance,
       dexCatalog: DEX,
       region,
+      rewardLabel: rewardStatus.label,
+      rewardMultiplier: rewardStatus.multiplier,
+      xpNeeded: systemXpNeeded(pet),
       soundEnabled: getMusicEnabled(),
       onStarted() {
         pet.energy = clamp(pet.energy - BATTLE_ENERGY_COST);
@@ -2074,8 +2311,10 @@
         saveState();
       },
       onComplete(result) {
+        const timestamp = now();
         if (!pet.battle || typeof pet.battle !== 'object') pet.battle = {};
         pet.battle.currentHp = Math.max(1, Math.round(Number(result.currentHp) || 1));
+        recordBattleReward(pet, result.outcome, timestamp);
         pet.battle.battleHistory = [
           {
             at: now(),
@@ -2084,31 +2323,41 @@
             outcome: result.outcome,
             regionId: result.regionId,
             regionName: result.regionName,
+            levelRewardMultiplier: result.levelRewardMultiplier,
+            rewardMultiplier: result.rewardMultiplier,
             xp: result.xp,
           },
           ...(Array.isArray(pet.battle.battleHistory) ? pet.battle.battleHistory : []),
         ].slice(0, 12);
+        const battleItemReward = rollBattleItemReward(state, result.outcome);
+        const itemRewardCopy = battleItemReward
+          ? ` Encontrou 1 ${battleItemReward.label}.`
+          : '';
+        battleRewardToast = battleItemReward
+          ? `Recompensa da batalha: +1 ${battleItemReward.label}.`
+          : '';
 
         if (result.outcome === 'victory') {
           pet.happiness = clamp(pet.happiness + 4);
           pet.bond = clamp(pet.bond + 2);
-          pet.lastAction = `${pet.customName} venceu ${result.enemyName} em ${region.name}. +${result.xp} XP.`;
+          pet.lastAction = `${pet.customName} venceu ${result.enemyName} em ${region.name}. +${result.xp} XP.${itemRewardCopy}`;
         } else if (result.outcome === 'defeat') {
           pet.happiness = clamp(pet.happiness - 2);
           pet.bond = clamp(pet.bond + 1);
-          pet.lastAction = `${pet.customName} perdeu para ${result.enemyName} em ${region.name}. +${result.xp} XP.`;
+          pet.lastAction = `${pet.customName} perdeu para ${result.enemyName} em ${region.name}. +${result.xp} XP.${itemRewardCopy}`;
         } else {
           pet.lastAction = `${pet.customName} saiu da batalha contra ${result.enemyName}.`;
         }
         systemAddXp(pet, result.xp);
-        markPetCaredFor(pet);
-        pet.lastUpdate = now();
+        markPetCaredFor(pet, timestamp);
+        pet.lastUpdate = timestamp;
         systemAddHistory(pet, '⚔️', pet.lastAction);
         saveState();
       },
       onExit() {
         selectedAction = null;
         render();
+        if (battleRewardToast) showToast(battleRewardToast, 4200);
       },
     });
 
@@ -2143,6 +2392,7 @@
     const ownerPet = getPet();
     const ownerAppearance = getAppearance(ownerSpecies, ownerPet);
     const ownerCombat = battleSnapshot(ownerPet, ownerAppearance);
+    const rewardStatus = battleRewardStatus(visitorPet);
 
     statusOpen = false;
     moreOpen = false;
@@ -2155,6 +2405,9 @@
       speciesName: visitorAppearance.name,
       visual: visitorAppearance,
       dexCatalog: DEX,
+      xpNeeded: systemXpNeeded(visitorPet),
+      rewardLabel: rewardStatus.label,
+      rewardMultiplier: rewardStatus.multiplier,
       soundEnabled: getMusicEnabled(),
       opponent: {
         currentHp: ownerCombat?.currentHp,
@@ -2179,6 +2432,7 @@
         visitorPet.battle.lastMaxHp = Math.max(1, Math.round(Number(result.maxHp) || visitorPet.battle.lastMaxHp || 1));
         ownerPet.battle.currentHp = Math.max(1, Math.round(Number(result.enemyCurrentHp) || 1));
         ownerPet.battle.lastMaxHp = Math.max(1, Math.round(Number(result.enemyMaxHp) || ownerPet.battle.lastMaxHp || 1));
+        recordBattleReward(visitorPet, result.outcome, timestamp);
 
         if (result.outcome === 'victory') {
           visitorPet.happiness = clamp(visitorPet.happiness + 4);
@@ -2265,6 +2519,7 @@
     const hasMoreHistory = history.length > visibleHistory.length;
     const blocker = battleTrainingBlocker(pet);
     const recommendedRegion = recommendedBattleRegion(pet.level);
+    const rewardStatus = battleRewardStatus(pet);
     const hpPercent = combat ? Math.max(0, Math.min(100, (combat.currentHp / combat.maxHp) * 100)) : 100;
     const historyMarkup = visibleHistory.length
       ? `<div class="battle-menu-history-list">${visibleHistory.map(item => {
@@ -2311,21 +2566,36 @@
                   <div class="battle-region-summary">
                     <button type="button" data-battle-regions-back aria-label="Voltar à preparação">‹</button>
                     <span>${escapeHtml(pet.customName)} · Nv. ${pet.level}</span>
-                    <small>25 energia</small>
+                    <small>25 energia · ${escapeHtml(rewardStatus.shortLabel)}</small>
                   </div>
                   <div class="battle-region-list">
                     ${BATTLE_REGIONS.map((region, index) => {
-                      const locked = pet.level < region.levelMin;
                       const recommended = region.id === recommendedRegion.id;
-                      const disabled = locked || Boolean(blocker);
+                      const recommendedIndex = BATTLE_REGIONS.indexOf(recommendedRegion);
+                      const dynamic = region.dynamic === true;
+                      const aboveLevel = !dynamic && index > recommendedIndex;
+                      const disabled = Boolean(blocker);
+                      const dynamicSpread = Math.max(1, Math.round(Number(region.levelSpread) || 10));
+                      const dynamicLevelMin = Math.max(1, pet.level - dynamicSpread);
+                      const dynamicLevelMax = pet.level + dynamicSpread;
+                      const levelCopy = dynamic
+                        ? `Níveis ${dynamicLevelMin}–${dynamicLevelMax}`
+                        : `Níveis ${battleRegionLevelLabel(region)}`;
+                      const regionState = recommended
+                        ? 'Recomendada'
+                        : dynamic
+                          ? '±10 níveis'
+                          : index < recommendedIndex
+                            ? 'XP menor'
+                            : 'Muito difícil';
                       return `
-                        <button class="battle-region-row ${recommended ? 'recommended' : ''} ${locked ? 'locked' : ''}" type="button" data-battle-region="${region.id}" ${disabled ? 'disabled' : ''}>
-                          <span class="battle-region-art ${region.theme}" aria-hidden="true"><i></i></span>
+                        <button class="battle-region-row ${recommended ? 'recommended' : ''} ${aboveLevel ? 'above-level' : ''}" type="button" data-battle-region="${region.id}" ${disabled ? 'disabled' : ''}>
+                          <span class="battle-region-art" style="--region-preview:url('battle/assets/backgrounds/${region.preview}')" aria-hidden="true"></span>
                           <span class="battle-region-copy">
                             <b>${escapeHtml(region.name)}</b>
-                            <small>Níveis ${region.levelMin}–${region.levelMax} · ${escapeHtml(region.difficulty)}</small>
+                            <small>${escapeHtml(levelCopy)} · ${escapeHtml(region.difficulty)}</small>
                           </span>
-                          <span class="battle-region-state">${locked ? `Nv. ${region.levelMin}` : recommended ? 'Recomendada' : index < BATTLE_REGIONS.indexOf(recommendedRegion) ? 'Revisitar' : 'Entrar'}</span>
+                          <span class="battle-region-state">${regionState}</span>
                         </button>`;
                     }).join('')}
                   </div>
@@ -2344,14 +2614,14 @@
                   <span><small>Energia</small><b>${Math.round(pet.energy)}</b></span>
                   <span><small>Fome</small><b>${Math.round(pet.hunger)}</b></span>
                 </div>
-                <p class="battle-menu-description">Escolha uma região para encontrar adversários da faixa desejada. Cada batalha consome ${BATTLE_ENERGY_COST} de energia e ${BATTLE_HUNGER_COST} de fome.</p>
+                <p class="battle-menu-description">Todas as regiões estão abertas, mas enfrentar Pokémon abaixo do seu nível rende muito menos XP. Desconhecido sorteia espécies de todo o catálogo entre 10 níveis abaixo e 10 acima, com chance de encontros lendários. As primeiras ${BATTLE_FULL_XP_LIMIT} batalhas do dia dão XP completo; depois o rendimento diminui. Cada batalha consome ${BATTLE_ENERGY_COST} de energia e ${BATTLE_HUNGER_COST} de fome.</p>
                 <button class="battle-menu-start" type="button" data-battle-show-regions>
                   <img src="${ITEM_BASE_PATH}action-train.png" alt="">
                   <b>Escolher região</b>
                 </button>
                 ${blocker
                   ? `<p class="battle-menu-blocker">${escapeHtml(blocker)}</p>`
-                  : `<p class="battle-menu-ready">Região recomendada: ${escapeHtml(recommendedRegion.name)}.</p>`}
+                  : `<p class="battle-menu-ready">Região recomendada: ${escapeHtml(recommendedRegion.name)} · ${escapeHtml(rewardStatus.shortLabel)}.</p>`}
               </div>`
             : `<div class="battle-menu-content battle-menu-history" role="tabpanel">
                 ${historyMarkup}
@@ -2529,29 +2799,67 @@
     return Object.values(migrateBag(state.bag)).reduce((total, count) => total + count, 0);
   }
 
+  function itemEffectSummary(item) {
+    if (item.levelGain) return ['Sobe 1 nível', 'Não altera a experiência acumulada'];
+    const recovery = Number(item.hpFlat) > 0
+      ? `+${item.hpFlat} HP`
+      : Number(item.hpPercent) > 0
+        ? `+${item.hpPercent}% HP`
+        : '';
+    const primary = [
+      recovery,
+      item.hunger > 0 ? `+${item.hunger} fome` : '',
+      item.happiness > 0 ? `+${item.happiness} felicidade` : '',
+    ].filter(Boolean).join(' · ');
+    const secondary = [
+      item.energy > 0 ? `+${item.energy} energia` : '',
+      item.xp > 0 ? `+${item.xp} XP` : '',
+    ].filter(Boolean).join(' · ');
+    return [primary || 'Item de recuperação', secondary].filter(Boolean);
+  }
+
   function renderFoodTray(pet) {
+    const availableItems = FOOD_ITEMS.filter(item => ((state.bag && state.bag[item.id]) || 0) > 0);
+    const categories = ['berry', 'curry', 'medicine'];
+    const inventoryMarkup = availableItems.length
+      ? categories.map(category => {
+        const items = availableItems.filter(item => item.category === category);
+        if (!items.length) return '';
+        return `
+          <section class="food-category" aria-labelledby="food-category-${category}">
+            <div class="food-category-head" id="food-category-${category}">
+              <b>${ITEM_CATEGORY_LABELS[category]}</b><span>${items.length}</span>
+            </div>
+            <div class="food-grid">
+              ${items.map(item => {
+                const count = Math.max(0, Number(state.bag[item.id]) || 0);
+                const effects = itemEffectSummary(item);
+                return `
+                  <button class="food-item ${item.rarity} ${item.category}" type="button" data-feed-food="${item.id}" aria-label="Usar ${item.label}. Quantidade ${count}">
+                    <span class="food-pixel-icon"><img src="${ITEM_BASE_PATH}${item.asset}" alt=""></span>
+                    <span class="food-name-row">
+                      <b>${item.label}</b>
+                      <em class="food-tier ${item.rarity}">${FOOD_RARITY_LABELS[item.rarity]}</em>
+                    </span>
+                    ${effects.map(effect => `<small>${effect}</small>`).join('')}
+                    <strong class="food-count">x${count}</strong>
+                  </button>`;
+              }).join('')}
+            </div>
+          </section>`;
+      }).join('')
+      : `<div class="food-empty-state">
+          <b>Sua mochila está vazia</b>
+          <p>Jogue minigames, batalhe ou receba presentes para encontrar itens.</p>
+        </div>`;
     return `
       <div class="food-tray">
         <div class="tray-head">
-          <div><small>Mochila</small><b>Comidas disponíveis</b></div>
+          <div><small>Mochila</small><b>Itens disponíveis</b></div>
           <span>${bagCount()} itens</span>
         </div>
-        <div class="food-grid">
-          ${FOOD_ITEMS.map(food => {
-            const count = (state.bag && state.bag[food.id]) || 0;
-            return `
-              <button class="food-item ${food.rarity}" type="button" data-feed-food="${food.id}" ${count <= 0 ? 'disabled' : ''}>
-                <span class="food-pixel-icon"><img src="${ITEM_BASE_PATH}${food.asset}" alt=""></span>
-                <span class="food-name-row">
-                  <b>${food.label}</b>
-                  <em class="food-tier ${food.rarity}">${FOOD_RARITY_LABELS[food.rarity]}</em>
-                </span>
-                <small>+${food.hpPercent}% HP · +${food.hunger} fome</small>
-                <small>${food.energy >= 20 ? `+${food.energy} energia · ` : ''}+${food.xp} XP · x${count}</small>
-              </button>`;
-          }).join('')}
-        </div>
-        ${pet.hunger > 90 ? `<p class="tray-note">${pet.customName} já está satisfeito, mas ainda pode comer para recuperar HP ou usar o Abacaxi Energia.</p>` : ''}
+        ${inventoryMarkup}
+        ${pet.hunger > 90 ? `<p class="tray-note">${pet.customName} já está satisfeito. Berries e ingredientes ainda podem recuperar HP; medicamentos continuam disponíveis quando necessários.</p>` : ''}
       </div>`;
   }
 
@@ -2607,7 +2915,6 @@
       .slice(0, 4);
     const fallbackIds = learnedMoves.slice(-Math.min(4, learnedMoves.length)).map(move => move.id);
     const visibleEquippedIds = equippedIds.length ? equippedIds : fallbackIds;
-    const requiredCount = Math.min(4, learnedMoves.length);
 
     if (!moveEditorOpen) {
       return `
@@ -2633,7 +2940,7 @@
         <div class="move-loadout-head">
           <span>
             <b>Escolha os golpes</b>
-            <small>${selectedIds.length}/${requiredCount} selecionados · apenas golpes já aprendidos</small>
+            <small>${selectedIds.length}/4 selecionados · escolha de 1 a 4 golpes</small>
           </span>
         </div>
         <div class="move-editor-section-title">
@@ -2671,7 +2978,7 @@
             class="primary"
             type="button"
             data-save-move-selection
-            ${selectedIds.length !== requiredCount ? 'disabled' : ''}
+            ${selectedIds.length < 1 ? 'disabled' : ''}
           >Salvar habilidades</button>
         </div>
       </section>`;
@@ -3096,7 +3403,7 @@
     const actorName = escapeHtml(item.actorName || 'Um treinador');
     if (item.type === 'gift') {
       const food = FOOD_BY_ID[item.foodId];
-      return `${actorName} deixou ${food ? food.label : 'uma fruta'} de presente.`;
+      return `${actorName} deixou ${food ? food.label : 'um item'} de presente.`;
     }
     if (item.type === 'battle') {
       if (item.outcome === 'victory') {
@@ -3649,7 +3956,7 @@
             </div>
             <div class="xp-bar" aria-label="Experiência"><i style="width:${xpPercent}%"></i></div>
           </div>
-          <div class="level-card">
+          <div class="level-card ${String(pet.level).length >= 5 ? 'compact' : ''}">
             <span>Nv.</span>
             <strong>${pet.level}</strong>
           </div>
@@ -3773,8 +4080,8 @@
               <span><img src="${ITEM_BASE_PATH}action-train.png" alt=""></span><b>Batalhar</b>
             </button>
           </div>` : `<div class="action-dock">
-            <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="${foodOpen ? 'Fechar mochila de comidas' : 'Abrir mochila de comidas'}" ${foodLocked ? 'disabled' : ''}>
-              <span><img src="${ITEM_BASE_PATH}action-food.png" alt=""></span><b>Comida</b>
+            <button class="action-btn action-feed-btn ${foodOpen ? 'active' : ''}" data-food-toggle type="button" aria-label="${foodOpen ? 'Fechar mochila' : 'Abrir mochila'}" ${foodLocked ? 'disabled' : ''}>
+              <span><img src="${ITEM_BASE_PATH}action-food.png" alt=""></span><b>Mochila</b>
             </button>
             ${Object.entries(SYSTEM_ACTIONS).map(([key, action]) => {
               const endingRest = key === 'sleep' && pet.sleeping;
@@ -3921,14 +4228,12 @@
       const battle = window.SuperPokegochiBattle;
       const learnedMoves = battle?.getLearnedMoves?.(pet, battleDexNumber(mon), mon.name) || [];
       const allowedIds = new Set(learnedMoves.map(move => move.id));
-      const requiredCount = Math.min(4, learnedMoves.length);
       const equippedIds = (combat?.equippedMoves || [])
         .filter(moveId => allowedIds.has(moveId))
-        .slice(0, requiredCount);
-      const fillIds = learnedMoves
-        .map(move => move.id)
-        .filter(moveId => !equippedIds.includes(moveId));
-      moveSelectionDraft = [...equippedIds, ...fillIds].slice(0, requiredCount);
+        .slice(0, 4);
+      moveSelectionDraft = equippedIds.length
+        ? equippedIds
+        : learnedMoves.slice(-Math.min(4, learnedMoves.length)).map(move => move.id);
       moveEditorOpen = true;
       render();
     }));
@@ -4183,17 +4488,18 @@
     if (event.data.type === 'superpokegochi:gift-claim-result') {
       const giftId = Number(event.data.giftId);
       const collectedGift = state.social?.gifts?.find(gift => gift.id === giftId);
+      const receivedItemId = normalizedItemId(event.data.foodId);
       pendingSocialGiftClaims.delete(giftId);
-      if (event.data.ok && FOOD_BY_ID[event.data.foodId]) {
+      if (event.data.ok && receivedItemId) {
         state.social.gifts = state.social.gifts.filter(gift => gift.id !== giftId);
-        state.bag[event.data.foodId] = Math.max(
+        state.bag[receivedItemId] = Math.max(
           0,
           Math.round(Number(event.data.newCount) || 0),
         );
         saveState();
       }
       render();
-      const successMessage = `${collectedGift?.fromName || 'Um treinador'} deixou ${socialGiftFoodPhrase(event.data.foodId)} de presente.`;
+      const successMessage = `${collectedGift?.fromName || 'Um treinador'} deixou ${socialGiftFoodPhrase(receivedItemId)} de presente.`;
       const message = event.data.ok
         ? successMessage
         : typeof event.data.message === 'string'

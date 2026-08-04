@@ -133,6 +133,26 @@
     return Math.max(minimum, Math.min(maximum, Number.isFinite(numeric) ? numeric : 0));
   }
 
+  function normalizedBattleLevel(value) {
+    const numeric = Number(value);
+    return Math.max(
+      1,
+      Math.min(Number.MAX_SAFE_INTEGER, Math.round(Number.isFinite(numeric) ? numeric : 1)),
+    );
+  }
+
+  function normalizedPointValue(value) {
+    const numeric = Number(value);
+    return Math.max(
+      0,
+      Math.min(Number.MAX_SAFE_INTEGER, Math.round(Number.isFinite(numeric) ? numeric : 0)),
+    );
+  }
+
+  function canonicalMoveId(value) {
+    return String(value || '').trim().toLowerCase();
+  }
+
   function stopBattleSounds() {
     Object.values(battleSounds).forEach(sound => {
       sound.pause();
@@ -448,13 +468,13 @@
   }
 
   function totalAttributePoints(level) {
-    return Math.max(0, clamp(level, 1, 100) - 1);
+    return Math.max(0, normalizedBattleLevel(level) - 1);
   }
 
   function normalizeAttributes(value, level) {
     const source = value && typeof value === 'object' ? value : {};
     const attributes = Object.fromEntries(
-      ATTRIBUTE_KEYS.map(key => [key, clamp(source[key], 0, 99)]),
+      ATTRIBUTE_KEYS.map(key => [key, normalizedPointValue(source[key])]),
     );
     let remaining = totalAttributePoints(level);
     ATTRIBUTE_KEYS.forEach(key => {
@@ -477,7 +497,7 @@
           ? Math.max(0, Math.round(Number(source.currentHp)))
           : null,
       equippedMoves: Array.isArray(source.equippedMoves)
-        ? source.equippedMoves.map(move => String(move)).filter(Boolean).slice(0, 4)
+        ? source.equippedMoves.map(canonicalMoveId).filter(Boolean).slice(0, 4)
         : [],
       journeyMoveLearnsets: source.journeyMoveLearnsets && typeof source.journeyMoveLearnsets === 'object'
         ? source.journeyMoveLearnsets
@@ -490,6 +510,12 @@
       moveDetails: source.moveDetails && typeof source.moveDetails === 'object'
         ? source.moveDetails
         : {},
+      rewardCycle: source.rewardCycle && typeof source.rewardCycle === 'object'
+        ? {
+            battles: normalizedPointValue(source.rewardCycle.battles),
+            day: typeof source.rewardCycle.day === 'string' ? source.rewardCycle.day.slice(0, 10) : '',
+          }
+        : { battles: 0, day: '' },
       speciesData: source.speciesData && typeof source.speciesData === 'object'
         ? source.speciesData
         : null,
@@ -498,7 +524,7 @@
   }
 
   function calculatedStats(level, attributes, speciesData) {
-    const safeLevel = clamp(level, 1, 100);
+    const safeLevel = normalizedBattleLevel(level);
     const base = speciesData.stats;
     return {
       attack: Math.round(base.attack / 5 + safeLevel + attributes.attack * 2),
@@ -695,6 +721,10 @@
   }
 
   function balanceTrainingOpponent(participant, player, region) {
+    const regionMinimumLevel = normalizedBattleLevel(region?.levelMin || 1);
+    if (player.level < regionMinimumLevel) {
+      return participant;
+    }
     const levelGap = Math.max(0, player.level - Math.max(1, Number(region?.levelMax) || player.level));
     const targetRatio = clampFloat(
       (Number(region?.powerRatio) || 0.9) - levelGap * 0.012,
@@ -715,7 +745,7 @@
   }
 
   function enemyAttributes(level, data) {
-    let points = totalAttributePoints(level);
+    const points = totalAttributePoints(level);
     const attributes = { attack: 0, defense: 0, speed: 0, vitality: 0 };
     const preference = [
       [Math.max(data.stats.attack, data.stats.specialAttack), 'attack'],
@@ -723,13 +753,11 @@
       [Math.max(data.stats.defense, data.stats.specialDefense), 'defense'],
       [data.stats.hp, 'vitality'],
     ].sort((first, second) => second[0] - first[0]).map(entry => entry[1]);
-    while (points > 0) {
-      preference.forEach(key => {
-        if (points <= 0) return;
-        attributes[key] += 1;
-        points -= 1;
-      });
-    }
+    const pointsPerAttribute = Math.floor(points / ATTRIBUTE_KEYS.length);
+    const remainingPoints = points % ATTRIBUTE_KEYS.length;
+    preference.forEach((key, index) => {
+      attributes[key] = pointsPerAttribute + (index < remainingPoints ? 1 : 0);
+    });
     return attributes;
   }
 
@@ -744,7 +772,7 @@
       guard: false,
       happiness: clamp(options.happiness ?? 50),
       hp: clamp(options.currentHp ?? stats.maxHp, 0, stats.maxHp),
-      level: clamp(level, 1, 100),
+      level: normalizedBattleLevel(level),
       maxHp: stats.maxHp,
       moves: options.moves || [],
       name: options.name || data.name,
@@ -765,29 +793,34 @@
       .sort((first, second) => second.level - first.level);
   }
 
-  async function prepareMoves(data, level, preferredMoves = []) {
+  async function prepareMoves(data, level, preferredMoves = [], options = {}) {
     const candidates = moveCandidates(data, level);
     const candidateNames = new Set(candidates.map(move => move.name));
     const validPreferredMoves = preferredMoves
-      .map(move => String(move))
+      .map(canonicalMoveId)
       .filter((name, index, names) => (
         candidateNames.has(name)
         && names.indexOf(name) === index
       ))
       .slice(0, 4);
-    const orderedNames = [
-      ...validPreferredMoves,
-      ...candidates.map(move => move.name),
-    ].filter((name, index, names) => name && names.indexOf(name) === index);
-    const selectedNames = orderedNames.slice(0, 10);
-    const loaded = await Promise.allSettled(selectedNames.map(loadMoveData));
-    const details = loaded
-      .filter(result => result.status === 'fulfilled')
-      .map(result => result.value);
+    const exactSelection = options.exact === true && validPreferredMoves.length > 0;
+    const orderedNames = (exactSelection
+      ? validPreferredMoves
+      : [...validPreferredMoves, ...candidates.map(move => move.name)]
+    ).filter((name, index, names) => name && names.indexOf(name) === index);
+    const selectedNames = orderedNames.slice(0, exactSelection ? 4 : 10);
+    const details = await Promise.all(selectedNames.map(async name => {
+      try {
+        return await loadMoveData(name);
+      } catch {
+        return normalizeMoveData(null, name);
+      }
+    }));
     const detailById = new Map(details.map(move => [move.id, move]));
     const preferred = validPreferredMoves
       .map(name => detailById.get(name))
       .filter(Boolean);
+    if (exactSelection && preferred.length) return preferred;
     const remaining = details.filter(move => !validPreferredMoves.includes(move.id));
     const damaging = remaining.filter(move => move.power > 0);
     const status = remaining.filter(move => move.power <= 0);
@@ -815,11 +848,10 @@
     const learned = getLearnedMoves(pet, dexNumber, speciesName);
     const allowedIds = new Set(learned.map(move => move.id));
     const selected = (Array.isArray(moveIds) ? moveIds : [])
-      .map(move => String(move))
+      .map(canonicalMoveId)
       .filter((move, index, moves) => allowedIds.has(move) && moves.indexOf(move) === index)
       .slice(0, 4);
-    const required = Math.min(4, learned.length);
-    if (selected.length !== required) return null;
+    if (selected.length < 1) return null;
     const battle = ensureBattleProgress(pet);
     battle.equippedMoves = selected;
     return getSnapshot(pet, dexNumber, speciesName);
@@ -909,7 +941,7 @@
       && Number.isInteger(Number(config.opponent.level))
     ) {
       const dexNumber = clamp(Number(config.opponent.dexNumber), 1, 1025);
-      const level = clamp(Number(config.opponent.level), 1, 100);
+      const level = normalizedBattleLevel(config.opponent.level);
       const visual = config.opponent.visual || findVisualForDex(config.dexCatalog, dexNumber);
       const data = await loadPokemonData(dexNumber);
       const attributes = enemyAttributes(level, data);
@@ -930,22 +962,50 @@
       };
     }
 
+    const dynamicEncounter = config.region?.dynamic === true;
     const regionalCatalog = Array.isArray(config.region?.dexIds)
       ? config.region.dexIds
           .map(dexNumber => findVisualForDex(config.dexCatalog, dexNumber))
           .filter(Boolean)
       : [];
+    const rareCatalog = Array.isArray(config.region?.rareDexIds)
+      ? config.region.rareDexIds
+          .map(dexNumber => findVisualForDex(config.dexCatalog, dexNumber))
+          .filter(Boolean)
+      : [];
+    const rareEncounter = dynamicEncounter
+      && rareCatalog.length > 0
+      && Math.random() < clampFloat(Number(config.region?.rareChance) || 0, 0, 0.25);
+    const encounterCatalog = rareEncounter
+      ? rareCatalog
+      : regionalCatalog.length
+        ? regionalCatalog
+        : config.dexCatalog;
     const candidates = sampleCatalog(
-      regionalCatalog.length ? regionalCatalog : config.dexCatalog,
+      encounterCatalog,
       player.speciesData.dexNumber,
       7,
     );
-    const levelMin = clamp(Number(config.region?.levelMin) || 1, 1, 100);
-    const levelMax = clamp(Number(config.region?.levelMax) || 100, levelMin, 100);
+    const dynamicSpread = Math.max(1, Math.round(Number(config.region?.levelSpread) || 10));
+    const levelMin = dynamicEncounter
+      ? Math.max(1, normalizedBattleLevel(player.level) - dynamicSpread)
+      : normalizedBattleLevel(config.region?.levelMin || 1);
+    const hasLevelCeiling = Number.isFinite(Number(config.region?.levelMax))
+      && Number(config.region.levelMax) >= levelMin;
+    const levelMax = dynamicEncounter
+      ? normalizedBattleLevel(player.level) + dynamicSpread
+      : hasLevelCeiling
+        ? normalizedBattleLevel(config.region.levelMax)
+        : Math.max(levelMin, normalizedBattleLevel(player.level) + 1);
     const targetLevel = clamp(player.level, levelMin, levelMax);
+    const levelSpread = dynamicEncounter ? dynamicSpread : 1;
     const loaded = await Promise.allSettled(candidates.map(async visual => ({
       data: await loadPokemonData(visual.dexNumber),
-      level: clamp(targetLevel + Math.floor(Math.random() * 3) - 1, levelMin, levelMax),
+      level: clamp(
+        targetLevel + Math.floor(Math.random() * (levelSpread * 2 + 1)) - levelSpread,
+        levelMin,
+        levelMax,
+      ),
       visual,
     })));
     const prepared = loaded
@@ -977,8 +1037,10 @@
       if (firstInRange !== secondInRange) return firstInRange ? -1 : 1;
       return Math.abs(first.ratio - 1) - Math.abs(second.ratio - 1);
     });
-    const chosen = ranked[0];
-    balanceTrainingOpponent(chosen.participant, player, config.region);
+    const chosen = dynamicEncounter
+      ? ranked[Math.floor(Math.random() * ranked.length)]
+      : ranked[0];
+    if (!dynamicEncounter) balanceTrainingOpponent(chosen.participant, player, config.region);
     chosen.ratio = combatPower(chosen.participant) / Math.max(1, playerPower);
     return chosen;
   }
@@ -1088,10 +1150,13 @@
           <span class="battle-result-symbol" aria-hidden="true">${symbol}</span>
           <h2>${escapeHtml(result.summary)}</h2>
           <div class="battle-rewards">
-            <span><small>Experiência</small><b>+${result.xp} XP</b></span>
+            <span>
+              <small>Experiência${result.rewardMultiplier < 1 ? ` · ${Math.round(result.rewardMultiplier * 100)}%` : ''}</small>
+              <b>+${result.xp} XP</b>
+            </span>
             <span><small>HP restante</small><b>${session.player.hp}/${session.player.maxHp}</b></span>
           </div>
-          <p>${result.note}</p>
+          <p>${result.note}${result.rewardLabel ? ` ${escapeHtml(result.rewardLabel)}` : ''}</p>
         </main>
         <footer class="battle-footer">
           <button class="primary" type="button" data-battle-exit>Voltar ao Tamagotchi</button>
@@ -1404,25 +1469,41 @@
     })[0] || fallbackMove();
   }
 
+  function opponentLevelRewardMultiplier(enemyLevel, playerLevel) {
+    const enemy = normalizedBattleLevel(enemyLevel);
+    const player = normalizedBattleLevel(playerLevel);
+    if (enemy >= player) return 1;
+    return clampFloat(Math.pow(enemy / Math.max(1, player), 5), 0.02, 1);
+  }
+
   function rewardXp(outcome) {
     const enemy = session.enemy;
     const ratio = combatPower(enemy) / Math.max(1, combatPower(session.player));
-    const powerDifficulty = clampFloat(ratio, 0.75, 1.35);
-    const speciesDifficulty = clampFloat(enemy.baseExperience / 150, 0.85, 1.25);
-    const levelReward = 20 + enemy.level * 0.8;
+    const powerDifficulty = clampFloat(Math.pow(Math.max(0.05, ratio), 0.75), 0.25, 1.5);
+    const speciesDifficulty = clampFloat(enemy.baseExperience / 150, 0.85, 1.2);
     const bondBonus = session.player.bond >= 25 ? 1.025 : 1;
-    const baseVictoryXp = Math.round(clampFloat(
-      levelReward * speciesDifficulty * powerDifficulty * bondBonus,
-      18,
-      140,
+    const xpNeeded = Math.max(75, normalizedPointValue(session.config.xpNeeded) || 75);
+    const regionMultiplier = clampFloat(Number(session.config.region?.xpMultiplier) || 1, 0.5, 1.25);
+    const playerLevel = normalizedBattleLevel(session.player.level);
+    const levelRewardMultiplier = opponentLevelRewardMultiplier(enemy.level, playerLevel);
+    const progressionScale = clampFloat(Math.pow(playerLevel, -0.16), 0.12, 1);
+    const rewardMultiplier = clampFloat(Number(session.config.rewardMultiplier) || 1, 0.08, 1);
+    const rewardShare = 0.18
+      * progressionScale
+      * speciesDifficulty
+      * powerDifficulty
+      * bondBonus
+      * regionMultiplier
+      * levelRewardMultiplier;
+    const fullVictoryXp = Math.max(6, Math.min(
+      Math.round(xpNeeded * 0.18),
+      Math.round(xpNeeded * rewardShare),
     ));
-    const victoryXp = Math.max(8, Math.round(
-      baseVictoryXp * clampFloat(Number(session.config.region?.xpMultiplier) || 1, 0.5, 1.25),
-    ));
+    const victoryXp = Math.max(1, Math.round(fullVictoryXp * rewardMultiplier));
     if (outcome === 'victory') return victoryXp;
     if (outcome !== 'defeat') return 0;
     const damageRatio = clampFloat(session.damageDealt / Math.max(1, enemy.maxHp), 0, 1);
-    return Math.max(3, Math.round(victoryXp * (0.2 + damageRatio * 0.3)));
+    return Math.max(1, Math.round(victoryXp * (0.2 + damageRatio * 0.3)));
   }
 
   function finishBattle(outcome) {
@@ -1445,7 +1526,23 @@
       : outcome === 'defeat'
         ? `Você retirou ${damagePercent}% do HP adversário e recebeu XP pelo esforço.`
         : 'O HP atual foi preservado. A energia usada para entrar na batalha não é devolvida.';
-    session.result = { note, outcome, summary, xp };
+    const rewardMultiplier = clampFloat(Number(session.config.rewardMultiplier) || 1, 0.08, 1);
+    const levelRewardMultiplier = opponentLevelRewardMultiplier(
+      session.enemy.level,
+      session.player.level,
+    );
+    const levelRewardNote = outcome !== 'fled' && levelRewardMultiplier < 0.95
+      ? ` A diferença de nível reduziu a recompensa para ${Math.max(2, Math.round(levelRewardMultiplier * 100))}% do valor normal.`
+      : '';
+    session.result = {
+      note: `${note}${levelRewardNote}`,
+      outcome,
+      levelRewardMultiplier,
+      rewardLabel: typeof session.config.rewardLabel === 'string' ? session.config.rewardLabel : '',
+      rewardMultiplier,
+      summary,
+      xp,
+    };
     session.phase = 'result';
     session.config.onProgress?.({ currentHp: session.player.hp });
     session.config.onComplete?.({
@@ -1458,6 +1555,8 @@
       outcome,
       regionId: session.config.region?.id || null,
       regionName: session.config.region?.name || null,
+      levelRewardMultiplier,
+      rewardMultiplier,
       xp,
       damagePercent,
     });
@@ -1592,9 +1691,15 @@
       }
 
       const playerMoves = await prepareMoves(
-        playerData.speciesData,
+        {
+          ...playerData.speciesData,
+          moveLearnset: getMoveCatalog(pet, config.dexNumber, config.speciesName)
+            .filter(move => move.learned)
+            .map(move => ({ level: move.level, name: move.id })),
+        },
         pet.level,
         pet.battle.equippedMoves,
+        { exact: pet.battle.equippedMoves.length > 0 },
       );
       const playerVisual = await playerVisualPromise;
       if (!session || sequence !== loadSequence) return;

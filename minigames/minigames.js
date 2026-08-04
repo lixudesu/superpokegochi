@@ -4,12 +4,12 @@
 
   const GAME_INFO = {
     catch: {
-      title: 'Chuva de Frutas',
-      description: 'Sobreviva por 50 segundos: pegue frutas, evite sujeiras e não deixe frutas caírem.',
+      title: 'Chuva de Berries',
+      description: 'Sobreviva por 50 segundos: pegue Berries, evite sujeiras e não deixe Berries caírem.',
     },
     memory: {
-      title: 'Memória de Frutas',
-      description: 'Encontre oito pares. Você tem seis vidas e as posições não mudam.',
+      title: 'Memória de Berries',
+      description: 'Encontre oito pares. Você tem uma vida por carta e as posições não mudam.',
     },
   };
 
@@ -378,8 +378,8 @@
         success,
         xp: success ? Math.min(30, performanceXp) : Math.min(12, 2 + Math.floor(score / 3)),
         summary: success
-          ? `Você sobreviveu aos 50 segundos e pegou ${score} frutas.`
-          : `Você pegou ${score} frutas, mas perdeu as três vidas antes dos 50 segundos.`,
+          ? `Você sobreviveu aos 50 segundos e pegou ${score} Berries.`
+          : `Você pegou ${score} Berries, mas perdeu as três vidas antes dos 50 segundos.`,
       });
     }
 
@@ -440,22 +440,21 @@
       ...food,
       cardId: `${food.id}-${index}`,
     })));
+    const startingLives = deck.length;
     const content = `
       <section class="minigame-stage memory-stage" data-minigame-stage>
         <div class="minigame-hud">
           <span>Jogadas<br><b data-memory-moves>0</b></span>
           <span>Pares<br><b data-memory-pairs>0/${pairTarget}</b></span>
-          <span>Vidas<br><b data-memory-lives>6</b></span>
+          <span>Vidas<br><b data-memory-lives>${startingLives}</b></span>
           <span>Tempo<br><b data-memory-time>00:00</b></span>
         </div>
         <div class="memory-board" role="grid" aria-label="Cartas do jogo da memória">
-          ${deck.map((food, index) => `
-            <button class="memory-card" type="button" data-memory-card="${index}" data-food-id="${food.id}" data-food-label="${escapeHtml(food.label)}" aria-label="Virar carta ${index + 1}">
+          ${deck.map((_food, index) => `
+            <button class="memory-card" type="button" data-memory-card="${index}" aria-label="Virar carta ${index + 1}">
               <span class="memory-card-inner">
                 <span class="memory-card-face memory-card-back" aria-hidden="true">?</span>
-                <span class="memory-card-face memory-card-front" aria-hidden="true">
-                  <img src="${escapeHtml(food.assetUrl)}" alt="">
-                </span>
+                <span class="memory-card-face memory-card-front" aria-hidden="true"></span>
               </span>
             </button>
           `).join('')}
@@ -474,7 +473,7 @@
     let moves = 0;
     let pairs = 0;
     let bestPairs = 0;
-    let lives = 6;
+    let lives = startingLives;
     let locked = false;
 
     const timer = setInterval(() => {
@@ -499,21 +498,29 @@
 
     function flipCard(card) {
       if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
+      const cardIndex = Number(card.dataset.memoryCard);
+      const food = Number.isInteger(cardIndex) ? deck[cardIndex] : null;
+      if (!food) return;
+      const front = card.querySelector('.memory-card-front');
+      const image = document.createElement('img');
+      image.src = food.assetUrl;
+      image.alt = '';
+      front?.replaceChildren(image);
       card.classList.add('flipped');
-      card.setAttribute('aria-label', `Carta revelada: ${card.dataset.foodLabel || 'fruta'}`);
-      openCards.push(card);
+      card.setAttribute('aria-label', `Carta revelada: ${food.label || 'Berry'}`);
+      openCards.push({ card, food });
       if (openCards.length < 2) return;
 
       moves += 1;
       movesNode.textContent = String(moves);
       const [first, second] = openCards;
-      if (first.dataset.foodId === second.dataset.foodId) {
-        first.classList.add('matched');
-        second.classList.add('matched');
-        first.setAttribute('aria-label', `${first.dataset.foodLabel || 'Fruta'}, par encontrado`);
-        second.setAttribute('aria-label', `${second.dataset.foodLabel || 'Fruta'}, par encontrado`);
-        first.disabled = true;
-        second.disabled = true;
+      if (first.food.id === second.food.id) {
+        first.card.classList.add('matched');
+        second.card.classList.add('matched');
+        first.card.setAttribute('aria-label', `${first.food.label || 'Fruta'}, par encontrado`);
+        second.card.setAttribute('aria-label', `${second.food.label || 'Fruta'}, par encontrado`);
+        first.card.disabled = true;
+        second.card.disabled = true;
         openCards = [];
         pairs += 1;
         bestPairs = Math.max(bestPairs, pairs);
@@ -535,6 +542,7 @@
           visibleCard.classList.remove('flipped', 'matched');
           visibleCard.disabled = false;
           visibleCard.setAttribute('aria-label', `Virar carta ${index + 1}`);
+          visibleCard.querySelector('.memory-card-front')?.replaceChildren();
         });
         openCards = [];
         pairs = 0;
@@ -550,7 +558,7 @@
             score: bestPairs,
             success: false,
             xp: Math.min(12, 2 + bestPairs * 2),
-            summary: `Você perdeu as seis vidas e chegou a ${bestPairs}/${pairTarget} pares. Pode tentar novamente enquanto tiver energia.`,
+            summary: `Você usou as ${startingLives} vidas e chegou a ${bestPairs}/${pairTarget} pares. Pode tentar novamente enquanto tiver energia.`,
           });
         }, 720);
         addCleanup(() => clearTimeout(lockTimer));

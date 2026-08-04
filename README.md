@@ -15,8 +15,8 @@ progresso fica salvo no navegador com `localStorage`.
 - Evolução opcional, ramificações permanentes e troca entre as formas desbloqueadas.
 - Sprites normais, Shiny e sprites de costas nas batalhas.
 - Fome, felicidade, energia, HP, vínculo e dias juntos.
-- Folhas, frutas e sujeira espalhadas pelo gramado.
-- Mochila com frutas comuns, incomuns e raras.
+- Folhas, Berries e sujeira espalhadas pelo gramado.
+- Mochila com Berries, ingredientes de curry e medicamentos em pixel art.
 - Música em loop, sons de alimentação e evolução.
 - Ciclo de dia e noite no horário de Brasília.
 - Shiny liberado após 30 dias de vínculo.
@@ -38,7 +38,7 @@ de acordo com o nível e o poder do companheiro.
 - Vitória concede mais XP. Na derrota, o XP varia conforme o dano causado e pode
   chegar a cerca de metade da recompensa de vitória; fugir não concede XP.
 - O HP restante continua salvo depois da batalha.
-- Descansar e comer frutas recuperam HP. Uma fruta cura de 20% a 35%.
+- Descansar, consumir Berries e usar medicamentos recuperam HP.
 - Veneno, queimadura, paralisia, sono, congelamento e confusão afetam os turnos
   e aparecem ao lado do nome do Pokémon.
 - Nas batalhas de visita, XP, energia, fome e HP restante dos dois perfis são
@@ -60,12 +60,19 @@ Ao tocar em **Treino**, abre uma central com:
 | Montanha Rochosa | 31–50 | Equilibrado |
 | Caverna Cristal | 51–70 | Desafiador |
 | Ruínas Antigas | 71–90 | Difícil |
-| Pico Lendário | 91–100 | Extremo |
+| Pico Lendário | 91–120 | Extremo |
+| Desconhecido | nível do companheiro ±10 | Imprevisível |
 
-Regiões são liberadas ao alcançar seu nível mínimo e continuam disponíveis para
-serem revisitadas. As áreas iniciais possuem inimigos menos poderosos e bônus de
-dano para tornar o começo mais confortável. Golpes de maior poder agora usam
-multiplicadores decimais sem perder força por arredondamento.
+Todas as regiões ficam abertas desde o começo, mas entrar acima da faixa indicada
+mantém a dificuldade real dos adversários. Em **Desconhecido**, o encontro usa
+todo o catálogo, sorteia níveis entre 10 abaixo e 10 acima do companheiro e possui
+uma pequena chance de trazer Pokémon lendários. Enfrentar adversários abaixo do
+seu nível reduz bastante o XP, então revisitar áreas antigas não permite farmar
+recompensas altas.
+
+As primeiras oito batalhas concluídas do dia entregam 100% do XP. Da nona à
+décima sexta, o rendimento cai para 50%; depois disso, fica em 10% até a virada
+do dia no horário de Brasília. Fugir não conta nesse ciclo.
 
 ### Atributos e habilidades
 
@@ -76,7 +83,7 @@ Cada nível conquistado libera um ponto de atributo. Os pontos podem melhorar:
 - Velocidade;
 - Vitalidade e HP máximo.
 
-A aba **Habilidades** permite equipar até quatro golpes aprendidos pelo Pokémon.
+A aba **Habilidades** permite equipar de um a quatro golpes aprendidos pelo Pokémon.
 Os dados de tipos, golpes e status são consultados na PokéAPI e mantidos em cache
 por 30 dias. Se a API estiver indisponível, o jogo usa dados equilibrados de
 reserva.
@@ -90,19 +97,20 @@ gratuitamente nesta versão independente, sem alterar nível, XP ou golpes.
 
 O botão **Brincar** abre os minigames em tela cheia:
 
-- **Chuva de Frutas:** consome 8 de energia; sobreviva por 50 segundos, colete
-  frutas e evite os itens perigosos;
-- **Jogo da Memória:** encontre os pares de frutas. O jogador possui seis
-  tentativas e consome 6 de energia.
+- **Chuva de Berries:** consome 8 de energia; sobreviva por 50 segundos, colete
+  Berries e evite os itens perigosos;
+- **Jogo da Memória:** encontre os pares de Berries. O jogador possui uma vida
+  para cada carta do tabuleiro e consome 6 de energia. O baralho é embaralhado
+  em uma variável privada; cartas cobertas não expõem a resposta no HTML.
 
 Cada jornada possui duas missões diárias, reiniciadas à meia-noite no horário de
 Brasília:
 
-- somar 30 pontos na Chuva de Frutas;
-- vencer uma partida da Memória de Frutas.
+- somar 30 pontos na Chuva de Berries;
+- vencer uma partida da Memória de Berries.
 
 É possível tentar novamente enquanto houver energia. Cada missão concede uma
-fruta e 35 XP uma vez por dia. Depois de concluída, novas partidas ainda aumentam
+Berry ou ingrediente de curry e 30 XP uma vez por dia. Depois de concluída, novas partidas ainda aumentam
 a felicidade, mas não repetem a recompensa. Derrotas com pontuação concedem um
 pequeno XP de esforço, limitado a 10 XP por minigame a cada dia.
 
@@ -112,30 +120,30 @@ período, o Pokémon recupera cerca de 50% do HP máximo.
 As folhas coletadas no gramado concedem de 1 a 12 XP. Valores entre 1 e 2 são
 comuns; recompensas maiores ficam progressivamente mais raras.
 
-### Frutas
+### Itens e mochila
 
-| Fruta | Tier | Cura de HP | XP |
-| --- | --- | ---: | ---: |
-| Maçã | Comum | 20% | 2 |
-| Morango | Comum | 20% | 3 |
-| Amora | Comum | 22% | 4 |
-| Pera | Comum | 20% | 2 |
-| Uva | Comum | 20% | 3 |
-| Laranja | Comum | 22% | 4 |
-| Banana | Comum | 25% | 4 |
-| Melancia | Incomum | 35% | 7 |
-| Abacaxi Energia | Rara | 30% | 8 |
+A mochila exibe somente os itens que o jogador possui. O inventário é separado
+em três grupos:
 
-O Abacaxi Energia também recupera 30 de energia. Um Pokémon ferido pode comer
-para recuperar HP mesmo quando já está satisfeito.
+- **Berries:** recuperam fome, HP e outros atributos. Aparecem no gramado e podem
+  ser obtidas em minigames, batalhas e presentes;
+- **Ingredientes de curry:** recuperam bastante fome e podem ser encontrados em
+  minigames, batalhas e presentes;
+- **Medicamentos:** focados em recuperação de HP e progressão. São encontrados
+  principalmente em batalhas e presentes. A Superpoção recupera até 120 HP e o
+  Doce Raro avança exatamente um nível.
+
+Inventários antigos são convertidos automaticamente para os novos itens sem
+perder as quantidades salvas.
 
 ### Ritmo de progresso
 
-A curva de XP foi feita para valorizar a convivência com o companheiro. Com as
-duas missões diárias, cerca de três batalhas e os itens do gramado, a referência
-é chegar perto do nível 40 em um mês de atividade. O nível 100 continua sendo
-uma meta de aproximadamente 7 a 10 meses para a maioria dos jogadores, e o
-Shiny permanece ligado aos 30 dias de vínculo.
+Não existe mais limite máximo de nível. A experiência necessária para avançar é
+calculada por `75 × nível^1,18`, arredondada para múltiplos de 5. A curva começa
+acessível e cresce continuamente; por exemplo, o nível 55 para 56 exige 8.485 XP.
+Ao carregar um save antigo, o jogo preserva o nível e converte proporcionalmente
+o progresso da barra para a curva atual, evitando perda ou ganho artificial de
+níveis. O Shiny permanece ligado aos 30 dias de vínculo.
 
 ## Jornadas, evolução e progresso
 

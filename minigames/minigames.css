@@ -155,11 +155,11 @@
   background:#7dc8cf url("assets/catch-scenery.svg") center/cover no-repeat;
 }
 .minigame-choice-art.memory{background:#f7eaca}
-.minigame-choice-art img{width:38px;height:38px;object-fit:contain;image-rendering:pixelated}
+.minigame-choice-art img{width:48px;height:48px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
 .minigame-choice-art.catch img:nth-child(1){transform:translate(-13px,-11px) rotate(-8deg)}
 .minigame-choice-art.catch img:nth-child(2){position:absolute;right:13px;bottom:12px;transform:rotate(8deg)}
-.minigame-choice-art.memory{grid-template-columns:repeat(2,29px);gap:5px}
-.minigame-choice-art.memory img{width:27px;height:27px;padding:4px;border-radius:7px;background:#fff}
+.minigame-choice-art.memory{grid-template-columns:repeat(2,32px);gap:4px}
+.minigame-choice-art.memory img{box-sizing:border-box;width:32px;height:32px;padding:2px;border-radius:7px;background:#fff}
 .minigame-choice-copy{min-width:0}
 .minigame-choice-copy b{display:block;font-size:16px;line-height:1.15}
 .minigame-choice-copy span{display:block;margin-top:5px;color:#647188;font-size:11px;line-height:1.35}
@@ -268,8 +268,8 @@
   animation:catch-wing-flap .4s linear infinite;
 }
 .catch-fruit-pixel{
-  width:48px;
-  height:48px;
+  width:64px;
+  height:64px;
   position:relative;
   z-index:1;
   object-fit:contain;
@@ -396,7 +396,7 @@
   background:#edf9f1;
   transform:rotateY(180deg);
 }
-.memory-card-front img{width:70%;height:70%;object-fit:contain;image-rendering:pixelated}
+.memory-card-front img{width:64px;height:64px;max-width:72%;max-height:72%;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
 .memory-card.matched .memory-card-face{box-shadow:0 0 0 3px #42c578}
 .memory-board.mistake{animation:memory-mistake .32s ease-in-out}
 
@@ -433,7 +433,7 @@
   font-size:13px;
   font-weight:950;
 }
-.minigame-result-reward img{width:34px;height:34px;object-fit:contain;image-rendering:pixelated}
+.minigame-result-reward img{width:48px;height:48px;object-fit:contain;image-rendering:pixelated;image-rendering:crisp-edges}
 .minigame-result-reward.no-reward{background:#eef3f5;color:#687783}
 .minigame-result-reward.partial-reward{background:#eef7ff;color:#315d82}
 .minigame-result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
